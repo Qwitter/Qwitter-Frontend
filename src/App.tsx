@@ -1,4 +1,5 @@
 import "./App.css";
+import { PopUpContainer } from "./components/PopUpContainer";
 import { SignUpSteps } from "./components/SignUpSteps";
 import { ThemeProvider } from "./components/theme-provider";
 import { Button } from "./components/ui/button";
@@ -11,6 +12,8 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <Button variant="danger">Click me</Button>
+
+        <SignUpSteps />
       </ThemeProvider>
     </QueryClientProvider>
   );
