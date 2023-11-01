@@ -1,8 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
-
 
 @layer base {
   :root {
@@ -27,7 +25,7 @@
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.5rem;
   }
- 
+
   .dark {
     --background: 0 0% 0%;
     --foreground: 210 40% 98%;
@@ -51,8 +49,6 @@
   }
 }
 
-
- 
 @layer base {
   * {
     @apply border-border;
@@ -62,14 +58,18 @@
   }
 }
 
-.btn{
+.btn {
   @apply rounded-3xl text-white px-4 hover:bg-primary/90;
 }
 
-.full-btn{
+.full-btn {
   @apply btn w-full;
 }
 
-.outline-btn{
+.outline-btn {
   @apply btn bg-transparent ring-1 ring-white hover:bg-white hover:text-black;
+}
+
+.background-overlay {
+  background-color: rgba(91, 112, 131, 0.4);
 }

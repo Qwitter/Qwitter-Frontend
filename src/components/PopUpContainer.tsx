@@ -2,6 +2,7 @@ import React, { MouseEventHandler } from "react";
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { X, ArrowLeft, Twitter } from "lucide-react";
 import { HeaderButton } from "@/models/PopUpModel";
+import { Logo } from "../assets";
 
 type PopUpProps = {
   show: boolean; // flag to hide and show the popup
@@ -29,7 +30,8 @@ export const PopUpContainer = (props: PopUpProps) => {
       <DialogContent className="sm:max-w-[425px] pt-0">
         <DialogHeader className="pt-2">
           {temp[headerButton || "none"]}
-          <Twitter className="h-4 w-4" />
+          {/* <Twitter className="h-[300px] w-[300px]" />
+          <img src={Logo} alt="Logo" /> */}
         </DialogHeader>
         <div className="flex flex-col pb-4">
           <div className="justify-center items-center">{children}</div>
