@@ -69,7 +69,3 @@
 .outline-btn {
   @apply btn bg-transparent ring-1 ring-white hover:bg-white hover:text-black;
 }
-
-.background-overlay {
-  background-color: rgba(91, 112, 131, 0.4);
-}
