@@ -1,6 +1,6 @@
 import React, { MouseEventHandler } from "react";
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
-import { X, ArrowLeft } from "lucide-react";
+import { X, ArrowLeft, Twitter } from "lucide-react";
 import { HeaderButton } from "@/models/PopUpModel";
 
 type PopUpProps = {
@@ -23,18 +23,16 @@ export const PopUpContainer = (props: PopUpProps) => {
     none: null,
   };
 
-  // default values for flags
-  const showLogo = props.showLogo || false;
-
   // NEEDED: make the elements centered, fix the nav
   return (
     <Dialog open={show}>
       <DialogContent className="sm:max-w-[425px] pt-0">
         <DialogHeader className="pt-2">
           {temp[headerButton || "none"]}
+          <Twitter className="h-4 w-4" />
         </DialogHeader>
-        <div className="grid gap-4 pb-4">
-          <div className="grid grid-cols-4 items-center gap-4">{children}</div>
+        <div className="flex flex-col pb-4">
+          <div className="justify-center items-center">{children}</div>
         </div>
       </DialogContent>
     </Dialog>
