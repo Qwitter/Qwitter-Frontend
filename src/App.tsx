@@ -10,9 +10,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <Button className="text-lg text-slate-50">Click me</Button>
-
-        <SignUpSteps />
+        <Button variant="danger">Click me</Button>
       </ThemeProvider>
     </QueryClientProvider>
   );
