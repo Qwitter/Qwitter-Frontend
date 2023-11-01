@@ -29,7 +29,7 @@
   }
  
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 0 0% 0%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
@@ -60,4 +60,16 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.btn{
+  @apply rounded-3xl text-white px-4 hover:bg-primary/90;
+}
+
+.full-btn{
+  @apply btn w-full;
+}
+
+.outline-btn{
+  @apply btn bg-transparent ring-1 ring-white hover:bg-white hover:text-black;
 }
