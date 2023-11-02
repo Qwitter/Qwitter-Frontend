@@ -57,7 +57,7 @@ export const PopUpContainer = (props: PopUpProps) => {
         )}
         <div
           className={cn(
-            "flex flex-col pb-5 px-[80px] justify-center items-center",
+            "flex flex-col w-full pb-5 px-[80px] justify-center items-center",
             className
           )}
         >
