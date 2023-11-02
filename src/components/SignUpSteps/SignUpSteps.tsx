@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Button, PopUpContainer, TextInput } from "./";
+import { Button, PopUpContainer, TextInput } from "../";
 // import { Button } from "./ui/button";
-import { HeaderButton } from "../models/PopUpModel";
+import { HeaderButton } from "../../models/PopUpModel";
 
 export const SignUpSteps = () => {
   const [stepNumber, setStepNumber] = useState(0);

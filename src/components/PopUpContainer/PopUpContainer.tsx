@@ -1,8 +1,8 @@
 import React, { MouseEventHandler } from "react";
-import { Dialog, DialogContent, DialogHeader } from "./ui/dialog";
+import { Dialog, DialogContent, DialogHeader } from "../ui/dialog";
 import { X, ArrowLeft, Twitter } from "lucide-react";
 import { HeaderButton } from "@/models/PopUpModel";
-import { cn } from "../lib/utils";
+import { cn } from "../../lib/utils";
 
 type PopUpProps = {
   show: boolean; // flag to hide and show the popup

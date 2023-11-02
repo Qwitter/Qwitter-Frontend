@@ -1,4 +1,4 @@
-import { PopUpContainer, Button } from "../components";
+import { PopUpContainer, Button } from "../";
 import { Bell } from "lucide-react";
 
 export function NotificationAllow() {

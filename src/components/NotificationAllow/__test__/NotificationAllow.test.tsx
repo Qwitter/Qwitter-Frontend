@@ -3,7 +3,8 @@ import { NotificationAllow } from "../components";
 import "@testing-library/jest-dom";
 
 describe("NotificationAllow Testing", () => {
-  test("UI testing", () => {
+  test("UI testing", () => 
+  {
     render(<NotificationAllow />);
     expect(screen.getByText("Turn on notification")).toBeInTheDocument();
     expect(
