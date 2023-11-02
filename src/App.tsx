@@ -11,8 +11,8 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         {/* <NotificationAllow /> */}
-        <SignUpSteps />
-        {/* <Authentication /> */}
+        {/* <SignUpSteps /> */}
+        <Authentication />
       </ThemeProvider>
     </QueryClientProvider>
   );
