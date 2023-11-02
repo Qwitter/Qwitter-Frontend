@@ -17,6 +17,7 @@
     "@tanstack/react-query": "^5.0.5",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
+    "jest-dom": "^4.0.0",
     "jest-environment-jsdom": "^29.7.0",
     "lucide-react": "^0.290.0",
     "react": "^18.2.0",
@@ -31,6 +32,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7.23.2",
     "@babel/preset-typescript": "^7.23.2",
+    "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^14.0.0",
     "@types/jest": "^29.5.7",
     "@types/node": "^20.8.9",
