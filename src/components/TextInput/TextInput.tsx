@@ -7,7 +7,7 @@ type TextInputProps = {
   className?: string;
 };
 
-function TextInput(props: TextInputProps) {
+export const TextInput = (props: TextInputProps) => {
   const { placeHolder, name, className } = props;
   return (
     <div className={cn("relative w-full", className)}>
@@ -26,6 +26,4 @@ function TextInput(props: TextInputProps) {
       </label>
     </div>
   );
-}
-
-export default TextInput;
+};

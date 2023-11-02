@@ -46,9 +46,7 @@ export default function Authentication() {
         style={outerDynamicStyle}
       >
         <div className="flex justify-center items-center">
-          {/* <svg viewBox="0 0 24 24" style={innerDynamicStyle}> */}
-          <XLogo className={innerDynamicStyle} />
-          {/* </svg> */}
+          <XLogo viewBox="0 0 24 24" style={innerDynamicStyle} />
         </div>
         <div className="flex flex-col lg:justify-center items-center">
           <div className="flex flex-col justify-center items-start">
