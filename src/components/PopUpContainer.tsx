@@ -18,7 +18,10 @@ export const PopUpContainer = (props: PopUpProps) => {
   const temp = {
     close: <X className="h-4 w-4 cursor-pointer" />,
     back: (
-      <ArrowLeft className="h-4 w-4 cursor-pointer" onClick={backFunction} />
+      <ArrowLeft
+        className="h-4 w-4 cursor-pointer hover:bg-white"
+        onClick={backFunction}
+      />
     ),
     none: null,
   };
