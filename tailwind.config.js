@@ -13,8 +13,7 @@ module.exports = {
       padding: "2rem",
       screens: {
         "2xl": "1400px",
-        'md':"600px",
-        
+        md: "600px",
       },
     },
     extend: {
@@ -25,8 +24,8 @@ module.exports = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         gray: "#71767b",
-        'dark-gray': "rgb(22, 24, 28)",
-        'light-gray': "#1d1f23",
+        "dark-gray": "rgb(22, 24, 28)",
+        "light-gray": "#1d1f23",
         danger: "#f4212e",
         primary: {
           DEFAULT: "#E7E9EA",
