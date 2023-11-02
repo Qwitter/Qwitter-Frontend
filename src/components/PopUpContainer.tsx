@@ -26,7 +26,7 @@ export const PopUpContainer = (props: PopUpProps) => {
   // NEEDED: make the elements centered, fix the nav
   return (
     <Dialog open={show}>
-      <DialogContent className="sm:max-w-[425px] p-0">
+      <DialogContent className="sm:max-w-[425px] p-0 min-h-[400px] max-h-[90vh] h-[650px] min-w-[600px]">
         <DialogHeader className="pt-2 px-4">
           {temp[headerButton || "none"]}
           {/* <Twitter className="h-[300px] w-[300px]" />*/}
