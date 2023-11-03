@@ -59,6 +59,15 @@ const navLinks = [
     clicked: { strokeWidth: 3 }
   }
 ];
+const settingsOptions = [
+  {
+    id: "yourAccount",
+    title: "Your account",
+  },
+  {
+    id: "privacyAndSafety",
+    title: "Privacy and safety",
+  }
+]
 
-
-export { navLinks };
+export { navLinks,settingsOptions };
