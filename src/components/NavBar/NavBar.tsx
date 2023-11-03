@@ -24,7 +24,7 @@ export function NavBar({ profilePic, userName, name }: Props) {
                         />
                     </a>
                     <NavElements active={active} setActive={setActive} />
-                    <Button variant="secondary" className='w-11/12 py-4 font-bold h-12 mt-3 hidden xl:block'>Post</Button>
+                    <Button variant="secondary" className='w-11/12 py-4 font-bold h-12 mt-3  max-xl:hidden'>Post</Button>
                 </div>
                 <div className='my-3 p-3 w-full flex flex-row items-center hover:bg-[#191919] transition-all hover:rounded-full'>
                     <img src={profilePic} alt="profilePic" className='w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid' />
