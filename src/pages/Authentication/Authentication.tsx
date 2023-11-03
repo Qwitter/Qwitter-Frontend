@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Button } from "@/components/ui/button";
+import { Button } from "../../components/ui/button";
 import { AiFillApple } from "react-icons/ai";
 import { FcGoogle } from 'react-icons/fc';
 import XLogo from '../../components/XLogo';
@@ -41,7 +41,7 @@ export default function Authentication() {
   return (
     <>
       <div className="grid lg:grid-cols-2 lg:min-w-full min-h-screen" style={outerDynamicStyle}>
-        <div className="flex justify-center items-center">
+        <div data-testid="logo" className="flex justify-center items-center">
           <XLogo viewBox="0 0 24 24" style={innerDynamicStyle} />
         </div>
         <div className="flex flex-col lg:justify-center items-center">
