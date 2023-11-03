@@ -1,35 +1,52 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, PopUpContainer, TextInput } from '../'
-import { useForm } from 'react-hook-form'
-type Props = { email: string }
-function genrateUserName(): string 
+import { generateUsernames } from '@/lib/genrate'
+type Props = { 
+    email: string;
+    setUsername: React.Dispatch<React.SetStateAction<string>>;
+}
+function genrateUserName(email:string): string[] 
 {
-    return ""
+    const uniqueUserNames = [];
+    while (uniqueUserNames.length<7){
+        const name = generateUsernames(email,1)[0];
+        if(checkForAvailabilty(name))
+        uniqueUserNames.push(name);
+    }
+    return uniqueUserNames;
 }
 
-function checkForAvailabilty(genratedUsername: string): boolean 
+function checkForAvailabilty(genratedUsername: string) 
 {
-    return false
+    genratedUsername
+    return Math.floor(Math.random()*2);
 }
 
-function ShowSuggestion() {
-    const { register, handleSubmit, formState: { errors, isSubmitting }, reset, getValues } = useForm()
-    let list = ["@samy992_marwan", " @Marwan3493651", "@MarwanSamy992"]
+
+function ShowSuggestion( {onSuggestionClick,email}:unknown) {
     const [showAllSuggestion, setshowAllSuggestion] = useState(false)
-    const [suggestions, setSuggestion] = useState(["@Samy992Marwan", "@marwan_samy992"])
+    const [size, setsize] = useState(3)
+    const [suggestions, setSuggestion] = useState<string[]>([])
 
     function handleShowMore() {
         setshowAllSuggestion(!showAllSuggestion)
-        setSuggestion([...suggestions, ...list])
+        setsize(5)
     }
+    useEffect(() => {
+        const uniqueNames =  genrateUserName(email);
+        onSuggestionClick(uniqueNames[0])
+        setSuggestion(uniqueNames.slice(1));
+    }, [])
+    
 
-    function handlePickingUsername(){
+    function handlePickingUsername(name:string):void{
+        onSuggestionClick(name)
     }
 
     return (
         <ul className='flex flex-row flex-wrap gap-1 mt-4'>
-            {suggestions.map((name, index) => (
-                <li key={index} className='text-base text-secondary cursor-pointer' onClick={handlePickingUsername}>{name}{(index < 4) ? "," : ""}</li>
+            {suggestions.slice(0,size).map((name, index) => (
+                <li key={index} className='text-base text-secondary cursor-pointer' onClick={()=>handlePickingUsername(name)}>@{name}{(index < 4) ? "," : ""}</li>
             ))
             }
             {!showAllSuggestion && (
@@ -41,13 +58,16 @@ function ShowSuggestion() {
 
 export function UsernameSuggestion(props: Props)
 {
+    const [inputValue, setInputValue] = useState(""); // State to hold the input value
+
+
     return (
-        <PopUpContainer show={true} showLogo={true} className='h-[90%]  flex flex-col  justify-between ' >
-            <div className='flex flex-col'>
+        <PopUpContainer show={true} showLogo={true} className='h-[90%]  flex flex-col  justify-between' >
+            <div className='flex flex-col w-full'>
                 <h2 className=' font-bold text-primary text-[32px] mb-1 mt-5'>What should we call you?</h2>
                 <p className='text-gray mb-5' >Your @username is unique. You can always change it later.</p>
-                <TextInput placeHolder='Username' name='username' />
-                <ShowSuggestion />
+                <TextInput placeHolder='Username' name='username' className='w-full' value={inputValue} />
+                <ShowSuggestion onSuggestionClick={setInputValue} email = {props.email} />
             </div>
             <Button variant={'default'} className='w-full py-6'>Next</Button>
         </PopUpContainer>
