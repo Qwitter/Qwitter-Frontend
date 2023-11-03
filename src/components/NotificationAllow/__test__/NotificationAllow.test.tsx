@@ -1,10 +1,9 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { NotificationAllow } from "../components";
+import { NotificationAllow } from "../../index";
 import "@testing-library/jest-dom";
 
 describe("NotificationAllow Testing", () => {
-  test("UI testing", () => 
-  {
+  test("UI testing", () => {
     render(<NotificationAllow />);
     expect(screen.getByText("Turn on notification")).toBeInTheDocument();
     expect(

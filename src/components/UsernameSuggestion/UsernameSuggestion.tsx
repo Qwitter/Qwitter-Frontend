@@ -2,18 +2,18 @@ import { useState } from 'react'
 import { Button, PopUpContainer, TextInput } from '../'
 import { useForm } from 'react-hook-form'
 type Props = { email: string }
-function genrateUserName(): string 
-{
+function genrateUserName(): string {
     return ""
 }
 
-function checkForAvailabilty(genratedUsername: string): boolean 
-{
+function checkForAvailabilty(genratedUsername: string): boolean {
     return false
 }
 
 function ShowSuggestion() {
-    const { register, handleSubmit, formState: { errors, isSubmitting }, reset, getValues } = useForm()
+    // BUG:
+    /*it gives me error compiling th Quitter*/
+    // const { register, handleSubmit, formState: { errors, isSubmitting }, reset, getValues } = useForm()
     let list = ["@samy992_marwan", " @Marwan3493651", "@MarwanSamy992"]
     const [showAllSuggestion, setshowAllSuggestion] = useState(false)
     const [suggestions, setSuggestion] = useState(["@Samy992Marwan", "@marwan_samy992"])
@@ -23,7 +23,7 @@ function ShowSuggestion() {
         setSuggestion([...suggestions, ...list])
     }
 
-    function handlePickingUsername(){
+    function handlePickingUsername() {
     }
 
     return (
@@ -39,8 +39,7 @@ function ShowSuggestion() {
     )
 }
 
-export function UsernameSuggestion(props: Props)
-{
+export function UsernameSuggestion(props: Props) {
     return (
         <PopUpContainer show={true} showLogo={true} className='h-[90%]  flex flex-col  justify-between ' >
             <div className='flex flex-col'>
