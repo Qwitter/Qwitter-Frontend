@@ -1,44 +1,47 @@
 import { useEffect, useState } from 'react'
 import { Button, PopUpContainer, TextInput } from '../'
-import { generateUsernames } from '@/lib/genrate'
+import { generateUsernames } from '../../lib'
 type Props = { 
     email: string;
-    setUsername: React.Dispatch<React.SetStateAction<string>>;
+    setUsername?: React.Dispatch<React.SetStateAction<string>>;
 }
-function genrateUserName(email:string): string[] 
+type PropsShowSuggestion = { 
+    email: string;
+    onSuggestionClick: React.Dispatch<React.SetStateAction<string>>;
+}
+function generateUserName(email:string): string[] 
 {
     const uniqueUserNames = [];
     while (uniqueUserNames.length<7){
         const name = generateUsernames(email,1)[0];
-        if(checkForAvailabilty(name))
+        if(checkForAvailability(name))
         uniqueUserNames.push(name);
     }
     return uniqueUserNames;
 }
 
-function checkForAvailabilty(genratedUsername: string) 
+function checkForAvailability(generatedUsername: string) 
 {
-    genratedUsername
+    generatedUsername
     return Math.floor(Math.random()*2);
 }
 
 
-function ShowSuggestion( {onSuggestionClick,email}:unknown) {
-    const [showAllSuggestion, setshowAllSuggestion] = useState(false)
+function ShowSuggestion( {onSuggestionClick,email}:PropsShowSuggestion) {
+    const [showAllSuggestion, setShowAllSuggestion] = useState(false)
     const [size, setsize] = useState(3)
     const [suggestions, setSuggestion] = useState<string[]>([])
 
     function handleShowMore() {
-        setshowAllSuggestion(!showAllSuggestion)
+        setShowAllSuggestion(!showAllSuggestion)
         setsize(5)
     }
     useEffect(() => {
-        const uniqueNames =  genrateUserName(email);
+        const uniqueNames =  generateUserName(email);
         onSuggestionClick(uniqueNames[0])
         setSuggestion(uniqueNames.slice(1));
     }, [])
     
-
     function handlePickingUsername(name:string):void{
         onSuggestionClick(name)
     }
