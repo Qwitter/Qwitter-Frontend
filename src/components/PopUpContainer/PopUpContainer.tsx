@@ -20,8 +20,6 @@ export const PopUpContainer = (props: PopUpProps) => {
     props;
   const showLogo = props.showLogo || false;
 
-  console.log(showLogo);
-
   // manage the header content
   const headerContent = {
     close: <X className="h-5 w-5 inline" role="PopUpIcon" />,
