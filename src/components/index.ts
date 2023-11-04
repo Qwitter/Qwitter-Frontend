@@ -24,6 +24,8 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
+import { NavBar } from "./NavBar/NavBar";
+import { SettingsMain } from "./SettingsMain";
 
 export {
   NotificationAllow,
