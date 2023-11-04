@@ -37,6 +37,7 @@ export const TextInput = (props: TextInputProps) => {
         placeholder=" "
         name={name}
         value={value}
+        value={value}
       />
       {/* <img
         src={Logo}

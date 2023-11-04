@@ -13,6 +13,8 @@ function App() {
         <SignUpSteps />
         {/* <UsernameSuggestion email="marwan.samy992@gamil.com"/> */}
         {/* <Authentication /> */}
+        {/* <SignUpButton /> */}
+        <OAuth />
       </ThemeProvider>
     </QueryClientProvider>
   );
