@@ -7,7 +7,7 @@ export function SettingsOptions (props: Props)  {
   const [active, setActive] = useState("")
 
   return (
-    <div className="max-w-[600px] w-full h-full border-r border-primary border-opacity-30">
+    <div >
       <div className="h-14 p-4 mb-2">
         <h1 className="text-primary text-xl font-bold text-start ">Settings</h1>
       </div>

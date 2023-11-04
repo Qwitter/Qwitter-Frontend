@@ -1,4 +1,4 @@
-import { Home, Search, Bell, Mail, AlignJustify, Bookmark, Users, User, Settings } from 'lucide-react';
+import { Home, Search, Bell, Mail, AlignJustify, Bookmark, Users, User, Settings ,KeyRound } from 'lucide-react';
 
 const navLinks = [
   {
@@ -69,5 +69,20 @@ const settingsOptions = [
     title: "Privacy and safety",
   }
 ]
+const accountOptions = [
+  {
+    id: "accountInformation",
+    title: "Account information",
+    description :"See your account information like your phone number and email address.",
+    icon:User
+  },
+  {
+    id: "changeYourPassword",
+    title: "Change your password",
+    description :"Change your password at any time.",
+    icon:KeyRound
+  },
 
-export { navLinks,settingsOptions };
+]
+
+export { navLinks,settingsOptions ,accountOptions};

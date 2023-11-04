@@ -6,6 +6,7 @@ import { SignUpSteps } from "./SignUpSteps/SignUpSteps";
 import { TextInput } from "./TextInput/TextInput";
 import { NavBar } from "./NavBar/NavBar";
 import { SettingsMain } from "./SettingsMain";
+import {YourAccount} from "./YourAccount"
 
 export {
     NotificationAllow,
@@ -15,5 +16,6 @@ export {
     TextInput,
     UsernameSuggestion,
     NavBar,
-    SettingsMain
+    SettingsMain,
+    YourAccount
 };

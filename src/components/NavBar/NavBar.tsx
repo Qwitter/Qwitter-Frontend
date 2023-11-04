@@ -14,8 +14,8 @@ type Props = {
 export function NavBar({ profilePic, userName, name }: Props) {
     const [active, setActive] = useState("")
     return (
-        <div className='w-[26.2%] items-end flex flex-col'>
-            <div className='flex flex-col items-start max-w-[275px] px-2 h-full justify-between'>
+        <div className='w-[25.2%] max-xl:w-[10%] max-lg:w-[21%] items-end flex flex-col'>
+            <div className='flex flex-col items-start xl:w-[275px] px-2 h-full justify-between '>
                 <div className='flex items-start w-full flex-col'>
                     <a href="">
                         <img src={Logo} alt="logo"
@@ -42,7 +42,7 @@ export function NavBar({ profilePic, userName, name }: Props) {
 }
 function NavElements({ active, setActive }:{active:string,setActive:React.Dispatch<React.SetStateAction<string>>}) {
     return (
-        <ul className='flex flex-col '>
+        <ul className='flex flex-col w-full '>
             {navLinks.map((link) => (
                 <a href={`#${link.title}`} key={link.id} className='group' onClick={() => setActive(link.title)}>
                     <div className='flex flex-row p-3 items-center group-hover:bg-[#191919]  group-hover:rounded-full transition-all '>
