@@ -30,7 +30,7 @@ export const PopUpContainer = (props: PopUpProps) => {
 
   return (
     <Dialog open={show}>
-      <DialogContent className="sm:max-w-[425px] p-0 min-h-[400px] max-h-[90vh] h-[650px] min-w-[600px]">
+      <DialogContent className="min-w-[350px] max-w-full sm:max-w-[425px] sm:min-w-[600px] h-full min-h-[200px] sm:h-[650px] p-0">
         {(headerButton || showLogo || title) && (
           <DialogHeader className="px-4 h-[53px] flex flex-row items-center space-y-0">
             <span className="w-[56px]">
@@ -57,7 +57,7 @@ export const PopUpContainer = (props: PopUpProps) => {
         )}
         <div
           className={cn(
-            "flex flex-col w-full pb-5 px-[80px] justify-center items-center",
+            "flex flex-col h-[597px] min-h-[147px] max-h-[597px] w-full pb-5 px-[80px] justify-center items-center",
             className
           )}
         >
