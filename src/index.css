@@ -1,8 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
-
 
 @layer base {
   :root {
@@ -27,9 +25,9 @@
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.5rem;
   }
- 
+
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 0 0% 0%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
@@ -51,13 +49,61 @@
   }
 }
 
-
- 
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.btn {
+  @apply rounded-3xl text-white px-4 hover:bg-primary/90;
+}
+
+.full-btn {
+  @apply btn w-full;
+}
+
+.outline-btn {
+  @apply btn bg-transparent ring-1 ring-white hover:bg-white hover:text-black;
+}
+
+button-border-color {
+  border-color: rgb(207, 217, 222);
+}
+
+.quitter-sky-background-color {
+  background-color: rgb(29, 155, 240);
+  /* background-color: rgb(26, 140, 216); */
+}
+
+.quitter-sky-text-color {
+  color: rgb(29, 155, 240);
+}
+
+.quitter-sky-background-color:hover {
+  background-color: rgb(26, 140, 216);
+}
+
+.or-item:after {
+  content: "";
+  position: absolute;
+  width: 130px;
+  height: 2px;
+  background-color: rgb(239, 243, 244);
+  top: 35%;
+  right: 0;
+}
+
+.or-item:before {
+  content: "";
+  position: absolute;
+  width: 130px;
+  height: 2px;
+  background-color: rgb(239, 243, 244);
+  top: 35%;
+  left: 0;
 }
