@@ -1,11 +1,8 @@
-import React from 'react'
-import { SettingsOptions } from './SettingsOptions/SettingsOptions'
-import { ChangeUsername } from './'
-import { RestPassword } from './RestPassword'
+import { SettingsOptions } from '../../components/SettingsOptions/SettingsOptions'
+import { RestPassword } from '../../components/RestPassword/RestPassword'
 
-type Props = {}
 
-export function SettingsMain(props: Props) {
+export function SettingsMain() {
     return (
         <div className=' border-l-[0.5px] border-primary border-opacity-30 '>
             <div className='w-[990px] h-full flex flex-row max-large2X:w-[920px] max-largeX:max-w-[600px] flex-shrink-1 flex-grow-2'>
@@ -13,7 +10,7 @@ export function SettingsMain(props: Props) {
                 <SettingsOptions />
                 </div>
                 <div className='max-w-[600px] w-full mx-auto h-full'>
-                    <RestPassword userName='marwanSamy' />
+                    <RestPassword />
                 </div>
             </div>
         </div>

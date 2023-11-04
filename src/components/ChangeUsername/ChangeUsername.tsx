@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, OptionsHeader, ShowSuggestionsNames, TextInput } from '.'
+import { Button, OptionsHeader, ShowSuggestionsNames, TextInput } from '..'
 type Props = {
     userName: string
 }

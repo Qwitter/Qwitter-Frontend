@@ -1,5 +1,5 @@
-import { ChevronRight, MoveLeft } from 'lucide-react'
-import { OptionsHeader } from '.'
+import { ChevronRight } from 'lucide-react'
+import { OptionsHeader } from '..'
 type Props = {
     email: string,
     userName: string

@@ -1,4 +1,4 @@
-import { HeaderButton } from '@/models/PopUpModel'
+import { HeaderButton } from '../../models/PopUpModel'
 import { Button, PopUpContainer, TextInput } from '../'
 
 export function PasswordRestPopUp() {

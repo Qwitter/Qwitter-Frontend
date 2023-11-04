@@ -5,11 +5,12 @@ import { HeaderButton } from "../../models/PopUpModel";
 
 export const SignUpSteps = () => {
   const [stepNumber, setStepNumber] = useState(0);
-
+  setStepNumber
   const Steps = [
     <div className="w-full flex flex-col items-start justify-start">
       <h2 className="text-2xl font-bold">Create your account</h2>
       {/* NEEDED: use react hook form*/}
+      
       <form
         className="w-full"
         onSubmit={(e) => {

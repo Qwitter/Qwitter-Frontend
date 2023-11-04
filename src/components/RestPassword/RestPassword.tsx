@@ -1,9 +1,6 @@
-import { useState } from 'react';
-import { Button, OptionsHeader, TextInput } from '.'
-type Props = {
-}
+import { Button, OptionsHeader, TextInput } from '..'
 
-export function RestPassword({ }: Props) {
+export function RestPassword() {
 
     return (
         <div className=" w-full h-full border-r border-primary border-opacity-30 mb-20">

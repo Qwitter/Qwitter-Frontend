@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import {settingsOptions} from '../../constants'
 import { ChevronRight } from 'lucide-react'
-type Props = {}
 
-export function SettingsOptions (props: Props)  {
+export function SettingsOptions ()  {
   const [active, setActive] = useState("")
 
   return (

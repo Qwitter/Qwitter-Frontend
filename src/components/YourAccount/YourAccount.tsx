@@ -1,11 +1,7 @@
-import { accountOptions } from '@/constants'
+import { accountOptions } from '../../constants'
 import { ChevronRight, MoveLeft } from 'lucide-react'
-import React, { useState } from 'react'
 
-type Props = {}
-
-export function YourAccount({ }: Props) {
-    const [active, setActive] = useState("")
+export function YourAccount() {
 
     return (
         <div className=" w-full h-full border-r border-primary border-opacity-30">
@@ -16,15 +12,15 @@ export function YourAccount({ }: Props) {
             <div>
                 <h3 className='text-gray text-sm px-4 py-3'>See information about your account, download an archive of your data, or learn about your account deactivation options</h3>
             </div>
-            <Options active={active} setActive={setActive} />
+            <Options />
         </div>
     )
 }
-function Options({ active, setActive }: { active: string, setActive: React.Dispatch<React.SetStateAction<string>> }) {
+function Options() {
     return (
         <ul className='flex flex-col w-full'>
             {accountOptions.map((link) => (
-                <a href={`#${link.title}`} key={link.id} className='group ' onClick={() => setActive(link.title)}>
+                <a href={`#${link.title}`} key={link.id} className='group ' >
                     <div className='flex flex-row p-3 w-full justify-between items-center group-hover:bg-[#191919] transition-all '>
                         <div className='flex flex-row items-center'>
                             <div className='mr-2 w-12 h-12 flex justify-center items-center '>

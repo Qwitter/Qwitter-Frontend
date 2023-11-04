@@ -1,3 +1,3 @@
 import Authentication from "./Authentication/Authentication";
-
-export { Authentication };
+import { Settings } from "./Settings/Settings";
+export { Authentication,Settings };

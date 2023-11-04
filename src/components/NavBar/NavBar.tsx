@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { navLinks } from '../../constants'
-import { Logo } from '../../assets';
+// import { Logo } from '../../assets';
 // import { Link } from 'react-router-dom'
 import { Button } from '..';
 import { LogOut } from 'lucide-react';
@@ -18,7 +18,7 @@ export function NavBar({ profilePic, userName, name }: Props) {
             <div className='flex flex-col items-start xl:w-[275px] px-2 h-full justify-between '>
                 <div className='flex items-start w-full flex-col'>
                     <a href="">
-                        <img src={Logo} alt="logo"
+                        <img src='./Logo.png' alt="logo" //use logo here
                             className='w-16 h-16 p-[6px] mt-1 transition-all hover:bg-[#191919] hover:rounded-full font-extrabold'
                             onClick={() => { setActive("") }}
                         />

@@ -5,13 +5,14 @@ import { PopUpContainer } from "./PopUpContainer/PopUpContainer";
 import { SignUpSteps } from "./SignUpSteps/SignUpSteps";
 import { TextInput } from "./TextInput/TextInput";
 import { NavBar } from "./NavBar/NavBar";
-import { SettingsMain } from "./SettingsMain";
-import {YourAccount} from "./YourAccount"
-import {OptionsHeader} from './OptionsHeader'
-import {ShowSuggestionsNames} from './ShowSuggestionsNames'
-import { ChangeUsername } from './ChangeUsername'
+import { SettingsMain } from "../pages/Settings/SettingsMain";
+import {YourAccount} from "./YourAccount/YourAccount"
+import {OptionsHeader} from './OptionsHeader/OptionsHeader'
+import {ShowSuggestionsNames} from './ShowSuggestionsNames/ShowSuggestionsNames'
+import { ChangeUsername } from './ChangeUsername/ChangeUsername'
 import { FindEmailPopUp } from './FindEmailPopUp/FindEmailPopUp'
 import {PasswordRestPopUp} from './PasswordRestPopUp/PasswordRestPopUp'
+import { AccountInformation } from "./AccountInformation/AccountInformation";
 export {
     NotificationAllow,
     Button,
@@ -26,5 +27,6 @@ export {
     ShowSuggestionsNames,
     ChangeUsername,
     FindEmailPopUp,
-    PasswordRestPopUp
+    PasswordRestPopUp,
+    AccountInformation
 };

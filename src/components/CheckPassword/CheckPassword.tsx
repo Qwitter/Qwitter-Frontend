@@ -1,4 +1,4 @@
-import { Button, TextInput } from '.'
+import { Button, TextInput } from '..'
 
 export function CheckPassword() {
     return (

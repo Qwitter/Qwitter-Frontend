@@ -1,4 +1,4 @@
-import { cn, generateUsernames } from '../lib'
+import { cn, generateUsernames } from '../../lib'
 import { useEffect, useState } from 'react'
 
 type PropsShowSuggestion = { 
