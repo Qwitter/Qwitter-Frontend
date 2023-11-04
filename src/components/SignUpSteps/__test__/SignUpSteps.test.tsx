@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { SignUpSteps } from "../components";
+import { SignUpSteps } from "../../index";
 import "@testing-library/jest-dom";
 
 describe("SignUp Popup Test", () => {

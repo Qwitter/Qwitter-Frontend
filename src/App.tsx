@@ -12,6 +12,7 @@ function App() {
         {/* <NotificationAllow /> */}
         <Settings />
         {/* <Authentication /> */}
+        <Login />
       </ThemeProvider>
     </QueryClientProvider>
   );
