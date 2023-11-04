@@ -2,6 +2,13 @@ import { MouseEventHandler, useState } from "react";
 import { Button, PopUpContainer, TextInput } from "../";
 import { HeaderButton } from "../../models/PopUpModel";
 import { Checkbox } from "../ui/checkbox";
+import { z } from "zod";
+
+const signInSchema = z.object({
+  name: z.string().max(50),
+  email: z.string().email(),
+  password: z.string().min(8),
+});
 
 export const SignUpSteps = () => {
   const [stepNumber, setStepNumber] = useState<number>(0); // controls which step is shown
