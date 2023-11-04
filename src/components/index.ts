@@ -35,6 +35,8 @@ export {
   SignUpButton,
   BirthDayInput,
   BirthDay,
+  NavBar,
+  SettingsMain,
   Select,
   SelectContent,
   SelectItem,
