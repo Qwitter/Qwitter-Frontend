@@ -10,7 +10,8 @@ import {YourAccount} from "./YourAccount"
 import {OptionsHeader} from './OptionsHeader'
 import {ShowSuggestionsNames} from './ShowSuggestionsNames'
 import { ChangeUsername } from './ChangeUsername'
-
+import { FindEmailPopUp } from './FindEmailPopUp/FindEmailPopUp'
+import {PasswordRestPopUp} from './PasswordRestPopUp/PasswordRestPopUp'
 export {
     NotificationAllow,
     Button,
@@ -23,5 +24,7 @@ export {
     YourAccount,
     OptionsHeader,
     ShowSuggestionsNames,
-    ChangeUsername
+    ChangeUsername,
+    FindEmailPopUp,
+    PasswordRestPopUp
 };
