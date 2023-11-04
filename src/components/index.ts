@@ -34,6 +34,13 @@ import { FindEmailPopUp } from './FindEmailPopUp/FindEmailPopUp'
 import {PasswordRestPopUp} from './PasswordRestPopUp/PasswordRestPopUp'
 import { AccountInformation } from "./AccountInformation/AccountInformation";
 export {
+  YourAccount,
+  OptionsHeader,
+  ShowSuggestionsNames,
+  ChangeUsername,
+  FindEmailPopUp,
+  PasswordRestPopUp,
+  AccountInformation,
   NotificationAllow,
   Button,
   PopUpContainer,
@@ -59,3 +66,4 @@ export {
   FormLabel,
   FormMessage,
 };
+
