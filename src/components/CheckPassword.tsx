@@ -10,7 +10,7 @@ export function CheckPassword() {
                 <h3 className='text-gray text-sm px-4 pb-3 pt-2 '>Please enter your password in order to get this</h3>
             </div>
             <form action="" className='p-3'>
-                <TextInput placeHolder='Password' name='Password' />
+                <TextInput placeHolder='Password' name='Password' type='password' />
                 <a href="" className='text-secondary text-[13px] pl-2 block'>Forget password?</a>
                 <Button variant="secondary" className='block ml-auto '>Confirm</Button>
             </form>

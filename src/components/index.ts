@@ -7,6 +7,9 @@ import { TextInput } from "./TextInput/TextInput";
 import { NavBar } from "./NavBar/NavBar";
 import { SettingsMain } from "./SettingsMain";
 import {YourAccount} from "./YourAccount"
+import {OptionsHeader} from './OptionsHeader'
+import {ShowSuggestionsNames} from './ShowSuggestionsNames'
+import { ChangeUsername } from './ChangeUsername'
 
 export {
     NotificationAllow,
@@ -17,5 +20,8 @@ export {
     UsernameSuggestion,
     NavBar,
     SettingsMain,
-    YourAccount
+    YourAccount,
+    OptionsHeader,
+    ShowSuggestionsNames,
+    ChangeUsername
 };

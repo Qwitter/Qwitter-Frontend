@@ -5,14 +5,15 @@ type TextInputProps = {
   name?: string;
   className?: string;
   value?:string;
+  type?:string;
 };
 
 export const TextInput = (props: TextInputProps) => {
-  const { placeHolder, name, className,value } = props;
+  const { placeHolder, name, className,value,type} = props;
   return (
     <div className={cn("relative w-full", className)}>
       <input
-        type="text"
+        type={type??"text"}
         id="floating_filled"
         className="block rounded-md px-2.5 pb-2.5 pt-5 w-full text-sm text-gray-900 bg-gray-50 dark:bg-transparent border-[1px] border-gray appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
         placeholder=" "

@@ -1,6 +1,7 @@
 import React from 'react'
 import { SettingsOptions } from './SettingsOptions/SettingsOptions'
-import { ConfirmPassword } from '../components/ConfirmPassword'
+import { ChangeUsername } from './'
+import { RestPassword } from './RestPassword'
 
 type Props = {}
 
@@ -12,7 +13,7 @@ export function SettingsMain(props: Props) {
                 <SettingsOptions />
                 </div>
                 <div className='max-w-[600px] w-full mx-auto h-full'>
-                    <ConfirmPassword />
+                    <RestPassword userName='marwanSamy' />
                 </div>
             </div>
         </div>
