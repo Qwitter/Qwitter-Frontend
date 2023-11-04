@@ -16,26 +16,28 @@ type PopUpProps = {
 
 export const PopUpContainer = (props: PopUpProps) => {
   // get necessary data
-  const { show, children, headerButton, headerFunction, title, className } =
-    props;
+  const { show, children, headerButton, title, className } = props;
+  const headerFunction =
+    headerButton != HeaderButton.none ? props.headerFunction : () => {};
   const showLogo = props.showLogo || false;
 
   // manage the header content
   const headerContent = {
     close: <X className="h-5 w-5 inline" role="PopUpIcon" />,
     back: <ArrowLeft className="h-5 w-5 inline" role="PopUpIcon" />,
-    none: <span className="h-5 w-5">&nbsp;</span>,
+    none: <span className="h-5 w-5 cursor-default"></span>,
   };
 
   return (
     <Dialog open={show}>
       <DialogContent className="sm:max-w-[425px] p-0 min-h-[400px] max-h-[90vh] h-[650px] min-w-[600px]">
-        {(headerButton || showLogo) && (
+        {(headerButton || showLogo || title) && (
           <DialogHeader className="px-4 h-[53px] flex flex-row items-center space-y-0">
             <span className="w-[56px]">
               <div
-                className={`ml-[-8px] w-9 h-9 flex justify-center items-center rounded-3xl cursor-pointer ${
-                  headerButton && "hover:bg-dark-gray hover:border-dark-gray"
+                className={`ml-[-8px] w-9 h-9 flex justify-center items-center rounded-3xl ${
+                  headerButton &&
+                  "cursor-pointer hover:bg-dark-gray hover:border-dark-gray "
                 }`}
                 onClick={headerFunction}
               >

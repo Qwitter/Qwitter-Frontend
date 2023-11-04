@@ -1,14 +1,16 @@
-import React from "react";
+import { MouseEventHandler } from "react";
 import { cn } from "@/lib/utils";
 import { Logo } from "@/assets";
 
 type TextInputProps = {
   placeHolder?: string;
-  name?: string;
+  name: string;
   className?: string;
   animation?: boolean;
   width?: string;
   height?: string;
+  value?: string | number;
+  onClick?: MouseEventHandler<HTMLDivElement>;
 };
 
 export const TextInput = (props: TextInputProps) => {
@@ -19,16 +21,22 @@ export const TextInput = (props: TextInputProps) => {
     animation = true,
     width = "30",
     height = "30",
+    value,
+    onClick,
   } = props;
-  animation;
+
   return (
-    <div className={cn("relative w-full flex flex-row", className)}>
+    <div
+      className={cn("relative w-full flex flex-row", className)}
+      onClick={onClick}
+    >
       <input
         type="text"
         id={name}
         className="block rounded-sm px-2 pb-3 pt-6 w-full text-sm text-gray-900 bg-gray-50 dark:bg-transparent border-[1px] border-gray appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
         placeholder=" "
         name={name}
+        value={value}
       />
       {/* <img
         src={Logo}
