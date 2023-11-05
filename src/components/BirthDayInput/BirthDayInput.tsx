@@ -1,15 +1,14 @@
 import { useState } from "react";
-import { BirthDay, DAYS_IN_MONTH, MONTHS, Month } from "@/models/BirthDay";
+import { BirthDay, DAYS_IN_MONTH, MONTHS, Month } from "../../models/BirthDay";
+import { FormField, FormItem } from "../ui/form";
 import {
-  FormField,
-  FormItem,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "..";
-import { cn } from "@/lib/utils";
+} from "../ui/select";
+import { cn } from "../../lib/utils";
 import { UseFormReturn } from "react-hook-form";
 
 type BirthDayInputProps = {
@@ -35,7 +34,7 @@ const BirthDayInput = ({ className, form, birthDay }: BirthDayInputProps) => {
                 }
                 field.onChange(val);
               }}
-              defaultValue={birthDay?.month}
+              defaultValue={form.formState.defaultValues?.month}
             >
               <SelectTrigger
                 className={cn({
@@ -46,7 +45,10 @@ const BirthDayInput = ({ className, form, birthDay }: BirthDayInputProps) => {
               </SelectTrigger>
               <SelectContent className="max-h-[var(--radix-select-content-available-height)]">
                 {MONTHS.map((month) => (
-                  <SelectItem key={month} value={month.toString()}>
+                  <SelectItem
+                    key={month}
+                    value={month.toString()}
+                  >
                     {month}
                   </SelectItem>
                 ))}
@@ -67,7 +69,7 @@ const BirthDayInput = ({ className, form, birthDay }: BirthDayInputProps) => {
           <FormItem className="w-full max-w-[140px]">
             <Select
               onValueChange={field.onChange}
-              defaultValue={birthDay?.day.toString()}
+              defaultValue={form.formState.defaultValues?.day?.toString()}
             >
               <SelectTrigger
                 className={cn({
@@ -78,7 +80,10 @@ const BirthDayInput = ({ className, form, birthDay }: BirthDayInputProps) => {
               </SelectTrigger>
               <SelectContent className="max-h-[var(--radix-select-content-available-height)]">
                 {[...Array(DAYS_IN_MONTH[month])].map((_, i) => (
-                  <SelectItem key={i} value={(i + 1).toString()}>
+                  <SelectItem
+                    key={i + 1}
+                    value={(i + 1).toString()}
+                  >
                     {i + 1}
                   </SelectItem>
                 ))}
@@ -99,7 +104,7 @@ const BirthDayInput = ({ className, form, birthDay }: BirthDayInputProps) => {
           <FormItem className="w-full max-w-[200px] ">
             <Select
               onValueChange={field.onChange}
-              defaultValue={birthDay?.year.toString()}
+              defaultValue={form.formState.defaultValues?.year?.toString()}
             >
               <SelectTrigger
                 className={cn({
@@ -110,7 +115,10 @@ const BirthDayInput = ({ className, form, birthDay }: BirthDayInputProps) => {
               </SelectTrigger>
               <SelectContent className="max-h-[var(--radix-select-content-available-height)]">
                 {[...Array(123)].map((_, i) => (
-                  <SelectItem key={2023 - i} value={(2023 - i).toString()}>
+                  <SelectItem
+                    key={2023 - i}
+                    value={(2023 - i).toString()}
+                  >
                     {2023 - i}
                   </SelectItem>
                 ))}

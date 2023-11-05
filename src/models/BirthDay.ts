@@ -1,4 +1,4 @@
-import { isAtLeast18YearsAgo } from "@/lib/utils";
+import { isAtLeast18YearsAgo } from "../lib/utils";
 import { z } from "zod";
 
 export const MONTHS = [
@@ -53,7 +53,9 @@ export const DAYS_IN_MONTH: DaysInMonth = {
 export const BirthDaySchema = z
   .object({
     day: z
-      .string()
+      .string({
+        required_error: "Day is required",
+      })
       .max(2)
       .min(1)
       .transform((val, ctx) => {
@@ -70,9 +72,13 @@ export const BirthDaySchema = z
       .refine((val) => val >= 1 && val <= 31, {
         message: "Must be a valid Day.",
       }),
-    month: z.enum(MONTHS),
+    month: z.enum(MONTHS, {
+      required_error: "Month is required",
+    }),
     year: z
-      .string()
+      .string({
+        required_error: "Year is required",
+      })
       .length(4)
       .transform((val, ctx) => {
         const parsed = parseInt(val);
