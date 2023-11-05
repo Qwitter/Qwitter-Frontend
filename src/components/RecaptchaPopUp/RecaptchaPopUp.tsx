@@ -25,7 +25,7 @@ export const RecaptchaPopUp = (props: Props) => {
       headerButton={HeaderButton.close}
       headerFunction={closePopUp}
     >
-      <ReCAPTCHA sitekey={RECAPTCHA_KEY} onChange={handleReCaptcha} />
+      {/* <ReCAPTCHA sitekey={RECAPTCHA_KEY} onChange={handleReCaptcha} /> */}
     </PopUpContainer>
   );
 };
