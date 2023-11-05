@@ -5,7 +5,8 @@ export function PasswordRestPopUp() {
 
 
     return (
-        <PopUpContainer show={true} headerButton={HeaderButton.close} showLogo={true} className='h-[90%]  flex flex-col  justify-between' >
+        // <PopUpContainer show={true} headerButton={HeaderButton.close} showLogo={true} className='h-[90%]  flex flex-col  justify-between' >
+        <div  className='h-full  flex flex-col  justify-between'>
             <div className='flex flex-col w-full'>
                 <h2 className=' font-bold text-primary text-[32px] mb-1 mt-5'>Choose a new Password</h2>
                 <p className='text-gray mb-5 text-sm' >Make sure your new password is 8 characters or more. Try including numbers, letters, and punctuation marks for a strong password.</p>
@@ -19,7 +20,8 @@ export function PasswordRestPopUp() {
                     </div>
                 </div>
             </div>
-            <Button variant={'default'} className='w-full py-6'>Change password</Button>
-        </PopUpContainer>
+            <Button variant={'default'} className='w-full py-3'>Change password</Button>
+           </div>
+        // </PopUpContainer>
     )
 }

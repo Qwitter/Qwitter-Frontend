@@ -9,7 +9,7 @@ interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
   ({ placeHolder, className, ...props }, ref) => {
     return (
-      <div className={cn("relative w-full flex flex-row", className)}>
+      <div className={cn("relative w-full flex flex-row py-3", className)}>
         <input
           {...props}
           ref={ref}
