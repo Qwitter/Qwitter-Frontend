@@ -1,8 +1,8 @@
 import "./App.css";
 import { ThemeProvider } from "./components/theme-provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Settings } from "./pages/Settings/Settings";
-import OAuth from "./components/OAuth/OAuth";
+import { SignUpSteps, UsernameSuggestion } from "./components";
+import { Authentication } from "./pages";
 
 const queryClient = new QueryClient();
 
@@ -11,10 +11,11 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         {/* <NotificationAllow /> */}
-        <Settings />
+        <SignUpSteps />
+        {/* <UsernameSuggestion email="marwan.samy992@gamil.com"/> */}
         {/* <Authentication /> */}
         {/* <SignUpButton /> */}
-        <OAuth />
+        {/* <OAuth /> */}
       </ThemeProvider>
     </QueryClientProvider>
   );
