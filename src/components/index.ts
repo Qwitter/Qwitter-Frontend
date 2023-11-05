@@ -5,8 +5,6 @@ import { PopUpContainer } from "./PopUpContainer/PopUpContainer";
 import { SignUpSteps } from "./SignUpSteps/SignUpSteps";
 import { TextInput } from "./TextInput/TextInput";
 import SignUpButton from "./SignUpButton/SignUpButton";
-import BirthDayInput from "./BirthDayInput/BirthDayInput";
-import BirthDay from "./BirthDay/BirthDay";
 import {
   Select,
   SelectContent,
@@ -14,7 +12,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import OAuth from "./OAuth/OAuth";
 import {
   Form,
   FormControl,
@@ -35,8 +32,6 @@ export {
   TextInput,
   UsernameSuggestion,
   SignUpButton,
-  BirthDayInput,
-  BirthDay,
   NavBar,
   SettingsMain,
   Select,
@@ -44,7 +39,6 @@ export {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  OAuth,
   Form,
   FormControl,
   FormDescription,

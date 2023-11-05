@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { BirthDayInput, Button, Form } from "..";
-import { BirthDaySchema } from "@/models/BirthDay";
+import { Form } from "../ui/form";
+import { Button } from "../ui/button";
+import { BirthDaySchema } from "../../models/BirthDay";
+import BirthDayInput from "../BirthDayInput/BirthDayInput";
 
 type BirthDayProps = {
   nextStep: () => void;
@@ -15,6 +18,13 @@ type BirthDayProps = {
 const BirthDay = ({ nextStep, setBirthDay, birthDay }: BirthDayProps) => {
   const form = useForm<z.infer<typeof BirthDaySchema>>({
     resolver: zodResolver(BirthDaySchema),
+    defaultValues: {
+      //@ts-ignore
+      day: birthDay?.day.toString(),
+      month: birthDay?.month,
+      //@ts-ignore
+      year: birthDay?.year.toString(),
+    },
   });
 
   const onSubmit = (data: z.infer<typeof BirthDaySchema>) => {
