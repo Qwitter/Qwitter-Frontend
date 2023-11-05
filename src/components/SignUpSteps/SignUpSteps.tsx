@@ -1,9 +1,11 @@
 import { MouseEventHandler, useState } from "react";
-import { BirthDayInput, Button, PopUpContainer, TextInput } from "../";
+import { PopUpContainer } from "../PopUpContainer/PopUpContainer";
+import { Button } from "../ui/button";
+import { TextInput } from "../TextInput/TextInput";
 import { HeaderButton } from "../../models/PopUpModel";
 import { Checkbox } from "../ui/checkbox";
-import { z } from "zod";
-import { SignUpSchema } from "../../models/SignUp";
+// import { z } from "zod";
+// import { SignUpSchema } from "../../models/SignUp";
 // import { BirthDaySchema } from "@/models/BirthDay";
 import { FieldValues, useForm, UseFormReturn } from "react-hook-form";
 
@@ -102,7 +104,6 @@ const Step1 = ({ nextStep, form }: NextSignUpStepProp) => {
             placeHolder="Name"
             {...form.register("name", {
               required: "Enter your name",
-              value: "Testing name",
             })}
             errorMessage={form.formState.errors.name?.message?.toString()}
           />
@@ -245,6 +246,9 @@ const Step5 = ({ nextStep, form }: NextSignUpStepProp) => {
         {/* NEEDED: use react hook form*/}
         <div className="w-full">
           <TextInput
+            isPassword={true}
+            type="password"
+            placeHolder="Password"
             {...form.register("password", {
               required: "Enter password",
               minLength: {
