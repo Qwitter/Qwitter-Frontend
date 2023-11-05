@@ -1,19 +1,18 @@
 import { MouseEventHandler, useState } from "react";
-import { Button, PopUpContainer, TextInput } from "../";
+import { BirthDayInput, Button, PopUpContainer, TextInput } from "../";
 import { HeaderButton } from "../../models/PopUpModel";
 import { Checkbox } from "../ui/checkbox";
 import { z } from "zod";
+import { SignUpSchema } from "../../models/SignUp";
+// import { BirthDaySchema } from "@/models/BirthDay";
+import { FieldValues, useForm, UseFormReturn } from "react-hook-form";
 
-const signInSchema = z.object({
-  name: z.string().max(50),
-  email: z.string().email(),
-  password: z.string().min(8),
-});
+// type SignUpData = z.infer<typeof SignUpSchema>;
 
 export const SignUpSteps = () => {
   const [stepNumber, setStepNumber] = useState<number>(0); // controls which step is shown
   const [showPopUp, setShowPopUp] = useState<boolean>(true); // controls if the sign up is started or not
-  const [userData, setUserData] = useState<object>(); // will hold user data during sign up
+  const form = useForm();
 
   // go to step 1 again
   const resetStep = () => {
@@ -27,20 +26,25 @@ export const SignUpSteps = () => {
 
   // decrement the step or remove the pop up when stepNumber 0 is reached
   const previousStep = () => {
-    if (stepNumber === 0) {
-      setShowPopUp(false);
-      return;
-    }
+    if (stepNumber === 0) setShowPopUp(false);
+    else setStepNumber(stepNumber - 1);
+  };
 
-    setStepNumber(stepNumber - 1);
+  const onSubmit = (data: FieldValues) => {
+    console.log(data);
   };
 
   // holds steps of sign up
   const Steps = [
-    <Step1 handleNextStep={nextStep} />,
-    <Step2 handleNextStep={nextStep} />,
-    <Step3 handleNextStep={nextStep} resetStep={resetStep} />,
-    <Step5 handleNextStep={() => {}} />,
+    <Step1 nextStep={nextStep} form={form} />,
+    <Step2 nextStep={nextStep} form={form} />,
+    <Step3 nextStep={nextStep} form={form} resetStep={resetStep} />,
+    <Step5
+      nextStep={form.handleSubmit((data) => {
+        onSubmit(data);
+      })}
+      form={form}
+    />,
   ];
 
   // holds which button (x, arrow or none) is shown
@@ -59,10 +63,16 @@ export const SignUpSteps = () => {
           headerButton={StepsButtons[stepNumber]}
           headerFunction={previousStep}
           title={`Step ${stepNumber + 1} of 5`}
-          className="items-start pb-0 justify-between"
-          // showLogo={true}
+          className="items-start pb-0"
         >
-          {Steps[stepNumber]}
+          <form
+            onSubmit={form.handleSubmit((data) => {
+              onSubmit(data);
+            })}
+            className="w-full h-full flex flex-col justify-between"
+          >
+            {Steps[stepNumber]}
+          </form>
         </PopUpContainer>
       )}
     </>
@@ -71,43 +81,72 @@ export const SignUpSteps = () => {
 
 // props for all sign up steps
 type NextSignUpStepProp = {
-  handleNextStep: MouseEventHandler<HTMLButtonElement>; // will run when next is pressed
-  // userData:
+  nextStep: MouseEventHandler<HTMLButtonElement>; // will run when next is pressed
   resetStep?: MouseEventHandler<HTMLDivElement>;
+  form: UseFormReturn; // for react hook form
 };
 
 // step 1 of the sign up with name, email and date picker
-const Step1 = (props: NextSignUpStepProp) => {
-  console.log("rendered1");
-
+const Step1 = ({ nextStep, form }: NextSignUpStepProp) => {
   return (
     <>
       <div className="w-full flex flex-col items-start justify-start">
         <h2 className="text-3xl font-bold my-5">Create your account</h2>
         {/* NEEDED: use react hook form*/}
-        <form
+        <div
           className="w-full"
           onSubmit={(e) => {
             e.preventDefault();
           }}
         >
-          <TextInput placeHolder="Name" name="name" className="py-3 h" />
-          <TextInput placeHolder="Email" name="email" className="py-3" />
+          <TextInput
+            placeHolder="Name"
+            {...form.register("name", {
+              required: "Enter your name",
+            })}
+            className="py-3 h"
+          />
+          {form.formState.errors.name && (
+            <h5 className="text-danger font-light text-[15px]">
+              What's your name?
+            </h5>
+          )}
+
+          <TextInput
+            placeHolder="Email"
+            {...form.register("email", {
+              required: "Enter email",
+            })}
+            className="py-3"
+          />
+          {form.formState.errors.name && (
+            <h5 className="text-danger font-light text-[15px]">
+              Please enter a valid email.
+            </h5>
+          )}
           <div className="h-[153px] w-full mt-5">
             <h4 className="text-4 font-bold mb-2">Date of birth</h4>
             <p className="text-[14px] mb-1 text-gray leading-4">
               This will not be shown publicly. Confirm your own age, even if
               this account is for a business, a pet, or something else.
             </p>
-            <div className="w-full my-4">{/* date picker */}</div>
+            <div className="w-full my-4">
+              {/* NEEDED: help required from Seif (only need to work with types) */}
+              {/* <BirthDayInput form={form} birthDay={null} /> */}
+            </div>
           </div>
-        </form>
+        </div>
       </div>
       <div className="w-full mb-6 flex flex-col justify-center">
         <Button
           size="full"
           className="h-[50px] font-bold"
-          onClick={props.handleNextStep}
+          onClick={nextStep}
+          // disabled={z
+          //   .boolean()
+          //   .parse(
+          //     signUpData?.name && signUpData?.email && signUpData?.birthDay
+          //   )}
         >
           Next
         </Button>
@@ -117,9 +156,7 @@ const Step1 = (props: NextSignUpStepProp) => {
 };
 
 // step 2 of the sign up with terms and conditions
-const Step2 = (props: NextSignUpStepProp) => {
-  console.log("rendered2");
-
+const Step2 = ({ nextStep }: NextSignUpStepProp) => {
   return (
     <>
       <div className="w-full flex flex-col items-start justify-start">
@@ -148,11 +185,7 @@ const Step2 = (props: NextSignUpStepProp) => {
         </p>
       </div>
       <div className="w-full my-6 flex flex-col justify-center">
-        <Button
-          size="full"
-          className="h-[50px]  font-bold"
-          onClick={props.handleNextStep}
-        >
+        <Button size="full" className="h-[50px]  font-bold" onClick={nextStep}>
           Next
         </Button>
       </div>
@@ -161,9 +194,7 @@ const Step2 = (props: NextSignUpStepProp) => {
 };
 
 // step 3 of the sign up to confirm sign up
-const Step3 = (props: NextSignUpStepProp) => {
-  console.log("rendered3");
-
+const Step3 = ({ form, nextStep, resetStep }: NextSignUpStepProp) => {
   return (
     <>
       <div className="w-full flex flex-col items-start justify-start">
@@ -171,13 +202,23 @@ const Step3 = (props: NextSignUpStepProp) => {
         {/* NEEDED: use react hook form*/}
         <div className="w-full">
           <TextInput
+            {...form.register("name")}
             placeHolder="Name"
-            name="name"
             className="py-3 h"
-            onClick={props.resetStep && props.resetStep}
+            onClick={resetStep}
           />
-          <TextInput placeHolder="Email" name="email" className="py-3" />
-          <TextInput placeHolder="Date of birth" name="DoB" className="py-3" />
+          <TextInput
+            {...form.register("email")}
+            placeHolder="Email"
+            className="py-3"
+            onClick={resetStep}
+          />
+          <TextInput
+            {...form.register("password")}
+            placeHolder="Date of birth"
+            className="py-3"
+            onClick={resetStep}
+          />
         </div>
       </div>
       <div className="w-full mb-6 flex flex-col justify-center">
@@ -191,11 +232,12 @@ const Step3 = (props: NextSignUpStepProp) => {
           otherwise here.
         </p>
         <Button
+          variant="secondary"
           size="full"
           className="h-[50px] font-bold"
-          onClick={props.handleNextStep}
+          onClick={nextStep}
         >
-          Next
+          Sign Up
         </Button>
       </div>
     </>
@@ -205,9 +247,7 @@ const Step3 = (props: NextSignUpStepProp) => {
 // NEEDED: step 4 here
 
 // step 3 of the sign up to confirm sign up
-const Step5 = (props: NextSignUpStepProp) => {
-  console.log("rendered3");
-
+const Step5 = ({ nextStep, form }: NextSignUpStepProp) => {
   return (
     <>
       <div className="w-full flex flex-col items-start justify-start">
@@ -218,19 +258,20 @@ const Step5 = (props: NextSignUpStepProp) => {
         {/* NEEDED: use react hook form*/}
         <div className="w-full">
           <TextInput
+            {...form.register("password", {
+              required: "Enter password",
+              minLength: {
+                value: 8,
+                message: "Password is too small",
+              },
+            })}
             placeHolder="Password"
-            name="pass"
             className="py-3 h"
-            onClick={props.resetStep && props.resetStep}
           />
         </div>
       </div>
       <div className="w-full my-6 flex flex-col justify-center">
-        <Button
-          size="full"
-          className="h-[50px] font-bold"
-          onClick={props.handleNextStep}
-        >
+        <Button size="full" className="h-[50px] font-bold" onClick={nextStep}>
           Next
         </Button>
       </div>
