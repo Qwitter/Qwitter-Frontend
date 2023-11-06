@@ -1,8 +1,9 @@
-import React, { MouseEventHandler } from "react";
+import { MouseEventHandler } from "react";
 import { Dialog, DialogContent, DialogHeader } from "../ui/dialog";
 import { X, ArrowLeft, Twitter } from "lucide-react";
 import { HeaderButton } from "@/models/PopUpModel";
 import { cn } from "../../lib/utils";
+import Logo from "../../assets/Logo.png";
 
 type PopUpProps = {
   show: boolean; // flag to hide and show the popup
@@ -46,7 +47,8 @@ export const PopUpContainer = (props: PopUpProps) => {
             </span>
             {showLogo && (
               <div className="flex flex-row items-center justify-center w-full">
-                <Twitter
+                <img
+                  src={Logo}
                   className="relative right-[28px] w-8 h-[53px]"
                   role="PopUpIcon"
                 />

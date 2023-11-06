@@ -62,6 +62,44 @@ export const sendVerificationEmail = async (email: string) => {
     return null;
   }
 };
+/**
+ * @description Check if the email is valid
+ * @param email
+ * @returns  true if found the email ,false otherwise  or null
+ */
+export const FindEmail = async (email: string) => {
+  const parseResult = z.string().email().safeParse(email);
+  if (!parseResult.success) return null;
+
+  try {
+    const res = await axios.post(`${VITE_BACKEND_URL}/api/user/find-email`, {
+      email,
+    });
+    return (res.data)
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+/**
+ * @description Rest the password 
+ * @param password
+ * @returns  object represents the response from the backend or null
+ */
+export const RestPasswordWithNewOne = async (password: string) => {
+  const parseResult = z.string().safeParse(password);
+  if (!parseResult.success) return null;
+
+  try {
+    const res = await axios.post(`${VITE_BACKEND_URL}/api/user/RestPassword`, {
+      password,
+    });
+    return res
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
 
 /**
  * @description Verify the user's email using the token

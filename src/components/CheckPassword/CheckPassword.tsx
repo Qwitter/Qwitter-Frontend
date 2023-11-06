@@ -2,7 +2,7 @@ import { Button, TextInput } from '..'
 
 export function CheckPassword() {
     return (
-        <div className=" w-full border-r border-primary border-opacity-30 ">
+        <div className=" w-full border-r border-primary border-opacity-30 h-full ">
             <div className="p-4 flex flex-row gap-8 items-center">
                 <h1 className="text-primary text-xl font-extrabold text-start  ">Confirm your password</h1>
             </div>

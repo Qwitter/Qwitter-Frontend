@@ -1,5 +1,6 @@
+import { AccountInformation, YourAccount } from '@/components'
 import { SettingsOptions } from '../../components/SettingsOptions/SettingsOptions'
-import { RestPassword } from '../../components/RestPassword/RestPassword'
+import { CheckPassword } from '@/components/CheckPassword/CheckPassword'
 
 
 export function SettingsMain() {
@@ -10,7 +11,7 @@ export function SettingsMain() {
                 <SettingsOptions />
                 </div>
                 <div className='max-w-[600px] w-full mx-auto h-full'>
-                    <RestPassword />
+                    <YourAccount  />
                 </div>
             </div>
         </div>

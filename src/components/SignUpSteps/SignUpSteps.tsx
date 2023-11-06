@@ -1,9 +1,11 @@
 import { MouseEventHandler, useState } from "react";
-import { BirthDayInput, Button, PopUpContainer, TextInput } from "../";
+import { PopUpContainer } from "../PopUpContainer/PopUpContainer";
+import { Button } from "../ui/button";
+import { TextInput } from "../TextInput/TextInput";
 import { HeaderButton } from "../../models/PopUpModel";
 import { Checkbox } from "../ui/checkbox";
-import { z } from "zod";
-import { SignUpSchema } from "../../models/SignUp";
+// import { z } from "zod";
+// import { SignUpSchema } from "../../models/SignUp";
 // import { BirthDaySchema } from "@/models/BirthDay";
 import { FieldValues, useForm, UseFormReturn } from "react-hook-form";
 
@@ -92,7 +94,6 @@ const Step1 = ({ nextStep, form }: NextSignUpStepProp) => {
     <>
       <div className="w-full flex flex-col items-start justify-start">
         <h2 className="text-3xl font-bold my-5">Create your account</h2>
-        {/* NEEDED: use react hook form*/}
         <div
           className="w-full"
           onSubmit={(e) => {
@@ -104,26 +105,16 @@ const Step1 = ({ nextStep, form }: NextSignUpStepProp) => {
             {...form.register("name", {
               required: "Enter your name",
             })}
-            className="py-3 h"
+            errorMessage={form.formState.errors.name?.message?.toString()}
           />
-          {form.formState.errors.name && (
-            <h5 className="text-danger font-light text-[15px]">
-              What's your name?
-            </h5>
-          )}
 
           <TextInput
             placeHolder="Email"
             {...form.register("email", {
               required: "Enter email",
             })}
-            className="py-3"
+            errorMessage={form.formState.errors.email?.message?.toString()}
           />
-          {form.formState.errors.name && (
-            <h5 className="text-danger font-light text-[15px]">
-              Please enter a valid email.
-            </h5>
-          )}
           <div className="h-[153px] w-full mt-5">
             <h4 className="text-4 font-bold mb-2">Date of birth</h4>
             <p className="text-[14px] mb-1 text-gray leading-4">
@@ -204,19 +195,16 @@ const Step3 = ({ form, nextStep, resetStep }: NextSignUpStepProp) => {
           <TextInput
             {...form.register("name")}
             placeHolder="Name"
-            className="py-3 h"
             onClick={resetStep}
           />
           <TextInput
             {...form.register("email")}
             placeHolder="Email"
-            className="py-3"
             onClick={resetStep}
           />
           <TextInput
             {...form.register("password")}
             placeHolder="Date of birth"
-            className="py-3"
             onClick={resetStep}
           />
         </div>
@@ -258,6 +246,9 @@ const Step5 = ({ nextStep, form }: NextSignUpStepProp) => {
         {/* NEEDED: use react hook form*/}
         <div className="w-full">
           <TextInput
+            isPassword={true}
+            type="password"
+            placeHolder="Password"
             {...form.register("password", {
               required: "Enter password",
               minLength: {
@@ -265,8 +256,7 @@ const Step5 = ({ nextStep, form }: NextSignUpStepProp) => {
                 message: "Password is too small",
               },
             })}
-            placeHolder="Password"
-            className="py-3 h"
+            errorMessage={form.formState.errors.password?.message?.toString()}
           />
         </div>
       </div>
