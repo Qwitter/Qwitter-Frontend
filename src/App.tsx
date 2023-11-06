@@ -2,7 +2,7 @@ import "./App.css";
 import { ThemeProvider } from "./components/theme-provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Settings } from "./pages/Settings/Settings";
-import {  PasswordRestPopUp } from "./components";
+import { PasswordRestPopUp, SignUpSteps } from "./components";
 import { RestPassword } from "./components/RestPassword/RestPassword";
 import PasswordRest from "./components/passwordRest/PasswordRest";
 
@@ -16,6 +16,7 @@ function App() {
         <Settings />
         <PasswordRest />
         {/* <Authentication /> */}
+        <SignUpSteps />
       </ThemeProvider>
     </QueryClientProvider>
   );
