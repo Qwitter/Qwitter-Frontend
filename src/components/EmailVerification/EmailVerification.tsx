@@ -1,15 +1,32 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { TextInput } from "../TextInput/TextInput";
 import { Button } from "../ui/button";
-import { sendVerificationEmail, verifyEmail } from "@/lib/utils";
+import { sendVerificationEmail, verifyEmail } from "../../lib/utils";
 import { Skeleton } from "../ui/skeleton";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import {
+  EmailVerificationToken,
+  EmailVerificationTokenSchema,
+} from "../../models/EmailVerification";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 type EmailVerificationProps = {
   email: string;
+  onSuccess: () => void;
+  onFail?: () => void;
 };
 
-const EmailVerification = ({ email }: EmailVerificationProps) => {
+const EmailVerification = ({ email, onSuccess, onFail }: EmailVerificationProps) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<EmailVerificationToken>({
+    resolver: zodResolver(EmailVerificationTokenSchema),
+  });
+
   // Sending Verification Email
   const {
     isPending: isSendingEmail,
@@ -20,17 +37,25 @@ const EmailVerification = ({ email }: EmailVerificationProps) => {
     queryKey: ["emailVerification"],
     queryFn: async () => sendVerificationEmail(email),
     staleTime: 0,
-    retry: 2,
+    retry: 0,
     retryDelay: 2000,
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
   });
 
-  const {mutate: verifyEmailWithToken} = useMutation({
-    mutationKey: ["emailVerification"],
-    mutationFn: async () => verifyEmail("123456"),
-  })
+  const {
+    mutate: verifyEmailWithToken,
+    failureReason: verificationFailureReason,
+    isPending: isVerifying,
+  } = useMutation({
+    mutationFn: async (token: string) => verifyEmail(email, token),
+    onSuccess: onSuccess,
+  });
+
+  const onSubmit = handleSubmit((data) => {
+    verifyEmailWithToken(data.token);
+  });
 
   // States for timing out resending email
   const [resendingDisableTime, setResendingDisableTime] = useState<number>(0);
@@ -57,12 +82,34 @@ const EmailVerification = ({ email }: EmailVerificationProps) => {
     }
   }, [resendingDisableTime]);
 
+  // Rendering error message if failed to send email
+  if (z.string().email().safeParse(email).success === false)
+    return (
+      <>
+        <h2 className="text-3xl font-bold self-start mt-4 mb-0.5 text-danger">
+          Invalid Email
+        </h2>
+        <h4 className="self-start text-gray text-sm">Please try again</h4>
+        <Button
+          variant="outline"
+          size="full"
+          className="mt-auto mb-2"
+          onClick={onFail}
+        >
+          Back
+        </Button>
+      </>
+    );
+
   // Rendering Skeleton while sending email
   if (isSendingEmail) {
     return (
       <>
-        <Skeleton className="w-full h-[170px]" />
-        <Skeleton className="w-full h-[50px] mt-auto mb-16" />
+        <Skeleton className="w-full h-[170px]" data-testid="skeleton" />
+        <Skeleton
+          className="w-full h-[50px] mt-auto mb-2"
+          data-testid="skeleton"
+        />
       </>
     );
   }
@@ -78,7 +125,7 @@ const EmailVerification = ({ email }: EmailVerificationProps) => {
         <Button
           variant="outline"
           size="full"
-          className="mt-auto mb-16 text-danger"
+          className="mt-auto mb-2 text-danger"
           onClick={() => retrySendingVerificationEmail()}
         >
           Retry
@@ -87,14 +134,21 @@ const EmailVerification = ({ email }: EmailVerificationProps) => {
     );
 
   return (
-    <>
+    <form className="w-full flex flex-col h-full" onSubmit={onSubmit}>
       <h2 className="text-3xl font-bold self-start mt-4 mb-0.5">
         We sent you a code
       </h2>
       <h4 className="self-start text-gray text-sm">
         Enter the code sent to {email} below to verify
       </h4>
-      <TextInput placeHolder="Verification Code" className="mt-6"/>
+      <TextInput
+        placeHolder="Verification Code"
+        className="mt-6"
+        {...register("token")}
+        errorMessage={
+          errors.token?.message || verificationFailureReason?.message
+        }
+      />
       {resendingDisableTime > 0 ? (
         <p className="text-sm text-gray self-start">
           Resend code in ({resendingDisableTime}) seconds
@@ -112,11 +166,11 @@ const EmailVerification = ({ email }: EmailVerificationProps) => {
         size="full"
         className="mt-auto mb-2"
         type="submit"
-        onClick={() => verifyEmailWithToken()}
+        disabled={!isValid || isVerifying}
       >
         Next
       </Button>
-    </>
+    </form>
   );
 };
 export default EmailVerification;

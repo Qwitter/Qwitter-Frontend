@@ -10,6 +10,9 @@
     "preview": "vite preview",
     "test": "jest"
   },
+  "_moduleAliases": {
+    "@": "src"
+  },
   "dependencies": {
     "@babel/preset-react": "^7.22.15",
     "@hookform/resolvers": "^3.3.2",
@@ -23,9 +26,11 @@
     "babel-plugin-transform-import-meta": "^2.2.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
+    "isomorphic-fetch": "^3.0.0",
     "jest-dom": "^4.0.0",
     "jest-environment-jsdom": "^29.7.0",
     "lucide-react": "^0.290.0",
+    "module-alias": "^2.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-google-recaptcha": "^3.1.0",

@@ -23,9 +23,11 @@ export const verificationWorkerHandler: ResponseResolver = async ({
 };
 
 export const verificationTokenWorkerHandler: ResponseResolver = async ({
+  request,
   params,
 }) => {
   const { token } = params as { token: string };
+  const { email } = (await request.json()) as { email: string };
 
   const emailsTokens = [
     {
@@ -41,7 +43,7 @@ export const verificationTokenWorkerHandler: ResponseResolver = async ({
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
   const emailToken = emailsTokens.find(
-    (emailToken) => emailToken.token === token
+    (emailToken) => emailToken.token === token && emailToken.email === email
   );
 
   if (!emailToken) {
@@ -54,6 +56,7 @@ export const verificationTokenWorkerHandler: ResponseResolver = async ({
       },
       {
         status: 400,
+        statusText: "Invalid token",
       }
     );
   }
