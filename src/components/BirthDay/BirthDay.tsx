@@ -28,6 +28,7 @@ const BirthDay = ({ nextStep, setBirthDay, birthDay }: BirthDayProps) => {
   });
 
   const onSubmit = (data: z.infer<typeof BirthDaySchema>) => {
+    console.log(data)
     setBirthDay(data);
     nextStep();
   };
@@ -42,7 +43,7 @@ const BirthDay = ({ nextStep, setBirthDay, birthDay }: BirthDayProps) => {
           What's your birth date?
         </h2>
         <p className="self-start text-gray text-sm">This won't be public.</p>
-        <BirthDayInput className="mt-8" form={form} birthDay={birthDay} />
+        <BirthDayInput className="mt-8" form={form} />
         <Button size="full" className="mt-auto mb-2" type="submit">
           Next
         </Button>

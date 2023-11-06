@@ -91,7 +91,7 @@ export const BirthDaySchema = z
         return parsed;
       })
       .refine((val) => val >= 1900 && val <= 2005, {
-        message: "Must be older that 18 years.",
+        message: "Must be older that 18 years",
       }),
   })
   .refine((data) => {

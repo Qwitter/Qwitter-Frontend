@@ -14,9 +14,9 @@ import { UseFormReturn } from "react-hook-form";
 type BirthDayInputProps = {
   className?: string;
   form: UseFormReturn<BirthDay, unknown, undefined>;
-  birthDay: BirthDay | null;
 };
-const BirthDayInput = ({ className, form, birthDay }: BirthDayInputProps) => {
+
+const BirthDayInput = ({ className, form }: BirthDayInputProps) => {
   const [month, setMonth] = useState<Month>(Month.January);
 
   return (
@@ -35,6 +35,7 @@ const BirthDayInput = ({ className, form, birthDay }: BirthDayInputProps) => {
                 field.onChange(val);
               }}
               defaultValue={form.formState.defaultValues?.month}
+              name="month"
             >
               <SelectTrigger
                 className={cn({
@@ -48,6 +49,7 @@ const BirthDayInput = ({ className, form, birthDay }: BirthDayInputProps) => {
                   <SelectItem
                     key={month}
                     value={month.toString()}
+                    role="option"
                   >
                     {month}
                   </SelectItem>
@@ -83,6 +85,7 @@ const BirthDayInput = ({ className, form, birthDay }: BirthDayInputProps) => {
                   <SelectItem
                     key={i + 1}
                     value={(i + 1).toString()}
+                    role="option"
                   >
                     {i + 1}
                   </SelectItem>
@@ -118,6 +121,7 @@ const BirthDayInput = ({ className, form, birthDay }: BirthDayInputProps) => {
                   <SelectItem
                     key={2023 - i}
                     value={(2023 - i).toString()}
+                    role="option"
                   >
                     {2023 - i}
                   </SelectItem>
