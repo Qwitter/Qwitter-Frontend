@@ -43,7 +43,7 @@ const BirthDay = ({ nextStep, setBirthDay, birthDay }: BirthDayProps) => {
         </h2>
         <p className="self-start text-gray text-sm">This won't be public.</p>
         <BirthDayInput className="mt-8" form={form} birthDay={birthDay} />
-        <Button size="full" className="mt-auto mb-16" type="submit">
+        <Button size="full" className="mt-auto mb-2" type="submit">
           Next
         </Button>
       </form>

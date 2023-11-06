@@ -110,7 +110,7 @@ const EmailVerification = ({ email }: EmailVerificationProps) => {
       <Button
         variant="outline"
         size="full"
-        className="mt-auto mb-16"
+        className="mt-auto mb-2"
         type="submit"
         onClick={() => verifyEmailWithToken()}
       >
