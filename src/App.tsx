@@ -16,7 +16,6 @@ function App() {
         <Settings />
         <PasswordRest />
         {/* <Authentication /> */}
-        <SignUpSteps />
       </ThemeProvider>
     </QueryClientProvider>
   );

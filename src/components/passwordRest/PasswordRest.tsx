@@ -3,11 +3,12 @@ import { HeaderButton } from "@/models/PopUpModel";
 import { PopUpContainer } from "../PopUpContainer/PopUpContainer";
 import { FindEmailPopUp } from "../FindEmailPopUp/FindEmailPopUp";
 import { PasswordRestPopUp } from "../PasswordRestPopUp/PasswordRestPopUp";
+import EmailVerification from "../EmailVerification/EmailVerification";
 
 const PasswordRest = () => {
     const [step, setStep] = useState(0);
     const [showPopUp, setShowPopUp] = useState<boolean>(true); // controls if the sign up is started or not
-
+    const [email,setEmail] = useState("")
     const nextStep = () => {
         setStep(step + 1);
     };
@@ -22,6 +23,7 @@ const PasswordRest = () => {
     const steps = [
         <FindEmailPopUp
             nextStep={nextStep}
+            setEmail={setEmail}
         />,
         <PasswordRestPopUp
         />

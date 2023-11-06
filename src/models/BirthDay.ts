@@ -49,7 +49,6 @@ export const DAYS_IN_MONTH: DaysInMonth = {
   November: 31,
   December: 30,
 } as const;
-
 export const BirthDaySchema = z
   .object({
     day: z
