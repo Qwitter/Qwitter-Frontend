@@ -6,6 +6,7 @@ import { PasswordRestPopUp, SignUpSteps } from "./components";
 import OAuth from "./components/OAuth/OAuth";
 import PasswordRest from "./components/passwordRest/PasswordRest";
 import { SignUpProfile } from "./components/SignUpProfile/SignUpProfile";
+import { EditProfilePopUp } from "./components/EditProfilePopUp/EditProfilePopUp";
 
 const queryClient = new QueryClient();
 
@@ -18,8 +19,9 @@ function App() {
         {/* <PasswordRest /> */}
         {/* <Authentication /> */}
         {/* <OAuth /> */}
-        {/* <SignUpSteps /> */}
-        <SignUpProfile />
+        <SignUpSteps />
+        {/* <SignUpProfile /> */}
+        {/* <EditProfilePopUp /> */}
       </ThemeProvider>
     </QueryClientProvider>
   );
