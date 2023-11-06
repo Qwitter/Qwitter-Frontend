@@ -4,37 +4,48 @@ import { DialogHeader } from "../ui/dialog";
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../ui/button";
+import { ImagePicker } from "../ImagePicker/ImagePicker";
+import { TextInput } from "../TextInput/TextInput";
 
 type Props = {};
 
 export const EditProfilePopUp = (props: Props) => {
   const [showEditProfile, setShowEditProfile] = useState<boolean>(true);
 
-  const saveButton = <Button>Save</Button>;
+  const saveButton = <Button className="h-8">Save</Button>;
 
   return (
     <PopUpContainer
       show={showEditProfile}
       headerButton={HeaderButton.close}
-      className="overflow-auto p-0 h-[600px] items-start justify-start"
+      className="p-0 h-[600px] items-start justify-start overflow-auto"
       headerClassName="justify-between"
       title="Edit profile"
       optionalHeader={saveButton}
+      headerFunction={() => {
+        setShowEditProfile(false);
+      }}
     >
-      {/* <DialogHeader className="px-4 h-[53px] flex flex-row items-center space-y-0">
-        <div>
-        <span className="w-[56px]">
-          <div
-            className="ml-[-8px] w-9 h-9 flex justify-center items-center rounded-3xl cursor-pointer hover:bg-dark-gray hover:border-dark-gray "
-            onClick={() => {
-              setShowEditProfile(false);
-            }}
-          >
-            <ArrowLeft className="h-5 w-5 inline" />
-          </div>
-        </span>
-        </div>
-      </DialogHeader> */}
+      <div className="w-full h-[150px]">
+        <ImagePicker
+          className="w-full h-[193px] rounded-none border-none"
+          imageClassName="rounded-none"
+        />
+      </div>
+      <ImagePicker className="w-[115px] h-[115px] z-20  ml-[15px] border-black bg-black p-[1px]" />
+
+      <div className="py-3 px-4 w-full">
+        <TextInput placeHolder="Name" />
+      </div>
+      <div className="py-3 px-4 w-full">
+        <TextInput placeHolder="Bio" />
+      </div>
+      <div className="py-3 px-4 w-full">
+        <TextInput placeHolder="Location" />
+      </div>
+      <div className="py-3 px-4 w-full">
+        <TextInput placeHolder="Website" />
+      </div>
     </PopUpContainer>
   );
 };

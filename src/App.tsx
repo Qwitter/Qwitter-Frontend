@@ -19,9 +19,9 @@ function App() {
         {/* <PasswordRest /> */}
         {/* <Authentication /> */}
         {/* <OAuth /> */}
-        <SignUpSteps />
+        {/* <SignUpSteps /> */}
         {/* <SignUpProfile /> */}
-        {/* <EditProfilePopUp /> */}
+        <EditProfilePopUp />
       </ThemeProvider>
     </QueryClientProvider>
   );
