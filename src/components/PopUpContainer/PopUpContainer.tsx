@@ -1,6 +1,6 @@
 import { MouseEventHandler } from "react";
 import { Dialog, DialogContent, DialogHeader } from "../ui/dialog";
-import { X, ArrowLeft, Twitter } from "lucide-react";
+import { X, ArrowLeft } from "lucide-react";
 import { HeaderButton } from "@/models/PopUpModel";
 import { cn } from "../../lib/utils";
 import Logo from "../../assets/logo.png";
@@ -49,8 +49,7 @@ export const PopUpContainer = (props: PopUpProps) => {
               <div className="flex flex-row items-center justify-center w-full">
                 <img
                   src={Logo}
-                  className="relative right-[28px] w-8 h-[53px]"
-                  role="PopUpIcon"
+                  className="relative right-[28px] w-[53px] h-[53px]"
                 />
               </div>
             )}
