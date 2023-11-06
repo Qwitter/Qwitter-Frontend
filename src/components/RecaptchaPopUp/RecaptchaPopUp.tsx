@@ -5,17 +5,26 @@ import { HeaderButton } from "@/models/PopUpModel";
 
 const RECAPTCHA_KEY = import.meta.env?.VITE_RECAPTCHA_KEY;
 
-type Props = {};
+type RecaptchaProps = {
+  afterAuth: Function;
+};
 
-export const RecaptchaPopUp = (props: Props) => {
+export const RecaptchaPopUp = ({ afterAuth }: RecaptchaProps) => {
   const [showPopUp, setShowPopUp] = useState(true);
 
   const closePopUp = () => {
     setShowPopUp(false);
   };
 
-  const handleReCaptcha = (reCaptchaResponse: string) => {
-    console.log(reCaptchaResponse);
+  const handleReCaptcha = (reCaptchaResponse: string | null) => {
+    // wait for the check to be animated
+    setTimeout(() => {
+      afterAuth();
+    }, 500);
+  };
+
+  const handleExpire = () => {
+    console.log("Expired");
   };
 
   return (
@@ -24,8 +33,13 @@ export const RecaptchaPopUp = (props: Props) => {
       showLogo={true}
       headerButton={HeaderButton.close}
       headerFunction={closePopUp}
+      className="h-[400px]"
     >
-      {/* <ReCAPTCHA sitekey={RECAPTCHA_KEY} onChange={handleReCaptcha} /> */}
+      <ReCAPTCHA
+        sitekey={RECAPTCHA_KEY}
+        onChange={handleReCaptcha}
+        onExpired={handleExpire}
+      />
     </PopUpContainer>
   );
 };

@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import { TextInput } from "../TextInput/TextInput";
 import { HeaderButton } from "../../models/PopUpModel";
 import { Checkbox } from "../ui/checkbox";
+import { RecaptchaPopUp } from "../RecaptchaPopUp/RecaptchaPopUp";
 // import { z } from "zod";
 // import { SignUpSchema } from "../../models/SignUp";
 // import { BirthDaySchema } from "@/models/BirthDay";
@@ -41,6 +42,14 @@ export const SignUpSteps = () => {
     else setStepNumber(stepNumber - 1);
   };
 
+  const getTitle = () => {
+    if (stepNumber < 3) return `Step ${stepNumber + 1} of 5`;
+
+    if (stepNumber === 3) return null;
+
+    return `Step ${stepNumber} of 5`;
+  };
+
   const onSubmit = (data: FieldValues) => {
     console.log(data);
   };
@@ -50,6 +59,7 @@ export const SignUpSteps = () => {
     <Step1 nextStep={nextStep} form={form} />,
     <Step2 nextStep={nextStep} form={form} />,
     <Step3 nextStep={nextStep} form={form} resetStep={resetStep} />,
+    <RecaptchaPopUp afterAuth={nextStep} />,
     <Step5
       nextStep={form.handleSubmit((data) => {
         onSubmit(data);
@@ -73,7 +83,7 @@ export const SignUpSteps = () => {
           show={true}
           headerButton={StepsButtons[stepNumber]}
           headerFunction={previousStep}
-          title={`Step ${stepNumber + 1} of 5`}
+          title={getTitle()}
           className="items-start pb-0"
         >
           <form
@@ -152,7 +162,6 @@ const Step2 = ({ nextStep }: NextSignUpStepProp) => {
     <>
       <div className="w-full flex flex-col items-start justify-start">
         <h2 className="text-3xl font-bold my-5">Customize your experience</h2>
-        {/* NEEDED: use react hook form*/}
         <div className="w-full">
           <h3 className="w-[400px] mt-5 text-xl font-bold leading-6">
             Track where you see X content across the web
@@ -190,7 +199,6 @@ const Step3 = ({ form, nextStep, resetStep }: NextSignUpStepProp) => {
     <>
       <div className="w-full flex flex-col items-start justify-start">
         <h2 className="text-3xl font-bold my-5">Create your account</h2>
-        {/* NEEDED: use react hook form*/}
         <div className="w-full">
           <TextInput
             {...form.register("name")}
@@ -243,7 +251,6 @@ const Step5 = ({ nextStep, form }: NextSignUpStepProp) => {
         <p className="text-[15px] mt-3 mb-5 text-gray leading-4">
           Make sure it's 8 characters or more.
         </p>
-        {/* NEEDED: use react hook form*/}
         <div className="w-full">
           <TextInput
             isPassword={true}

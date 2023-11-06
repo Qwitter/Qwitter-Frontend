@@ -9,7 +9,7 @@ type PopUpProps = {
   show: boolean; // flag to hide and show the popup
   headerButton?: HeaderButton;
   headerFunction?: MouseEventHandler<HTMLDivElement>;
-  title?: string;
+  title?: string | boolean | null;
   showLogo?: boolean; // flag to show the logo
   children?: React.ReactNode; // children to be displayed
   className?: string;
@@ -31,7 +31,7 @@ export const PopUpContainer = (props: PopUpProps) => {
 
   return (
     <Dialog open={show}>
-      <DialogContent className="min-w-[350px] max-w-full sm:max-w-[425px] sm:min-w-[600px] h-full min-h-[200px] sm:h-[650px] p-0">
+      <DialogContent className="min-w-[350px] max-w-full sm:max-w-[425px] sm:min-w-[600px] h-full min-h-[200px] sm:h-[auto] p-0">
         {(headerButton || showLogo || title) && (
           <DialogHeader className="px-4 h-[53px] flex flex-row items-center space-y-0">
             <span className="w-[56px]">
