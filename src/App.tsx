@@ -3,6 +3,8 @@ import { ThemeProvider } from "./components/theme-provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Settings } from "./pages/Settings/Settings";
 import {  PasswordRestPopUp } from "./components";
+import OAuth from "./components/OAuth/OAuth";
+import PasswordRest from "./components/passwordRest/PasswordRest";
 
 const queryClient = new QueryClient();
 
