@@ -13,7 +13,7 @@ export const handlers = [
     `${VITE_BACKEND_URL}/api/user/verify-email`,
     verificationWorkerHandler
   ),
-  http.get(
+  http.post(
     `${VITE_BACKEND_URL}/api/user/verify-email/:token`,
     verificationTokenWorkerHandler
   ),

@@ -9,6 +9,62 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+// /**
+//  * @description A wrapper for axios function with the ability to abort the request after some time
+//  * @param url
+//  * @param timeout
+//  * @param config
+//  * @returns Promise
+//  */
+// export const axiosWithTimeout = async (
+//   url: string,
+//   timeout: number,
+//   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+//   config?: AxiosRequestConfig<any> | undefined
+// ) => {
+//   const controller = new AbortController();
+//   const { signal } = controller;
+
+//   const fetchPromise = axios(url, { ...config, signal });
+//   const timeoutPromise = new Promise((_, reject) =>
+//     setTimeout(() => {
+//       controller.abort();
+//       reject(new Error("Request timed out"));
+//     }, timeout)
+//   );
+
+//   return Promise.race([fetchPromise, timeoutPromise]);
+// };
+
+// /** A wrapper for axios post function with the ability to abort the request after some time
+//  * @description
+//  * @param url
+//  * @param timeout
+//  * @param data
+//  * @param config
+//  * @returns Promise
+//  */
+// export const axiosPostWithTimeOut = async (
+//   url: string,
+//   timeout: number,
+//   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+//   data?: any,
+//   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+//   config?: AxiosRequestConfig<any> | undefined
+// ) => {
+//   const controller = new AbortController();
+//   const { signal } = controller;
+//   const fetchPromise = axios.post(url, { ...data }, { ...config, signal });
+//   const timeoutPromise = new Promise((_, reject) =>
+//     setTimeout(() => {
+//       controller.abort();
+//       reject(new Error("Request timed out"));
+//     }, timeout)
+//   );
+
+//   return Promise.race([fetchPromise, timeoutPromise]);
+// };
+
 /**
  * @description Get the current user from the backend after the user has logged in
  * @params none
@@ -58,10 +114,11 @@ export const sendVerificationEmail = async (email: string) => {
     });
     return res;
   } catch (err) {
-    console.log(err);
-    return null;
+    const errObj = err as { stack: string };
+    throw new Error(errObj.stack);
   }
 };
+
 /**
  * @description Check if the email is valid
  * @param email
@@ -75,14 +132,15 @@ export const FindEmail = async (email: string) => {
     const res = await axios.post(`${VITE_BACKEND_URL}/api/user/find-email`, {
       email,
     });
-    return (res.data)
+    return res.data;
   } catch (err) {
     console.log(err);
     return null;
   }
 };
+
 /**
- * @description Rest the password 
+ * @description Rest the password
  * @param password
  * @returns  object represents the response from the backend or null
  */
@@ -94,7 +152,7 @@ export const RestPasswordWithNewOne = async (password: string) => {
     const res = await axios.post(`${VITE_BACKEND_URL}/api/user/RestPassword`, {
       password,
     });
-    return res
+    return res;
   } catch (err) {
     console.log(err);
     return null;
@@ -106,16 +164,22 @@ export const RestPasswordWithNewOne = async (password: string) => {
  * @param token
  * @returns object represents the response from the backend or throws error
  */
-export const verifyEmail = async (token: string) => {
+export const verifyEmail = async (email: string, token: string) => {
   const parseResult = z.string().nonempty().safeParse(token);
   if (!parseResult.success) return false;
 
   try {
-    const res = await axios(
-      `${VITE_BACKEND_URL}/api/user/verify-email/${token}`
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}/api/user/verify-email/${token}`,
+      {
+        email,
+      }
     );
     return res;
   } catch (err) {
-    throw new Error("Error Verifying Email");
+    //Todo: change to an error structure
+    const errObj = err as { response: { data: { message: string } } };
+    if (errObj.response) throw new Error(errObj.response.data.message);
+    else throw new Error("Error Verifying Email");
   }
 };

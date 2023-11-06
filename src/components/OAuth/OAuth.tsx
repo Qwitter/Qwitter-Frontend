@@ -25,7 +25,9 @@ const OAuth = () => {
       birthDay={birthDay}
     />,
     <EmailVerification
-      email="Sofa5060@gmail.com"
+      email="sofa5060@gmail.com"
+      onSuccess={nextStep}
+      onFail={prevStep}
     />,
   ];
 
