@@ -11,6 +11,15 @@ import { FieldValues, useForm, UseFormReturn } from "react-hook-form";
 
 // type SignUpData = z.infer<typeof SignUpSchema>;
 
+/*
+  NEEDED:
+    implement validation with zod
+    use step 4
+    make step 1 has it's own form to check email and name
+    make step 5 send data to the server
+    mock server tests
+*/
+
 export const SignUpSteps = () => {
   const [stepNumber, setStepNumber] = useState<number>(0); // controls which step is shown
   const [showPopUp, setShowPopUp] = useState<boolean>(true); // controls if the sign up is started or not
@@ -129,16 +138,7 @@ const Step1 = ({ nextStep, form }: NextSignUpStepProp) => {
         </div>
       </div>
       <div className="w-full mb-6 flex flex-col justify-center">
-        <Button
-          size="full"
-          className="h-[50px] font-bold"
-          onClick={nextStep}
-          // disabled={z
-          //   .boolean()
-          //   .parse(
-          //     signUpData?.name && signUpData?.email && signUpData?.birthDay
-          //   )}
-        >
+        <Button size="full" className="h-[50px] font-bold" onClick={nextStep}>
           Next
         </Button>
       </div>

@@ -1,6 +1,5 @@
 import { forwardRef } from "react";
 import { cn } from "@/lib/utils";
-import { Logo } from "@/assets";
 import { Eye } from "lucide-react";
 import { useState } from "react";
 
@@ -38,7 +37,6 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       <>
         <div className={cn("relative w-full flex flex-row pt-3", className)}>
           <input
-            // disabled={}
             {...props}
             ref={ref}
             type={inputType}
