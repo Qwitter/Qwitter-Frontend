@@ -5,6 +5,7 @@ import { Settings } from "./pages/Settings/Settings";
 import {
   NotificationAllow,
   PasswordRestPopUp,
+  PopUpContainer,
   SignUpSteps,
   UsernameSuggestion,
 } from "./components";
@@ -16,7 +17,9 @@ import { EditProfilePopUp } from "./components/EditProfilePopUp/EditProfilePopUp
 import Login from "./pages/login/Login";
 import EmailVerification from "./components/EmailVerification/EmailVerification";
 import { RestPassword } from "./components/RestPassword/RestPassword";
+import Authentication from "./pages/Authentication/Authentication";
 import { Toaster } from "./components/ui/toaster";
+import { Skeleton } from "./components/ui/skeleton";
 const queryClient = new QueryClient();
 
 function App() {
@@ -24,13 +27,17 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
         {/* <SignUpProfile /> */}
-        {/* <div className="w-100 h-100 absolute bg-black top-1/4 left-1/4"> */}
-        {/* <UsernameSuggestion email="mroansamy99@gmail.com" nextStep={alert} /> */}
-        {/* </div>  */}
-        {/* <Settings /> */}
-        {/* <Authentication /> */}
-        {/* <Login /> */}
-        <SignUpSteps />
+        {/* <div className="w-100 h-100 absolute bg-black top-1/4 left-1/4">
+          <UsernameSuggestion email="mroansamy99@gmail.com" nextStep={alert} />
+        </div> */}
+        {/* {/* <Settings /> */}
+        {/* <PasswordRest />  */}
+        {/* <PopUpContainer show={true}>
+          <Skeleton data-testid="skeleton" className="mt-5 w-[350px] h-[170px]" />
+        </PopUpContainer> */}
+        <Authentication />
+        <Login />
+        {/* <SignUpSteps /> */}
         <Toaster />
       </ThemeProvider>
     </QueryClientProvider>
