@@ -11,5 +11,5 @@ export const PasswordSchema = z.object({
 
 }).refine((data) => data.Password === data.ConfirmPassword, {
     message: "Passwords doesn't match",
-    path: ["ConfirmPassword"], 
+    path: ["ConfirmPassword"],
 })
