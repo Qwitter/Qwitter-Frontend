@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { EmailSchema } from '@/models/Email';
 import { useMutation } from '@tanstack/react-query';
 import { Skeleton } from '../ui/skeleton';
-import { FindEmail } from '@/lib/utils';
+import { findEmail } from '@/lib/utils';
 import { useState } from 'react';
 
 type prob = {
@@ -18,7 +18,7 @@ export function FindEmailPopUp({ nextStep,setEmail }: prob) {
     });
     const [error, seterror] = useState("")
     const { mutate, isPending } = useMutation({
-        mutationFn: FindEmail,
+        mutationFn: findEmail,
         onSuccess: data => {
             if (data.data){
                 setEmail(data.data)
