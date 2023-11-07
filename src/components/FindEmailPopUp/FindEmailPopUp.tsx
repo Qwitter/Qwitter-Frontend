@@ -29,7 +29,6 @@ export function FindEmailPopUp({ nextStep,setEmail }: prob) {
             else{
                 seterror(data.message)
                 setEmail("")
-
             }
 
         },
@@ -46,7 +45,7 @@ export function FindEmailPopUp({ nextStep,setEmail }: prob) {
         )
     }
     return (
-        <form className='h- flex flex-col  justify-between' onSubmit={form.handleSubmit(onSubmit)}
+        <form className='h-full flex flex-col  justify-between' onSubmit={form.handleSubmit(onSubmit)}
         >
             <div className='flex flex-col w-full'>
                 <h2 className=' font-bold text-primary text-[32px] mb-1 mt-5'>{error}Find your Qwitter account</h2>

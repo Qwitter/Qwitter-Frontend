@@ -28,7 +28,7 @@ const PasswordRest = () => {
             setEmail={setEmail}
         />,
         <EmailVerification email={email} onSuccess={verificationOnSuccess} onFail={prevStep}/>,
-        <PasswordRestPopUp  email={email}
+        <PasswordRestPopUp  email={email} onSuccess={closePopUp}
         />
     ];
 
@@ -39,7 +39,7 @@ const PasswordRest = () => {
                 showLogo
                 className="px-10 h-full justify-start"
                 headerButton={step > 0 ? HeaderButton.back : HeaderButton.close}
-                headerFunction={step > 0 ? prevStep:closePopUp}
+                headerFunction={step>=0?closePopUp:()=>{}}
             >
                 {steps[step]}
             </PopUpContainer>

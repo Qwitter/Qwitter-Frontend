@@ -202,7 +202,7 @@ describe("EmailVerification testing", () => {
       const input = screen.getByRole("textbox", { name: "token" });
       await user.type(input, WRONG_TOKEN);
       await user.click(screen.getByText("Next"));
-      
+
       // ASSERT
       expect(mockFn).not.toHaveBeenCalled();
       expect(screen.getByText("Invalid token")).toBeTruthy();
@@ -223,7 +223,7 @@ describe("EmailVerification testing", () => {
       const input = screen.getByRole("textbox", { name: "token" });
       await user.type(input, CORRECT_TOKEN);
       await user.click(screen.getByText("Next"));
-      
+
       // ASSERT
       expect(mockFn).toHaveBeenCalled();
     }, 3000);

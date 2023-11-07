@@ -144,13 +144,14 @@ export const findEmail = async (email: string) => {
  * @param password
  * @returns  object represents the response from the backend or null
  */
-export const restPasswordWithNewOne = async (password: string) => {
-  const parseResult = z.string().safeParse(password);
-  if (!parseResult.success) return null;
+export const restPasswordWithNewOne = async ({password,email}: {password:string,email:string}) => {
+  const parsePassword = z.string().safeParse(password);
+  const parseEmail= z.string().safeParse(email);
+  if (!parsePassword.success||!parseEmail.success) return null;
 
   try {
     const res = await axios.post(`${VITE_BACKEND_URL}/api/user/RestPassword`, {
-      password,
+      password,email
     });
     return res;
   } catch (err) {
