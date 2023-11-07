@@ -13,6 +13,8 @@ type PopUpProps = {
   showLogo?: boolean; // flag to show the logo
   children?: React.ReactNode; // children to be displayed
   className?: string;
+  headerClassName?: string;
+  optionalHeader?: React.ReactNode;
 };
 
 export const PopUpContainer = (props: PopUpProps) => {
@@ -29,22 +31,36 @@ export const PopUpContainer = (props: PopUpProps) => {
     none: <span className="h-5 w-5 cursor-default"></span>,
   };
 
+  const dialogContentHeight = className?.includes("h-full")
+    ? "sm:h-[650px]"
+    : "sm:h-auto";
+
   return (
     <Dialog open={show}>
-      <DialogContent className="min-w-[350px] max-w-full sm:max-w-[425px] sm:min-w-[600px] h-full min-h-[200px] sm:h-[auto] p-0">
+      <DialogContent
+        className={`min-w-[350px] max-w-full sm:min-w-[425px] sm:max-w-[600px] h-full sm:max-h-[650px] ${dialogContentHeight} p-0`}
+      >
         {(headerButton || showLogo || title) && (
-          <DialogHeader className="px-4 h-[53px] flex flex-row items-center space-y-0">
-            <span className="w-[56px]">
-              <div
-                className={`ml-[-8px] w-9 h-9 flex justify-center items-center rounded-3xl ${
-                  headerButton &&
-                  "cursor-pointer hover:bg-dark-gray hover:border-dark-gray "
-                }`}
-                onClick={headerFunction}
-              >
-                {headerContent[headerButton || "none"]}
-              </div>
-            </span>
+          <DialogHeader
+            className={cn(
+              "px-4 h-[53px] flex flex-row items-center space-y-0",
+              props.headerClassName
+            )}
+          >
+            <div className="flex flex-row">
+              <span className="w-[56px]">
+                <div
+                  className={`ml-[-8px] w-9 h-9 flex justify-center items-center rounded-3xl ${
+                    headerButton &&
+                    "cursor-pointer hover:bg-dark-gray hover:border-dark-gray "
+                  }`}
+                  onClick={headerFunction}
+                >
+                  {headerContent[headerButton || "none"]}
+                </div>
+              </span>
+              {title && <span className="text-xl font-bold">{title}</span>}
+            </div>
             {showLogo && (
               <div className="flex flex-row items-center justify-center w-full">
                 <img
@@ -53,7 +69,7 @@ export const PopUpContainer = (props: PopUpProps) => {
                 />
               </div>
             )}
-            {title && <span className="text-xl font-bold">{title}</span>}
+            {props.optionalHeader}
           </DialogHeader>
         )}
         <div
