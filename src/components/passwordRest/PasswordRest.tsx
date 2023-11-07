@@ -3,6 +3,7 @@ import { HeaderButton } from "@/models/PopUpModel";
 import { PopUpContainer } from "../PopUpContainer/PopUpContainer";
 import { FindEmailPopUp } from "../FindEmailPopUp/FindEmailPopUp";
 import { PasswordRestPopUp } from "../PasswordRestPopUp/PasswordRestPopUp";
+import EmailVerification from "../EmailVerification/EmailVerification";
 
 const PasswordRest = () => {
     const [step, setStep] = useState(0);
@@ -18,13 +19,16 @@ const PasswordRest = () => {
     };
 
     const closePopUp = () => setShowPopUp(false);
-
+    const verificationOnSuccess = ()=>{
+        nextStep()
+    } 
     const steps = [
         <FindEmailPopUp
             nextStep={nextStep}
             setEmail={setEmail}
         />,
-        <PasswordRestPopUp
+        <EmailVerification email={email} onSuccess={verificationOnSuccess} onFail={prevStep}/>,
+        <PasswordRestPopUp  email={email}
         />
     ];
 

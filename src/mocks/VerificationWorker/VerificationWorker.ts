@@ -36,7 +36,7 @@ export const verificationTokenWorkerHandler: ResponseResolver = async ({
     },
     {
       email: "test@gmail.com",
-      token: "12345",
+      token: "123457",
     },
   ];
 

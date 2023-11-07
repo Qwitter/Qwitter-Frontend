@@ -8,6 +8,8 @@ import PasswordRest from "./components/passwordRest/PasswordRest";
 import { SignUpProfile } from "./components/SignUpProfile/SignUpProfile";
 
 import Login from "./pages/login/Login";
+import EmailVerification from "./components/EmailVerification/EmailVerification";
+import { RestPassword } from "./components/RestPassword/RestPassword";
 const queryClient = new QueryClient();
 
 function App() {
@@ -15,10 +17,10 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         {/* <NotificationAllow /> */}
-        {/* <Settings /> */}
-        {/* <PasswordRest /> */}
+        <Settings />
+        <PasswordRest   />
         {/* <Authentication /> */}
-        <Login />
+        {/* <Login /> */}
         {/* <OAuth /> */}
         {/* <SignUpSteps /> */}
         {/* <SignUpProfile /> */}
