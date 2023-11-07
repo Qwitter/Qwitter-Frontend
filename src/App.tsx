@@ -15,6 +15,7 @@ import { EditProfilePopUp } from "./components/EditProfilePopUp/EditProfilePopUp
 import Login from "./pages/login/Login";
 import EmailVerification from "./components/EmailVerification/EmailVerification";
 import { RestPassword } from "./components/RestPassword/RestPassword";
+import { Toaster } from "./components/ui/toaster";
 const queryClient = new QueryClient();
 
 function App() {
@@ -24,11 +25,12 @@ function App() {
         {/* <SignUpProfile /> */}
         {/* <NotificationAllow /> */}
         <Settings />
-        <PasswordRest   />
+        <PasswordRest />
         {/* <Authentication /> */}
         {/* <Login /> */}
         {/* <OAuth /> */}
-        <SignUpSteps />
+        <Toaster />
+
       </ThemeProvider>
     </QueryClientProvider>
   );
