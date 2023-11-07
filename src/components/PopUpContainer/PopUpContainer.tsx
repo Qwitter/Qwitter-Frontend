@@ -31,9 +31,15 @@ export const PopUpContainer = (props: PopUpProps) => {
     none: <span className="h-5 w-5 cursor-default"></span>,
   };
 
+  const dialogContentHeight = className?.includes("h-full")
+    ? "sm:h-[650px]"
+    : "sm:h-auto";
+
   return (
     <Dialog open={show}>
-      <DialogContent className="min-w-[350px] max-w-full sm:min-w-[425px] sm:max-w-[600px] h-full min-h-[200px] sm:h-[650px] p-0">
+      <DialogContent
+        className={`min-w-[350px] max-w-full sm:min-w-[425px] sm:max-w-[600px] h-full sm:max-h-[650px] ${dialogContentHeight} p-0`}
+      >
         {(headerButton || showLogo || title) && (
           <DialogHeader
             className={cn(
