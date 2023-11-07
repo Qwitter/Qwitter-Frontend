@@ -6,7 +6,7 @@ export function YourAccount() {
     return (
         <div className=" w-full h-full border-r border-primary border-opacity-30">
             <div className="p-4 flex flex-row gap-8 items-center">
-                <MoveLeft  className='max-lg:inline-block hidden max-w-[56px] '/>
+                <MoveLeft  className='max-largeX:inline-block hidden max-w-[56px] '/>
                 <h1 className="text-primary text-xl font-bold text-start ">Your Account</h1>
             </div>
             <div>

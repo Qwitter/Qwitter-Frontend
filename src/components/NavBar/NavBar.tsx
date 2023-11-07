@@ -16,7 +16,7 @@ type Props = {
 export function NavBar({ profilePic, userName, name }: Props) {
     const [active, setActive] = useState("")
     return (
-        <div className='w-[26.2%] max-xl:w-[10%] max-lg:w-[21%] items-end flex flex-col'>
+        <div className='items-end flex flex-col min-w-[80px]'>
             <div className='flex flex-col items-start xl:w-[275px] px-2 h-full justify-between '>
                 <div className='flex items-start w-full flex-col'>
                     <a href="">
