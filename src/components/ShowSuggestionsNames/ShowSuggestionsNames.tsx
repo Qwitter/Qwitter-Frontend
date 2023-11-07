@@ -1,29 +1,19 @@
-import { cn, generateUsernames } from '../../lib'
+import { cn } from '../../lib'
 import { useEffect, useState } from 'react'
 
 type PropsShowSuggestion = { 
     email: string;
-    onSuggestionClick: React.Dispatch<React.SetStateAction<string>>;
+    onSuggestionClick:(value: string) => void;
     showSuggestion?:boolean;
     numberOfSuggestions?:number;
     className?: string;
 }
 function generateUserName(email:string): string[] 
 {
-    const uniqueUserNames = [];
-    while (uniqueUserNames.length<7){
-        const name = generateUsernames(email,1)[0];
-        if(checkForAvailability(name))
-        uniqueUserNames.push(name);
-    }
+    const uniqueUserNames = ["d","asd","Sadfasdf","Afdasdfjklaj","dfsasjkl","kzlcxvmklzxcj"];
     return uniqueUserNames;
 }
 
-function checkForAvailability(generatedUsername: string) 
-{
-    generatedUsername
-    return Math.floor(Math.random()*2);
-}
 
 
 export function ShowSuggestionsNames( {className,onSuggestionClick,email,showSuggestion=false,numberOfSuggestions=3}:PropsShowSuggestion) {

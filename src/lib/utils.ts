@@ -138,6 +138,25 @@ export const findEmail = async (email: string) => {
     return null;
   }
 };
+/**
+ * @description Check if the username is available
+ * @param username
+ * @returns  true if available ,false otherwise  or null
+ */
+export const isAvailableUsername = async (username: string) => {
+  const parseResult = z.string().safeParse(username);
+  if (!parseResult.success) return null;
+
+  try {
+    const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/auth/check-existence`, {
+      userNameOrEmail:username,
+    });
+    console.log(res.data)
+    return res.status==200;
+  } catch (err) {
+    return null;
+  }
+};
 
 /**
  * @description change the password of the user with the new password 

@@ -5,6 +5,7 @@ import {
 } from "./VerificationWorker/VerificationWorker";
 import { emailCheckWorker} from "./EmailCheckWorker/EmailCheckWorker";
 import { PasswordRestWorker } from "./PasswordRestWorker/PasswordRestWorker";
+import { usernameValidationWorker } from "./UsernameSuggestionWorker/UsernameSuggestionWorker";
 
 const { VITE_BACKEND_URL } = process.env;
 
@@ -24,5 +25,9 @@ export const handlers = [
   http.post(
     `${VITE_BACKEND_URL}/api/user/RestPassword`,
     PasswordRestWorker
+  ),
+  http.post(
+    `${VITE_BACKEND_URL}/api/v1/auth/check-existence`,
+    usernameValidationWorker
   ),
 ];
