@@ -14,7 +14,7 @@ module.exports = {
       screens: {
         "2xl": "1400px",
         "xl": "1280px",
-        md: "600px",
+        "md": "600px",
       },
     },
     extend: {
@@ -76,6 +76,10 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      screens: {
+        'large2X': '1100px',
+        'largeX': '980px'
+      }
     },
   },
   plugins: [require("tailwindcss-animate")],

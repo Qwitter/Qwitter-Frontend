@@ -1,14 +1,15 @@
-import React, { MouseEventHandler } from "react";
+import { MouseEventHandler } from "react";
 import { Dialog, DialogContent, DialogHeader } from "../ui/dialog";
-import { X, ArrowLeft, Twitter } from "lucide-react";
+import { X, ArrowLeft } from "lucide-react";
 import { HeaderButton } from "@/models/PopUpModel";
 import { cn } from "../../lib/utils";
+import Logo from "../../assets/logo.png";
 
 type PopUpProps = {
   show: boolean; // flag to hide and show the popup
   headerButton?: HeaderButton;
   headerFunction?: MouseEventHandler<HTMLDivElement>;
-  title?: string;
+  title?: string | boolean | null;
   showLogo?: boolean; // flag to show the logo
   children?: React.ReactNode; // children to be displayed
   className?: string;
@@ -16,28 +17,28 @@ type PopUpProps = {
 
 export const PopUpContainer = (props: PopUpProps) => {
   // get necessary data
-  const { show, children, headerButton, headerFunction, title, className } =
-    props;
+  const { show, children, headerButton, title, className } = props;
+  const headerFunction =
+    headerButton != HeaderButton.none ? props.headerFunction : () => {};
   const showLogo = props.showLogo || false;
-
-  console.log(showLogo);
 
   // manage the header content
   const headerContent = {
     close: <X className="h-5 w-5 inline" role="PopUpIcon" />,
     back: <ArrowLeft className="h-5 w-5 inline" role="PopUpIcon" />,
-    none: <span className="h-5 w-5">&nbsp;</span>,
+    none: <span className="h-5 w-5 cursor-default"></span>,
   };
 
   return (
     <Dialog open={show}>
-      <DialogContent className="sm:max-w-[425px] p-0 min-h-[400px] max-h-[90vh] h-[650px] min-w-[600px]">
-        {(headerButton || showLogo) && (
+      <DialogContent className="min-w-[350px] max-w-full sm:max-w-[425px] sm:min-w-[600px] h-full min-h-[200px] sm:h-[auto] p-0">
+        {(headerButton || showLogo || title) && (
           <DialogHeader className="px-4 h-[53px] flex flex-row items-center space-y-0">
             <span className="w-[56px]">
               <div
-                className={`ml-[-8px] w-9 h-9 flex justify-center items-center rounded-3xl cursor-pointer ${
-                  headerButton && "hover:bg-dark-gray hover:border-dark-gray"
+                className={`ml-[-8px] w-9 h-9 flex justify-center items-center rounded-3xl ${
+                  headerButton &&
+                  "cursor-pointer hover:bg-dark-gray hover:border-dark-gray "
                 }`}
                 onClick={headerFunction}
               >
@@ -46,9 +47,9 @@ export const PopUpContainer = (props: PopUpProps) => {
             </span>
             {showLogo && (
               <div className="flex flex-row items-center justify-center w-full">
-                <Twitter
-                  className="relative right-[28px] w-8 h-[53px]"
-                  role="PopUpIcon"
+                <img
+                  src={Logo}
+                  className="relative right-[28px] w-[53px] h-[53px]"
                 />
               </div>
             )}
@@ -57,7 +58,7 @@ export const PopUpContainer = (props: PopUpProps) => {
         )}
         <div
           className={cn(
-            "flex flex-col w-full pb-5 px-[80px] justify-center items-center",
+            "flex flex-col h-[597px] min-h-[147px] max-h-[597px] w-full pb-5 px-[80px] justify-center items-center",
             className
           )}
         >
