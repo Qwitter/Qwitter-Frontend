@@ -25,7 +25,7 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         {/* <SignUpProfile /> */}
         {/* <div className="w-100 h-100 absolute bg-black top-1/4 left-1/4">
           <UsernameSuggestion email="mroansamy99@gmail.com" nextStep={alert} />
@@ -35,10 +35,10 @@ function App() {
         {/* <PopUpContainer show={true}>
           <Skeleton data-testid="skeleton" className="mt-5 w-[350px] h-[170px]" />
         </PopUpContainer> */}
-        <Authentication />
-        <Login />
-        {/* <SignUpSteps /> */}
-        <Toaster />
+        {/* <Authentication /> */}
+        {/* <Login /> */}
+        <SignUpSteps />
+        {/* <Toaster /> */}
       </ThemeProvider>
     </QueryClientProvider>
   );
