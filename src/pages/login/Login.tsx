@@ -6,14 +6,12 @@ import { AiFillApple } from "react-icons/ai";
 import { FcGoogle } from 'react-icons/fc';
 import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-// props for all sign up steps
+// props for all login steps
 type SignInProp = {
     incrementStep: any;
     show: boolean;
     func: any;
     form: any;
-    // loginButtonState: boolean;
-    // disabledPlaceHolder: string;
 };
 const Step1 = ({ incrementStep, show, func, form }: SignInProp) => {
     return (
