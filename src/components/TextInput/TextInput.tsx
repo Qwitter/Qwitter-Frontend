@@ -53,13 +53,13 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
               {inputType === "text" && (
                 <AiOutlineEyeInvisible
                   size="1.5rem"
-                  className="inline absolute hover:cursor-pointer z-20 left-[90%] bottom-4 dark:bg-black"
+                  className="inline absolute hover:cursor-pointer z-20 left-[90%] bottom-4"
                   onClick={togglePassword}
                 />
               )}
               {inputType === "password" && (
                 <Eye
-                  className="inline absolute hover:cursor-pointer z-20 left-[90%] bottom-4 dark:bg-black"
+                  className="inline absolute hover:cursor-pointer z-20 left-[90%] bottom-4"
                   onClick={togglePassword}
                 />
               )}
