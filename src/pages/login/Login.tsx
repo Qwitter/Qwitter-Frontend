@@ -6,6 +6,8 @@ import { AiFillApple } from "react-icons/ai";
 import { FcGoogle } from 'react-icons/fc';
 import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
+import { Email, EmailSchema } from "@/models/Email";
+import { zodResolver } from "@hookform/resolvers/zod";
 // props for all login steps
 type SignInProp = {
     incrementStep: any;
@@ -33,7 +35,7 @@ const Step1 = ({ incrementStep, show, func, form }: SignInProp) => {
                         className="w-[300px]"
                         placeHolder="Email"
                     />
-                    <Button disabled={!form.watch("email")} variant="default" className="items-center my-5 h-[40px] w-[300px]" onClick={incrementStep}>
+                    <Button disabled={!form.formState.isValid} variant="default" className="items-center my-5 h-[40px] w-[300px]" onClick={incrementStep}>
                         <div className="mx-1">Next</div>
                     </Button>
                     <Button variant="outline" className='text-white my-5 h-[40px] w-[300px]'>Forgot Password?</Button>
@@ -58,9 +60,7 @@ const Step2 = ({ incrementStep, show, func, form }: SignInProp) => {
                             className="w-[440px]"
                             placeHolder="Email" />
                         <TextInput
-                            {...form.register("password", {
-                                required: true
-                            })}
+                            {...form.register("password")}
                             isPassword={true}
                             className="w-[440px]"
                             placeHolder="Password" />
@@ -80,7 +80,11 @@ const Step2 = ({ incrementStep, show, func, form }: SignInProp) => {
 export default function Login() {
     const [step, setStep] = useState<number>(1);
     const [showDialog, setshowDialog] = useState<boolean>(true);
-    const form = useForm();
+    const form = useForm<Email>(
+        {
+            resolver: zodResolver(EmailSchema)
+        }
+    );
     const {
         handleSubmit,
         reset,
@@ -97,7 +101,7 @@ export default function Login() {
     }
     return (
         <>
-            <form onSubmit={handleSubmit(onSubmit)} >
+            <form onSubmit={handleSubmit(onSubmit)} ></form>
                 {step === 1 && (<Step1 show={showDialog} func={closeDialog} incrementStep={incrementStep} form={form} />)}
                 {step === 2 && (<Step2 show={showDialog} func={closeDialog}
                     incrementStep={handleSubmit((data) => {
