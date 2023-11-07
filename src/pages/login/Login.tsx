@@ -101,7 +101,7 @@ export default function Login() {
     }
     return (
         <>
-            <form onSubmit={handleSubmit(onSubmit)} ></form>
+            <form onSubmit={handleSubmit(onSubmit)} >
                 {step === 1 && (<Step1 show={showDialog} func={closeDialog} incrementStep={incrementStep} form={form} />)}
                 {step === 2 && (<Step2 show={showDialog} func={closeDialog}
                     incrementStep={handleSubmit((data) => {
