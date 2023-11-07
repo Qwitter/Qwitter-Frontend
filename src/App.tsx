@@ -22,15 +22,15 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
         {/* <SignUpProfile /> */}
-        <div className="w-100 h-100 absolute bg-black top-1/4 left-1/4">
-        <UsernameSuggestion email="mroansamy99@gmail.com" nextStep={alert} />
-        </div> 
-        <Settings />
+        {/* <div className="w-100 h-100 absolute bg-black top-1/4 left-1/4"> */}
+        {/* <UsernameSuggestion email="mroansamy99@gmail.com" nextStep={alert} /> */}
+        {/* </div>  */}
+        {/* <Settings /> */}
         {/* <Authentication /> */}
         {/* <Login /> */}
-        {/* <SignUpSteps /> */}
+        <SignUpSteps />
         <Toaster />
       </ThemeProvider>
     </QueryClientProvider>
