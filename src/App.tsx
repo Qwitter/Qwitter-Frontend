@@ -7,6 +7,7 @@ import OAuth from "./components/OAuth/OAuth";
 import PasswordRest from "./components/passwordRest/PasswordRest";
 import { SignUpProfile } from "./components/SignUpProfile/SignUpProfile";
 
+import Login from "./pages/login/Login";
 const queryClient = new QueryClient();
 
 function App() {
@@ -17,9 +18,10 @@ function App() {
         {/* <Settings /> */}
         {/* <PasswordRest /> */}
         {/* <Authentication /> */}
+        <Login />
         {/* <OAuth /> */}
         {/* <SignUpSteps /> */}
-        <SignUpProfile />
+        {/* <SignUpProfile /> */}
       </ThemeProvider>
     </QueryClientProvider>
   );

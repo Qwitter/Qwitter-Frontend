@@ -2,7 +2,7 @@ import { forwardRef } from "react";
 import { cn } from "@/lib/utils";
 import { Eye } from "lucide-react";
 import { useState } from "react";
-
+import { AiOutlineEyeInvisible } from "react-icons/ai";
 interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   placeHolder?: string;
   errorMessage?: string;
@@ -12,6 +12,7 @@ interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
   (
     {
+      disabled = false,
       placeHolder,
       isPassword = false,
       errorMessage,
@@ -37,6 +38,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       <>
         <div className={cn("relative w-full flex flex-row pt-3", className)}>
           <input
+            disabled={disabled}
             {...props}
             ref={ref}
             type={inputType}
@@ -47,10 +49,25 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             placeholder=""
           />
           {isPassword && (
-            <Eye
-              className="inline absolute z-30 left-[90%] bottom-4 bg-black"
-              onClick={togglePassword}
-            />
+            <>
+              {
+                inputType === "text" && (
+                  < AiOutlineEyeInvisible
+                    size="1.5rem"
+                    className="inline absolute hover:cursor-pointer z-30 left-[90%] bottom-4 bg-black"
+                    onClick={togglePassword}
+                  />
+                )
+              }
+              {
+                inputType === "password" && (
+                  <Eye
+                    className="inline absolute hover:cursor-pointer z-30 left-[90%] bottom-4 bg-black"
+                    onClick={togglePassword}
+                  />
+                )
+              }
+            </>
           )}
           <label className="absolute inline text-[17px] font-normal text-gray-500 dark:text-gray duration-300 transform -translate-y-4 scale-75 top-7 z-10 origin-[0] left-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4">
             {placeHolder}

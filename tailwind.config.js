@@ -14,7 +14,7 @@ module.exports = {
       screens: {
         "2xl": "1400px",
         "xl": "1280px",
-        md: "600px",
+        "md": "600px",
       },
     },
     extend: {
@@ -78,7 +78,7 @@ module.exports = {
       },
       screens: {
         'large2X': '1100px',
-        'largeX' : '980px'
+        'largeX': '980px'
       }
     },
   },

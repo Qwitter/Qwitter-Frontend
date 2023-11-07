@@ -254,7 +254,6 @@ const Step5 = ({ nextStep, form }: NextSignUpStepProp) => {
         <div className="w-full">
           <TextInput
             isPassword={true}
-            type="password"
             placeHolder="Password"
             {...form.register("password", {
               required: "Enter password",
