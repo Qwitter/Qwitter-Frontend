@@ -1,6 +1,6 @@
 import { HttpResponse, ResponseResolver } from "msw";
 
-export const EmailCheckWorker: ResponseResolver = async ({
+export const emailCheckWorker: ResponseResolver = async ({
     request,
 }) => {
     const { email } = (await request.json()) as { email: string };

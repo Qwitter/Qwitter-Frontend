@@ -124,7 +124,7 @@ export const sendVerificationEmail = async (email: string) => {
  * @param email
  * @returns  true if found the email ,false otherwise  or null
  */
-export const FindEmail = async (email: string) => {
+export const findEmail = async (email: string) => {
   const parseResult = z.string().email().safeParse(email);
   if (!parseResult.success) return null;
 
@@ -140,11 +140,11 @@ export const FindEmail = async (email: string) => {
 };
 
 /**
- * @description Rest the password
+ * @description change the password of the user with the new password 
  * @param password
  * @returns  object represents the response from the backend or null
  */
-export const RestPasswordWithNewOne = async (password: string) => {
+export const restPasswordWithNewOne = async (password: string) => {
   const parseResult = z.string().safeParse(password);
   if (!parseResult.success) return null;
 

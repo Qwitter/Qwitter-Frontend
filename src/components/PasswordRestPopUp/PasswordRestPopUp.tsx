@@ -4,7 +4,7 @@ import { PasswordSchema } from '@/models/Password';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useMutation } from '@tanstack/react-query';
-import { RestPasswordWithNewOne } from '../../lib/utils';
+import { restPasswordWithNewOne } from '../../lib/utils';
 import { useState } from 'react';
 import { Skeleton } from '../ui/skeleton';
 
@@ -16,7 +16,7 @@ export function PasswordRestPopUp() {
     // const [Response, setResponse] = useState({})
     const [error, setError] = useState("")
     const { mutate, isPending } = useMutation({
-        mutationFn: RestPasswordWithNewOne,
+        mutationFn: restPasswordWithNewOne,
         onSuccess: data => {
                 setError(data?.data?.message)
             
