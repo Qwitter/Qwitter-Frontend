@@ -9,9 +9,7 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { findEmail, loginSerive } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Toast } from "@/components/ui/toast";
-import { toast, useToast } from "@/components/ui/use-toast";
-import { Toaster } from "@/components/ui/toaster";
+import {useToast } from "@/components/ui/use-toast";
 
 
 export default function Login() {
@@ -20,12 +18,6 @@ export default function Login() {
     const { toast } = useToast();
     const { mutateAsync: checkEmailExistence, isPending: checkEmailExistencePending } = useMutation({
         mutationFn: findEmail,
-        // onError: () => {
-        //     toast({
-        //         description: "Sorry,we couldn't find your account",
-        //         variant: "secondary",
-        //     })
-        // }
     });
     const { mutateAsync: loginService, isPending: loginServicePending } = useMutation({
         mutationFn: loginSerive,
@@ -84,7 +76,6 @@ export default function Login() {
                         })}
                         form={form} />)}
                 </PopUpContainer>
-                {/* <Toaster /> */}
             </form>
         </>
     )
