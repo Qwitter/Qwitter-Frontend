@@ -20,7 +20,6 @@ import EmailVerification from "./components/EmailVerification/EmailVerification"
 import { RestPassword } from "./components/ChangePassword/ChangePassword";
 import { Toaster } from "./components/ui/toaster";
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
-import { Authentication } from "./pages";
 import temp from './assets/temp.png'
 
 const queryClient = new QueryClient();
