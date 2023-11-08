@@ -10,12 +10,15 @@ import { useMutation } from "@tanstack/react-query";
 import { findEmail, loginSerive } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import {useToast } from "@/components/ui/use-toast";
+import { useNavigate } from "react-router-dom";
 
 
 export default function Login() {
     const [step, setStep] = useState(1);
     const [showDialog, setshowDialog] = useState(true);
     const { toast } = useToast();
+    const navigate = useNavigate();
+
     const { mutateAsync: checkEmailExistence, isPending: checkEmailExistencePending } = useMutation({
         mutationFn: findEmail,
     });
@@ -28,11 +31,12 @@ export default function Login() {
     }
     );
     function closeDialog(): void {
+        navigate(-1)
         setshowDialog(false);
     }
     async function incrementStep(): Promise<void> {
         if (step == 1) {
-            var res: any = await checkEmailExistence(form.getValues("email"));
+            const res: any = await checkEmailExistence(form.getValues("email"));
             console.log();
             if (!res.available) {
                 toast({
@@ -46,7 +50,7 @@ export default function Login() {
         setStep(step + 1);
     }
     const onSubmit = async (data: SignIn) => {
-        var { avalible, message }: any = await loginService(data);
+        const { avalible, message }: any = await loginService(data);
         if (avalible) {
             form.reset();
         }

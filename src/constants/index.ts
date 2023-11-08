@@ -61,23 +61,23 @@ const navLinks = [
 ];
 const settingsOptions = [
   {
-    id: "yourAccount",
+    id: "account",
     title: "Your account",
   },
   {
-    id: "privacyAndSafety",
+    id: "privacy_and_safety",
     title: "Privacy and safety",
   }
 ]
 const accountOptions = [
   {
-    id: "accountInformation",
+    id: "/your_twitter_data/account",
     title: "Account information",
     description :"See your account information like your phone number and email address.",
     icon:User
   },
   {
-    id: "changeYourPassword",
+    id: "/password",
     title: "Change your password",
     description :"Change your password at any time.",
     icon:KeyRound

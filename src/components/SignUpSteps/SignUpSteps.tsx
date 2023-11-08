@@ -5,6 +5,8 @@ import { TextInput } from "../TextInput/TextInput";
 import { HeaderButton } from "../../models/PopUpModel";
 import { Checkbox } from "../ui/checkbox";
 import { RecaptchaPopUp } from "../RecaptchaPopUp/RecaptchaPopUp";
+import { useNavigate } from "react-router-dom";
+
 // import { z } from "zod";
 // import { SignUpSchema } from "../../models/SignUp";
 // import { BirthDaySchema } from "@/models/BirthDay";
@@ -25,6 +27,7 @@ export const SignUpSteps = () => {
   const [stepNumber, setStepNumber] = useState<number>(0); // controls which step is shown
   const [showPopUp, setShowPopUp] = useState<boolean>(true); // controls if the sign up is started or not
   const form = useForm();
+  const navigate =useNavigate();
 
   // go to step 1 again
   const resetStep = () => {
@@ -38,7 +41,11 @@ export const SignUpSteps = () => {
 
   // decrement the step or remove the pop up when stepNumber 0 is reached
   const previousStep = () => {
-    if (stepNumber === 0) setShowPopUp(false);
+    if (stepNumber === 0) {
+      navigate('/')
+      setShowPopUp(false)
+      
+    }
     else setStepNumber(stepNumber - 1);
   };
 

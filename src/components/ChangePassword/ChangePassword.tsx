@@ -1,6 +1,7 @@
+import { Link } from 'react-router-dom'
 import { Button, OptionsHeader, TextInput } from '..'
 
-export function RestPassword() {
+export function ChangePassword() {
 
     return (
         <div className=" w-full h-full border-r border-primary border-opacity-30 mb-20">
@@ -8,7 +9,7 @@ export function RestPassword() {
             <form action="" >
                 <div className='w-full p-3'>
                     <TextInput placeHolder='Current password' name='Current password' className='w-full mb-2' type='password' />
-                    <a href="" className='text-secondary text-[13px] pl-4 block'>Forget password?</a>
+                    <Link to="/i/flow/password_reset" className='text-secondary text-[13px] pl-4 block'>Forget password?</Link>
 
                 </div>
                 <div className='border-y w-full p-4 border-primary border-opacity-20 flex flex-col gap-5' >
