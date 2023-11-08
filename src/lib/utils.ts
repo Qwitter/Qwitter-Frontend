@@ -214,10 +214,10 @@ export const loginSerive = async ({ email, password }: { email: string, password
   if (!parsedPassword.success || !parsedEmail.success) return null;
   try {
     const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/auth/login`, {
-      parsedEmail,
-      parsedPassword
+      email,
+      password
     });
-    return res;
+    return res.data;
   } catch (err) {
     console.log(err);
     return null;
