@@ -9,7 +9,7 @@ export function UpdateEmail({ email }: Props) {
         <div className=" w-full h-full border-r border-primary border-opacity-30 mb-20">
             <OptionsHeader header='Change username' />
 
-                <div className='w-full p-3 pb-0'>
+                <div className='w-full p-3 pb-0 border-b border-primary border-opacity-20'>
                     <TextInput
                         placeHolder='current'
                         name='email'
@@ -19,10 +19,8 @@ export function UpdateEmail({ email }: Props) {
                         
                         />
                 </div>
-                <div className='border-t w-full p-4 border-primary border-opacity-20' >
-                <a className='block text-center text-secondary '>Update email address</a>
+                <a className='block text-center cursor-pointer transition-all text-secondary hover:bg-[#031019] p-4'>Update email address</a>
 
-                </div>
 
         </div>
     )
