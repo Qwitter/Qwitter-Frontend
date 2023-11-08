@@ -21,7 +21,6 @@ import { RestPassword } from "./components/RestPassword/RestPassword";
 import Authentication from "./pages/Authentication/Authentication";
 import { Toaster } from "./components/ui/toaster";
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
-import { Authentication } from "./pages";
 import temp from './assets/temp.png'
 
 const queryClient = new QueryClient();
@@ -33,23 +32,20 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <div className='w-full flex flex-row min-h-[750px] z-0 justify-center'>
-      <NavBar userName='MarwanSamy' name="XLV" profilePic={temp} />{/*till we know how the roots will work */}
-     
-        <Router>
-          <Routes >{/* this is the main routs*/}
-            <Route path="/" element={<Authentication />} />
-            <Route path="/Settings" element={<Settings />} />
-          </Routes>
-          <Routes >{/* this is the popup routs*/}
-            <Route path="/i/flow/signup" element={<SignUpSteps />} />
-            <Route path="/i/flow/login" element={<Login />} />
-          </Routes>
-         
-          <Toaster />
-        </Router>
+        <div className='w-full flex flex-row min-h-[750px] z-0 justify-center'>
+          {/* <NavBar userName='MarwanSamy' name="XLV" profilePic={temp} />till we know how the roots will work */}
+          <Router>
+            <Routes >{/* this is the main routs*/}
+              <Route path="/" element={<Authentication />} />
+              <Route path="/Settings" element={<Settings />} />
+            </Routes>
+            <Routes >{/* this is the popup routs*/}
+              <Route path="/i/flow/signup" element={<SignUpSteps />} />
+              <Route path="/i/flow/login" element={<Login />} />
+            </Routes>
+            <Toaster />
+          </Router>
         </div>
-        
       </ThemeProvider>
     </QueryClientProvider>
   );
