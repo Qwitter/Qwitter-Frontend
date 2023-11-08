@@ -3,9 +3,10 @@ import {
   verificationTokenWorkerHandler,
   verificationWorkerHandler,
 } from "./VerificationWorker/VerificationWorker";
-import { emailCheckWorker} from "./EmailCheckWorker/EmailCheckWorker";
+import { emailCheckWorker } from "./EmailCheckWorker/EmailCheckWorker";
 import { PasswordRestWorker } from "./PasswordRestWorker/PasswordRestWorker";
 import { usernameValidationWorker } from "./UsernameSuggestionWorker/UsernameSuggestionWorker";
+import { SignInWokerHandler } from "./SignInWorker/SignInWorker";
 
 const { VITE_BACKEND_URL } = process.env;
 
@@ -29,5 +30,9 @@ export const handlers = [
   http.post(
     `${VITE_BACKEND_URL}/api/v1/auth/check-existence`,
     usernameValidationWorker
+  ),
+  http.post(
+    `${VITE_BACKEND_URL}/api/v1/auth/login`,
+    SignInWokerHandler
   ),
 ];

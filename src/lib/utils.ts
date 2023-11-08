@@ -149,10 +149,10 @@ export const isAvailableUsername = async (username: string) => {
 
   try {
     const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/auth/check-existence`, {
-      userNameOrEmail:username,
+      userNameOrEmail: username,
     });
     console.log(res.data)
-    return res.status==200;
+    return res.status == 200;
   } catch (err) {
     return null;
   }
@@ -163,14 +163,14 @@ export const isAvailableUsername = async (username: string) => {
  * @param password
  * @returns  object represents the response from the backend or null
  */
-export const restPasswordWithNewOne = async ({password,email}: {password:string,email:string}) => {
+export const restPasswordWithNewOne = async ({ password, email }: { password: string, email: string }) => {
   const parsePassword = z.string().safeParse(password);
-  const parseEmail= z.string().safeParse(email);
-  if (!parsePassword.success||!parseEmail.success) return null;
+  const parseEmail = z.string().safeParse(email);
+  if (!parsePassword.success || !parseEmail.success) return null;
 
   try {
     const res = await axios.post(`${VITE_BACKEND_URL}/api/user/RestPassword`, {
-      password,email
+      password, email
     });
     return res;
   } catch (err) {
@@ -201,5 +201,25 @@ export const verifyEmail = async (email: string, token: string) => {
     const errObj = err as { response: { data: { message: string } } };
     if (errObj.response) throw new Error(errObj.response.data.message);
     else throw new Error("Error Verifying Email");
+  }
+};
+/**
+ * @description Login Service with the name or username and password 
+ * @param {password,emailOrUsername}
+ * @returns  object represents the response from the backend or null
+ */
+export const loginSerive = async ({ email, password }: { email: string, password: string }) => {
+  const parsedPassword = z.string().safeParse(password);
+  const parsedEmail = z.string().safeParse(email);
+  if (!parsedPassword.success || !parsedEmail.success) return null;
+  try {
+    const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/auth/login`, {
+      email,
+      password
+    });
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return null;
   }
 };

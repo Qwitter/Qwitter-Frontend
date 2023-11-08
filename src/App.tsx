@@ -6,6 +6,7 @@ import {
   NavBar,
   NotificationAllow,
   PasswordRestPopUp,
+  PopUpContainer,
   SignUpSteps,
   UsernameSuggestion,
 } from "./components";
@@ -17,6 +18,7 @@ import { EditProfilePopUp } from "./components/EditProfilePopUp/EditProfilePopUp
 import Login from "./pages/login/Login";
 import EmailVerification from "./components/EmailVerification/EmailVerification";
 import { RestPassword } from "./components/RestPassword/RestPassword";
+import Authentication from "./pages/Authentication/Authentication";
 import { Toaster } from "./components/ui/toaster";
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import { Authentication } from "./pages";

@@ -38,7 +38,7 @@ export const PopUpContainer = (props: PopUpProps) => {
   return (
     <Dialog open={show}>
       <DialogContent
-        className={`min-w-[350px] max-w-full sm:min-w-[425px] sm:max-w-[600px] h-full sm:max-h-[650px] ${dialogContentHeight} p-0`}
+        className={`min-w-[350px] max-w-full sm:min-w-[425px] sm:max-w-[600px] h-full sm:max-h-[650px] focus:outline-none ${dialogContentHeight} p-0`}
       >
         {(headerButton || showLogo || title) && (
           <DialogHeader
