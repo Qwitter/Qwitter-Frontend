@@ -1,4 +1,4 @@
-import { Button, OptionsHeader, TextInput } from '..'
+import {  OptionsHeader, TextInput } from '..'
 type Props = {
     email: string
 }
@@ -15,7 +15,7 @@ export function UpdateEmail({ email }: Props) {
                         name='email'
                         className='w-full mb-2'
                         value={email} 
-                        readOnly
+                        disabled
                         
                         />
                 </div>

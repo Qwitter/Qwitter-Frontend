@@ -3,24 +3,16 @@ import { ThemeProvider } from "./components/theme-provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Settings } from "./pages/Settings/Settings";
 import {
-  NavBar,
-  NotificationAllow,
-  PasswordRestPopUp,
-  PopUpContainer,
   SignUpSteps,
-  UsernameSuggestion,
 } from "./components";
-import OAuth from "./components/OAuth/OAuth";
-import PasswordRest from "./components/passwordRest/PasswordRest";
-import { SignUpProfile } from "./components/SignUpProfile/SignUpProfile";
-import { EditProfilePopUp } from "./components/EditProfilePopUp/EditProfilePopUp";
+import PasswordRest from "./components/PasswordRest/PasswordRest";
 
 import Login from "./pages/login/Login";
-import EmailVerification from "./components/EmailVerification/EmailVerification";
-import { RestPassword } from "./components/ChangePassword/ChangePassword";
+
 import { Toaster } from "./components/ui/toaster";
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
-import temp from './assets/temp.png'
+import {Routes, Route, useLocation } from 'react-router-dom'
+import { Authentication } from "./pages";
+import { LoginSignUp } from "./components/LoginSignUp/LoginSignUp";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +29,7 @@ function App() {
           </Routes>
           <Routes >{/* this is the popup routs*/}
             <Route path="/i/flow/signup" element={<SignUpSteps />} />
+            <Route path="/i/flow/signup/input_flow_data" element={<LoginSignUp />} />
             <Route path="/i/flow/login" element={<Login />} />
             <Route path="/i/flow/password_reset" element={<PasswordRest />} />
 
