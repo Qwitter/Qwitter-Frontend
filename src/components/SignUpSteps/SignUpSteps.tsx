@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { PopUpContainer } from "../PopUpContainer/PopUpContainer";
 import { HeaderButton } from "../../models/PopUpModel";
-<<<<<<< HEAD
 import { Step1 } from "./Step1";
 import { Step2 } from "./Step2";
 import { Step5 } from "./Step5";
@@ -11,19 +10,6 @@ import { z } from "zod";
 import { useNavigate } from "react-router-dom";
 import { findEmail } from "@/lib/utils";
 import { BirthDaySchema } from "@/models/BirthDay";
-=======
-import { Checkbox } from "../ui/checkbox";
-import { RecaptchaPopUp } from "../RecaptchaPopUp/RecaptchaPopUp";
-import { useNavigate } from "react-router-dom";
-
-// import { z } from "zod";
-// import { SignUpSchema } from "../../models/SignUp";
-// import { BirthDaySchema } from "@/models/BirthDay";
-import { FieldValues, useForm, UseFormReturn } from "react-hook-form";
-import { UsernameSuggestion } from "../UsernameSuggestion/UsernameSuggestion";
-
-// type SignUpData = z.infer<typeof SignUpSchema>;
->>>>>>> 23cdfb17c9be30fb360d4ed2429e839eebde73cc
 
 /*
   NEEDED:
@@ -37,13 +23,8 @@ import { UsernameSuggestion } from "../UsernameSuggestion/UsernameSuggestion";
 export const SignUpSteps = () => {
   const [stepNumber, setStepNumber] = useState<number>(0); // controls which step is shown
   const [showPopUp, setShowPopUp] = useState<boolean>(true); // controls if the sign up is started or not
-<<<<<<< HEAD
   const [userData, setUserData] = useState<z.infer<typeof SignUpDataSchema>>(); // to pass user inputs between steps
   const navigate = useNavigate();
-=======
-  const form = useForm();
-  const navigate =useNavigate();
->>>>>>> 23cdfb17c9be30fb360d4ed2429e839eebde73cc
 
   // go to step 1 again
   const resetStep = () => {
@@ -59,17 +40,9 @@ export const SignUpSteps = () => {
   // decrement the step or remove the pop up when stepNumber 0 is reached
   const previousStep = () => {
     if (stepNumber === 0) {
-<<<<<<< HEAD
       navigate("/");
       setShowPopUp(false);
     } else setStepNumber(stepNumber - 1);
-=======
-      navigate('/')
-      setShowPopUp(false)
-      
-    }
-    else setStepNumber(stepNumber - 1);
->>>>>>> 23cdfb17c9be30fb360d4ed2429e839eebde73cc
   };
 
   // to show Step # of 5
@@ -102,23 +75,10 @@ export const SignUpSteps = () => {
 
   // holds steps of sign up
   const Steps = [
-<<<<<<< HEAD
     <Step1
       nextStep={nextStep}
       userData={userData}
       addStep1Data={addStep1Data}
-=======
-    <Step1 nextStep={nextStep} form={form} />,
-    <Step2 nextStep={nextStep} form={form} />,
-    <UsernameSuggestion nextStep={nextStep}  />,
-    <Step3 nextStep={nextStep} form={form} resetStep={resetStep} />,
-    <RecaptchaPopUp afterAuth={nextStep} />,
-    <Step5
-      nextStep={form.handleSubmit((data) => {
-        onSubmit(data);
-      })}
-      form={form}
->>>>>>> 23cdfb17c9be30fb360d4ed2429e839eebde73cc
     />,
     <Step2 nextStep={nextStep} />,
     <Step3 nextStep={nextStep} resetStep={resetStep} userData={userData} />,
