@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Button, OptionsHeader, ShowSuggestionsNames, TextInput } from '..'
+import {  ShowSuggestionsNames} from '../ShowSuggestionsNames/ShowSuggestionsNames'
+import { OptionsHeader } from '../OptionsHeader/OptionsHeader'
+import { Button } from '../ui/button'
+import {  TextInput} from '../TextInput/TextInput'
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { UsernameSchema } from '@/models/Username';
@@ -36,7 +39,7 @@ export function ChangeUsername({ userName }: Props) {
     const [inputValue, setInputValue] = useState("");
     const [isClickChange, setIsClickChange] = useState(false);
 
-    useEffect(() => { setInputValue(userName) },[])
+    useEffect(() => { setInputFieldValue(userName,) },[])
 
     const setInputFieldValue = (value: string, clickFlag = false) => {
         setIsClickChange(clickFlag)
@@ -75,6 +78,7 @@ export function ChangeUsername({ userName }: Props) {
             <form onSubmit={form.handleSubmit(onSubmit)} >
                 <div className='w-full p-3'>
                     <TextInput
+                        role="usernameInput"
                         required
                         placeHolder='Username'
                         className='w-full'
@@ -94,7 +98,7 @@ export function ChangeUsername({ userName }: Props) {
                     <ShowSuggestionsNames isClickChange={isClickChange} username={inputValue} className='flex flex-col flex-wrap gap-4' onSuggestionClick={setInputFieldValue} showSuggestion={true} numberOfSuggestions={5} />
                 </div>
                 <div className='w-full p-4'>
-                    <Button variant="secondary" className='block ml-auto' disabled={!form.formState.isValid}>Save</Button>
+                    <Button variant="secondary" role='save' className='block ml-auto' disabled={!form.formState.isValid}>Save</Button>
                 </div>
             </form>
         </div>

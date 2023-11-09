@@ -1,6 +1,5 @@
 import { AccountInformation, ChangeUsername, YourAccount } from '@/components'
 import { SettingsOptions } from '../../components/SettingsOptions/SettingsOptions'
-import { CheckPassword } from '@/components/CheckPassword/CheckPassword'
 import { UpdateEmail } from '@/components/UpdateEmail/UpdateEmail'
 import { Route, Routes, Navigate, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
@@ -35,7 +34,7 @@ export function SettingsMain() {
                         <Route path='/account' element={<YourAccount />} />
                         <Route path='/your_twitter_data/account' element={<AccountInformation email='marawanSamy@gmail.com' userName='XLV' />} />
                         <Route path='/password' element={<ChangePassword />} />
-                        <Route path='/screen_name' element={<ChangeUsername  userName='XLV'/>} />
+                        <Route path='/screen_name' element={<ChangeUsername  userName='Marwansmay99'/>} />
                         <Route path='/email' element={<UpdateEmail email='marwanSamy@gmail.com'/>} />
                     </Routes>
                 </div>

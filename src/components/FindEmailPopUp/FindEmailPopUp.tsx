@@ -48,7 +48,7 @@ export function FindEmailPopUp({ nextStep,setEmail }: prob) {
         <form className='h-full flex flex-col  justify-between' onSubmit={form.handleSubmit(onSubmit)}
         >
             <div className='flex flex-col w-full'>
-                <h2 className=' font-bold text-primary text-[32px] mb-1 mt-5'>{error}Find your Qwitter account</h2>
+                <h2 className=' font-bold text-primary text-[32px] mb-1 mt-5'>Find your Qwitter account</h2>
                 <p className='text-gray mb-5' >Enter the email or username associated with your account to change your password.</p>
                 <TextInput
                     placeHolder='Email'

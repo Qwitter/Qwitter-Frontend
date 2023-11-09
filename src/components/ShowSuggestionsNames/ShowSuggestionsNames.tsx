@@ -53,8 +53,8 @@ export function ShowSuggestionsNames(
 
     return (
         <ul className={cn("flex flex-row flex-wrap gap-1 mt-4", className)}>
-            {suggestedUsernames.slice(0, size).map((name: string, index: number) => (
-                <li key={index} className='text-base text-secondary cursor-pointer' onClick={() => handlePickingUsername(name)}>@{name}{(index < 4) ? "," : ""}</li>
+            {suggestedUsernames?.slice(0, size).map((name: string, index: number) => (
+                <li role="Suggestions" key={index} className='text-base text-secondary cursor-pointer' onClick={() => handlePickingUsername(name)}>@{name}{(index < 4) ? "," : ""}</li>
             ))
             }
             {!showAllSuggestion && (
