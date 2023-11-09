@@ -4,10 +4,17 @@ import { type BirthDay } from "@/models/BirthDay";
 import { HeaderButton } from "@/models/PopUpModel";
 import { PopUpContainer } from "../PopUpContainer/PopUpContainer";
 import EmailVerification from "../EmailVerification/EmailVerification";
+import { useLocation } from "react-router-dom";
+import { User } from "@/models/User";
+import { useContext } from "react";
+import { UserContext } from "@/contexts/UserContextProvider";
 
 const OAuth = () => {
   const [step, setStep] = useState(0);
   const [birthDay, setBirthDay] = useState<BirthDay | null>(null);
+  const location = useLocation();
+  const { user, token } = location.state as { user: User; token: string };
+  const { saveUser } = useContext(UserContext);
 
   const nextStep = () => {
     setStep(step + 1);
@@ -17,6 +24,10 @@ const OAuth = () => {
     if (step === 0) return;
     setStep(step - 1);
   };
+
+  const signup = () => {
+    saveUser(user, token);
+  }
 
   const steps = [
     <BirthDayComponent

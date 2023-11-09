@@ -1,8 +1,8 @@
 import { Button } from "../../components/ui/button";
 import { AiFillApple } from "react-icons/ai";
-import { FcGoogle } from 'react-icons/fc';
 import logo from "../../assets/logo.png"
 import { Link, useLocation } from "react-router-dom";
+import GoogleSignUpButton from "@/components/GoogleSignUpButton/GoogleSignUpButton";
 export default function Authentication() {
   const location = useLocation();
   return (
@@ -15,10 +15,7 @@ export default function Authentication() {
           <div className='flex flex-col justify-center items-start'>
             <p className='my-3 text-6xl font-black break-words text-start min-[1025px]:w-[550px] w-[350px]' >Happening now</p>
             <p className='my-3 text-2xl font-extrabold'>Join today.</p>
-            <Button variant="default" className="items-center my-1 h-[40px] w-[300px]">
-              <FcGoogle size="1.5rem" />
-              <div className="mx-1">Sign up with Google</div>
-            </Button>
+            <GoogleSignUpButton />
             <Button variant="default" className="items-center my-1 h-[40px] w-[300px]">
               <AiFillApple size="1.5rem" />
               <div className="mx-1">Sign up with Apple</div>
