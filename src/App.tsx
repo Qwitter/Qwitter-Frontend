@@ -5,7 +5,7 @@ import { Settings } from "./pages/Settings/Settings";
 import { SignUpSteps } from "./components";
 import PasswordRest from "./components/passwordRest/PasswordRest";
 
-import Login from "./pages/login/Login";
+import { Login } from "./pages/login/Login";
 
 import { Toaster } from "./components/ui/toaster";
 import { Routes, Route, useLocation } from "react-router-dom";
