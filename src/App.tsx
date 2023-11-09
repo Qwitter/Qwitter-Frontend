@@ -35,9 +35,10 @@ function App() {
         {/* <PopUpContainer show={true}>
           <Skeleton data-testid="skeleton" className="mt-5 w-[350px] h-[170px]" />
         </PopUpContainer> */}
-        <Authentication />
-        <Login />
+        {/* <Authentication /> */}
+        {/* <Login /> */}
         {/* <SignUpSteps /> */}
+        <OAuth />
         <Toaster />
       </ThemeProvider>
     </QueryClientProvider>
