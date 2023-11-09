@@ -6,6 +6,7 @@ import {
   PasswordChangeEmailVerificationTokenSchema,
   SignUpEmailVerificationTokenSchema,
 } from "@/models/EmailVerification";
+import { SignUpDataSchema } from "@/models/SignUp";
 
 const { VITE_BACKEND_URL } = process.env;
 
@@ -262,5 +263,38 @@ export const verifyResetPasswordEmail = async (token: string) => {
     const errObj = err as { response: { data: { message: string } } };
     if (errObj.response) throw new Error(errObj.response.data.message);
     else throw new Error("Error Verifying Email");
+  }
+};
+
+/**
+ * @description Register a new user to the backend
+ * @param   newUserData Object holding name, email, birthdate and password
+ * @returns Object holding the backend response or null in case of an error
+ */
+export const registerNewUser = (newUserData: object) => {
+  const parseResult = SignUpDataSchema.safeParse(newUserData);
+  if (!parseResult.success) return null;
+
+  try {
+    const res = axios.post(
+      `${VITE_BACKEND_URL}/api/v1/auth/signup`,
+      {
+        name: parseResult.data.name,
+        email: parseResult.data.email,
+        password: parseResult.data.password,
+        passwordConfirmation: parseResult.data.password,
+        // birthDate: `${parseResult.data.year}--`, "2020-03-09T22:18:26.625Z"
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return res;
+  } catch (error) {
+    console.log(error);
+    return null;
   }
 };

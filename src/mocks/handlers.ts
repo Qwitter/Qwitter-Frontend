@@ -11,6 +11,7 @@ import {
   usernameValidationWorker,
 } from "./UsernameSuggestionWorker/UsernameSuggestionWorker";
 import { SignInWokerHandler } from "./SignInWorker/SignInWorker";
+import { RegisterUserWorker } from "./RegisterUserWorker/RegisterUserWorker";
 
 const { VITE_BACKEND_URL } = process.env;
 
@@ -42,4 +43,5 @@ export const handlers = [
     `${VITE_BACKEND_URL}/api/v1/auth/username-suggestions`,
     usernameSuggestionWorker
   ),
+  http.post(`${VITE_BACKEND_URL}/api/v1/auth/signup`, RegisterUserWorker),
 ];

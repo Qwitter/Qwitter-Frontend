@@ -8,14 +8,12 @@ import { Step3 } from "./Step3";
 import { SignUpDataSchema } from "@/models/SignUp";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
-import { findEmail } from "@/lib/utils";
+import { findEmail, registerNewUser } from "@/lib/utils";
 import { BirthDaySchema } from "@/models/BirthDay";
 
 /*
   NEEDED:
     use step 4
-    make step 5 send data to the server
-    make button conditionally disabled
     add date picker
     mock server tests
 */
@@ -54,10 +52,12 @@ export const SignUpSteps = () => {
     return `Step ${stepNumber} of 5`;
   };
 
-  // to concatenate the password to the user data
-  const addPassword = (pass: string) => {
+  // to concatenate the password to the user data and make an account
+  const registerUser = (pass: string) => {
     setUserData({ ...userData, password: pass });
     console.log("password added:", userData);
+
+    if (userData) registerNewUser(userData);
   };
 
   // to concatenate the name, email and birthday to the user data
@@ -70,6 +70,9 @@ export const SignUpSteps = () => {
       ...userData,
       name: name,
       email: email,
+      day: birthDay.day,
+      month: birthDay.month,
+      year: birthDay.year,
     });
   };
 
@@ -83,7 +86,8 @@ export const SignUpSteps = () => {
     <Step2 nextStep={nextStep} />,
     <Step3 nextStep={nextStep} resetStep={resetStep} userData={userData} />,
     // <RecaptchaPopUp afterAuth={nextStep} />,
-    <Step5 nextStep={() => {}} addPassword={addPassword} />,
+    // < />,
+    <Step5 nextStep={() => {}} registerUser={registerUser} />,
   ];
 
   // holds which button (x, arrow or none) is shown

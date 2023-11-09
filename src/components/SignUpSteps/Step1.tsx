@@ -1,4 +1,4 @@
-import { SignUpStepsProps, Step1DataSchema } from "@/models/SignUp";
+import { SignUpStepsProps, RefinedStep1DataSchema } from "@/models/SignUp";
 import { TextInput } from "../TextInput/TextInput";
 import { Button } from "../ui/button";
 import { FieldValues, useForm } from "react-hook-form";
@@ -11,13 +11,15 @@ interface Step1Props extends SignUpStepsProps {
 
 // step 1 of the sign up with name, email and date picker
 export const Step1 = ({ nextStep, userData, addStep1Data }: Step1Props) => {
-  const form = useForm<any>({ resolver: zodResolver(Step1DataSchema) }); // to use react hook form
+  const form = useForm<any>({ resolver: zodResolver(RefinedStep1DataSchema) }); // to use react hook form
 
   // handle the form submission
   const onSubmit = (data: FieldValues) => {
-    // NEEDED: send data to the backend to check the email
-
-    addStep1Data(data.name, data.email);
+    addStep1Data(data.name, data.email, {
+      day: data.day,
+      month: data.month,
+      year: data.year,
+    });
     console.log(form.getValues());
 
     nextStep();
@@ -52,7 +54,7 @@ export const Step1 = ({ nextStep, userData, addStep1Data }: Step1Props) => {
               </p>
               <div className="w-full my-4">
                 {/* NEEDED: help required from Seif (only need to work with types) */}
-                {/* <BirthDayInput form={form} /> */}
+                <BirthDayInput form={form} />
               </div>
             </div>
           </form>

@@ -4,21 +4,16 @@ import { Button } from "../ui/button";
 import { FieldValues, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-// NEEDED: zod error message
-
 interface Step5Props extends SignUpStepsProps {
-  addPassword: Function;
+  registerUser: Function;
 }
 
 // step 3 of the sign up to confirm sign up
-export const Step5 = ({ nextStep, addPassword }: Step5Props) => {
+export const Step5 = ({ nextStep, registerUser }: Step5Props) => {
   const form = useForm({ resolver: zodResolver(Step5DataSchema) });
 
   const onSubmit = (data: FieldValues) => {
-    // only concatenate password to user data
-
-    console.log("form data:", data);
-    addPassword(data.password);
+    registerUser(data.password);
 
     nextStep();
   };
