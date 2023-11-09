@@ -12,22 +12,6 @@ export const Step1DataSchema = z.object({
   year: BirthDaySchema.shape.year,
 });
 
-// schema holds name, email, birthday and checks for the availability of the email
-export const RefinedStep1DataSchema = z.object({
-  name: Step1DataSchema.shape.name,
-  // NEEDED: apply some changes so that it doesn't get called with every change
-  email: Step1DataSchema.shape.email.refine(async (email) => {
-    if (email) {
-      const data = await findEmail(email);
-      if (data === null) return false;
-      return !data.data;
-    }
-  }, "Email has already been taken"),
-  day: Step1DataSchema.shape.day,
-  month: Step1DataSchema.shape.month,
-  year: Step1DataSchema.shape.year,
-});
-
 // schema that holds the password with its checks
 export const Step5DataSchema = z.object({
   password: z

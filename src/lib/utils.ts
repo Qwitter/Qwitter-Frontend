@@ -273,7 +273,6 @@ export const verifyResetPasswordEmail = async (token: string) => {
  */
 export const registerNewUser = (newUserData: object) => {
   const parseResult = SignUpDataSchema.safeParse(newUserData);
-  console.log(newUserData);
 
   if (!parseResult.success) return null;
 

@@ -1,9 +1,11 @@
-import { SignUpStepsProps, RefinedStep1DataSchema } from "@/models/SignUp";
+import { SignUpStepsProps, Step1DataSchema } from "@/models/SignUp";
 import { TextInput } from "../TextInput/TextInput";
 import { Button } from "../ui/button";
-import { FieldValues, useForm } from "react-hook-form";
+import { FieldError, FieldValues, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import BirthDayInput from "../BirthDayInput/BirthDayInput";
+import { useEffect, useState } from "react";
+import { findEmail } from "@/lib/utils";
 
 interface Step1Props extends SignUpStepsProps {
   addStep1Data: Function;
@@ -11,7 +13,37 @@ interface Step1Props extends SignUpStepsProps {
 
 // step 1 of the sign up with name, email and date picker
 export const Step1 = ({ nextStep, userData, addStep1Data }: Step1Props) => {
-  const form = useForm<any>({ resolver: zodResolver(RefinedStep1DataSchema) }); // to use react hook form
+  const form = useForm<any>({ resolver: zodResolver(Step1DataSchema) }); // to use react hook form
+  const [isVerifying, setIsVerifying] = useState(false);
+
+  const checkEmail = () => {
+    return setTimeout(async () => {
+      const email = form.getValues().email;
+      if (form.getValues().email) {
+        const data = await findEmail(email);
+        if (data === null) return;
+
+        if (data.data)
+          form.setError("email", {
+            type: "manual",
+            message: "Email has already been taken",
+          });
+        else {
+          setIsVerifying(false);
+          form.clearErrors("email");
+        }
+      }
+    }, 100);
+  };
+
+  useEffect(() => {
+    setIsVerifying(true);
+    const timeoutId = checkEmail();
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [form.watch("email")]);
 
   // handle the form submission
   const onSubmit = (data: FieldValues) => {
@@ -64,7 +96,9 @@ export const Step1 = ({ nextStep, userData, addStep1Data }: Step1Props) => {
           size="full"
           className="h-[50px] font-bold"
           form="step1Form" // to attach the button to the form
-          disabled={!form.formState.isDirty || !form.formState.isValid}
+          disabled={
+            !form.formState.isDirty || !form.formState.isValid || isVerifying
+          }
         >
           Next
         </Button>
