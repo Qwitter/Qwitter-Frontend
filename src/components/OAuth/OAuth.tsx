@@ -26,6 +26,7 @@ const OAuth = () => {
     />,
     <EmailVerification
       email="sofa5060@gmail.com"
+      verificationType="passwordReset"
       onSuccess={nextStep}
       onFail={prevStep}
     />,

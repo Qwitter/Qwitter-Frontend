@@ -1,5 +1,6 @@
 import { ChevronRight } from 'lucide-react'
 import { OptionsHeader } from '..'
+import { Link } from 'react-router-dom'
 type Props = {
     email: string,
     userName: string
@@ -12,7 +13,7 @@ export function AccountInformation({ email, userName }: Props) {
             <OptionsHeader header='Account information' />
             <ul className='flex flex-col w-full'>
 
-                <a href={`#`}  className='group '>
+                <Link to={`/settings/screen_name`}  className='group '>
                     <div className='flex flex-row p-3 w-full justify-between items-center group-hover:bg-[#191919] transition-all '>
                         <div className='flex flex-col items-start'>
 
@@ -23,8 +24,8 @@ export function AccountInformation({ email, userName }: Props) {
                         </div>
                         <ChevronRight color='grey' />
                     </div>
-                </a>
-                <a href={`#`}  className='group '>
+                </Link>
+                <Link to={`/settings/email`}  className='group '>
                     <div className='flex flex-row p-3 w-full justify-between items-center group-hover:bg-[#191919] transition-all '>
                         <div className='flex flex-col items-start'>
 
@@ -35,7 +36,7 @@ export function AccountInformation({ email, userName }: Props) {
                         </div>
                         <ChevronRight color='grey' />
                     </div>
-                </a>
+                </Link>
 
             </ul>
 

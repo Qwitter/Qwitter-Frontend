@@ -6,8 +6,8 @@ export const PasswordSchema = z.object({
         .refine((password) => {
             return /[A-Za-z]/.test(password) && /\d/.test(password);
         }, { message: "Password must contain at least one letter and one number" }),
-    ConfirmPassword: z
-        .string()
+    ConfirmPassword: z.string(),
+    CurrentPassword:z.string().optional()
 
 }).refine((data) => data.Password === data.ConfirmPassword, {
     message: "Passwords doesn't match",

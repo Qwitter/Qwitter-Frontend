@@ -7,6 +7,8 @@ import { Step5 } from "./Step5";
 import { Step3 } from "./Step3";
 import { SignUpDataSchema } from "@/models/SignUp";
 import { z } from "zod";
+import { useNavigate } from "react-router-dom";
+import { findEmail } from "@/lib/utils";
 
 /*
   NEEDED:
@@ -21,10 +23,11 @@ export const SignUpSteps = () => {
   const [stepNumber, setStepNumber] = useState<number>(0); // controls which step is shown
   const [showPopUp, setShowPopUp] = useState<boolean>(true); // controls if the sign up is started or not
   const [userData, setUserData] = useState<z.infer<typeof SignUpDataSchema>>(); // to pass user inputs between steps
+  const navigate = useNavigate();
 
   // go to step 1 again
   const resetStep = () => {
-    // setUserData({ ...userData, password: null });
+    setUserData({ ...userData, password: null });
     setStepNumber(0);
   };
 
@@ -35,8 +38,10 @@ export const SignUpSteps = () => {
 
   // decrement the step or remove the pop up when stepNumber 0 is reached
   const previousStep = () => {
-    if (stepNumber === 0) setShowPopUp(false);
-    else setStepNumber(stepNumber - 1);
+    if (stepNumber === 0) {
+      navigate("/");
+      setShowPopUp(false);
+    } else setStepNumber(stepNumber - 1);
   };
 
   // to show Step # of 5
@@ -57,7 +62,6 @@ export const SignUpSteps = () => {
   // to concatenate the name, email and birthday to the user data
   const addStep1Data = (name: string, email: string) => {
     setUserData({ ...userData, name: name, email: email });
-    console.log("step1 data added:", userData);
   };
 
   // holds steps of sign up

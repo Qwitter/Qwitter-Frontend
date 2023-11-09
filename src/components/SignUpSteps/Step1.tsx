@@ -3,7 +3,6 @@ import { TextInput } from "../TextInput/TextInput";
 import { Button } from "../ui/button";
 import { FieldValues, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { findEmail } from "@/lib/utils";
 
 interface Step1Props extends SignUpStepsProps {
   addStep1Data: Function;

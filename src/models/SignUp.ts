@@ -18,8 +18,8 @@ export const Step1DataSchema = z.object({
     .trim()
     .email("Please enter a valid email")
     .refine(async (email) => {
-      // NEEDED: validate email with the backend
       const data = await findEmail(email);
+      if (data === null) return false;
       return !data.data;
     }, "Email has already been taken"),
   // birthday

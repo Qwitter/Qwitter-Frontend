@@ -73,3 +73,48 @@ export const verificationTokenWorkerHandler: ResponseResolver = async ({
     }
   );
 };
+
+export const resetPasswordVerificationTokenWorkerHandler: ResponseResolver =
+  async ({ params }) => {
+    const { token } = params as { token: string };
+
+    const emailsTokens = [
+      {
+        email: "sofa5060@gmail.com",
+        token: "123456ss",
+      },
+    ];
+
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    const emailToken = emailsTokens.find(
+      (emailToken) => emailToken.token === token
+    );
+
+    if (!emailToken) {
+      return HttpResponse.json(
+        {
+          message: "Invalid token",
+          data: {
+            token: `${token}`,
+          },
+        },
+        {
+          status: 400,
+          statusText: "Invalid token",
+        }
+      );
+    }
+
+    return HttpResponse.json(
+      {
+        message: "Email verified successfully",
+        data: {
+          email: `${emailToken?.email}`,
+        },
+      },
+      {
+        status: 200,
+      }
+    );
+  };

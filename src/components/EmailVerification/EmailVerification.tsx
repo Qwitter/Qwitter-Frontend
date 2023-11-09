@@ -1,13 +1,17 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { TextInput } from "../TextInput/TextInput";
 import { Button } from "../ui/button";
-import { sendVerificationEmail, verifyEmail } from "../../lib/utils";
+import {
+  sendSignUpVerificationEmail,
+  verifyResetPasswordEmail,
+  verifySignUpEmail,
+} from "../../lib/utils";
 import { Skeleton } from "../ui/skeleton";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
-  EmailVerificationToken,
-  EmailVerificationTokenSchema,
+  PasswordChangeEmailVerificationTokenSchema,
+  SignUpEmailVerificationTokenSchema,
 } from "../../models/EmailVerification";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -16,32 +20,44 @@ type EmailVerificationProps = {
   email: string;
   onSuccess: () => void;
   onFail?: () => void;
+  verificationType?: "passwordReset" | "signUp";
 };
 
-const EmailVerification = ({ email, onSuccess, onFail }: EmailVerificationProps) => {
+const EmailVerification = ({
+  email,
+  onSuccess,
+  onFail,
+  verificationType = "signUp",
+}: EmailVerificationProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<EmailVerificationToken>({
-    resolver: zodResolver(EmailVerificationTokenSchema),
+  } = useForm<{ token: string }>({
+    resolver: zodResolver(
+      verificationType === "signUp"
+        ? z.object({ token: SignUpEmailVerificationTokenSchema })
+        : z.object({ token: PasswordChangeEmailVerificationTokenSchema })
+    ),
   });
 
   // Sending Verification Email
   const {
-    isPending: isSendingEmail,
     isError: hasFailedToSend,
     refetch: retrySendingVerificationEmail,
+    isPending: isSendingEmail,
+    isFetching,
     isRefetching,
   } = useQuery({
     queryKey: ["emailVerification"],
-    queryFn: async () => sendVerificationEmail(email),
+    queryFn: async () => sendSignUpVerificationEmail(email),
     staleTime: 0,
     retry: 0,
     retryDelay: 2000,
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
+    enabled: verificationType === "signUp",
   });
 
   const {
@@ -49,7 +65,12 @@ const EmailVerification = ({ email, onSuccess, onFail }: EmailVerificationProps)
     failureReason: verificationFailureReason,
     isPending: isVerifying,
   } = useMutation({
-    mutationFn: async (token: string) => verifyEmail(email, token),
+    mutationFn: async (token: string) => {
+      if (verificationType === "passwordReset") {
+        return verifyResetPasswordEmail(token);
+      }
+      return verifySignUpEmail(email, token);
+    },
     onSuccess: onSuccess,
   });
 
@@ -64,7 +85,10 @@ const EmailVerification = ({ email, onSuccess, onFail }: EmailVerificationProps)
   // Start timer when refetching
   useEffect(() => {
     if (timerId) return;
-    if (isRefetching) {
+    if (
+      (isRefetching && verificationType === "signUp") ||
+      (isFetching && verificationType === "passwordReset")
+    ) {
       setResendingDisableTime(60);
       setTimerId(
         setInterval(() => {
@@ -72,7 +96,7 @@ const EmailVerification = ({ email, onSuccess, onFail }: EmailVerificationProps)
         }, 1000)
       );
     }
-  }, [isRefetching]);
+  }, [isRefetching, isFetching]);
 
   // Clear timer when time is up
   useEffect(() => {
@@ -102,7 +126,7 @@ const EmailVerification = ({ email, onSuccess, onFail }: EmailVerificationProps)
     );
 
   // Rendering Skeleton while sending email
-  if (isSendingEmail) {
+  if (verificationType === "signUp" && isSendingEmail) {
     return (
       <>
         <Skeleton className="w-full h-[170px]" data-testid="skeleton" />
