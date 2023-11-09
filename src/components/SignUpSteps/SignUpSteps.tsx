@@ -55,7 +55,6 @@ export const SignUpSteps = () => {
   // to concatenate the password to the user data and make an account
   const registerUser = (pass: string) => {
     setUserData({ ...userData, password: pass });
-    console.log("password added:", userData);
 
     if (userData) registerNewUser(userData);
   };

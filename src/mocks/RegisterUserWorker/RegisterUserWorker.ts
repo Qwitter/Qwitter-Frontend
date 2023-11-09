@@ -2,10 +2,16 @@ import { SignUpDataSchema } from "@/models/SignUp";
 import { HttpResponse, ResponseResolver } from "msw";
 import { z } from "zod";
 
+interface SignUpDataSchemaWithBirthdate
+  extends z.infer<typeof SignUpDataSchema> {
+  birthDate: string;
+}
+
 export const RegisterUserWorker: ResponseResolver = async ({ request }) => {
-  const body = (await request.json()) as z.infer<typeof SignUpDataSchema>;
-  const { name, email } = body;
+  const body = (await request.json()) as SignUpDataSchemaWithBirthdate;
+  const { name, email, birthDate } = body;
   const date = new Date();
+  console.log(birthDate);
 
   await new Promise((resolve) => setTimeout(resolve, 1000));
   return HttpResponse.json(
@@ -15,7 +21,7 @@ export const RegisterUserWorker: ResponseResolver = async ({ request }) => {
       data: {
         userName: "johndoe123",
         name: name,
-        birthDate: "2020-03-09T22:18:26.625Z", // temporary
+        birthDate: birthDate,
         email: email,
         url: "www.johndoe.com",
         description: "oh hello there",

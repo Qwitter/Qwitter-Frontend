@@ -16,11 +16,10 @@ export const Step1 = ({ nextStep, userData, addStep1Data }: Step1Props) => {
   // handle the form submission
   const onSubmit = (data: FieldValues) => {
     addStep1Data(data.name, data.email, {
-      day: data.day,
+      day: data.day.toString(),
       month: data.month,
-      year: data.year,
+      year: data.year.toString(),
     });
-    console.log(form.getValues());
 
     nextStep();
   };

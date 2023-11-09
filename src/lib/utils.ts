@@ -273,7 +273,12 @@ export const verifyResetPasswordEmail = async (token: string) => {
  */
 export const registerNewUser = (newUserData: object) => {
   const parseResult = SignUpDataSchema.safeParse(newUserData);
+  console.log(newUserData);
+
   if (!parseResult.success) return null;
+
+  const dateString = `${parseResult.data.year}-${parseResult.data.month}-${parseResult.data.day}`;
+  const birthDate = new Date(dateString);
 
   try {
     const res = axios.post(
@@ -283,7 +288,7 @@ export const registerNewUser = (newUserData: object) => {
         email: parseResult.data.email,
         password: parseResult.data.password,
         passwordConfirmation: parseResult.data.password,
-        // birthDate: `${parseResult.data.year}--`, "2020-03-09T22:18:26.625Z"
+        birthDate: birthDate.toISOString(),
       },
       {
         headers: {
