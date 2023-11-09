@@ -6,7 +6,10 @@ import {
 } from "./VerificationWorker/VerificationWorker";
 import { emailCheckWorker } from "./EmailCheckWorker/EmailCheckWorker";
 import { PasswordRestWorker } from "./PasswordRestWorker/PasswordRestWorker";
-import { usernameValidationWorker } from "./UsernameSuggestionWorker/UsernameSuggestionWorker";
+import {
+  usernameSuggestionWorker,
+  usernameValidationWorker,
+} from "./UsernameSuggestionWorker/UsernameSuggestionWorker";
 import { SignInWokerHandler } from "./SignInWorker/SignInWorker";
 
 const { VITE_BACKEND_URL } = process.env;
@@ -35,4 +38,8 @@ export const handlers = [
     usernameValidationWorker
   ),
   http.post(`${VITE_BACKEND_URL}/api/v1/auth/login`, SignInWokerHandler),
+  http.post(
+    `${VITE_BACKEND_URL}/api/v1/auth/username-suggestions`,
+    usernameSuggestionWorker
+  ),
 ];

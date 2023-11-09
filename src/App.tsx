@@ -3,11 +3,13 @@ import { ThemeProvider } from "./components/theme-provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Settings } from "./pages/Settings/Settings";
 import { SignUpSteps } from "./components";
+import { SignUpSteps } from "./components";
 import PasswordRest from "./components/PasswordRest/PasswordRest";
 
 import Login from "./pages/login/Login";
 
 import { Toaster } from "./components/ui/toaster";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Authentication } from "./pages";
 import { LoginSignUp } from "./components/LoginSignUp/LoginSignUp";
