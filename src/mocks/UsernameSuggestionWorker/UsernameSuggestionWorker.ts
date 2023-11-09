@@ -1,36 +1,27 @@
 import { HttpResponse, ResponseResolver } from "msw";
-
+import {generateUsernames} from '../../lib/generate'
 export const usernameSuggestionWorker: ResponseResolver = async ({
     request,
 }) => {
-    const { email } = (await request.json()) as { email: string };
+    const { token, username } = (await request.json()) as { token: string,username:string };
+    
+    // Add a delay for simulation purposes
+    await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    const usernames = [
-        "mroansmay995645",
-        "mroan_Dsa45",
-        "samy454dsaf",
-        "smay656marwan",
-        "samy54marwan",
-
-    ];
-    if (usernames.includes(email)) {
-
+    if (username) {
+        token
         return HttpResponse.json(
             {
-                message: "Email is Found successfully",
-                data: true
+                Suggestions: generateUsernames(username + "@")
             },
             {
                 status: 200,
             }
         );
-    }
-    else {
+    } else {
         return HttpResponse.json(
             {
-                message: "Email is not Found",
-                data: false
+                Suggestions: ["marawanSamy99", "mroanDsad19", "mroansmay_Sdaf544", "marwan54marwan", "marwan54DXL", "samyMarwan5455ds"]
             },
             {
                 status: 200,
@@ -38,6 +29,7 @@ export const usernameSuggestionWorker: ResponseResolver = async ({
         );
     }
 };
+
 export const usernameValidationWorker: ResponseResolver = async ({
     request,
 }) => {
@@ -56,9 +48,9 @@ export const usernameValidationWorker: ResponseResolver = async ({
     if (usernames.includes(userNameOrEmail)) {
 
         return HttpResponse.json(
-          {
-            available: false
-          },
+            {
+                available: false
+            },
             {
                 status: 404,
             }
@@ -67,8 +59,8 @@ export const usernameValidationWorker: ResponseResolver = async ({
     else {
         return HttpResponse.json(
             {
-              
-              available: true
+
+                available: true
 
             },
             {
