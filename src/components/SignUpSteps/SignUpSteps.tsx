@@ -8,14 +8,12 @@ import { Step3 } from "./Step3";
 import { SignUpDataSchema } from "@/models/SignUp";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
-import { findEmail, registerNewUser } from "@/lib/utils";
+import { registerNewUser } from "@/lib/utils";
 import { BirthDaySchema } from "@/models/BirthDay";
 
 /*
   NEEDED:
     use step 4
-    add date picker
-    mock server tests
 */
 
 export const SignUpSteps = () => {

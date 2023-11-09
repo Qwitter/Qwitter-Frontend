@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { BirthDaySchema } from "@/models/BirthDay";
 import { MouseEventHandler } from "react";
-import { findEmail } from "@/lib/utils";
 
 // schema that holds name, email, birthday
 export const Step1DataSchema = z.object({

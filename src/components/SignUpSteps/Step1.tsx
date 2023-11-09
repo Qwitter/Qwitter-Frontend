@@ -1,7 +1,7 @@
 import { SignUpStepsProps, Step1DataSchema } from "@/models/SignUp";
 import { TextInput } from "../TextInput/TextInput";
 import { Button } from "../ui/button";
-import { FieldError, FieldValues, useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import BirthDayInput from "../BirthDayInput/BirthDayInput";
 import { useEffect, useState } from "react";
