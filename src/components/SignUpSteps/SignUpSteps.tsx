@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 // import { SignUpSchema } from "../../models/SignUp";
 // import { BirthDaySchema } from "@/models/BirthDay";
 import { FieldValues, useForm, UseFormReturn } from "react-hook-form";
+import { UsernameSuggestion } from "../UsernameSuggestion/UsernameSuggestion";
 
 // type SignUpData = z.infer<typeof SignUpSchema>;
 
@@ -65,6 +66,7 @@ export const SignUpSteps = () => {
   const Steps = [
     <Step1 nextStep={nextStep} form={form} />,
     <Step2 nextStep={nextStep} form={form} />,
+    <UsernameSuggestion nextStep={nextStep}  />,
     <Step3 nextStep={nextStep} form={form} resetStep={resetStep} />,
     <RecaptchaPopUp afterAuth={nextStep} />,
     <Step5

@@ -1,47 +1,56 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, OptionsHeader, ShowSuggestionsNames, TextInput } from '..'
 import { useForm } from 'react-hook-form';
-import {  z } from 'zod';
+import { z } from 'zod';
 import { UsernameSchema } from '@/models/Username';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { isAvailableUsername } from '@/lib/utils';
 import { Spinner } from '../Spinner';
 import { toast } from '../ui/use-toast';
+import { useNavigate } from 'react-router-dom';
 type Props = {
     userName: string
 }
 
 export function ChangeUsername({ userName }: Props) {
+
+    const navigate =useNavigate()
     const form = useForm<z.infer<typeof UsernameSchema>>({
         resolver: zodResolver(UsernameSchema),
         mode: 'onChange'
-    });    const { mutate, isPending } = useMutation({
+    });
+    const { mutate, isPending } = useMutation({
         mutationFn: isAvailableUsername,
-        onSuccess: (data, username) => {
-            console.log(data)
+        onSuccess: (data,username) => {
             if (data) {
                 toast({
                     title: "Change Username",
-                    description: "Username changed Successfully"
+                    description: "Username changed Successfully with "+username,
                 })
+                navigate(-1)
             }
 
         },
     })
-
     const [inputValue, setInputValue] = useState("");
-    const setInputFieldValue = (value: string) => {
-        setInputValue(value);
-        // Set the value in the form using React Hook Form
+    const [isClickChange, setIsClickChange] = useState(false);
+
+    useEffect(() => { setInputValue(userName) },[])
+
+    const setInputFieldValue = (value: string, clickFlag = false) => {
+        setIsClickChange(clickFlag)
         form.setValue('username', value);
+        setInputValue(value);
+        form.trigger("username")
+
     };
     const onSubmit = ({ username }: { username: string }) => {
         mutate(username)
     };
+
     if (isPending) {
         return (
-
             <div className=" w-full h-full border-r border-primary border-opacity-30 mb-20">
                 <OptionsHeader header='Change your password' />
                 <div >
@@ -72,20 +81,20 @@ export function ChangeUsername({ userName }: Props) {
                         {...form.register("username", {
                             required: "Enter your username",
                             onChange: (e) => setInputFieldValue(e.target.value),
-
                         })}
                         value={inputValue}
                         errorMessage={form.formState.errors.username?.message?.toString() || ""}
 
-                    />                </div>
+                    />                
+                    </div>
                 <div className='border-y w-full p-4 border-primary border-opacity-20' >
                     <div className="h-14  mb-2">
                         <h2 className="text-primary text-xl font-extrabold text-start ">Suggestions</h2>
                     </div>
-                    <ShowSuggestionsNames className='flex flex-col flex-wrap gap-4' email={userName + '@'} onSuggestionClick={setInputValue} showSuggestion={true} numberOfSuggestions={6} />
+                    <ShowSuggestionsNames isClickChange={isClickChange} username={inputValue} className='flex flex-col flex-wrap gap-4' onSuggestionClick={setInputFieldValue} showSuggestion={true} numberOfSuggestions={5} />
                 </div>
                 <div className='w-full p-4'>
-                    <Button variant="secondary" className='block ml-auto'disabled={!form.formState.isValid}>Save</Button>
+                    <Button variant="secondary" className='block ml-auto' disabled={!form.formState.isValid}>Save</Button>
                 </div>
             </form>
         </div>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, ShowSuggestionsNames, TextInput } from '../'
 import { useForm } from 'react-hook-form';
 import {  z } from 'zod';
@@ -7,47 +7,33 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Skeleton } from '../ui/skeleton';
 import { useMutation } from '@tanstack/react-query';
 import { isAvailableUsername } from '@/lib/utils';
-// import { useQuery } from '@tanstack/react-query';
 type Props = {
-    email: string;
     nextStep: (v:string) => void;
+    
 }
 
-export function UsernameSuggestion({ email, nextStep }: Props) {
+export function UsernameSuggestion({  nextStep }: Props) {
     const form = useForm<z.infer<typeof UsernameSchema>>({
         resolver: zodResolver(UsernameSchema),
         mode: 'onChange'
     });
 
-    // const {
-    //     isPending: isGettingUsernames,
-    //     isError: hasFailedToSend,
-    //   } = useQuery({
-    //     queryKey: ["usernameSuggestions"],
-    //     queryFn: async () => sendVerificationEmail(email),
-    //     staleTime: 0,
-    //     retry: 0,
-    //     retryDelay: 2000,
-    //     refetchOnMount: false,
-    //     refetchOnReconnect: false,
-    //     refetchOnWindowFocus: false,
-    //   });
     const { mutate, isPending } = useMutation({
         mutationFn: isAvailableUsername,
         onSuccess: (data,username) => {
-            console.log(data)
             if (data) {
                 nextStep(username);
             }
 
         },
     })
+    useEffect(() => { setInputValue("XLV") },[])
 
     const [inputValue, setInputValue] = useState(""); 
     const setInputFieldValue = (value: string) => {
         setInputValue(value);
-        // Set the value in the form using React Hook Form
         form.setValue('username', value);
+        form.trigger("username")
     };
     const onSubmit = ({ username }: { username: string }) => {
         mutate(username)
@@ -62,7 +48,7 @@ export function UsernameSuggestion({ email, nextStep }: Props) {
     }
 
     return (
-        <form className='h-full  flex flex-col  justify-between' onSubmit={form.handleSubmit(onSubmit)} >
+        <form className='h-[96%] w-full  flex flex-col  justify-between' onSubmit={form.handleSubmit(onSubmit)} >
             <div className='flex flex-col w-full'>
                 <h2 className=' font-bold text-primary text-[32px] mb-1 mt-5'>What should we call you?</h2>
                 <p className='text-gray mb-5' >Your @username is unique. You can always change it later.</p>
@@ -79,7 +65,7 @@ export function UsernameSuggestion({ email, nextStep }: Props) {
                     errorMessage={form.formState.errors.username?.message?.toString() || ""}
 
                 />
-                <ShowSuggestionsNames onSuggestionClick={setInputFieldValue} email={email} />
+                <ShowSuggestionsNames onSuggestionClick={setInputFieldValue}  />
             </div>
             <Button variant={'default'} className='w-full py-3 cursor-pointer' type='submit' role='submitButton' disabled={!form.formState.isValid}>Next</Button>
         </form>

@@ -33,7 +33,7 @@ const PasswordRest = () => {
             nextStep={nextStep}
             setEmail={setEmail}
         />,
-        <EmailVerification email={email} onSuccess={verificationOnSuccess} onFail={prevStep}  />,
+        <EmailVerification email={email} onSuccess={verificationOnSuccess} onFail={prevStep} verificationType="passwordReset"  />,
         <PasswordRestPopUp email={email} onSuccess={closePopUp}
         />
     ];

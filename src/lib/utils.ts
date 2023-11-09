@@ -82,8 +82,30 @@ export const isAvailableUsername = async (username: string) => {
         userNameOrEmail: username,
       }
     );
-    console.log(res.data);
     return res.status == 200;
+  } catch (err) {
+    return null;
+  }
+};
+/**
+ * @description get Suggestions for username using the token of the user
+ * @param token
+ * @returns  array of valid Suggestions for username or null
+ */
+export const getSuggestedUsernames = async ({token,username}:{token: string,username:string}) => {
+  const parseToken = z.string().safeParse(token);
+  const parseUsername = z.string().safeParse(username);
+  if (!parseUsername.success||!parseToken.success) return null;
+
+  try {
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/auth/username-suggestions`,
+      {
+        token,
+        username,
+      }
+    );
+    return res.data.Suggestions;
   } catch (err) {
     return null;
   }
