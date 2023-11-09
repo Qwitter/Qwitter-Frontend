@@ -2,7 +2,9 @@ import { Button } from "../../components/ui/button";
 import { AiFillApple } from "react-icons/ai";
 import { FcGoogle } from 'react-icons/fc';
 import logo from "../../assets/logo.png"
+import { Link, useLocation } from "react-router-dom";
 export default function Authentication() {
+  const location = useLocation();
   return (
     <>
       <div className="grid lg:grid-cols-2 lg:min-w-full min-h-screen absolute max-[1025px]:left-[20%] max-[1025px]:top-[5%]" >
@@ -22,10 +24,20 @@ export default function Authentication() {
               <div className="mx-1">Sign up with Apple</div>
             </Button>
             <p className="text-center or-item h-[40px] w-[300px] relative" >or</p>
-            <Button variant="secondary" className="mb-2 h-[40px] w-[300px]">Create account</Button>
+            <Link
+              to="/i/flow/signup"
+              state={{ previousLocation: location }}
+            >
+              <Button variant="secondary" className="mb-2 h-[40px] w-[300px]">Create account</Button>
+            </Link>
             <span className='font-extralight text-sm mb-20 text-start h-[30px] w-[300px]'>By signing up, you agree to the Terms of Service and Privacy Policy, including Cookie Use.</span>
             <h3 className='mb-5 text-md font-bold'>Already have an account?</h3>
-            <Button variant="outline" className='text-secondary h-[40px] w-[300px]'>Sign in</Button>
+            <Link
+              to="/i/flow/login"
+              state={{ previousLocation: location }}
+            >          <Button variant="outline" className='text-secondary h-[40px] w-[300px]'>Sign in</Button>
+            </Link>
+
           </div>
         </div>
       </div >

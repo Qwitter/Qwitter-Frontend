@@ -70,7 +70,6 @@ export function UsernameSuggestion({ email, nextStep }: Props) {
                     required
                     placeHolder='Username'
                     className='w-full'
-
                     {...form.register("username", {
                         required: "Enter your username",
                         onChange:(e) => setInputFieldValue(e.target.value),

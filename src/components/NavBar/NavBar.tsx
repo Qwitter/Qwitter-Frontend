@@ -5,6 +5,7 @@ import { navLinks } from '../../constants'
 import { Button } from '..';
 import { LogOut } from 'lucide-react';
 import Logo from "../../assets/logo.png";
+import { Link } from 'react-router-dom';
 
 
 type Props = {
@@ -16,15 +17,15 @@ type Props = {
 export function NavBar({ profilePic, userName, name }: Props) {
     const [active, setActive] = useState("")
     return (
-        <div className='w-[26.2%] max-xl:w-[10%] max-lg:w-[21%] items-end flex flex-col'>
+        <div className='items-end flex flex-col min-w-[80px]'>
             <div className='flex flex-col items-start xl:w-[275px] px-2 h-full justify-between '>
                 <div className='flex items-start w-full flex-col'>
-                    <a href="">
+                    <Link to="/">
                         <img src={Logo} alt="logo" //use logo here
                             className='w-16 h-16 p-[6px] mt-1 transition-all hover:bg-[#191919] hover:rounded-full font-extrabold'
                             onClick={() => { setActive("") }}
                         />
-                    </a>
+                    </Link>
                     <NavElements active={active} setActive={setActive} />
                     <Button variant="secondary" className='w-11/12 py-4 font-bold h-12 mt-3  max-xl:hidden'>Post</Button>
                 </div>
