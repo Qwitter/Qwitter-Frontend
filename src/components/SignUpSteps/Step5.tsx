@@ -41,7 +41,12 @@ export const Step5 = ({ nextStep, addPassword }: Step5Props) => {
         </div>
       </div>
       <div className="w-full my-6 flex flex-col justify-center">
-        <Button size="full" className="h-[50px] font-bold" form="step5Form">
+        <Button
+          size="full"
+          className="h-[50px] font-bold"
+          form="step5Form"
+          disabled={!form.formState.isDirty || !form.formState.isValid}
+        >
           Next
         </Button>
       </div>

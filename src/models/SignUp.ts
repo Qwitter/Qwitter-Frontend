@@ -3,16 +3,9 @@ import { BirthDaySchema } from "@/models/BirthDay";
 import { MouseEventHandler } from "react";
 import { findEmail } from "@/lib/utils";
 
-export const SignUpSchema = z.object({
-  name: z.string().max(50).trim().nullish(),
-  email: z.string().email().trim().nullish(),
-  password: z.string().min(8).nullish(),
-  birthDay: BirthDaySchema.nullish(),
-});
-
 // schema that holds name, email, birthday
 export const Step1DataSchema = z.object({
-  name: z.string().trim().min(1, "Please enter a name").max(50),
+  name: z.string().trim().min(1, "Please enter a name").max(50).nullish(),
   email: z
     .string()
     .trim()
@@ -21,8 +14,8 @@ export const Step1DataSchema = z.object({
       const data = await findEmail(email);
       if (data === null) return false;
       return !data.data;
-    }, "Email has already been taken"),
-  // birthday
+    }, "Email has already been taken")
+    .nullish(),
 });
 
 // schema that holds the password with its checks
@@ -45,8 +38,8 @@ export const Step5DataSchema = z.object({
 // schema that holds all data
 export const SignUpDataSchema = z.object({
   // nullish is used only to accept the initial state of the user data
-  name: Step1DataSchema.shape.name.nullish(),
-  email: Step1DataSchema.shape.email.nullish(),
+  name: Step1DataSchema.shape.name,
+  email: Step1DataSchema.shape.email,
   password: Step5DataSchema.shape.password.nullish(),
 });
 

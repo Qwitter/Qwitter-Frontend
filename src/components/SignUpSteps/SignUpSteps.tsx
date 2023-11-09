@@ -9,6 +9,7 @@ import { SignUpDataSchema } from "@/models/SignUp";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
 import { findEmail } from "@/lib/utils";
+import { BirthDaySchema } from "@/models/BirthDay";
 
 /*
   NEEDED:
@@ -60,8 +61,16 @@ export const SignUpSteps = () => {
   };
 
   // to concatenate the name, email and birthday to the user data
-  const addStep1Data = (name: string, email: string) => {
-    setUserData({ ...userData, name: name, email: email });
+  const addStep1Data = (
+    name: string,
+    email: string,
+    birthDay: z.infer<typeof BirthDaySchema>
+  ) => {
+    setUserData({
+      ...userData,
+      name: name,
+      email: email,
+    });
   };
 
   // holds steps of sign up

@@ -3,6 +3,7 @@ import { TextInput } from "../TextInput/TextInput";
 import { Button } from "../ui/button";
 import { FieldValues, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import BirthDayInput from "../BirthDayInput/BirthDayInput";
 
 interface Step1Props extends SignUpStepsProps {
   addStep1Data: Function;
@@ -10,13 +11,14 @@ interface Step1Props extends SignUpStepsProps {
 
 // step 1 of the sign up with name, email and date picker
 export const Step1 = ({ nextStep, userData, addStep1Data }: Step1Props) => {
-  const form = useForm({ resolver: zodResolver(Step1DataSchema) }); // to use react hook form
+  const form = useForm<any>({ resolver: zodResolver(Step1DataSchema) }); // to use react hook form
 
   // handle the form submission
   const onSubmit = (data: FieldValues) => {
     // NEEDED: send data to the backend to check the email
 
     addStep1Data(data.name, data.email);
+    console.log(form.getValues());
 
     nextStep();
   };
@@ -50,7 +52,7 @@ export const Step1 = ({ nextStep, userData, addStep1Data }: Step1Props) => {
               </p>
               <div className="w-full my-4">
                 {/* NEEDED: help required from Seif (only need to work with types) */}
-                {/* <BirthDayInput form={form} birthDay={null} /> */}
+                {/* <BirthDayInput form={form} /> */}
               </div>
             </div>
           </form>
@@ -61,6 +63,7 @@ export const Step1 = ({ nextStep, userData, addStep1Data }: Step1Props) => {
           size="full"
           className="h-[50px] font-bold"
           form="step1Form" // to attach the button to the form
+          disabled={!form.formState.isDirty || !form.formState.isValid}
         >
           Next
         </Button>
