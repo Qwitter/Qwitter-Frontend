@@ -5,7 +5,7 @@ export const emailCheckWorker: ResponseResolver = async ({
 }) => {
     const { email } = (await request.json()) as { email: string };
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     const emails = [
         "sofa5060@gmail.com",
         "test@gmail.com",

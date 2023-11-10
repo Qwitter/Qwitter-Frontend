@@ -71,8 +71,9 @@ export const findEmail = async (email: string) => {
     });
     return res.data;
   } catch (err) {
+    const errObj = err as { response: { data: { available: boolean } } };
     console.log(err);
-    return null;
+    return errObj;
   }
 };
 /**
@@ -164,7 +165,7 @@ export const restPasswordWithNewOne = async ({
  * @param {password,emailOrUsername}
  * @returns  object represents the response from the backend or null
  */
-export const loginSerive = async ({
+export const loginService = async ({
   email,
   password,
 }: {
