@@ -30,7 +30,10 @@ const BirthDayInput = ({ className, form }: BirthDayInputProps) => {
               onValueChange={(val: Month) => {
                 setMonth(val);
                 if (DAYS_IN_MONTH[val] < form.getValues("day")) {
-                  form.resetField("day");
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  //@ts-ignore
+                  form.setValue("day", "1");
+                  form.trigger("day");
                 }
                 field.onChange(val);
               }}
@@ -72,6 +75,7 @@ const BirthDayInput = ({ className, form }: BirthDayInputProps) => {
             <Select
               onValueChange={field.onChange}
               defaultValue={form.formState.defaultValues?.day?.toString()}
+              value={form.getValues("day")?.toString()}
             >
               <SelectTrigger
                 className={cn({
@@ -119,11 +123,11 @@ const BirthDayInput = ({ className, form }: BirthDayInputProps) => {
               <SelectContent className="max-h-[var(--radix-select-content-available-height)]">
                 {[...Array(123)].map((_, i) => (
                   <SelectItem
-                    key={2023 - i}
-                    value={(2023 - i).toString()}
+                    key={2007 - i}
+                    value={(2007 - i).toString()}
                     role="option"
                   >
-                    {2023 - i}
+                    {2007 - i}
                   </SelectItem>
                 ))}
               </SelectContent>

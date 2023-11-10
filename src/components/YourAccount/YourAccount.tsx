@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { accountOptions } from '../../constants'
-import { ChevronRight, MoveLeft } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 import { OptionsHeader } from '../OptionsHeader/OptionsHeader'
 
 export function YourAccount() {

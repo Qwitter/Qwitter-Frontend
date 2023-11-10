@@ -11,6 +11,8 @@ import { Toaster } from "./components/ui/toaster";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Authentication } from "./pages";
 import { LoginSignUp } from "./components/LoginSignUp/LoginSignUp";
+import OAuth from "./components/OAuth/OAuth";
+import OAuthInterceptor from "./components/OAuth/OAuthInterceptor";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +37,11 @@ function App() {
           />
           <Route path="/i/flow/login" element={<Login />} />
           <Route path="/i/flow/password_reset" element={<PasswordRest />} />
+          <Route
+            path="/i/flow/single-sign/callback"
+            element={<OAuthInterceptor />}
+          />
+          <Route path="/i/flow/single-sign" element={<OAuth />} />
         </Routes>
         <Toaster />
       </ThemeProvider>

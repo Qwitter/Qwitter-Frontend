@@ -84,7 +84,7 @@ export const SignUpSteps = () => {
     <Step3 nextStep={nextStep} resetStep={resetStep} userData={userData} />,
     // <RecaptchaPopUp afterAuth={nextStep} />,
     // < />,
-    <Step5 nextStep={() => {}} registerUser={registerUser} />,
+    <Step5 nextStep={() => { }} registerUser={registerUser} />,
   ];
 
   // holds which button (x, arrow or none) is shown

@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { SignInProp } from "./LoginPropsType";
 import { TextInput } from "@/components/TextInput/TextInput";
 import { Link } from "react-router-dom";
-function LoginPassword({ incrementStep, form }: SignInProp) {
+export function LoginPassword({ incrementStep, form }: SignInProp) {
     return (
         <div className="w-full h-full flex flex-col items-center justify-between">
             <div>
@@ -13,6 +13,8 @@ function LoginPassword({ incrementStep, form }: SignInProp) {
                     placeHolder="Email" />
                 <TextInput
                     {...form.register("password")}
+                    data-testid="pass"
+                    role="passwordInput"
                     isPassword={true}
                     className="w-[440px]"
                     placeHolder="Password" />
@@ -22,7 +24,7 @@ function LoginPassword({ incrementStep, form }: SignInProp) {
                 </Link>
             </div>
             <div>
-                <Button disabled={!form.watch("password")} variant="default" className="my-5 h-[51px] w-[440px]" onClick={incrementStep}>Log in</Button>
+                <Button data-testid="login" disabled={!form.watch("password")} variant="default" className="my-5 h-[51px] w-[440px]" onClick={incrementStep}>Log in</Button>
                 <p className="text-start text-slate-400 w-[440px]">Don't have an account?
                     <span className="mx-1 hover:underline hover:cursor-pointer text-secondary">Sign up</span>
                 </p>
@@ -30,5 +32,3 @@ function LoginPassword({ incrementStep, form }: SignInProp) {
         </div>
     )
 }
-
-export default LoginPassword
