@@ -3,6 +3,7 @@ import { TextInput } from "../TextInput/TextInput";
 import { Button } from "../ui/button";
 import { FieldValues, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
 
 interface Step5Props extends SignUpStepsProps {
   registerUser: Function;
@@ -17,6 +18,17 @@ export const Step5 = ({ nextStep, registerUser }: Step5Props) => {
 
     nextStep();
   };
+
+  useEffect(() => {
+    const timeoutId = setTimeout(async () => {
+      if (form.getValues().password) {
+        await form.trigger("password");
+      }
+    }, 500);
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [form.watch("password")]);
 
   return (
     <>

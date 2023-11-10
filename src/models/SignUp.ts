@@ -5,8 +5,12 @@ import { isAtLeast18YearsAgo } from "@/lib/utils";
 
 // schema that holds name, email, birthday
 export const Step1DataSchema = z.object({
-  name: z.string().trim().min(1, "Please enter a name").max(50),
-  email: z.string().trim().email("Please enter a valid email"),
+  name: z
+    .string()
+    .min(1, { message: "Please enter a name" })
+    .max(50, { message: "Name must be less than 50 letters" })
+    .trim(),
+  email: z.string().email({ message: "Please enter a valid email" }).trim(),
   day: BirthDaySchema.shape.day,
   month: BirthDaySchema.shape.month,
   year: BirthDaySchema.shape.year,
@@ -14,8 +18,8 @@ export const Step1DataSchema = z.object({
 
 export const RefinedStep1DataSchema = z
   .object({
-    name: z.string().trim().min(1, "Please enter a name").max(50),
-    email: z.string().trim().email("Please enter a valid email"),
+    name: Step1DataSchema.shape.name,
+    email: Step1DataSchema.shape.email,
     day: BirthDaySchema.shape.day,
     month: BirthDaySchema.shape.month,
     year: BirthDaySchema.shape.year,
