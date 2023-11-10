@@ -45,7 +45,7 @@ export const DAYS_IN_MONTH: DaysInMonth = {
   July: 31,
   August: 30,
   September: 31,
-  October: 30,
+  October: 31,
   November: 31,
   December: 30,
 } as const;

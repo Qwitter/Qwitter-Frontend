@@ -13,7 +13,8 @@ import {
 import { SignInWokerHandler } from "./SignInWorker/SignInWorker";
 import { RegisterUserWorker } from "./RegisterUserWorker/RegisterUserWorker";
 import { sendResetPasswordVerificationTokenWorker } from "./SendResetPasswordVerificationTokenWorker/SendResetPasswordVerificationTokenWorker";
-
+import { userWorker } from "./UserWorker/UserWorker";
+import { OAuthRegisterUserWorker } from "./OAuthRegisterUserWorker/OAuthRegisterUserWorker";
 
 const { VITE_BACKEND_URL } = process.env;
 
@@ -31,7 +32,10 @@ export const handlers = [
     resetPasswordVerificationTokenWorkerHandler
   ),
   http.post(`${VITE_BACKEND_URL}/api/user/find-email`, emailCheckWorker),
-  http.post(`${VITE_BACKEND_URL}/api/v1/auth/change-password`, PasswordRestWorker),
+  http.post(
+    `${VITE_BACKEND_URL}/api/v1/auth/change-password`,
+    PasswordRestWorker
+  ),
   http.post(
     `${VITE_BACKEND_URL}/api/v1/auth/check-existence`,
     usernameValidationWorker
@@ -46,4 +50,6 @@ export const handlers = [
     `${VITE_BACKEND_URL}/api/v1/auth/forgot-password`,
     sendResetPasswordVerificationTokenWorker
   ),
+  http.get(`${VITE_BACKEND_URL}/api/user`, userWorker),
+  http.post(`${VITE_BACKEND_URL}/api/v1/auth/signup/google`, OAuthRegisterUserWorker),
 ];

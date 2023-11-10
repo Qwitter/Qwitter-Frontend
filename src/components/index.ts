@@ -4,7 +4,6 @@ import { Button } from "./ui/button";
 import { PopUpContainer } from "./PopUpContainer/PopUpContainer";
 import { SignUpSteps } from "./SignUpSteps/SignUpSteps";
 import { TextInput } from "./TextInput/TextInput";
-import SignUpButton from "./SignUpButton/SignUpButton";
 import {
   Select,
   SelectContent,
@@ -44,7 +43,6 @@ export {
   SignUpSteps,
   TextInput,
   UsernameSuggestion,
-  SignUpButton,
   NavBar,
   SettingsMain,
   Select,
