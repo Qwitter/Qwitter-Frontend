@@ -11,6 +11,9 @@ import {
   usernameValidationWorker,
 } from "./UsernameSuggestionWorker/UsernameSuggestionWorker";
 import { SignInWokerHandler } from "./SignInWorker/SignInWorker";
+import { RegisterUserWorker } from "./RegisterUserWorker/RegisterUserWorker";
+import { sendResetPasswordVerificationTokenWorker } from "./SendResetPasswordVerificationTokenWorker/SendResetPasswordVerificationTokenWorker";
+
 
 const { VITE_BACKEND_URL } = process.env;
 
@@ -24,15 +27,11 @@ export const handlers = [
     verificationTokenWorkerHandler
   ),
   http.post(
-    `${VITE_BACKEND_URL}/api/v1/auth/forgot-password`,
-    verificationWorkerHandler
-  ),
-  http.post(
     `${VITE_BACKEND_URL}/api/v1/auth/reset-password/:token`,
     resetPasswordVerificationTokenWorkerHandler
   ),
   http.post(`${VITE_BACKEND_URL}/api/user/find-email`, emailCheckWorker),
-  http.post(`${VITE_BACKEND_URL}/api/user/RestPassword`, PasswordRestWorker),
+  http.post(`${VITE_BACKEND_URL}/api/v1/auth/change-password`, PasswordRestWorker),
   http.post(
     `${VITE_BACKEND_URL}/api/v1/auth/check-existence`,
     usernameValidationWorker
@@ -41,5 +40,10 @@ export const handlers = [
   http.post(
     `${VITE_BACKEND_URL}/api/v1/auth/username-suggestions`,
     usernameSuggestionWorker
+  ),
+  http.post(`${VITE_BACKEND_URL}/api/v1/auth/signup`, RegisterUserWorker),
+  http.post(
+    `${VITE_BACKEND_URL}/api/v1/auth/forgot-password`,
+    sendResetPasswordVerificationTokenWorker
   ),
 ];

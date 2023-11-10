@@ -9,11 +9,11 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { findEmail, loginSerive } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
-import {useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
 
 
-export default function Login() {
+export function Login() {
     const [step, setStep] = useState(1);
     const [showDialog, setshowDialog] = useState(true);
     const { toast } = useToast();

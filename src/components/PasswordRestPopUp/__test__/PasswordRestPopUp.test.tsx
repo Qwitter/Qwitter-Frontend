@@ -33,14 +33,14 @@ afterAll(() => {
     server.close();
 });
 
-describe("FindEmailPopUp testing", () => {
+describe("PasswordRestPopUp testing", () => {
 
 
     it("Should render successfully", () => {
         // ARRANGE
         render(
             <QueryClientProvider client={client}>
-                <PasswordRestPopUp email="test@gmail.com" onSuccess={mockFn} />
+                <PasswordRestPopUp  token="123456as" onSuccess={mockFn} />
             </QueryClientProvider>
         );
 
@@ -62,7 +62,7 @@ describe("FindEmailPopUp testing", () => {
         // ARRANGE
         render(
             <QueryClientProvider client={client}>
-                <PasswordRestPopUp email="test@gmail.com" onSuccess={mockFn} />
+                <PasswordRestPopUp  token="123456as" onSuccess={mockFn} />
             </QueryClientProvider>
         );
 
@@ -83,7 +83,7 @@ describe("FindEmailPopUp testing", () => {
         // ARRANGE
         render(
             <QueryClientProvider client={client}>
-                <PasswordRestPopUp email="test@gmail.com" onSuccess={mockFn} />
+                <PasswordRestPopUp token="123456as" onSuccess={mockFn} />
             </QueryClientProvider>
         );
 
@@ -97,11 +97,11 @@ describe("FindEmailPopUp testing", () => {
         expect(screen.getByText("Change password")).toBeDisabled();
     });
 
-    it("Should render error when the email isn't found", async () => {
+    it("Should call success when successfully reset the password", async () => {
         const user = userEvent;
         render(
             <QueryClientProvider client={client}>
-                <PasswordRestPopUp email="test@gmail.com" onSuccess={mockFn} />
+                <PasswordRestPopUp  token="123456as" onSuccess={mockFn} />
             </QueryClientProvider>
         );
 
@@ -117,6 +117,28 @@ describe("FindEmailPopUp testing", () => {
         // ASSERT
         setTimeout(() => {
             expect(mockFn).toHaveBeenCalled();
+        }, 3500);
+    });
+    it("Should call success when successfully reset the password", async () => {
+        const user = userEvent;
+        render(
+            <QueryClientProvider client={client}>
+                <PasswordRestPopUp  token="" onSuccess={mockFn} />
+            </QueryClientProvider>
+        );
+
+        // ACT
+        const passwordInput = screen.getByRole("text");
+        const confirmInput = screen.getByRole("confirmPassword");
+        await user.type(passwordInput, validPassword);
+        await user.type(confirmInput, validPassword);
+        const button = screen.getByRole("submitButton");
+        expect(button).toBeEnabled();
+        await userEvent.click(button);
+
+        // ASSERT
+        setTimeout(() => {
+            expect(mockFn).not.toHaveBeenCalled();
         }, 3500);
     });
 

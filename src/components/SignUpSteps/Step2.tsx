@@ -9,13 +9,13 @@ export const Step2 = ({ nextStep }: SignUpStepsProps) => {
       <div className="w-full flex flex-col items-start justify-start">
         <h2 className="text-3xl font-bold my-5">Customize your experience</h2>
         <div className="w-full">
-          <h3 className="w-[400px] mt-5 text-xl font-bold leading-6">
+          <h3 className="w-full mt-5 text-xl font-bold leading-6">
             Track where you see X content across the web
           </h3>
           <div className="w-full mt-3 flex flex-row">
             <label
               htmlFor="check"
-              className="w-[394px] mr-[26px] mb-0 text-[15px] text-primary mb-1 text-gray leading-5"
+              className="w-full mr-[26px] mb-0 text-[15px] text-primary mb-1 text-gray leading-5"
             >
               X uses this data to personalize your experience. This web browsing
               history will never be stored with your name, email, or phone

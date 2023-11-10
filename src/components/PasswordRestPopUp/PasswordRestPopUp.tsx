@@ -9,11 +9,11 @@ import { restPasswordWithNewOne } from '../../lib/utils';
 import { Skeleton } from '../ui/skeleton';
 import { useToast } from '../ui/use-toast';
 type PasswordRestPopUpProps = {
-    email: string;
     onSuccess:()=>void;
+    token: string|null;
 
 };
-export function PasswordRestPopUp({ email,onSuccess }: PasswordRestPopUpProps) {
+export function PasswordRestPopUp({onSuccess,token }: PasswordRestPopUpProps) {
     const form = useForm<z.infer<typeof PasswordSchema>>({
         resolver: zodResolver(PasswordSchema),
         mode: 'onChange'
@@ -28,11 +28,16 @@ export function PasswordRestPopUp({ email,onSuccess }: PasswordRestPopUpProps) {
                 description: data?.data?.message 
             })
             onSuccess();
-
+        },
+        onError: () => {
+            toast({
+                title: "Rest Password",
+                description:"Failed try again later"
+            })
         },
     })
     const onSubmit = ({ Password }: { Password: string }) => {
-        mutate({ password: Password, email: email });
+        mutate({ password: Password, token: token });
     };
     if (isPending) {
         return (

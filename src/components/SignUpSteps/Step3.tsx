@@ -23,7 +23,9 @@ export const Step3 = ({ nextStep, resetStep, userData }: SignUpStepsProps) => {
           />
           <TextInput
             //   NEEDED: add the birthday in the correct format
-            // value={userData.birthDay || ""}
+            value={`${userData?.month?.slice(0, 3)} ${userData?.day}, ${
+              userData?.year
+            }`}
             placeHolder="Date of birth"
             onClick={resetStep}
             readOnly

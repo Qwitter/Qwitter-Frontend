@@ -6,6 +6,7 @@ import {
   PasswordChangeEmailVerificationTokenSchema,
   SignUpEmailVerificationTokenSchema,
 } from "@/models/EmailVerification";
+import { SignUpDataSchema } from "@/models/SignUp";
 
 const { VITE_BACKEND_URL } = process.env;
 
@@ -118,26 +119,26 @@ export const getSuggestedUsernames = async ({
 };
 
 /**
- * @description change the password of the user with the new password
+ * @description change the password of the user with the new password using token
  * @param password
  * @returns  object represents the response from the backend or null
  */
 export const restPasswordWithNewOne = async ({
   password,
-  email,
+  token,
 }: {
   password: string;
-  email: string;
+  token: string|null;
 }) => {
   const parsePassword = z.string().safeParse(password);
-  const parseEmail = z.string().safeParse(email);
-  if (!parsePassword.success || !parseEmail.success) return null;
-
+  const parseToken = z.string().safeParse(token);
+  if (!parsePassword.success || !parseToken.success)  throw new Error("Invalid token");
   try {
-    const res = await axios.post(`${VITE_BACKEND_URL}/api/user/RestPassword`, {
+    const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/auth/change-password`, {
       password,
-      email,
-    });
+      passwordConfirmation: password
+    },{headers:{Authorization:`Bearer ${token}`}});
+    console.log(res)
     return res;
   } catch (err) {
     console.log(err);
@@ -213,8 +214,7 @@ export const sendResetPasswordVerificationEmail = async (email: string) => {
     );
     return res;
   } catch (err) {
-    const errObj = err as { stack: string };
-    throw new Error(errObj.stack);
+    throw new Error("Email is not found");
   }
 };
 
@@ -262,5 +262,42 @@ export const verifyResetPasswordEmail = async (token: string) => {
     const errObj = err as { response: { data: { message: string } } };
     if (errObj.response) throw new Error(errObj.response.data.message);
     else throw new Error("Error Verifying Email");
+  }
+};
+
+/**
+ * @description Register a new user to the backend
+ * @param   newUserData Object holding name, email, birthdate and password
+ * @returns Object holding the backend response or null in case of an error
+ */
+export const registerNewUser = (newUserData: object) => {
+  const parseResult = SignUpDataSchema.safeParse(newUserData);
+
+  if (!parseResult.success) return null;
+
+  const dateString = `${parseResult.data.year}-${parseResult.data.month}-${parseResult.data.day}`;
+  const birthDate = new Date(dateString);
+
+  try {
+    const res = axios.post(
+      `${VITE_BACKEND_URL}/api/v1/auth/signup`,
+      {
+        name: parseResult.data.name,
+        email: parseResult.data.email,
+        password: parseResult.data.password,
+        passwordConfirmation: parseResult.data.password,
+        birthDate: birthDate.toISOString(),
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return res;
+  } catch (error) {
+    console.log(error);
+    return null;
   }
 };
