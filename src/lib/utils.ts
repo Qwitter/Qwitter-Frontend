@@ -118,26 +118,26 @@ export const getSuggestedUsernames = async ({
 };
 
 /**
- * @description change the password of the user with the new password
+ * @description change the password of the user with the new password using token
  * @param password
  * @returns  object represents the response from the backend or null
  */
 export const restPasswordWithNewOne = async ({
   password,
-  email,
+  token,
 }: {
   password: string;
-  email: string;
+  token: string|null;
 }) => {
   const parsePassword = z.string().safeParse(password);
-  const parseEmail = z.string().safeParse(email);
-  if (!parsePassword.success || !parseEmail.success) return null;
-
+  const parseToken = z.string().safeParse(token);
+  if (!parsePassword.success || !parseToken.success)  throw new Error("Invalid token");
   try {
-    const res = await axios.post(`${VITE_BACKEND_URL}/api/user/RestPassword`, {
+    const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/auth/change-password`, {
       password,
-      email,
-    });
+      passwordConfirmation: password
+    },{headers:{Authorization:`Bearer ${token}`}});
+    console.log(res)
     return res;
   } catch (err) {
     console.log(err);
@@ -213,8 +213,7 @@ export const sendResetPasswordVerificationEmail = async (email: string) => {
     );
     return res;
   } catch (err) {
-    const errObj = err as { stack: string };
-    throw new Error(errObj.stack);
+    throw new Error("Email is not found");
   }
 };
 
