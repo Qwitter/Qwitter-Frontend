@@ -109,9 +109,7 @@ export const resetPasswordVerificationTokenWorkerHandler: ResponseResolver =
     return HttpResponse.json(
       {
         message: "Email verified successfully",
-        data: {
-          email: `${emailToken?.email}`,
-        },
+        token: "q98ehwniudwe98fehwf094r12i3112321",
       },
       {
         status: 200,
