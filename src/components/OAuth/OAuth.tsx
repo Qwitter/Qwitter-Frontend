@@ -29,10 +29,9 @@ const OAuth = () => {
     if (!location.state) return;
     const { token } = location.state as { token: string };
     if (!token || !birthDay) return;
-    const user = await oAuthSignUp(token, birthDay);
-    console.log(user);
-    if (!user) return;
-    saveUser(user, token);
+    const res = await oAuthSignUp(token, birthDay);
+    if (!res) return;
+    saveUser(res.data, res.token);
     navigate("/success");
   };
 

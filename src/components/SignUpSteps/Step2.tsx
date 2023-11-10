@@ -30,7 +30,7 @@ export const Step2 = ({ nextStep }: SignUpStepsProps) => {
           and phone number for purposes outlined in our Privacy Policy.
         </p>
       </div>
-      <div className="w-full my-6 flex flex-col justify-center">
+      <div className="w-full my-6 flex flex-col justify-center mt-auto">
         <Button size="full" className="h-[50px]  font-bold" onClick={nextStep}>
           Next
         </Button>
