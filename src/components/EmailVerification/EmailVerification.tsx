@@ -16,17 +16,31 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-type EmailVerificationProps = {
+type SignUpEmailVerificationProps = {
+  verificationType: "signUp";
   email: string;
   onSuccess: () => void;
   onFail?: () => void;
-  verificationType?: "passwordReset" | "signUp";
+  setToken?: (token: string) => void;
 };
+
+type PasswordChangeEmailVerificationProps = {
+  verificationType: "passwordReset";
+  email: string;
+  onSuccess: () => void;
+  onFail?: () => void;
+  setToken: (token: string) => void;
+};
+
+type EmailVerificationProps =
+  | SignUpEmailVerificationProps
+  | PasswordChangeEmailVerificationProps;
 
 const EmailVerification = ({
   email,
   onSuccess,
   onFail,
+  setToken,
   verificationType = "signUp",
 }: EmailVerificationProps) => {
   const {
@@ -71,7 +85,12 @@ const EmailVerification = ({
       }
       return verifySignUpEmail(email, token);
     },
-    onSuccess: onSuccess,
+    onSuccess: (res) => {
+      if (verificationType === "passwordReset") {
+        setToken!(res.data.token);
+      }
+      onSuccess();
+    },
   });
 
   const onSubmit = handleSubmit((data) => {

@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const PasswordRest = () => {
   const [step, setStep] = useState(0);
-
+  const [token , setToken] = useState<string|null>("123456ss");
   const [showPopUp, setShowPopUp] = useState<boolean>(true); // controls if the sign up is started or not
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
@@ -35,8 +35,9 @@ const PasswordRest = () => {
       onSuccess={verificationOnSuccess}
       onFail={prevStep}
       verificationType="passwordReset"
+      setToken={setToken}
     />,
-    <PasswordRestPopUp email={email} onSuccess={closePopUp} />,
+    <PasswordRestPopUp  onSuccess={closePopUp} token={token} />,
   ];
 
   return (
