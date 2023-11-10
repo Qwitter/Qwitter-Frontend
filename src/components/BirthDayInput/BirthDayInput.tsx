@@ -123,11 +123,11 @@ const BirthDayInput = ({ className, form }: BirthDayInputProps) => {
               <SelectContent className="max-h-[var(--radix-select-content-available-height)]">
                 {[...Array(123)].map((_, i) => (
                   <SelectItem
-                    key={2023 - i}
-                    value={(2023 - i).toString()}
+                    key={2007 - i}
+                    value={(2007 - i).toString()}
                     role="option"
                   >
-                    {2023 - i}
+                    {2007 - i}
                   </SelectItem>
                 ))}
               </SelectContent>
