@@ -10,6 +10,8 @@ type UserContextType = {
   token: string | null;
   saveUser: (user: User, token: string) => void;
   logout: () => void;
+  setUser: (user: User | null) => void;
+  setToken: (token: string | null) => void;
 };
 
 const defaultUserContext: UserContextType = {
@@ -17,6 +19,8 @@ const defaultUserContext: UserContextType = {
   token: null,
   saveUser: () => {},
   logout: () => {},
+  setUser: () => {},
+  setToken: () => {},
 };
 
 export const UserContext = createContext<UserContextType>(defaultUserContext);
@@ -28,15 +32,17 @@ const UserContextProvider = ({ children }: UserContextProviderProps) => {
   const saveUser = (user: User, token: string) => {
     setUser(user);
     setToken(token);
-  }
+  };
 
   const logout = () => {
     setUser(null);
     setToken(null);
-  }
+  };
 
   return (
-    <UserContext.Provider value={{ user, token, saveUser, logout }}>
+    <UserContext.Provider
+      value={{ user, token, setUser, setToken, saveUser, logout }}
+    >
       {children}
     </UserContext.Provider>
   );

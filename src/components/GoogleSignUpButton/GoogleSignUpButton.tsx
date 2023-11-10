@@ -3,15 +3,22 @@ import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "@/contexts/UserContextProvider";
+import { getUser } from "@/lib/utils";
 
 let windowObjectReference: Window | null = null;
 let previousUrl: string | null = null;
 
 const GoogleSignUpButton = () => {
   const navigate = useNavigate();
-  const { saveUser } = useContext(UserContext);
+  const { saveUser, setToken } = useContext(UserContext);
 
-  const receiveMessage = (event: any) => {
+  const receiveMessage = async (event: {
+    origin: string;
+    data: {
+      source: string;
+      params: { token: string; authenticationMethod: "login" | "signup" };
+    };
+  }) => {
     if (event.origin !== "http://localhost:5173") {
       return;
     }
@@ -19,16 +26,19 @@ const GoogleSignUpButton = () => {
 
     // if we trust the sender and the source is our popup
     if (data.source === "qwitter-auth-redirect") {
-      // get the URL params and redirect to our server to use Passport to auth/login
       const {
-        params: { user, token, authMethod },
+        params: { token, authenticationMethod },
       } = data;
-      console.log(user, token, authMethod);
-      if (authMethod === "login") {
+      if (authenticationMethod === "login") {
+        console.log("login");
+        const user = await getUser(token);
+        console.log(user);
         saveUser(user, token);
         navigate("/success");
       } else {
-        navigate("/i/flow/single-sign", { state: { user, token } });
+        console.log("signup");
+        setToken(token);
+        navigate("/i/flow/single-sign", { state: { token } });
       }
     }
   };

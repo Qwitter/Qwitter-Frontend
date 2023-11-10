@@ -18,7 +18,7 @@ const OAuthInterceptor = () => {
     if (window.opener) {
       // send them to the opening window
       window.opener.postMessage({
-        params: JSON.parse(params.data),
+        params,
         source: "qwitter-auth-redirect",
       });
       // close the popup

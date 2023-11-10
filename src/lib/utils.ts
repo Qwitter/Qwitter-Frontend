@@ -7,6 +7,7 @@ import {
   SignUpEmailVerificationTokenSchema,
 } from "@/models/EmailVerification";
 import { SignUpDataSchema } from "@/models/SignUp";
+import { BirthDay, MONTHS } from "@/models/BirthDay";
 
 const { VITE_BACKEND_URL } = process.env;
 
@@ -16,18 +17,25 @@ export function cn(...inputs: ClassValue[]) {
 
 /**
  * @description Get the current user from the backend after the user has logged in
- * @params none
- * @returns Promise object represents the user data
+ * @params token
+ * @returns object represents the user data
  */
-export const getUser = async () => {
-  return axios.get(`${VITE_BACKEND_URL}/api/user`, {
-    withCredentials: true,
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Credentials": true,
-    },
-  });
+export const getUser = async (token: string) => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/user`, {
+      withCredentials: true,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
 };
 
 /**
@@ -128,17 +136,22 @@ export const restPasswordWithNewOne = async ({
   token,
 }: {
   password: string;
-  token: string|null;
+  token: string | null;
 }) => {
   const parsePassword = z.string().safeParse(password);
   const parseToken = z.string().safeParse(token);
-  if (!parsePassword.success || !parseToken.success)  throw new Error("Invalid token");
+  if (!parsePassword.success || !parseToken.success)
+    throw new Error("Invalid token");
   try {
-    const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/auth/change-password`, {
-      password,
-      passwordConfirmation: password
-    },{headers:{Authorization:`Bearer ${token}`}});
-    console.log(res)
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/auth/change-password`,
+      {
+        password,
+        passwordConfirmation: password,
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    console.log(res);
     return res;
   } catch (err) {
     console.log(err);
@@ -267,7 +280,7 @@ export const verifyResetPasswordEmail = async (token: string) => {
 
 /**
  * @description Register a new user to the backend
- * @param   newUserData Object holding name, email, birthdate and password
+ * @param   newUserData Object holding name, email, birthday and password
  * @returns Object holding the backend response or null in case of an error
  */
 export const registerNewUser = (newUserData: object) => {
@@ -296,6 +309,37 @@ export const registerNewUser = (newUserData: object) => {
       }
     );
     return res;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+export const oAuthSignUp = async (token: string, birthday: BirthDay) => {
+  const parseResult = z.string().safeParse(token);
+  if (!parseResult.success) return null;
+
+  const birthDate = new Date(
+    birthday.year,
+    MONTHS.indexOf(birthday.month),
+    birthday.day
+  ).toISOString();
+
+  try {
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/auth/signup/google`,
+      {
+        birthDate,
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
   } catch (error) {
     console.log(error);
     return null;

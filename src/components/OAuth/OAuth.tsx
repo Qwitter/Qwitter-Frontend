@@ -3,16 +3,17 @@ import { default as BirthDayComponent } from "../BirthDay/BirthDay";
 import { type BirthDay } from "@/models/BirthDay";
 import { HeaderButton } from "@/models/PopUpModel";
 import { PopUpContainer } from "../PopUpContainer/PopUpContainer";
-import { useLocation } from "react-router-dom";
-import { User } from "@/models/User";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { Step2 } from "../SignUpSteps/Step2";
+import { oAuthSignUp } from "@/lib/utils";
 
 const OAuth = () => {
   const [step, setStep] = useState(0);
   const [birthDay, setBirthDay] = useState<BirthDay | null>(null);
   const location = useLocation();
+  const navigate = useNavigate();
   const { saveUser } = useContext(UserContext);
 
   const nextStep = () => {
@@ -24,10 +25,15 @@ const OAuth = () => {
     setStep(step - 1);
   };
 
-  const signUp = () => {
+  const signUp = async () => {
     if (!location.state) return;
-    const { user, token } = location.state as { user: User; token: string };
+    const { token } = location.state as { token: string };
+    if (!token || !birthDay) return;
+    const user = await oAuthSignUp(token, birthDay);
+    console.log(user);
+    if (!user) return;
     saveUser(user, token);
+    navigate("/success");
   };
 
   const steps = [
