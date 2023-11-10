@@ -11,6 +11,7 @@ import { Toaster } from "./components/ui/toaster";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Authentication } from "./pages";
 import { LoginSignUp } from "./components/LoginSignUp/LoginSignUp";
+import OAuth from "./components/OAuth/OAuth";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <OAuth />
         <Routes location={previousLocation || location}>
           {/* this is the main routs*/}
           <Route path="/" element={<Authentication />} />

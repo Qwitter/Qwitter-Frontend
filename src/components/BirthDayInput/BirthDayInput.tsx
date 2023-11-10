@@ -30,7 +30,10 @@ const BirthDayInput = ({ className, form }: BirthDayInputProps) => {
               onValueChange={(val: Month) => {
                 setMonth(val);
                 if (DAYS_IN_MONTH[val] < form.getValues("day")) {
-                  form.resetField("day");
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  //@ts-ignore
+                  form.setValue("day", "1");
+                  form.trigger("day");
                 }
                 field.onChange(val);
               }}
@@ -72,6 +75,7 @@ const BirthDayInput = ({ className, form }: BirthDayInputProps) => {
             <Select
               onValueChange={field.onChange}
               defaultValue={form.formState.defaultValues?.day?.toString()}
+              value={form.getValues("day")?.toString()}
             >
               <SelectTrigger
                 className={cn({
