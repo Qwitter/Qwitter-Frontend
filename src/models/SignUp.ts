@@ -1,6 +1,7 @@
 import { z } from "zod";
-import { BirthDaySchema } from "@/models/BirthDay";
+import { BirthDaySchema, DAYS_IN_MONTH, MONTHS } from "@/models/BirthDay";
 import { MouseEventHandler } from "react";
+import { isAtLeast18YearsAgo } from "@/lib/utils";
 
 // schema that holds name, email, birthday
 export const Step1DataSchema = z.object({
@@ -10,6 +11,35 @@ export const Step1DataSchema = z.object({
   month: BirthDaySchema.shape.month,
   year: BirthDaySchema.shape.year,
 });
+
+export const RefinedStep1DataSchema = z
+  .object({
+    name: z.string().trim().min(1, "Please enter a name").max(50),
+    email: z.string().trim().email("Please enter a valid email"),
+    day: BirthDaySchema.shape.day,
+    month: BirthDaySchema.shape.month,
+    year: BirthDaySchema.shape.year,
+  })
+  .refine((data) => {
+    const daysInMonth = DAYS_IN_MONTH[data.month];
+    return (
+      data.day <= daysInMonth,
+      {
+        message: "Must be a valid day for the month",
+        path: ["day"],
+      }
+    );
+  })
+  .refine((data) => {
+    const date = new Date(data.year, MONTHS.indexOf(data.month), data.day);
+    return (
+      isAtLeast18YearsAgo(date),
+      {
+        message: "Must be at least 18 years old",
+        path: ["year"],
+      }
+    );
+  });
 
 // schema that holds the password with its checks
 export const Step5DataSchema = z.object({

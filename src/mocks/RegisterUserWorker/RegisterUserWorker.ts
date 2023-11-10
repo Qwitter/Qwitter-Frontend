@@ -11,7 +11,6 @@ export const RegisterUserWorker: ResponseResolver = async ({ request }) => {
   const body = (await request.json()) as SignUpDataSchemaWithBirthdate;
   const { name, email, birthDate } = body;
   const date = new Date();
-  console.log(birthDate);
 
   await new Promise((resolve) => setTimeout(resolve, 1000));
   return HttpResponse.json(

@@ -17,17 +17,17 @@ export const Step2 = ({ nextStep }: SignUpStepsProps) => {
               htmlFor="check"
               className="w-full mr-[26px] mb-0 text-[15px] text-primary mb-1 text-gray leading-5"
             >
-              X uses this data to personalize your experience. This web browsing
-              history will never be stored with your name, email, or phone
-              number.
+              Qwitter uses this data to personalize your experience. This web
+              browsing history will never be stored with your name, email, or
+              phone number.
             </label>
             <Checkbox id="check" className="w-5 h-5 border-gray border-2" />
           </div>
         </div>
         <p className="mt-10 text-[15px] text-gray leading-4">
           By signing up, you agree to our Terms, Privacy Policy, and Cookie Use.
-          X may use your contact information, including your email address and
-          phone number for purposes outlined in our Privacy Policy. Learn more
+          Qwitter may use your contact information, including your email address
+          and phone number for purposes outlined in our Privacy Policy.
         </p>
       </div>
       <div className="w-full my-6 flex flex-col justify-center">

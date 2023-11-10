@@ -1,4 +1,4 @@
-import { SignUpStepsProps, Step1DataSchema } from "@/models/SignUp";
+import { RefinedStep1DataSchema, SignUpStepsProps } from "@/models/SignUp";
 import { TextInput } from "../TextInput/TextInput";
 import { Button } from "../ui/button";
 import { FieldValues, useForm } from "react-hook-form";
@@ -13,7 +13,7 @@ interface Step1Props extends SignUpStepsProps {
 
 // step 1 of the sign up with name, email and date picker
 export const Step1 = ({ nextStep, userData, addStep1Data }: Step1Props) => {
-  const form = useForm<any>({ resolver: zodResolver(Step1DataSchema) }); // to use react hook form
+  const form = useForm<any>({ resolver: zodResolver(RefinedStep1DataSchema) }); // to use react hook form
   const [isVerifying, setIsVerifying] = useState(false);
 
   const checkEmail = () => {
