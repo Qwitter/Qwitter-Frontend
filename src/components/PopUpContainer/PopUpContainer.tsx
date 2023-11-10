@@ -50,6 +50,7 @@ export const PopUpContainer = (props: PopUpProps) => {
             <div className="flex flex-row">
               <span className="w-[56px]">
                 <div
+                  test-id="popupHeaderButton"
                   className={`ml-[-8px] w-9 h-9 flex justify-center items-center rounded-3xl ${
                     headerButton &&
                     "cursor-pointer hover:bg-dark-gray hover:border-dark-gray "
