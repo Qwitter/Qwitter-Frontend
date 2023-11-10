@@ -16,6 +16,7 @@ export const Step1 = ({ nextStep, userData, addStep1Data }: Step1Props) => {
   const form = useForm<any>({ resolver: zodResolver(RefinedStep1DataSchema) }); // to use react hook form
   const [isVerifying, setIsVerifying] = useState(false);
 
+  // validate the name when the user stops typing
   useEffect(() => {
     const timeoutId = setTimeout(async () => {
       if (form.getValues().name) await form.trigger("name");
@@ -92,6 +93,7 @@ export const Step1 = ({ nextStep, userData, addStep1Data }: Step1Props) => {
               {...form.register("name", {
                 value: userData?.name,
               })}
+              role="name"
               errorMessage={form.formState.errors.name?.message?.toString()}
             />
 
@@ -100,6 +102,7 @@ export const Step1 = ({ nextStep, userData, addStep1Data }: Step1Props) => {
               {...form.register("email", {
                 value: userData?.email,
               })}
+              role="email"
               errorMessage={form.formState.errors.email?.message?.toString()}
             />
             <div className="h-[153px] w-full mt-5">

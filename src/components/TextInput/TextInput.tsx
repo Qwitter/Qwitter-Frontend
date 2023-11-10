@@ -40,6 +40,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           <input
             disabled={disabled}
             {...props}
+            role={props.role}
             ref={ref}
             type={inputType}
             className={cn(
