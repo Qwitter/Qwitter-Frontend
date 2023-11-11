@@ -102,11 +102,12 @@ describe("Login Unit Testing", () => {
                 </QueryClientProvider>
             </BrowserRouter>
         );
+        
         const emailInput:HTMLInputElement = screen.getByRole("emailInput");
         const nextButton = screen.getByTestId("nextButton");
         expect(emailInput).toBeTruthy();
-        await userEvent.type(emailInput, "yousef@gmail.com");
-        expect(emailInput.value).toBe("yousef@gmail.com");
+        await userEvent.type(emailInput, "Sofa5060@gmail.com");
+        expect(emailInput.value).toBe("Sofa5060@gmail.com");
         expect(nextButton).toBeEnabled();
         await userEvent.click(nextButton);  
         setTimeout(async() => {
@@ -114,8 +115,8 @@ describe("Login Unit Testing", () => {
         const loginButton = screen.getByTestId("login");
         expect(screen.getByRole('passwordInput')).toBeInTheDocument();
         expect(loginButton).toBeInTheDocument();
-        await userEvent.type(passwordInput, "YousefOsama2025");
-        expect(passwordInput.value).toBe("YousefOsama2025");
+        await userEvent.type(passwordInput, "123456789sss");
+        expect(passwordInput.value).toBe("123456789sss");
         expect(loginButton).toBeEnabled();
         await userEvent.click(nextButton);  
         }, 100);
