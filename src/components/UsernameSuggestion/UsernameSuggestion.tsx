@@ -6,10 +6,10 @@ import { UsernameSchema } from '@/models/Username';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Skeleton } from '../ui/skeleton';
 import { useMutation } from '@tanstack/react-query';
-import { isAvailableUsername } from '@/lib/utils';
+import { updateUsername } from '@/lib/utils';
 import { UserContext } from '@/contexts/UserContextProvider';
 type Props = {
-    nextStep: (v: string) => void;
+    nextStep: () => void;
 
 }
 
@@ -18,19 +18,21 @@ export function UsernameSuggestion({ nextStep }: Props) {
         resolver: zodResolver(UsernameSchema),
         mode: 'onChange'
     });
-    const { user } = useContext(UserContext)
+    const { user, token } = useContext(UserContext)
     const { mutate, isPending } = useMutation({
-        mutationFn: isAvailableUsername,
-        onSuccess: (data, username) => {
+        mutationFn: updateUsername,
+        onSuccess: (data) => {
             if (data) {
-                nextStep(username);
+                nextStep();
             }
-
         },
+        onError: (data) => {
+            console.log(data);
+        }
     })
     useEffect(() => {
-        setInputFieldValue(user!.userName!)
         form.setValue("defaultUsername", user!.userName!)
+        setInputFieldValue(user!.userName!)
     }, [])
 
     const [inputValue, setInputValue] = useState("");
@@ -40,9 +42,9 @@ export function UsernameSuggestion({ nextStep }: Props) {
         form.trigger("username")
     };
     const onSubmit = ({ username }: { username: string }) => {
-        if (user!.userName! === username) nextStep(username);
+        if (user!.userName! === username) nextStep();
 
-        mutate(username)
+        mutate({ token: token || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImExZjk0MDRmLWI1ODEtNDhmZS05NTM1LTlmNzE1YzBmZThkOSIsImlhdCI6MTY5OTcxOTY2NCwiZXhwIjoxNzAwNTgzNjY0fQ.5-0Xp0LC6LQWusaI8xoogwbP0H8RPiR5iOp3oTqPzRg", username })
     };
     if (isPending) {
         return (

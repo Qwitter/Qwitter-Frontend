@@ -24,13 +24,16 @@ const ProfileComplete = () => {
         navigate('/settings');
         setShowPopUp(false);
     };
+    const doneSignUp=()=>{
+        closePopUp();
+    }
 
     const steps = [
         <SignUpProfile nextStep={nextStep}  />,
         <UsernameSuggestion
         nextStep={nextStep}
         />,
-        <NotificationAllow  nextStep={nextStep} />,
+        <NotificationAllow  nextStep={doneSignUp} />,
     ];
 
     return (

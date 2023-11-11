@@ -10,7 +10,7 @@ import { useMutation } from "@tanstack/react-query";
 import { findEmail, loginService } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/components/ui/use-toast";
-import { useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { UserContext } from "@/contexts/UserContextProvider";
 
 type loginprops={
@@ -57,7 +57,7 @@ export function Login(pros?:loginprops) {
         if (res) {
             form.reset();
             saveUser(res.user,res.token);
-            navigate("/success")
+            navigate("/settings");
         }
         else {
             toast({

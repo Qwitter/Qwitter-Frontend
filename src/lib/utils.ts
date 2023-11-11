@@ -100,6 +100,35 @@ export const isAvailableUsername = async (username: string) => {
   }
 };
 /**
+ * @description update username with new one
+ * @param username
+ * @returns  true if available ,false otherwise  or null
+ */
+export const updateUsername = async ({
+  token,
+  username,
+}: {
+  token: string;
+  username: string;
+}) => {
+  const parseToken = z.string().safeParse(token);
+  const parseUsername = z.string().safeParse(username);
+  if (!parseUsername.success || !parseToken.success) return null;
+  try {
+    const res = await axios.patch(
+      `${VITE_BACKEND_URL}/api/v1/user/username`,
+      {
+        userName: username,
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return res.status == 200;
+  } catch (err) {
+    console.log(err)
+    return null;
+  }
+};
+/**
  * @description get Suggestions for username using the token of the user
  * @param token,userName
  * @returns  array of valid Suggestions for username or null

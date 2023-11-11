@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { navLinks } from '../../constants'
 // import { Logo } from '../../assets';
 // import { Link } from 'react-router-dom'
@@ -6,15 +6,11 @@ import { Button } from '..';
 import { LogOut } from 'lucide-react';
 import Logo from "../../assets/logo.png";
 import { Link } from 'react-router-dom';
+import { UserContext } from '@/contexts/UserContextProvider';
 
 
-type Props = {
-    profilePic: string,
-    userName: string,
-    name: string,
-}
-
-export function NavBar({ profilePic, userName, name }: Props) {
+export function NavBar() {
+    const {user} = useContext(UserContext)
     const [active, setActive] = useState("")
     return (
         <div className='items-end flex flex-col min-w-[80px]'>
@@ -30,10 +26,10 @@ export function NavBar({ profilePic, userName, name }: Props) {
                     <Button variant="secondary" className='w-11/12 py-4 font-bold h-12 mt-3  max-xl:hidden'>Post</Button>
                 </div>
                 <div className='my-3 p-3 w-full flex flex-row items-center hover:bg-[#191919] transition-all hover:rounded-full'>
-                    <img src={profilePic} alt="profilePic" className='w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid' />
+                    <img src={`http://${user?.profileImageUrl}`} alt="profilePic" className='w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid' />
                     <div className=' flex-col mx-3 hidden xl:flex'>
-                        <h3 className='font-semibold tracking-[2px] text-[15px]'>{name}</h3>
-                        <span className='text-gray text-[15px]'>@{userName}</span>
+                        <h3 className='font-semibold tracking-[2px] text-[15px]'>{user?.name}</h3>
+                        <span className='text-gray text-[15px]'>@{user?.userName}</span>
                     </div>
                     <a href='logout' className='w-2/4  row justify-end hidden xl:flex '>
                         <LogOut className='cursor-pointer' />

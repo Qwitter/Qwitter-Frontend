@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { PopUpContainer } from "../PopUpContainer/PopUpContainer";
 import { useState } from "react";
 import { HeaderButton } from "@/models/PopUpModel";
+import GoogleSignUpButton from "../GoogleSignUpButton/GoogleSignUpButton";
 
 export function LoginSignUp() {
     const [showPopUp, setShowPopUp] = useState<boolean>(true); // controls if the sign up is started or not
@@ -23,14 +24,7 @@ export function LoginSignUp() {
             className='flex flex-col justify-start items-center'
         >
             <p className='my-6 text-2xl font-bold text-left'>Join Qwitter today.</p>
-            <Button variant="default" className="items-center my-1 h-[40px] w-[300px]">
-                <FcGoogle size="1.5rem" />
-                <div className="mx-1">Sign up with Google</div>
-            </Button>
-            <Button variant="default" className="items-center my-4 h-[40px] w-[300px]">
-                <AiFillApple size="1.5rem" />
-                <div className="mx-1">Sign up with Apple</div>
-            </Button>
+           <GoogleSignUpButton />
             <p className="text-center or-item h-[40px] w-[300px] relative" >or</p>
             <Link
                 to="/i/flow/signup"

@@ -8,4 +8,5 @@ export type User = {
   passwordChangedAt: string;
   id: string;
   google_id: string;
+  profileImageUrl:string;
 };
