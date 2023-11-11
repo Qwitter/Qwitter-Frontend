@@ -69,14 +69,15 @@ export const findEmail = async (email: string) => {
     const res = await axios.post(
       `${VITE_BACKEND_URL}/api/v1/auth/check-existence`,
       {
-        userNameOrEmail: email.toLowerCase(),
+        userNameOrEmail: email,
       }
     );
-    return res.data;
+    console.log({ available: !res.data.available });
+    return { available: !res.data.available };
   } catch (err) {
-    const errObj = err as { response: { data: { available: boolean } } };
-    console.log(err);
-    return errObj;
+    // const errObj = err as { response: { data: { available: boolean } } };
+    // console.log(err);
+    return { available: true };
   }
 };
 
@@ -184,7 +185,7 @@ export const loginService = async ({
       email_or_username: email,
       password,
     });
-    console.log(res.data)
+    console.log(res.data);
     return res.data;
   } catch (err) {
     console.log(err);
@@ -233,7 +234,7 @@ export const sendResetPasswordVerificationEmail = async (email: string) => {
     );
     return res;
   } catch (err) {
-    console.log(err)
+    console.log(err);
     throw new Error("Email is not found");
   }
 };
@@ -276,7 +277,7 @@ export const verifyResetPasswordEmail = async (token: string) => {
     const res = await axios.post(
       `${VITE_BACKEND_URL}/api/v1/auth/reset-password/${token}`
     );
-    console.log(res)
+    console.log(res);
     return res;
   } catch (err) {
     console.log(err);
@@ -315,7 +316,7 @@ export const registerNewUser = async (newUserData: object) => {
         },
       }
     );
-    console.log(res)
+    console.log(res);
     return res;
   } catch (error) {
     console.log(error);

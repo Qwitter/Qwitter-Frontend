@@ -38,7 +38,7 @@ export const Step1 = ({ nextStep, userData, addStep1Data }: Step1Props) => {
         const data = await findEmail(email);
         if (data === null || data?.response?.status === 404) return;
 
-        if (data.data)
+        if (data.available)
           form.setError("email", {
             type: "manual",
             message: "Email has already been taken",
