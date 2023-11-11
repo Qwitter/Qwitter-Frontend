@@ -66,8 +66,8 @@ export const findEmail = async (email: string) => {
   if (!parseResult.success) return null;
 
   try {
-    const res = await axios.post(`${VITE_BACKEND_URL}/api/user/find-email`, {
-      email,
+    const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/auth/check-existence`, {
+      userNameOrEmail: email,
     });
     return res.data;
   } catch (err) {
@@ -292,6 +292,9 @@ export const registerNewUser = (newUserData: object) => {
   const dateString = `${parseResult.data.year}-${parseResult.data.month}-${parseResult.data.day}`;
   const birthDate = new Date(dateString);
 
+  console.log(parseResult.data)
+  console.log(newUserData)
+
   try {
     const res = axios.post(
       `${VITE_BACKEND_URL}/api/v1/auth/signup`,
@@ -299,7 +302,6 @@ export const registerNewUser = (newUserData: object) => {
         name: parseResult.data.name,
         email: parseResult.data.email,
         password: parseResult.data.password,
-        passwordConfirmation: parseResult.data.password,
         birthDate: birthDate.toISOString(),
       },
       {

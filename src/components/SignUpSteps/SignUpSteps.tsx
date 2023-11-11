@@ -54,7 +54,7 @@ export const SignUpSteps = () => {
   const registerUser = (pass: string) => {
     setUserData({ ...userData, password: pass });
 
-    if (userData) registerNewUser(userData);
+    if (userData) registerNewUser({ ...userData, password: pass });
   };
 
   // to concatenate the name, email and birthday to the user data
