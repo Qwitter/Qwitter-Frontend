@@ -14,7 +14,7 @@ import {  useNavigate } from "react-router-dom";
 import { UserContext } from "@/contexts/UserContextProvider";
 
 type loginprops={
-    fn?:Function;
+    fn?:()=>void;
 }
 export function Login(pros?:loginprops) {
     const [step, setStep] = useState(1);

@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { FcGoogle } from "react-icons/fc";
-import { AiFillApple } from "react-icons/ai";
+
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { PopUpContainer } from "../PopUpContainer/PopUpContainer";
 import { useState } from "react";
