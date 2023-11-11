@@ -41,6 +41,7 @@ export const Step5 = ({ nextStep, registerUser }: Step5Props) => {
           <form id="step5Form" onSubmit={form.handleSubmit(onSubmit)}></form>
           <TextInput
             isPassword={true}
+            type="password"
             placeHolder="Password"
             {...form.register("password")}
             role="password"

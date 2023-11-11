@@ -13,11 +13,6 @@ import { BirthDaySchema } from "@/models/BirthDay";
 import EmailVerification from "../EmailVerification/EmailVerification";
 import { RecaptchaPopUp } from "../RecaptchaPopUp/RecaptchaPopUp";
 
-/*
-  NEEDED:
-    use step 4
-*/
-
 export const SignUpSteps = () => {
   const [stepNumber, setStepNumber] = useState<number>(0); // controls which step is shown
   const [showPopUp, setShowPopUp] = useState<boolean>(true); // controls if the sign up is started or not
@@ -85,12 +80,12 @@ export const SignUpSteps = () => {
     <Step2 nextStep={nextStep} />,
     <Step3 nextStep={nextStep} resetStep={resetStep} userData={userData} />,
     <RecaptchaPopUp afterAuth={nextStep} />,
-    // <EmailVerification
-    //   email={userData?.email || ""}
-    //   onSuccess={nextStep}
-    //   onFail={resetStep}
-    //   verificationType="signUp"
-    // />,
+    <EmailVerification
+      email={userData?.email || ""}
+      onSuccess={nextStep}
+      onFail={resetStep}
+      verificationType="signUp"
+    />,
     <Step5 nextStep={() => {}} registerUser={registerUser} />,
   ];
 
@@ -100,7 +95,7 @@ export const SignUpSteps = () => {
     HeaderButton.back,
     HeaderButton.back,
     HeaderButton.none,
-    // HeaderButton.back,
+    HeaderButton.back,
     HeaderButton.none,
   ];
 
