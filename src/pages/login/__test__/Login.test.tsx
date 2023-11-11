@@ -57,7 +57,6 @@ describe("Login Unit Testing", () => {
 
         expect(googleSignInButton).toBeTruthy();
         expect(appleSignInButton).toBeTruthy();
-        //TODO: Check Functionality  of googleSignInButton and appleSignInButton
 
 
         // check button validation

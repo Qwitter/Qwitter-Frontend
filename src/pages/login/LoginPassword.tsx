@@ -17,7 +17,9 @@ export function LoginPassword({ incrementStep, form }: SignInProp) {
                     role="passwordInput"
                     isPassword={true}
                     className="w-[440px]"
-                    placeHolder="Password" />
+                    placeHolder="Password"
+                    errorMessage={ form.formState.errors.password?.message?.toString()}
+                />
                 <Link to="/i/flow/password_reset">
 
                     <span className="w-[440px] hover:underline hover:cursor-pointer font-light text-secondary">Forgot password?	</span>
@@ -25,9 +27,11 @@ export function LoginPassword({ incrementStep, form }: SignInProp) {
             </div>
             <div>
                 <Button data-testid="login" disabled={!form.watch("password")} variant="default" className="my-5 h-[51px] w-[440px]" onClick={incrementStep}>Log in</Button>
-                <p className="text-start text-slate-400 w-[440px]">Don't have an account?
+                 <p className="text-start text-slate-400 w-[440px]">Don't have an account?
+                <Link to="/i/flow/signup/input_flow_data">
                     <span className="mx-1 hover:underline hover:cursor-pointer text-secondary">Sign up</span>
-                </p>
+                </Link>
+            </p>
             </div>
         </div>
     )
