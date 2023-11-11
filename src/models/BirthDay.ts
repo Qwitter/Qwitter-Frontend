@@ -43,11 +43,11 @@ export const DAYS_IN_MONTH: DaysInMonth = {
   May: 31,
   June: 30,
   July: 31,
-  August: 30,
-  September: 31,
+  August: 31,
+  September: 30,
   October: 31,
-  November: 31,
-  December: 30,
+  November: 30,
+  December: 31,
 } as const;
 
 export const BirthDaySchema = z.object({
@@ -91,7 +91,7 @@ export const BirthDaySchema = z.object({
       return parsed;
     })
     .refine((val) => val >= 1900 && val <= 2005, {
-      message: "Must be older that 18 years",
+      message: "Must be older than 18 years",
     }),
 });
 
