@@ -10,6 +10,8 @@ import { z } from "zod";
 import { useNavigate } from "react-router-dom";
 import { registerNewUser } from "@/lib/utils";
 import { BirthDaySchema } from "@/models/BirthDay";
+import EmailVerification from "../EmailVerification/EmailVerification";
+import { RecaptchaPopUp } from "../RecaptchaPopUp/RecaptchaPopUp";
 
 /*
   NEEDED:
@@ -82,9 +84,14 @@ export const SignUpSteps = () => {
     />,
     <Step2 nextStep={nextStep} />,
     <Step3 nextStep={nextStep} resetStep={resetStep} userData={userData} />,
-    // <RecaptchaPopUp afterAuth={nextStep} />,
-    // < />,
-    <Step5 nextStep={() => { }} registerUser={registerUser} />,
+    <RecaptchaPopUp afterAuth={nextStep} />,
+    // <EmailVerification
+    //   email={userData?.email || ""}
+    //   onSuccess={nextStep}
+    //   onFail={resetStep}
+    //   verificationType="signUp"
+    // />,
+    <Step5 nextStep={() => {}} registerUser={registerUser} />,
   ];
 
   // holds which button (x, arrow or none) is shown
@@ -92,6 +99,8 @@ export const SignUpSteps = () => {
     HeaderButton.close,
     HeaderButton.back,
     HeaderButton.back,
+    HeaderButton.none,
+    // HeaderButton.back,
     HeaderButton.none,
   ];
 
