@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { PopUpContainer } from "../PopUpContainer/PopUpContainer";
 import { HeaderButton } from "../../models/PopUpModel";
 import { Step1 } from "./Step1";
@@ -12,15 +12,16 @@ import { registerNewUser } from "@/lib/utils";
 import { BirthDaySchema } from "@/models/BirthDay";
 import EmailVerification from "../EmailVerification/EmailVerification";
 import { RecaptchaPopUp } from "../RecaptchaPopUp/RecaptchaPopUp";
-// import { RecaptchaPopUp } from "../RecaptchaPopUp/RecaptchaPopUp";
+import { UserContext } from "@/contexts/UserContextProvider";
 
 export const SignUpSteps = () => {
   const [stepNumber, setStepNumber] = useState<number>(0); // controls which step is shown
   const [showPopUp, setShowPopUp] = useState<boolean>(true); // controls if the sign up is started or not
   const [userData, setUserData] = useState<z.infer<typeof SignUpDataSchema>>(); // to pass user inputs between steps
   const navigate = useNavigate();
+  const { saveUser } = useContext(UserContext);
 
-  console.log("run")
+  console.log("run");
 
   // go to step 1 again
   const resetStep = () => {
@@ -51,10 +52,16 @@ export const SignUpSteps = () => {
   };
 
   // to concatenate the password to the user data and make an account
-  const registerUser = (pass: string) => {
+  const registerUser = async (pass: string) => {
     setUserData({ ...userData, password: pass });
 
-    if (userData) registerNewUser({ ...userData, password: pass });
+    if (userData) {
+      const res = await registerNewUser({ ...userData, password: pass });
+      if (res) {
+        saveUser(res.data.data, res.data.token);
+        navigate("/success");
+      }
+    }
   };
 
   // to concatenate the name, email and birthday to the user data
