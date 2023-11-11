@@ -1,20 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { SignInProp } from "./LoginPropsType";
-// import { AiFillApple } from "react-icons/ai";
 import { TextInput } from "@/components/TextInput/TextInput";
 import { Link } from "react-router-dom";
 import GoogleSignUpButton from "@/components/GoogleSignUpButton/GoogleSignUpButton";
 
 export function LoginEmail({ incrementStep, form }: SignInProp) {
     return (
-        <div className="w-full flex flex-col items-center">
-            <p className='my-5 text-3xl font-bold break-words text-start h-[40px] w-[300px]'>Sign in to Quitter</p>
-            <GoogleSignUpButton />
-            {/* <Button variant="default" className="items-center my-5 h-[40px] w-[300px]">
-                <AiFillApple size="1.5rem" />
-                <div className="mx-1">Sign in with Apple</div>
-            </Button> */}
-            <p className="text-center or-item h-[40px] w-[300px] relative" >or</p>
+        <div className="w-full  flex flex-col items-center">
+            <p className='my-5 text-3xl font-bold break-words text-start h-[40px] w-[300px]'>Sign in to Qwitter</p>
+            <GoogleSignUpButton/>
+            <p className="mt-5 text-center or-item h-[40px] w-[300px] relative" >or</p>
             <TextInput
                 data-testid="email"
                 role="emailInput"
