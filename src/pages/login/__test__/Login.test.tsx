@@ -121,7 +121,7 @@ describe("Login Unit Testing", () => {
         await userEvent.click(nextButton);  
         }, 100);
     });
-    it("ATEF TEST", async () => {
+    it("Testing with mock function with jest", async () => {
         const mockupdn:()=>void = jest.fn();
         const client = new QueryClient();
         render(
@@ -134,8 +134,8 @@ describe("Login Unit Testing", () => {
         const emailInput:HTMLInputElement = screen.getByRole("emailInput");
         const nextButton = screen.getByTestId("nextButton");
         expect(emailInput).toBeTruthy();
-        await userEvent.type(emailInput, "yo@gmail.com");
-        expect(emailInput.value).toBe("yo@gmail.com");
+        await userEvent.type(emailInput, "Sofa5060@gmail.com");
+        expect(emailInput.value).toBe("Sofa5060@gmail.com");
         expect(nextButton).toBeEnabled();
         await userEvent.click(nextButton);
         expect(mockupdn).toHaveBeenCalledTimes(1);    
