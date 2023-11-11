@@ -13,13 +13,13 @@ import { Authentication } from "./pages";
 import { LoginSignUp } from "./components/LoginSignUp/LoginSignUp";
 import OAuth from "./components/OAuth/OAuth";
 import OAuthInterceptor from "./components/OAuth/OAuthInterceptor";
+import ProfileComplete from "./components/ProfileComplete/ProfileComplete";
 
 const queryClient = new QueryClient();
 
 function App() {
   const location = useLocation();
   const previousLocation = location.state?.previousLocation;
-
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -42,6 +42,7 @@ function App() {
             element={<OAuthInterceptor />}
           />
           <Route path="/i/flow/single-sign" element={<OAuth />} />
+          <Route path="/i/flow/profile" element={<ProfileComplete />} />
         </Routes>
         <Toaster />
       </ThemeProvider>

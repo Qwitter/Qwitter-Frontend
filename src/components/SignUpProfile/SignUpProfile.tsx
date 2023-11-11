@@ -1,12 +1,13 @@
 import { ImagePicker } from "../ImagePicker/ImagePicker";
-import { PopUpContainer } from "../PopUpContainer/PopUpContainer";
 import { Button } from "../ui/button";
-
-export const SignUpProfile = () => {
+type prob = {
+  nextStep: () => void;
+}
+export const SignUpProfile = ({ nextStep }:prob) => {
   // NEEDED: go to the next step
 
   return (
-    <PopUpContainer show={true} showLogo={true} className="justify-between">
+    <div className="justify-between">
       <div className="w-full flex flex-col justify-start items-start">
         <div className="my-5">
           <h2 className="text-3xl font-bold">Pick a profile picture</h2>
@@ -18,9 +19,9 @@ export const SignUpProfile = () => {
           <ImagePicker defaultImage="https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg" />
         </div>
       </div>
-      <Button variant="outline" size="full" className="h-[50px] font-bold my-1">
+      <Button variant="outline" size="full" className="h-[50px] font-bold my-1" onClick={()=>nextStep()}>
         Skip for now
       </Button>
-    </PopUpContainer>
+    </div>
   );
 };
