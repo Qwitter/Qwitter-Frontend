@@ -12,12 +12,15 @@ import { registerNewUser } from "@/lib/utils";
 import { BirthDaySchema } from "@/models/BirthDay";
 import EmailVerification from "../EmailVerification/EmailVerification";
 import { RecaptchaPopUp } from "../RecaptchaPopUp/RecaptchaPopUp";
+// import { RecaptchaPopUp } from "../RecaptchaPopUp/RecaptchaPopUp";
 
 export const SignUpSteps = () => {
   const [stepNumber, setStepNumber] = useState<number>(0); // controls which step is shown
   const [showPopUp, setShowPopUp] = useState<boolean>(true); // controls if the sign up is started or not
   const [userData, setUserData] = useState<z.infer<typeof SignUpDataSchema>>(); // to pass user inputs between steps
   const navigate = useNavigate();
+
+  console.log("run")
 
   // go to step 1 again
   const resetStep = () => {

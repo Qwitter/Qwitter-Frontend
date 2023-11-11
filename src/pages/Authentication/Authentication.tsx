@@ -1,5 +1,5 @@
 import { Button } from "../../components/ui/button";
-import { AiFillApple } from "react-icons/ai";
+// import { AiFillApple } from "react-icons/ai";
 import logo from "../../assets/logo.png"
 import { Link, useLocation } from "react-router-dom";
 import GoogleSignUpButton from "@/components/GoogleSignUpButton/GoogleSignUpButton";
@@ -16,10 +16,10 @@ export default function Authentication() {
             <p className='my-3 text-6xl font-black break-words text-start min-[1025px]:w-[550px] w-[350px]' >Happening now</p>
             <p className='my-3 text-2xl font-extrabold'>Join today.</p>
             <GoogleSignUpButton />
-            <Button variant="default" className="items-center my-1 h-[40px] w-[300px]">
+            {/* <Button variant="default" className="items-center my-1 h-[40px] w-[300px]">
               <AiFillApple size="1.5rem" />
               <div className="mx-1">Sign up with Apple</div>
-            </Button>
+            </Button> */}
             <p className="text-center or-item h-[40px] w-[300px] relative" >or</p>
             <Link
               to="/i/flow/signup"

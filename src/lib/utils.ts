@@ -66,9 +66,12 @@ export const findEmail = async (email: string) => {
   if (!parseResult.success) return null;
 
   try {
-    const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/auth/check-existence`, {
-      userNameOrEmail: email,
-    });
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/auth/check-existence`,
+      {
+        userNameOrEmail: email.toLowerCase(),
+      }
+    );
     return res.data;
   } catch (err) {
     const errObj = err as { response: { data: { available: boolean } } };
@@ -76,6 +79,7 @@ export const findEmail = async (email: string) => {
     return errObj;
   }
 };
+
 /**
  * @description Check if the username is available
  * @param username
@@ -132,7 +136,7 @@ export const getSuggestedUsernames = async ({
  * @param password
  * @returns  object represents the response from the backend or null
  */
-export const restPasswordWithNewOne = async ({
+export const resetPasswordWithNewOne = async ({
   password,
   token,
 }: {
@@ -177,9 +181,10 @@ export const loginService = async ({
   if (!parsedPassword.success || !parsedEmail.success) return null;
   try {
     const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/auth/login`, {
-      email,
+      email_or_username: email,
       password,
     });
+    console.log(res.data)
     return res.data;
   } catch (err) {
     console.log(err);
@@ -228,6 +233,7 @@ export const sendResetPasswordVerificationEmail = async (email: string) => {
     );
     return res;
   } catch (err) {
+    console.log(err)
     throw new Error("Email is not found");
   }
 };
@@ -270,6 +276,7 @@ export const verifyResetPasswordEmail = async (token: string) => {
     const res = await axios.post(
       `${VITE_BACKEND_URL}/api/v1/auth/reset-password/${token}`
     );
+    console.log(res)
     return res;
   } catch (err) {
     console.log(err);
@@ -284,7 +291,7 @@ export const verifyResetPasswordEmail = async (token: string) => {
  * @param   newUserData Object holding name, email, birthday and password
  * @returns Object holding the backend response or null in case of an error
  */
-export const registerNewUser = (newUserData: object) => {
+export const registerNewUser = async (newUserData: object) => {
   const parseResult = SignUpDataSchema.safeParse(newUserData);
 
   if (!parseResult.success) return null;
@@ -292,11 +299,8 @@ export const registerNewUser = (newUserData: object) => {
   const dateString = `${parseResult.data.year}-${parseResult.data.month}-${parseResult.data.day}`;
   const birthDate = new Date(dateString);
 
-  console.log(parseResult.data)
-  console.log(newUserData)
-
   try {
-    const res = axios.post(
+    const res = await axios.post(
       `${VITE_BACKEND_URL}/api/v1/auth/signup`,
       {
         name: parseResult.data.name,
@@ -311,6 +315,7 @@ export const registerNewUser = (newUserData: object) => {
         },
       }
     );
+    console.log(res)
     return res;
   } catch (error) {
     console.log(error);
@@ -328,9 +333,11 @@ export const oAuthSignUp = async (token: string, birthday: BirthDay) => {
     birthday.day
   ).toISOString();
 
+  console.log(token, birthDate);
+
   try {
     const res = await axios.post(
-      `${VITE_BACKEND_URL}/api/v1/auth/signup/google`,
+      `${VITE_BACKEND_URL}/api/v1/auth/google/signup`,
       {
         birthDate,
       },

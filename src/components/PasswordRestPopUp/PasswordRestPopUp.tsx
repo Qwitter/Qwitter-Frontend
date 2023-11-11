@@ -5,7 +5,7 @@ import { PasswordSchema } from '@/models/Password';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useMutation } from '@tanstack/react-query';
-import { restPasswordWithNewOne } from '../../lib/utils';
+import { resetPasswordWithNewOne } from '../../lib/utils';
 import { Skeleton } from '../ui/skeleton';
 import { useToast } from '../ui/use-toast';
 type PasswordRestPopUpProps = {
@@ -21,7 +21,7 @@ export function PasswordRestPopUp({onSuccess,token }: PasswordRestPopUpProps) {
     const { toast } = useToast()
 
     const { mutate, isPending } = useMutation({
-        mutationFn: restPasswordWithNewOne,
+        mutationFn: resetPasswordWithNewOne,
         onSuccess: data => {
             toast({
                 title: "Rest Password",

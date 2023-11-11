@@ -6,13 +6,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import BirthDayInput from "../BirthDayInput/BirthDayInput";
 import { useEffect, useState } from "react";
 import { findEmail } from "@/lib/utils";
+import { z } from "zod";
+import { BirthDaySchema } from "@/models/BirthDay";
 
 interface Step1Props extends SignUpStepsProps {
-  addStep1Data: Function;
+  addStep1Data: (name: string, email: string, birthDay: z.infer<typeof BirthDaySchema>) => void;
 }
 
 // step 1 of the sign up with name, email and date picker
 export const Step1 = ({ nextStep, userData, addStep1Data }: Step1Props) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const form = useForm<any>({ resolver: zodResolver(RefinedStep1DataSchema) }); // to use react hook form
   const [isVerifying, setIsVerifying] = useState(false);
 

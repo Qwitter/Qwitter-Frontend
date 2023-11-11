@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { TextInput } from "../TextInput/TextInput";
 import { Button } from "../ui/button";
 import {
+  sendResetPasswordVerificationEmail,
   sendSignUpVerificationEmail,
   verifyResetPasswordEmail,
   verifySignUpEmail,
@@ -64,7 +65,12 @@ const EmailVerification = ({
     isRefetching,
   } = useQuery({
     queryKey: ["emailVerification"],
-    queryFn: async () => sendSignUpVerificationEmail(email),
+    queryFn: async () => {
+      if (verificationType === "passwordReset") {
+        return sendResetPasswordVerificationEmail(email);
+      }
+      return sendSignUpVerificationEmail(email);
+    },
     staleTime: 0,
     retry: 0,
     retryDelay: 2000,
