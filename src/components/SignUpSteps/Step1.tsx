@@ -10,7 +10,11 @@ import { z } from "zod";
 import { BirthDaySchema } from "@/models/BirthDay";
 
 interface Step1Props extends SignUpStepsProps {
-  addStep1Data: (name: string, email: string, birthDay: z.infer<typeof BirthDaySchema>) => void;
+  addStep1Data: (
+    name: string,
+    email: string,
+    birthDay: z.infer<typeof BirthDaySchema>
+  ) => void;
 }
 
 // step 1 of the sign up with name, email and date picker
@@ -36,7 +40,7 @@ export const Step1 = ({ nextStep, userData, addStep1Data }: Step1Props) => {
       if (email) {
         await form.trigger("email");
         const data = await findEmail(email);
-        if (data === null || data?.response?.status === 404) return;
+        if (data === null) return;
 
         if (data.available)
           form.setError("email", {

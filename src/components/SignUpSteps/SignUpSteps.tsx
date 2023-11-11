@@ -7,7 +7,7 @@ import { Step5 } from "./Step5";
 import { Step3 } from "./Step3";
 import { SignUpDataSchema } from "@/models/SignUp";
 import { z } from "zod";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { registerNewUser } from "@/lib/utils";
 import { BirthDaySchema } from "@/models/BirthDay";
 import EmailVerification from "../EmailVerification/EmailVerification";
@@ -18,10 +18,10 @@ export const SignUpSteps = () => {
   const [stepNumber, setStepNumber] = useState<number>(0); // controls which step is shown
   const [showPopUp, setShowPopUp] = useState<boolean>(true); // controls if the sign up is started or not
   const [userData, setUserData] = useState<z.infer<typeof SignUpDataSchema>>(); // to pass user inputs between steps
+  const location = useLocation();
   const navigate = useNavigate();
+  location.pathname = "/settings/account";
   const { saveUser } = useContext(UserContext);
-
-  console.log("run");
 
   // go to step 1 again
   const resetStep = () => {
@@ -59,7 +59,7 @@ export const SignUpSteps = () => {
       const res = await registerNewUser({ ...userData, password: pass });
       if (res) {
         saveUser(res.data.data, res.data.token);
-        navigate("/i/flow/profile");
+        navigate("/i/flow/profile", { state: { previousLocation: location } });
       }
     }
   };

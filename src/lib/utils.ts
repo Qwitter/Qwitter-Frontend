@@ -101,7 +101,7 @@ export const isAvailableUsername = async (username: string) => {
 };
 /**
  * @description get Suggestions for username using the token of the user
- * @param token,userName 
+ * @param token,userName
  * @returns  array of valid Suggestions for username or null
  */
 export const getSuggestedUsernames = async ({
@@ -120,7 +120,8 @@ export const getSuggestedUsernames = async ({
       `${VITE_BACKEND_URL}/api/v1/auth/username-suggestions`,
       {
         userName,
-      }, { headers: { Authorization: `Bearer ${token}` } }
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
     );
     return res.data.suggestions;
   } catch (err) {
@@ -314,6 +315,41 @@ export const registerNewUser = async (newUserData: object) => {
     );
     console.log(res);
     return res;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+/**
+ *
+ * @param picFile The actual image from the  file input
+ * @param token The token of the user for authentication
+ * @returns New user data after the image has changed
+ */
+
+export const uploadImage = async (picFile: File, token: string) => {
+  const formData = new FormData();
+  formData.append("photo", picFile);
+  console.log(token);
+
+  try {
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/user/profile_picture`,
+      formData,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (res.status >= 400) {
+      return null;
+    }
+    return res.data.user;
   } catch (error) {
     console.log(error);
     return null;

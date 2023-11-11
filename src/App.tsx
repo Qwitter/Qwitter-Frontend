@@ -14,6 +14,7 @@ import { LoginSignUp } from "./components/LoginSignUp/LoginSignUp";
 import OAuth from "./components/OAuth/OAuth";
 import OAuthInterceptor from "./components/OAuth/OAuthInterceptor";
 import ProfileComplete from "./components/ProfileComplete/ProfileComplete";
+import UserContextProvider from "./contexts/UserContextProvider";
 
 const queryClient = new QueryClient();
 
@@ -23,28 +24,30 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <Routes location={previousLocation || location}>
-          {/* this is the main routs*/}
-          <Route path="/" element={<Authentication />} />
-          <Route path="/Settings/*" element={<Settings />} />
-        </Routes>
-        <Routes>
-          {/* this is the popup routs*/}
-          <Route path="/i/flow/signup" element={<SignUpSteps />} />
-          <Route
-            path="/i/flow/signup/input_flow_data"
-            element={<LoginSignUp />}
-          />
-          <Route path="/i/flow/login" element={<Login />} />
-          <Route path="/i/flow/password_reset" element={<PasswordRest />} />
-          <Route
-            path="/i/flow/single-sign/callback"
-            element={<OAuthInterceptor />}
-          />
-          <Route path="/i/flow/single-sign" element={<OAuth />} />
-          <Route path="/i/flow/profile" element={<ProfileComplete />} />
-        </Routes>
-        <Toaster />
+        <UserContextProvider>
+          <Routes location={previousLocation || location}>
+            {/* this is the main routs*/}
+            <Route path="/" element={<Authentication />} />
+            <Route path="/Settings/*" element={<Settings />} />
+          </Routes>
+          <Routes>
+            {/* this is the popup routs*/}
+            <Route path="/i/flow/signup" element={<SignUpSteps />} />
+            <Route
+              path="/i/flow/signup/input_flow_data"
+              element={<LoginSignUp />}
+            />
+            <Route path="/i/flow/login" element={<Login />} />
+            <Route path="/i/flow/password_reset" element={<PasswordRest />} />
+            <Route
+              path="/i/flow/single-sign/callback"
+              element={<OAuthInterceptor />}
+            />
+            <Route path="/i/flow/single-sign" element={<OAuth />} />
+            <Route path="/i/flow/profile" element={<ProfileComplete />} />
+          </Routes>
+          <Toaster />
+        </UserContextProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );
