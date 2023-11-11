@@ -72,11 +72,8 @@ export const findEmail = async (email: string) => {
         userNameOrEmail: email,
       }
     );
-    console.log({ available: !res.data.available });
     return { available: !res.data.available };
   } catch (err) {
-    // const errObj = err as { response: { data: { available: boolean } } };
-    // console.log(err);
     return { available: true };
   }
 };
