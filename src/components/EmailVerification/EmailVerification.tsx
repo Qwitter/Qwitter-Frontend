@@ -213,7 +213,7 @@ const EmailVerification = ({
       <Button
         variant="outline"
         size="full"
-        className="mt-auto mb-2"
+        className="mt-auto mb-6"
         type="submit"
         disabled={!isValid || isVerifying}
       >

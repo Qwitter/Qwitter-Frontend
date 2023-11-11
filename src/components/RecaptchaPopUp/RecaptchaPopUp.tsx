@@ -6,13 +6,19 @@ import { HeaderButton } from "@/models/PopUpModel";
 const RECAPTCHA_KEY = import.meta.env?.VITE_RECAPTCHA_KEY;
 
 type RecaptchaProps = {
-  afterAuth: Function;
+  afterAuth: () => void;
+  prevPage?: () => void;
 };
 
-export const RecaptchaPopUp = ({ afterAuth }: RecaptchaProps) => {
+export const RecaptchaPopUp = ({ afterAuth, prevPage }: RecaptchaProps) => {
   const [showPopUp, setShowPopUp] = useState(true);
 
   const closePopUp = () => {
+    if (prevPage) {
+      prevPage();
+      return;
+    }
+
     setShowPopUp(false);
   };
 
