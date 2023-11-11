@@ -10,11 +10,8 @@ import { z } from "zod";
 import { useNavigate } from "react-router-dom";
 import { registerNewUser } from "@/lib/utils";
 import { BirthDaySchema } from "@/models/BirthDay";
-
-/*
-  NEEDED:
-    use step 4
-*/
+import EmailVerification from "../EmailVerification/EmailVerification";
+import { RecaptchaPopUp } from "../RecaptchaPopUp/RecaptchaPopUp";
 
 export const SignUpSteps = () => {
   const [stepNumber, setStepNumber] = useState<number>(0); // controls which step is shown
@@ -82,15 +79,22 @@ export const SignUpSteps = () => {
     />,
     <Step2 nextStep={nextStep} />,
     <Step3 nextStep={nextStep} resetStep={resetStep} userData={userData} />,
-    // <RecaptchaPopUp afterAuth={nextStep} />,
-    // < />,
-    <Step5 nextStep={() => { }} registerUser={registerUser} />,
+    <RecaptchaPopUp afterAuth={nextStep} />,
+    <EmailVerification
+      email={userData?.email || ""}
+      onSuccess={nextStep}
+      onFail={resetStep}
+      verificationType="signUp"
+    />,
+    <Step5 nextStep={() => {}} registerUser={registerUser} />,
   ];
 
   // holds which button (x, arrow or none) is shown
   const StepsButtons = [
     HeaderButton.close,
     HeaderButton.back,
+    HeaderButton.back,
+    HeaderButton.none,
     HeaderButton.back,
     HeaderButton.none,
   ];

@@ -33,7 +33,7 @@ export const Step1 = ({ nextStep, userData, addStep1Data }: Step1Props) => {
       if (email) {
         await form.trigger("email");
         const data = await findEmail(email);
-        if (data === null) return;
+        if (data === null || data?.response?.status === 404) return;
 
         if (data.data)
           form.setError("email", {

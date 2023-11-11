@@ -25,7 +25,7 @@ const BirthDayInput = ({ className, form }: BirthDayInputProps) => {
         control={form.control}
         name="month"
         render={({ field }) => (
-          <FormItem className="w-full">
+          <FormItem className="w-full" role="testing">
             <Select
               onValueChange={(val: Month) => {
                 setMonth(val);
