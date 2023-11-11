@@ -16,7 +16,7 @@ const ProfileComplete = () => {
     };
 
     const prevStep = () => {
-        if (step === 0) return;
+        if (step === 0)   navigate(-1);
         else setStep(step - 1);
     };
 

@@ -1,8 +1,9 @@
 import { cn } from '../../lib'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useMutation } from '@tanstack/react-query';
 import { getSuggestedUsernames } from '@/lib/utils';
 import { Spinner } from '../Spinner';
+import { UserContext } from '@/contexts/UserContextProvider';
 
 type PropsShowSuggestion = {
     onSuggestionClick: (value: string,clickFlag:boolean) => void;
@@ -20,6 +21,7 @@ export function ShowSuggestionsNames(
     const [showAllSuggestion, setShowAllSuggestion] = useState(showSuggestion)
     const [size, setsize] = useState(numberOfSuggestions)
     const [suggestedUsernames, setSuggestedUsernames] = useState([])
+    const {token} = useContext(UserContext);
     function handleShowMore() {
         setShowAllSuggestion(!showAllSuggestion)
         setsize(5)
@@ -35,8 +37,8 @@ export function ShowSuggestionsNames(
         }
     });
     useEffect(() => {
-        !isClickChange&&mutate({ username:username,token:"123456" });
-    }, [mutate, username,isClickChange]);
+        !isClickChange&&mutate({ userName:username,token:token||"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImExZjk0MDRmLWI1ODEtNDhmZS05NTM1LTlmNzE1YzBmZThkOSIsImlhdCI6MTY5OTcxOTY2NCwiZXhwIjoxNzAwNTgzNjY0fQ.5-0Xp0LC6LQWusaI8xoogwbP0H8RPiR5iOp3oTqPzRg" });
+    }, [mutate, username,isClickChange,token]);
 
 
     function handlePickingUsername(name: string): void {

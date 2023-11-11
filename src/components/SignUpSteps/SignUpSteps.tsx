@@ -59,7 +59,7 @@ export const SignUpSteps = () => {
       const res = await registerNewUser({ ...userData, password: pass });
       if (res) {
         saveUser(res.data.data, res.data.token);
-        navigate("/success");
+        navigate("/i/flow/profile");
       }
     }
   };

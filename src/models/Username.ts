@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const UsernameSchema = z.object({
     username: z.string({ required_error: "username is Required" })
-        .min(4, { message: "Username must be at least 4 characters long" })
+        .min(5, { message: "Your username must be longer than 4 characters." })
         .max(15, { message: "Username cannot be longer than 15 characters" })
         .refine(username => /[^\d]/.test(username), {
             message: "Username must contain at least one non-numeric character",

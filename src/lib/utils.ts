@@ -104,29 +104,28 @@ export const isAvailableUsername = async (username: string) => {
 };
 /**
  * @description get Suggestions for username using the token of the user
- * @param token
+ * @param token,userName 
  * @returns  array of valid Suggestions for username or null
  */
 export const getSuggestedUsernames = async ({
   token,
-  username,
+  userName,
 }: {
   token: string;
-  username: string;
+  userName: string;
 }) => {
   const parseToken = z.string().safeParse(token);
-  const parseUsername = z.string().safeParse(username);
+  const parseUsername = z.string().safeParse(userName);
   if (!parseUsername.success || !parseToken.success) return null;
 
   try {
     const res = await axios.post(
       `${VITE_BACKEND_URL}/api/v1/auth/username-suggestions`,
       {
-        token,
-        username,
-      }
+        userName,
+      }, { headers: { Authorization: `Bearer ${token}` } }
     );
-    return res.data.Suggestions;
+    return res.data.suggestions;
   } catch (err) {
     return null;
   }

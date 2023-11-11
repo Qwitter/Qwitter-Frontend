@@ -73,7 +73,7 @@ describe("ChangeUsername testing", () => {
         waitFor(() => screen.getByRole('Suggestions'))
 
         // ASSERT
-        expect(screen.getByText("Username must be at least 4 characters long")).toBeInTheDocument()
+        expect(screen.getByText("Your username must be longer than 4 characters.")).toBeInTheDocument()
         expect(screen.getByText("Save")).not.toBeEnabled();
     });
     it("Should render error when the username is long", async () => {
