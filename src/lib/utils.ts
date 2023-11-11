@@ -342,7 +342,6 @@ export const registerNewUser = async (newUserData: object) => {
         },
       }
     );
-    console.log(res);
     return res;
   } catch (error) {
     console.log(error);

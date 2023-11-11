@@ -60,6 +60,7 @@ export const SignUpSteps = () => {
       if (res) {
         saveUser(res.data.data, res.data.token);
         navigate("/i/flow/profile", { state: { previousLocation: location } });
+        console.log(res.data.data);
       }
     }
   };
@@ -89,7 +90,7 @@ export const SignUpSteps = () => {
     />,
     <Step2 nextStep={nextStep} />,
     <Step3 nextStep={nextStep} resetStep={resetStep} userData={userData} />,
-    <RecaptchaPopUp afterAuth={nextStep} />,
+    <RecaptchaPopUp prevPage={previousStep} afterAuth={nextStep} />,
     <EmailVerification
       email={userData?.email || ""}
       onSuccess={nextStep}
