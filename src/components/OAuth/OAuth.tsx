@@ -15,6 +15,7 @@ const OAuth = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { saveUser } = useContext(UserContext);
+  location.pathname = "/settings/account";
 
   const nextStep = () => {
     setStep(step + 1);
@@ -33,7 +34,7 @@ const OAuth = () => {
     if (!res) return;
     console.log(res);
     saveUser(res.data, res.token);
-    navigate("/success");
+    navigate("/i/flow/profile", { state: { previousLocation: location } });
   };
 
   const steps = [

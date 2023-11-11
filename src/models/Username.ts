@@ -10,16 +10,20 @@ export const UsernameSchema = z.object({
         })
         .refine(username => /^[a-zA-Z0-9_]+$/.test(username), {
             message: "Username can only contain letters, numbers, and underscores",
-        }).refine(async (username) => {
-            if (username.length < 4||username.length > 15) {
-                return false;
-            }
-            if (await isAvailableUsername(username)) {
-                return true;
-            }
-            return false;
-        }
-            , { message: "That username has been taken. Please choose another.", })
-})
+        })
+    ,
+    defaultUsername: z.string().optional()
+}).refine(async ({ username, defaultUsername }) => {
+    if (username.length < 4 || username.length > 15) {
+        return false;
+    }
+    if (defaultUsername === username)
+        return true;
+    if (await isAvailableUsername(username))
+        return true;
+
+    return false;
+}
+    , { message: "That username has been taken. Please choose another.", path: ["username"], })
 
 export type Username = z.infer<typeof UsernameSchema>;

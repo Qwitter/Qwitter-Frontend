@@ -1,4 +1,4 @@
-import { PopUpContainer, Button } from "../";
+import {  Button } from "../";
 import { Bell } from "lucide-react";
 type NotificationAllowProps = {
 nextStep: () => void;
@@ -17,9 +17,8 @@ export function NotificationAllow({nextStep}:NotificationAllowProps) {
       });
   }
   return (
-    <PopUpContainer show={true} >
-      <div className="w-full flex flex-col justify-self-start">
-        <Bell className=" w-14 h-14 text-secondary self-center mb-14" />
+      <div className="w-full flex flex-col justify-center h-[90%]">
+        <Bell className=" w-14 h-14 text-secondary self-center mb-20" />
         <h2 className=" text-primary font-bold text-2xl mb-1">
           Turn on notification
         </h2>
@@ -27,7 +26,7 @@ export function NotificationAllow({nextStep}:NotificationAllowProps) {
           Get the most out of Qwitter by staying up to date with what's
           happening
         </p>
-        <Button className="my-4 py-3 " onClick={acceptNotification}>
+        <Button className="my-6 py-3 " onClick={acceptNotification}>
           Allow notification
         </Button>
         <Button variant="outline" className="py-3" onClick={()=>nextStep()}>
@@ -35,6 +34,5 @@ export function NotificationAllow({nextStep}:NotificationAllowProps) {
         </Button>
 
       </div>
-    </PopUpContainer>
   );
 }

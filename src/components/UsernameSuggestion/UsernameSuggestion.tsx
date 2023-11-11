@@ -1,41 +1,47 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Button, ShowSuggestionsNames, TextInput } from '../'
 import { useForm } from 'react-hook-form';
-import {  z } from 'zod';
+import { z } from 'zod';
 import { UsernameSchema } from '@/models/Username';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Skeleton } from '../ui/skeleton';
 import { useMutation } from '@tanstack/react-query';
 import { isAvailableUsername } from '@/lib/utils';
+import { UserContext } from '@/contexts/UserContextProvider';
 type Props = {
-    nextStep: (v:string) => void;
-    
+    nextStep: (v: string) => void;
+
 }
 
-export function UsernameSuggestion({  nextStep }: Props) {
+export function UsernameSuggestion({ nextStep }: Props) {
     const form = useForm<z.infer<typeof UsernameSchema>>({
         resolver: zodResolver(UsernameSchema),
         mode: 'onChange'
     });
-
+    const { user } = useContext(UserContext)
     const { mutate, isPending } = useMutation({
         mutationFn: isAvailableUsername,
-        onSuccess: (data,username) => {
+        onSuccess: (data, username) => {
             if (data) {
                 nextStep(username);
             }
 
         },
     })
-    useEffect(() => { setInputValue("XLV") },[])
+    useEffect(() => {
+        setInputFieldValue(user!.userName!)
+        form.setValue("defaultUsername", user!.userName!)
+    }, [])
 
-    const [inputValue, setInputValue] = useState(""); 
+    const [inputValue, setInputValue] = useState("");
     const setInputFieldValue = (value: string) => {
         setInputValue(value);
         form.setValue('username', value);
         form.trigger("username")
     };
     const onSubmit = ({ username }: { username: string }) => {
+        if (user!.userName! === username) nextStep(username);
+
         mutate(username)
     };
     if (isPending) {
@@ -58,14 +64,14 @@ export function UsernameSuggestion({  nextStep }: Props) {
                     className='w-full'
                     {...form.register("username", {
                         required: "Enter your username",
-                        onChange:(e) => setInputFieldValue(e.target.value),
+                        onChange: (e) => setInputFieldValue(e.target.value),
 
                     })}
                     value={inputValue}
                     errorMessage={form.formState.errors.username?.message?.toString() || ""}
 
                 />
-                <ShowSuggestionsNames onSuggestionClick={setInputFieldValue}  />
+                <ShowSuggestionsNames onSuggestionClick={setInputFieldValue} />
             </div>
             <Button variant={'default'} className='w-full py-3 cursor-pointer' type='submit' role='submitButton' disabled={!form.formState.isValid}>Next</Button>
         </form>
