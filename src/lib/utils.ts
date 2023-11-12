@@ -242,6 +242,7 @@ export const resetPasswordWithNewOne = async ({
 }) => {
   const parsePassword = z.string().safeParse(password);
   const parseToken = z.string().safeParse(token);
+
   if (!parsePassword.success || !parseToken.success)
     throw new Error("Invalid token");
   try {
@@ -253,7 +254,6 @@ export const resetPasswordWithNewOne = async ({
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    console.log(res);
     return res;
   } catch (err) {
     console.log(err);

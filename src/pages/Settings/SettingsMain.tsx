@@ -41,7 +41,7 @@ export function SettingsMain() {
             <Route path="/password" element={<ChangePassword />} />
             <Route
               path="/screen_name"
-              element={<ChangeUsername userName="Marwansmay99" />}
+              element={<ChangeUsername  />}
             />
             <Route
               path="/email"
