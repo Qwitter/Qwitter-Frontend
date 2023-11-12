@@ -83,7 +83,7 @@ export const findEmail = async (email: string) => {
  * @param userNameOrEmail
  * @returns  true if founded ,false otherwise  or null
  */
-export const isAvailableUserNameOrEmail= async (userNameOrEmail: string) => {
+export const isAvailableUserNameOrEmail = async (userNameOrEmail: string) => {
   const parseResult = z.string().safeParse(userNameOrEmail);
   if (!parseResult.success) return null;
 
@@ -126,6 +126,40 @@ export const updateUsername = async ({
   } catch (err) {
     console.log(err);
     return null;
+  }
+};
+/**
+ * @description update email with new one
+ * @param {email,token}
+ * @returns  true if available ,false otherwise  or null
+ */
+export const updateEmail = async ({
+  token,
+  email,
+}: {
+  token: string;
+  email: string;
+}) => {
+  const parseToken = z.string().safeParse(token);
+  const parsedEmail = z.string().email().safeParse(email);
+  if (!parsedEmail.success || !parseToken.success) return null;
+  try {
+    // const res = await axios.patch(
+    //   `${VITE_BACKEND_URL}/api/v1/user/email`,
+    //   {
+    //     email: email,
+    //   },
+    //   { headers: { Authorization: `Bearer ${token}` } }
+    // );
+    //return res.status == 200;
+    if (email == "kaito.kid.1972002@gmail.com")
+      return true;
+    else
+      throw new Error("not valid");
+  } catch (err) {
+    console.log(err)
+    throw new Error("not valid");
+
   }
 };
 /**

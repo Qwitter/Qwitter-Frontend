@@ -3,7 +3,6 @@ import { Button } from '../ui/button'
 import { TextInput } from '../TextInput/TextInput'
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Skeleton } from '../ui/skeleton';
 import { useContext } from 'react';
 import { UserContext } from '@/contexts/UserContextProvider';
 import { EmailAPISchema } from '@/models/Email';
