@@ -18,7 +18,6 @@ NEEDED:
   while reading the image display a loading icon
   when loading is finished use the setImage to send the image to the parent
 
-  1- make SignUpProfile sends the request on submission and handles the change in photo (button)
   2- add x button and it's functionality (will need a state)
   3- add loading animation
 */
