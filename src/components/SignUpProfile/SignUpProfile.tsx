@@ -1,11 +1,27 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { ImagePicker } from "../ImagePicker/ImagePicker";
 import { Button } from "../ui/button";
+import { uploadImage } from "@/lib/utils";
+import { UserContext } from "@/contexts/UserContextProvider";
+
 type prob = {
   nextStep: () => void;
 };
+
 export const SignUpProfile = ({ nextStep }: prob) => {
-  const [picChanged, setPicChanged] = useState(false);
+  const [imagePath, setImagePath] = useState<File>();
+  const [buttonText, setButtonText] = useState<string>("Skip for now");
+  const { token } = useContext(UserContext);
+
+  // upload the last chosen image and
+  const handleImageUpload = async () => {
+    if (imagePath) {
+      await uploadImage(imagePath, token!);
+      // if the image will be put in the context
+    }
+
+    nextStep();
+  };
 
   return (
     <div className="flex flex-col justify-between h-full w-full sm:w-[424px]">
@@ -18,21 +34,22 @@ export const SignUpProfile = ({ nextStep }: prob) => {
         </div>
         <div className="w-full h-[320px] flex justify-center items-center">
           <ImagePicker
-            setPicChanged={setPicChanged}
-            id="profilePic"
-            defaultImage="https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
+            name="photo"
+            image="https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
+            setImagePath={setImagePath}
+            optionalOnChange={() => {
+              setButtonText("Next");
+            }}
           />
         </div>
       </div>
       <Button
-        form="profilePic"
-        variant={(picChanged && "default") || "outline"}
+        variant={(buttonText === "Next" && "default") || "outline"}
         size="full"
         className="h-[50px] font-bold mb-1 mt-auto"
-        // onClick={() => nextStep()}
+        onClick={handleImageUpload}
       >
-        {picChanged && "Next"}
-        {!picChanged && "Skip for now"}
+        {buttonText}
       </Button>
     </div>
   );
