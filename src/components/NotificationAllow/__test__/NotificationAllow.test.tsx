@@ -2,9 +2,11 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { NotificationAllow } from "../../index";
 import "@testing-library/jest-dom";
 
+const mockFn = jest.fn()
+
 describe("NotificationAllow Testing", () => {
   test("UI testing", () => {
-    render(<NotificationAllow />);
+    render(<NotificationAllow nextStep={mockFn}/>);
     expect(screen.getByText("Turn on notification")).toBeInTheDocument();
     expect(
       screen.getByText(
@@ -13,7 +15,7 @@ describe("NotificationAllow Testing", () => {
     ).toBeTruthy();
   });
   test("Allow function testing", async () => {
-    render(<NotificationAllow />);
+    render(<NotificationAllow nextStep={mockFn}/>);
     const button = screen.getByText("Allow notification");
     // Assert that the button element exists
     expect(button).toBeTruthy();

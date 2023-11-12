@@ -1,15 +1,11 @@
 import { PopUpContainer } from "../PopUpContainer/PopUpContainer";
 import { HeaderButton } from "@/models/PopUpModel";
-import { DialogHeader } from "../ui/dialog";
-import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { ImagePicker } from "../ImagePicker/ImagePicker";
 import { TextInput } from "../TextInput/TextInput";
 
-type Props = {};
-
-export const EditProfilePopUp = (props: Props) => {
+export const EditProfilePopUp = () => {
   const [showEditProfile, setShowEditProfile] = useState<boolean>(true);
 
   const saveButton = <Button className="h-8">Save</Button>;

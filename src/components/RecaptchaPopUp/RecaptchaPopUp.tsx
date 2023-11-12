@@ -22,7 +22,7 @@ export const RecaptchaPopUp = ({ afterAuth, prevPage }: RecaptchaProps) => {
     setShowPopUp(false);
   };
 
-  const handleReCaptcha = (reCaptchaResponse: string | null) => {
+  const handleReCaptcha = () => {
     // wait for the check to be animated
     setTimeout(() => {
       afterAuth();

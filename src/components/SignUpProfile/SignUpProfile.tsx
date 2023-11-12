@@ -29,7 +29,7 @@ export const SignUpProfile = ({ nextStep }: prob) => {
         variant={(picChanged && "default") || "outline"}
         size="full"
         className="h-[50px] font-bold mb-1 mt-auto"
-        // onClick={() => nextStep()}
+        onClick={() => nextStep()}
       >
         {picChanged && "Next"}
         {!picChanged && "Skip for now"}

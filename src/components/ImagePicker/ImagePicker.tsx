@@ -16,8 +16,8 @@ interface ImagePickerProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 export const ImagePicker = ({
   optionalOnChange,
-  setPicChanged,
-  id,
+  // setPicChanged,
+  // id,
   iconSize = "24",
   imageClassName,
   className,
@@ -50,21 +50,21 @@ export const ImagePicker = ({
     if (inputFileRef.current) inputFileRef.current.click();
   };
 
-  const handleImageChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newPicPath = event.target.files?.[0];
+  // const handleImageChange = async (
+  //   event: React.ChangeEvent<HTMLInputElement>
+  // ) => {
+  //   const newPicPath = event.target.files?.[0];
 
-    if (newPicPath) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setProfilePic(e.target?.result);
-      };
+  //   if (newPicPath) {
+  //     const reader = new FileReader();
+  //     reader.onload = (e) => {
+  //       setProfilePic(e.target?.result);
+  //     };
 
-      reader.readAsDataURL(newPicPath);
-      if (setPicChanged) setPicChanged(true);
-    }
-  };
+  //     reader.readAsDataURL(newPicPath);
+  //     if (setPicChanged) setPicChanged(true);
+  //   }
+  // };
 
   return (
     <div

@@ -1,6 +1,6 @@
-import React, { MouseEventHandler } from "react";
+import { MouseEventHandler } from "react";
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
-import { X, ArrowLeft, Twitter } from "lucide-react";
+import { X, ArrowLeft } from "lucide-react";
 import { HeaderButton } from "@/models/PopUpModel";
 
 type PopUpProps = {
