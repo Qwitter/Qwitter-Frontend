@@ -35,8 +35,6 @@ export function SettingsMain() {
               path="/your_twitter_data/account"
               element={
                 <AccountInformation
-                  email="marawanSamy@gmail.com"
-                  userName="XLV"
                 />
               }
             />
@@ -47,7 +45,7 @@ export function SettingsMain() {
             />
             <Route
               path="/email"
-              element={<UpdateEmail email="marwanSamy@gmail.com" />}
+              element={<UpdateEmail  />}
             />
           </Routes>
         </div>

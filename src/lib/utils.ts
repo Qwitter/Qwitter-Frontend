@@ -79,19 +79,19 @@ export const findEmail = async (email: string) => {
 };
 
 /**
- * @description Check if the username is available
- * @param username
- * @returns  true if available ,false otherwise  or null
+ * @description Check if the userNameOrEmail is available
+ * @param userNameOrEmail
+ * @returns  true if founded ,false otherwise  or null
  */
-export const isAvailableUsername = async (username: string) => {
-  const parseResult = z.string().safeParse(username);
+export const isAvailableUserNameOrEmail= async (userNameOrEmail: string) => {
+  const parseResult = z.string().safeParse(userNameOrEmail);
   if (!parseResult.success) return null;
 
   try {
     const res = await axios.post(
       `${VITE_BACKEND_URL}/api/v1/auth/check-existence`,
       {
-        userNameOrEmail: username,
+        userNameOrEmail: userNameOrEmail,
       }
     );
     return res.status == 200;
@@ -126,6 +126,42 @@ export const updateUsername = async ({
   } catch (err) {
     console.log(err)
     return null;
+  }
+};
+/**
+ * @description verify user password
+ * @param  password
+ * @param  token
+ * @returns  true if its the user password ,false otherwise  or null
+ */
+export const verifyPassword = async ({
+  token,
+  password,
+}: {
+  token: string;
+  password: string;
+}) => {
+  const parseToken = z.string().safeParse(token);
+  const parsePassword = z.string().safeParse(password);
+  if (!parsePassword.success || !parseToken.success) return null;
+  try {
+    //till the back make the end point
+    // const res = await axios.post(
+    //   `${VITE_BACKEND_URL}/api/v1/user/verify-password`,
+    //   {
+    //     password: password,
+    //   },
+    //   { headers: { Authorization: `Bearer ${token}` } }
+    // );
+    // return res.status == 200;
+    token
+    if (password == "123456as")
+      return password == "123456as"
+    else
+      throw new Error("not valid");
+  } catch (err) {
+    console.log(err)
+    throw new Error("not valid");
   }
 };
 /**

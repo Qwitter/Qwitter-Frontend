@@ -8,7 +8,7 @@ import { z } from "zod";
 import { UsernameSchema } from "@/models/Username";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { isAvailableUsername } from "@/lib/utils";
+import { isAvailableUserNameOrEmail } from "@/lib/utils";
 import { Spinner } from "../Spinner";
 import { toast } from "../ui/use-toast";
 import { useNavigate } from "react-router-dom";
@@ -23,7 +23,7 @@ export function ChangeUsername({ userName }: Props) {
     mode: "onChange",
   });
   const { mutate, isPending } = useMutation({
-    mutationFn: isAvailableUsername,
+    mutationFn: isAvailableUserNameOrEmail,
     onSuccess: (data, username) => {
       if (data) {
         toast({
