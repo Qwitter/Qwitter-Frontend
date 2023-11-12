@@ -20,7 +20,14 @@ interface Step1Props extends SignUpStepsProps {
 // step 1 of the sign up with name, email and date picker
 export const Step1 = ({ nextStep, userData, addStep1Data }: Step1Props) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const form = useForm<any>({ resolver: zodResolver(RefinedStep1DataSchema) }); // to use react hook form
+  const form = useForm<any>({
+    resolver: zodResolver(RefinedStep1DataSchema),
+    defaultValues: {
+      day: userData?.day,
+      month: userData?.month,
+      year: userData?.year,
+    },
+  }); // to use react hook form
   const [isVerifying, setIsVerifying] = useState(false);
 
   // validate the name when the user stops typing

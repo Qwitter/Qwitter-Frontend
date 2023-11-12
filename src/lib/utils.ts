@@ -124,7 +124,7 @@ export const updateUsername = async ({
     );
     return res.status == 200;
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return null;
   }
 };
@@ -359,7 +359,6 @@ export const registerNewUser = async (newUserData: object) => {
 export const uploadImage = async (picFile: File, token: string) => {
   const formData = new FormData();
   formData.append("photo", picFile);
-  console.log(token);
 
   try {
     const res = await axios.post(
