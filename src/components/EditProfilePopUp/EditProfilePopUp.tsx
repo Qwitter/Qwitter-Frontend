@@ -52,6 +52,7 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
       // user?.website != form.getValues().website    NEEDED: not in context now
     ) {
       // send put request to update user data and update the context
+      // current endpoint /api/v1/user/user_profile
     }
 
     // may need more rethinking

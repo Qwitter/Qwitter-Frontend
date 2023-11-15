@@ -47,8 +47,8 @@ function App() {
             />
             <Route path="/i/flow/single-sign" element={<OAuth />} />
             <Route path="/i/flow/profile" element={<ProfileComplete />} />
-          </Routes>
-          <Toaster /> */}
+          </Routes> */}
+          <Toaster />
         </UserContextProvider>
       </ThemeProvider>
     </QueryClientProvider>
