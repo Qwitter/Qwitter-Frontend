@@ -145,7 +145,7 @@ export const updateEmail = async ({
   if (!parsedEmail.success || !parseToken.success) return null;
   try {
     // const res = await axios.patch(
-    //   `${VITE_BACKEND_URL}/api/v1/user/email`,
+    //   `${VITE_BACKEND_URL}/api/v1/auth/change-email`,
     //   {
     //     email: email,
     //   },
@@ -179,9 +179,8 @@ export const verifyPassword = async ({
   const parsePassword = z.string().safeParse(password);
   if (!parsePassword.success || !parseToken.success) return null;
   try {
-    //till the back make the end point
     // const res = await axios.post(
-    //   `${VITE_BACKEND_URL}/api/v1/user/verify-password`,
+    //   `${VITE_BACKEND_URL}/api/v1/auth/check-password`,
     //   {
     //     password: password,
     //   },

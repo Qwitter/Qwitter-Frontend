@@ -5,11 +5,11 @@ export const PasswordSchema = z.object({
     Password: z.string()
         .min(8, { message: "Your password needs to be at least 8 characters. Please enter a longer one." })
         .refine((password) => {
-            return /[A-Za-z]/.test(password) && /\d/.test(password);
-        }, { message: "Password must contain at least one letter and one number" }),
+            return /[A-Za-z]/.test(password);
+        }, { message: " Password must contain at least one letter" }),
     ConfirmPassword: z.string(),
 }).refine((data) => data.Password === data.ConfirmPassword, {
-    message: "Passwords doesn't match",
+    message: "Password do not match",
     path: ["ConfirmPassword"],
 });
 
@@ -17,12 +17,12 @@ export const PasswordAPISchema = z.object({
     CurrentPassword: z.string(),
     Password: z.string().min(8, { message: "Your password needs to be at least 8 characters. Please enter a longer one." })
         .refine((password) => {
-            return /[A-Za-z]/.test(password) && /\d/.test(password);
-        }, { message: "Password must contain at least one letter and one number" }),
+            return /[A-Za-z]/.test(password) ;
+        }, { message: " Password must contain at least one letter" }),
     ConfirmPassword: z.string(),
     Token: z.string(), // Add the token field
 }).refine((data) => data.Password === data.ConfirmPassword, {
-    message: "Passwords doesn't match",
+    message: "Password do not match",
     path: ["ConfirmPassword"],
 }).refine(async (data) => {
     try{
