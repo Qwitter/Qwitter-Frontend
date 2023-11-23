@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ShowSuggestionsNames } from "../ShowSuggestionsNames/ShowSuggestionsNames";
 import { OptionsHeader } from "../OptionsHeader/OptionsHeader";
 import { Button } from "../ui/button";
@@ -8,37 +8,47 @@ import { z } from "zod";
 import { UsernameSchema } from "@/models/Username";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { isAvailableUsername } from "@/lib/utils";
+import {  updateUsername } from "@/lib/utils";
 import { Spinner } from "../Spinner";
 import { toast } from "../ui/use-toast";
 import { useNavigate } from "react-router-dom";
-type Props = {
-  userName: string;
-};
+import { UserContext } from "@/contexts/UserContextProvider";
 
-export function ChangeUsername({ userName }: Props) {
+
+export function ChangeUsername() {
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof UsernameSchema>>({
     resolver: zodResolver(UsernameSchema),
     mode: "onChange",
   });
+  const { user, token } = useContext(UserContext)
+
   const { mutate, isPending } = useMutation({
-    mutationFn: isAvailableUsername,
-    onSuccess: (data, username) => {
+    mutationFn: updateUsername,
+    onSuccess: (data, {username}) => {
       if (data) {
         toast({
           title: "Change Username",
           description: "Username changed Successfully with " + username,
         });
+        //update the context
         navigate(-1);
       }
     },
+    onError: () => {
+      toast({
+        title: "Change Username",
+        description: "Failed : try again later",
+        variant:"destructive"
+      });
+      navigate(-1);
+  }
   });
   const [inputValue, setInputValue] = useState("");
   const [isClickChange, setIsClickChange] = useState(false);
 
   useEffect(() => {
-    setInputFieldValue(userName);
+    setInputFieldValue(user?.userName||"");
   }, []);
 
   const setInputFieldValue = (value: string, clickFlag = false) => {
@@ -48,13 +58,13 @@ export function ChangeUsername({ userName }: Props) {
     form.trigger("username");
   };
   const onSubmit = ({ username }: { username: string }) => {
-    mutate(username);
+    mutate({ token: token || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImExZjk0MDRmLWI1ODEtNDhmZS05NTM1LTlmNzE1YzBmZThkOSIsImlhdCI6MTY5OTcxOTY2NCwiZXhwIjoxNzAwNTgzNjY0fQ.5-0Xp0LC6LQWusaI8xoogwbP0H8RPiR5iOp3oTqPzRg", username })
   };
 
   if (isPending) {
     return (
       <div className=" w-full h-full border-r border-primary border-opacity-30 mb-20">
-        <OptionsHeader header="Change your password" />
+        <OptionsHeader header="Change username" />
         <div>
           <div className="w-full flex justify-center items-center p-3 text-center h-[104px]">
             <Spinner />

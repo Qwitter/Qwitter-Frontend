@@ -2,8 +2,12 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from "react";
 import { PopUpContainer } from "../PopUpContainer/PopUpContainer";
 import { HeaderButton } from "@/models/PopUpModel";
-
 const RECAPTCHA_KEY = import.meta.env?.VITE_RECAPTCHA_KEY;
+
+/*
+NEEDED:
+  rechaptcha work (change the styling a bit and make animation while loading)
+*/
 
 type RecaptchaProps = {
   afterAuth: () => void;

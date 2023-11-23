@@ -15,6 +15,7 @@ import { RegisterUserWorker } from "./RegisterUserWorker/RegisterUserWorker";
 import { sendResetPasswordVerificationTokenWorker } from "./SendResetPasswordVerificationTokenWorker/SendResetPasswordVerificationTokenWorker";
 import { userWorker } from "./UserWorker/UserWorker";
 import { OAuthRegisterUserWorker } from "./OAuthRegisterUserWorker/OAuthRegisterUserWorker";
+import { UploadProfileWorker } from "./RegisterUserWorker/UploadProfileWorker";
 
 const { VITE_BACKEND_URL } = import.meta.env;
 
@@ -51,5 +52,12 @@ export const handlers = [
     sendResetPasswordVerificationTokenWorker
   ),
   http.get(`${VITE_BACKEND_URL}/api/user`, userWorker),
-  http.post(`${VITE_BACKEND_URL}/api/v1/auth/signup/google`, OAuthRegisterUserWorker),
+  http.post(
+    `${VITE_BACKEND_URL}/api/v1/auth/signup/google`,
+    OAuthRegisterUserWorker
+  ),
+  http.post(
+    `${VITE_BACKEND_URL}/api/v1/user/profile_picture`,
+    UploadProfileWorker
+  ),
 ];

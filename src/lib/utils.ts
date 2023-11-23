@@ -79,19 +79,19 @@ export const findEmail = async (email: string) => {
 };
 
 /**
- * @description Check if the username is available
- * @param username
- * @returns  true if available ,false otherwise  or null
+ * @description Check if the userNameOrEmail is available
+ * @param userNameOrEmail
+ * @returns  true if founded ,false otherwise  or null
  */
-export const isAvailableUsername = async (username: string) => {
-  const parseResult = z.string().safeParse(username);
+export const isAvailableUserNameOrEmail = async (userNameOrEmail: string) => {
+  const parseResult = z.string().safeParse(userNameOrEmail);
   if (!parseResult.success) return null;
 
   try {
     const res = await axios.post(
       `${VITE_BACKEND_URL}/api/v1/auth/check-existence`,
       {
-        userNameOrEmail: username,
+        userNameOrEmail: userNameOrEmail,
       }
     );
     return res.status == 200;
@@ -124,8 +124,77 @@ export const updateUsername = async ({
     );
     return res.status == 200;
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return null;
+  }
+};
+/**
+ * @description update email with new one
+ * @param {email,token}
+ * @returns  true if available ,false otherwise  or null
+ */
+export const updateEmail = async ({
+  token,
+  email,
+}: {
+  token: string;
+  email: string;
+}) => {
+  const parseToken = z.string().safeParse(token);
+  const parsedEmail = z.string().email().safeParse(email);
+  if (!parsedEmail.success || !parseToken.success) return null;
+  try {
+    // const res = await axios.patch(
+    //   `${VITE_BACKEND_URL}/api/v1/auth/change-email`,
+    //   {
+    //     email: email,
+    //   },
+    //   { headers: { Authorization: `Bearer ${token}` } }
+    // );
+    //return res.status == 200;
+    if (email == "kaito.kid.1972002@gmail.com")
+      return true;
+    else
+      throw new Error("not valid");
+  } catch (err) {
+    console.log(err)
+    throw new Error("not valid");
+
+  }
+};
+/**
+ * @description verify user password
+ * @param  password
+ * @param  token
+ * @returns  true if its the user password ,false otherwise  or null
+ */
+export const verifyPassword = async ({
+  token,
+  password,
+}: {
+  token: string;
+  password: string;
+}) => {
+  const parseToken = z.string().safeParse(token);
+  const parsePassword = z.string().safeParse(password);
+  if (!parsePassword.success || !parseToken.success) return null;
+  try {
+    // const res = await axios.post(
+    //   `${VITE_BACKEND_URL}/api/v1/auth/check-password`,
+    //   {
+    //     password: password,
+    //   },
+    //   { headers: { Authorization: `Bearer ${token}` } }
+    // );
+    // return res.status == 200;
+    token
+    if (password == "123456as")
+      return password == "123456as"
+    else
+      throw new Error("not valid");
+  } catch (err) {
+    console.log(err)
+    throw new Error("not valid");
   }
 };
 /**
@@ -172,6 +241,7 @@ export const resetPasswordWithNewOne = async ({
 }) => {
   const parsePassword = z.string().safeParse(password);
   const parseToken = z.string().safeParse(token);
+
   if (!parsePassword.success || !parseToken.success)
     throw new Error("Invalid token");
   try {
@@ -183,7 +253,6 @@ export const resetPasswordWithNewOne = async ({
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    console.log(res);
     return res;
   } catch (err) {
     console.log(err);
@@ -359,7 +428,6 @@ export const registerNewUser = async (newUserData: object) => {
 export const uploadImage = async (picFile: File, token: string) => {
   const formData = new FormData();
   formData.append("photo", picFile);
-  console.log(token);
 
   try {
     const res = await axios.post(

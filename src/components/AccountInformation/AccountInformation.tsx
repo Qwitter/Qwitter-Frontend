@@ -1,13 +1,11 @@
 import { ChevronRight } from 'lucide-react'
 import { OptionsHeader } from '..'
 import { Link } from 'react-router-dom'
-type Props = {
-    email: string,
-    userName: string
-}
+import { useContext } from 'react'
+import { UserContext } from '@/contexts/UserContextProvider'
 
-export function AccountInformation({ email, userName }: Props) {
-
+export function AccountInformation() {
+    const {user} = useContext(UserContext)
     return (
         <div className=" w-full h-full border-r border-primary border-opacity-30 mb-20">
             <OptionsHeader header='Account information' />
@@ -20,7 +18,7 @@ export function AccountInformation({ email, userName }: Props) {
                                 <li className={`text-[15px] text-primary`} >
                                     Username
                                 </li>
-                                <p className={`text-[13px] text-gray`}>@{userName}</p>
+                                <p className={`text-[13px] text-gray`}>@{user?.userName}</p>
                         </div>
                         <ChevronRight color='grey' />
                     </div>
@@ -32,7 +30,7 @@ export function AccountInformation({ email, userName }: Props) {
                                 <li className={`text-[15px] text-primary`} >
                                     Email
                                 </li>
-                                <p className={`text-[13px] text-gray`}>{email}</p>
+                                <p className={`text-[13px] text-gray`}>{user?.email}</p>
                         </div>
                         <ChevronRight color='grey' />
                     </div>

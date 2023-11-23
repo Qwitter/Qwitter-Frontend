@@ -3,7 +3,7 @@ import { ThemeProvider } from "./components/theme-provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Settings } from "./pages/Settings/Settings";
 import { SignUpSteps } from "./components";
-import PasswordRest from "./components/passwordRest/PasswordRest";
+import PasswordRest from "./components/PasswordRest/PasswordRest";
 
 import { Login } from "./pages/login/Login";
 
@@ -15,6 +15,7 @@ import OAuth from "./components/OAuth/OAuth";
 import OAuthInterceptor from "./components/OAuth/OAuthInterceptor";
 import ProfileComplete from "./components/ProfileComplete/ProfileComplete";
 import UserContextProvider from "./contexts/UserContextProvider";
+import UpdateEmailPopUp from "./components/UpdateEmailContainer/UpdateEmailContainer";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +46,7 @@ function App() {
             />
             <Route path="/i/flow/single-sign" element={<OAuth />} />
             <Route path="/i/flow/profile" element={<ProfileComplete />} />
+            <Route path="/i/flow/add_email" element={<UpdateEmailPopUp />} />
           </Routes>
           <Toaster />
         </UserContextProvider>
