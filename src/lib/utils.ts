@@ -9,7 +9,7 @@ import {
 import { SignUpDataSchema } from "@/models/SignUp";
 import { BirthDay, MONTHS } from "@/models/BirthDay";
 
-const { VITE_BACKEND_URL } = process.env;
+const { VITE_BACKEND_URL } = import.meta.env;
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

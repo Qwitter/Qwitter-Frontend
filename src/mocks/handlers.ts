@@ -17,7 +17,7 @@ import { userWorker } from "./UserWorker/UserWorker";
 import { OAuthRegisterUserWorker } from "./OAuthRegisterUserWorker/OAuthRegisterUserWorker";
 import { UploadProfileWorker } from "./RegisterUserWorker/UploadProfileWorker";
 
-const { VITE_BACKEND_URL } = process.env;
+const { VITE_BACKEND_URL } = import.meta.env;
 
 export const handlers = [
   http.post(

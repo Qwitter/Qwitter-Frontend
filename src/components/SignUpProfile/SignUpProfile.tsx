@@ -47,7 +47,7 @@ export const SignUpProfile = ({ nextStep }: prob) => {
         variant={(buttonText === "Next" && "default") || "outline"}
         size="full"
         className="h-[50px] font-bold mb-1 mt-auto"
-        onClick={handleImageUpload}
+        onClick={() => nextStep()}
       >
         {buttonText}
       </Button>
