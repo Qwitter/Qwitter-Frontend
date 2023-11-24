@@ -3,7 +3,7 @@ import { ThemeProvider } from "./components/theme-provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Settings } from "./pages/Settings/Settings";
 import { SignUpSteps } from "./components";
-import PasswordRest from "./components/PasswordRest/PasswordRest";
+import PasswordRest from "./components/passwordRest/PasswordRest";
 
 import { Login } from "./pages/login/Login";
 
@@ -16,6 +16,7 @@ import OAuthInterceptor from "./components/OAuth/OAuthInterceptor";
 import ProfileComplete from "./components/ProfileComplete/ProfileComplete";
 import UserContextProvider from "./contexts/UserContextProvider";
 import UpdateEmailPopUp from "./components/UpdateEmailContainer/UpdateEmailContainer";
+import TweetsList from "./components/TweetsList/TweetsList";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ function App() {
             {/* this is the main routs*/}
             <Route path="/" element={<Authentication />} />
             <Route path="/Settings/*" element={<Settings />} />
+            <Route path="/home" element={<TweetsList />} />
           </Routes>
           <Routes>
             {/* this is the popup routs*/}
