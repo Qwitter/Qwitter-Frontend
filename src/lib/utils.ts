@@ -144,7 +144,7 @@ export const updateEmail = async ({
   const parsedEmail = z.string().email().safeParse(email);
   if (!parsedEmail.success || !parseToken.success) return null;
   try {
-    // const res = await axios.patch(
+    // const res = await axios.post(
     //   `${VITE_BACKEND_URL}/api/v1/auth/change-email`,
     //   {
     //     email: email,

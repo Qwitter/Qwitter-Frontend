@@ -5,58 +5,71 @@ const navLinks = [
     id: "home",
     title: "Home",
     icon: Home,
-    clicked: { strokeWidth: 3 }
+    clicked: { strokeWidth: 3 },
+    notificationCount: 1
+    
   },
   {
     id: "search",
     title: "Search",
     icon: Search,
-    clicked: { strokeWidth: 3 }
+    clicked: { strokeWidth: 3 },
+    notificationCount:5
+
   },
   {
     id: "notification",
     title: "Notification",
     icon: Bell,
-    clicked: { fill: 'white' }
+    clicked: { fill: 'white' },
+    notificationCount:0
   },
   {
     id: "messages",
     title: "Messages",
     icon: Mail,
-    clicked: { strokeWidth: 4 }
+    clicked: { strokeWidth: 4 },
+    notificationCount:0
   },
   {
     id: "lists",
     title: "Lists",
     icon: AlignJustify,
     clicked: { strokeWidth: 4 }
+    ,
+    notificationCount:0
   },
   {
     id: "bookmarks",
     title: "Bookmarks",
     icon: Bookmark,
     clicked: { fill: 'white' }
+    ,
+    notificationCount:0
 
   },
   {
     id: "community",
     title: "Community",
     icon: Users,
-    clicked: { fill: 'white' }
+    clicked: { fill: 'white' },
+    notificationCount:0
 
   },
   {
     id: "profile",
     title: "Profile",
     icon: User,
-    clicked: { fill: 'white' }
+    clicked: { fill: 'white' },
+    notificationCount:0
 
   },
   {
     id: "settings",
     title: "Settings",
     icon: Settings,
-    clicked: { strokeWidth: 3 }
+    clicked: { strokeWidth: 3 },
+    notificationCount:100
   }
 ];
 const settingsOptions = [
