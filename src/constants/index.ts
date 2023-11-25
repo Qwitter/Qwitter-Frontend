@@ -97,6 +97,91 @@ const accountOptions = [
   },
 
 ]
+const userArray = [
+  {
+    imageUrl: 'https://github.com/shadcn.png',
+    username: 'user1',
+    name: 'John Doe',
+    isVerified: true,
+    tag: 'Joyful memories in Dublin!', // Example random sentence
+  },
+  {
+    imageUrl: 'https://github.com/shadcn.png',
+    username: 'user2',
+    name: 'Jane Smith',
+    isVerified: false,
+    tag: 'Unity for a better future in Gaza.', // Example random sentence
+  },
+  {
+    imageUrl: 'https://github.com/shadcn.png',
+    username: 'user3',
+    name: 'Bob Johnson',
+    isVerified: true,
+    tag: 'Thoughts on the current situation in Gaza.', // Example random sentence
+  },
+  {
+    imageUrl: 'https://github.com/shadcn.png',
+    username: 'user4',
+    name: 'Alice Williams',
+    isVerified: false,
+    tag: 'Exploring the streets of Dublin.', // Example random sentence
+  },
+  {
+    imageUrl: 'https://github.com/shadcn.png',
+    username: 'user5',
+    name: 'Charlie Brown',
+    isVerified: true,
+    tag: 'Fun times in Dublin!', // Example random sentence
+  },
+  {
+    imageUrl: 'https://github.com/shadcn.png',
+    username: 'user6',
+    name: 'Eva Davis',
+    isVerified: false,
+    tag: 'Discovering hidden gems in Dublin.', // Example random sentence
+  },
+  {
+    imageUrl: 'https://github.com/shadcn.png',
+    username: 'user7',
+    name: 'Frank White',
+    isVerified: true,
+    tag: 'Memorable moments in Dublin.', // Example random sentence
+  },
+  {
+    imageUrl: 'https://github.com/shadcn.png',
+    username: 'user8',
+    name: 'Grace Miller',
+    isVerified: false,
+    tag: 'Voices for change in Gaza.', // Example random sentence
+  },
+  {
+    imageUrl: 'https://github.com/shadcn.png',
+    username: 'user9',
+    name: 'Harry Wilson',
+    isVerified: true,
+    tag: 'A call for peace in Gaza.', // Example random sentence
+  },
+  {
+    imageUrl: 'https://github.com/shadcn.pngg',
+    username: 'user10',
+    name: 'Ivy Taylor',
+    isVerified: false,
+    tag: 'Hopes and dreams for Gaza.', // Example random sentence
+  },
+  {
+    imageUrl: 'https://github.com/shadcn.pngg',
+    username: 'user11',
+    name: 'Kevin Brown',
+    isVerified: true,
+    tag: 'Exciting adventure in Dublin!', // Example random sentence
+  },
+  {
+    imageUrl: 'https://github.com/shadcn.pngg',
+    username: 'user12',
+    name: 'Laura Harris',
+    isVerified: false,
+    tag: 'Reflecting on the challenges in Gaza.', // Example random sentence
+  },
+];
 
-
-export { navLinks,settingsOptions ,accountOptions,};
+export { navLinks,settingsOptions ,accountOptions,userArray,};
