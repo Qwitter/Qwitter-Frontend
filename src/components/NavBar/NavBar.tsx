@@ -3,7 +3,7 @@ import { navLinks } from '../../constants'
 import { Button } from '..';
 import { Feather, LogOut } from 'lucide-react';
 import Logo from "../../assets/logo.png";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '@/contexts/UserContextProvider';
 import { useLocation } from 'react-router-dom';
 import {
@@ -13,9 +13,10 @@ import {
 } from "@/components/ui/popover"
 
 export function NavBar() {
-    const { user ,logout} = useContext(UserContext)
+    const { user } = useContext(UserContext)
     const [active, setActive] = useState("")
     const [isShown, setIsShown] = useState(false)
+    const navigation =useNavigate()
     const location = useLocation()
 
     useEffect(() => {
@@ -59,7 +60,7 @@ export function NavBar() {
                         <PopoverTrigger>
                             <img src={`http://${user?.profileImageUrl}`} alt="profilePic" className='w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid' />
                         </PopoverTrigger>
-                        <PopoverContent className='w-[240px] cursor-pointer hover:bg-[#16181c] p-3 text-primary '>
+                        <PopoverContent className='w-[240px] cursor-pointer hover:bg-[#16181c] p-3 text-primary' onClick={()=>{navigation("/logout")}}>
                         Log out {user?.userName}
                             </PopoverContent>
                     </Popover>
@@ -67,7 +68,7 @@ export function NavBar() {
                         <h3 className='font-semibold tracking-[2px] text-[15px]'>{user?.name}</h3>
                         <span className='text-gray text-[15px]'>@{user?.userName}</span>
                     </div>
-                    <div className='w-2/4  row justify-end hidden xl:flex ' onClick={logout}>
+                    <div className='w-2/4  row justify-end hidden xl:flex ' onClick={()=>{navigation("/logout")}}>
                         <LogOut className='cursor-pointer' />
                     </div>
                 </div>

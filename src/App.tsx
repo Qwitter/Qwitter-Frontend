@@ -17,6 +17,7 @@ import ProfileComplete from "./components/ProfileComplete/ProfileComplete";
 import UserContextProvider from "./contexts/UserContextProvider";
 import UpdateEmailPopUp from "./components/UpdateEmailContainer/UpdateEmailContainer";
 import CreateTweetContainer from "./components/CreateTweet/CreateTweetContainer";
+import { LogOut } from "./components/LogOut/LogOut";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +50,7 @@ function App() {
             <Route path="/i/flow/profile" element={<ProfileComplete />} />
             <Route path="/i/flow/add_email" element={<UpdateEmailPopUp />} />
             <Route path="/compose/tweet" element={<CreateTweetContainer />} />
+            <Route path="/logout" element={<LogOut />} />
           </Routes>
           <Toaster />
         </UserContextProvider>
