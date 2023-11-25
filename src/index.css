@@ -107,3 +107,15 @@ button-border-color {
   top: 35%;
   left: 0;
 }
+
+.tweet-icon-container{
+  @apply flex gap-2 items-center cursor-pointer;
+}
+
+.tweet-icon{
+  @apply text-xl cursor-pointer h-5 w-5 z-10 transition-all;
+}
+
+.tweet-icon-radius{
+  @apply rounded-full z-0 opacity-20 h-9 w-9 absolute left-[-8px] top-[-8px] transition-all;
+}
