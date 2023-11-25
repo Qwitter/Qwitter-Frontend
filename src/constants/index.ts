@@ -1,4 +1,4 @@
-import { Home, Search, Bell, Mail, AlignJustify, Bookmark, Users, User, Settings ,KeyRound } from 'lucide-react';
+import { Home,Globe2, Search,UserCheck, Bell, Mail, AlignJustify, Bookmark, Users, User, Settings ,KeyRound, BadgeCheck, AtSign } from 'lucide-react';
 
 const navLinks = [
   {
@@ -183,5 +183,24 @@ const userArray = [
     tag: 'Reflecting on the challenges in Gaza.', // Example random sentence
   },
 ];
+const whoToReply =[
+  {
+    text:"Everyone",
+    icon: Globe2
+  },
+  {
+    text:"Accounts you follow",
+    icon:UserCheck
+  },
+  {
+    text:"Verified accounts",
+    icon:BadgeCheck
+  },
+  {
+    text:"Only accounts you mention",
+    icon:AtSign
+  }
 
-export { navLinks,settingsOptions ,accountOptions,userArray,};
+]
+
+export { navLinks,settingsOptions ,accountOptions,userArray,whoToReply};

@@ -6,13 +6,18 @@ import Logo from "../../assets/logo.png";
 import { Link } from 'react-router-dom';
 import { UserContext } from '@/contexts/UserContextProvider';
 import { useLocation } from 'react-router-dom';
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
 
 export function NavBar() {
-    const { user } = useContext(UserContext)
+    const { user ,logout} = useContext(UserContext)
     const [active, setActive] = useState("")
     const [isShown, setIsShown] = useState(false)
     const location = useLocation()
-    
+
     useEffect(() => {
         // Add a listener for changes to the screen size
         const mediaQuery = window.matchMedia("(max-width: 1280px)");
@@ -44,20 +49,27 @@ export function NavBar() {
 
                     </Link>
                     <NavElements active={active} setActive={setActive} />
-                    <Link to={'/compose/tweet'} state={{ previousLocation: location }} className='w-full'> 
+                    <Link to={'/compose/tweet'} state={{ previousLocation: location }} className='w-full'>
                         <Button variant="secondary" className='w-11/12 py-4 font-bold mt-3'> {isShown ? <Feather /> : 'Post'}</Button>
                     </Link>
                 </div>
 
                 <div className='my-3 p-3 w-full flex flex-row items-center hover:bg-[#191919] transition-all hover:rounded-full'>
-                    <img src={`http://${user?.profileImageUrl}`} alt="profilePic" className='w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid' />
+                    <Popover>
+                        <PopoverTrigger>
+                            <img src={`http://${user?.profileImageUrl}`} alt="profilePic" className='w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid' />
+                        </PopoverTrigger>
+                        <PopoverContent className='w-[240px] cursor-pointer hover:bg-[#16181c] p-3 text-primary '>
+                        Log out {user?.userName}
+                            </PopoverContent>
+                    </Popover>
                     <div className=' flex-col mx-3 hidden xl:flex'>
                         <h3 className='font-semibold tracking-[2px] text-[15px]'>{user?.name}</h3>
                         <span className='text-gray text-[15px]'>@{user?.userName}</span>
                     </div>
-                    <a href='logout' className='w-2/4  row justify-end hidden xl:flex '>
+                    <div className='w-2/4  row justify-end hidden xl:flex ' onClick={logout}>
                         <LogOut className='cursor-pointer' />
-                    </a>
+                    </div>
                 </div>
             </div>
         </div >
@@ -68,7 +80,7 @@ function NavElements({ active, setActive }: { active: string, setActive: React.D
         <ul className='flex flex-col w-full '>
             {navLinks.map((link) => (
                 <a href={`#${link.title}`} key={link.id} className='group' onClick={() => setActive(link.title)}>
-                    <div className='flex flex-row p-3 items-center group-hover:bg-[#191919]  group-hover:rounded-full transition-all '>
+                    <div className='flex flex-row p-3 items-center max-xl:justify-center group-hover:bg-[#191919]  group-hover:rounded-full transition-all '>
                         <div className='relative'>
                             <link.icon {...active == link.title ? link.clicked : {}} />
                             {link.notificationCount > 0 && (
