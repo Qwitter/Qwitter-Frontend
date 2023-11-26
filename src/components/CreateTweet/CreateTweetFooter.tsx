@@ -31,12 +31,7 @@ export default function CreateTweetFooter({ text,selectedFile,setSelectedFile }:
             fileInput.current!.value=''
         }
     };
-    const handleRemoveFile = (index: number) => {
-        const updatedFiles = [...selectedFile];
-        updatedFiles.splice(index, 1);
-        console.log(updatedFiles)
-        setSelectedFile(updatedFiles);
-    };
+
     return (
         <div className="flex flex-col items-start w-full">
             <div className="h-12 flex flex-row items-center pb-3 w-full border-b border-primary border-opacity-20 cursor-pointer" onClick={togglePopup}>
@@ -50,7 +45,7 @@ export default function CreateTweetFooter({ text,selectedFile,setSelectedFile }:
                         <div className="flex flex-row items-center h-full ">
                             {
                                 icons.map((Icon, index) => (
-                                    <div key={index} className="text-secondary h-full group relative max-w-[40px] w-full" onClick={index == 0 ? handleUploadImg : () => { }}>
+                                    <div key={index} className="text-secondary h-full group relative max-w-[40px] w-full cursor-pointer" onClick={index == 0 ? handleUploadImg : () => { }}>
                                         <Icon.icon className="w-10 h-10 p-2 rounded-3xl group-hover:bg-secondary group-hover:bg-opacity-25" />
                                         <div className="absolute bg-[#657b8b] rounded-sm text-primary text-xs px-2 py-1 opacity-0 bg-opacity-75 group-hover:opacity-100 transition-opacity bottom-full left-1/2 transform -translate-x-1/2 -translate-y-[-65px]">
                                             {Icon.hover}

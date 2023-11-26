@@ -30,10 +30,9 @@ function App() {
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <UserContextProvider>
           <Routes location={previousLocation || location}>
-            {/* this is the main routs*/}
             <Route path="/" element={<Authentication />} />
           </Routes>
-          <PagesContainer />
+          {location.pathname!=='/'&&!location.pathname.includes('/i/flow')&&previousLocation?.pathname!=='/' &&<PagesContainer />}
           <Routes>
             {/* this is the popup routs*/}
             <Route path="/i/flow/signup" element={<SignUpSteps />} />
@@ -51,7 +50,7 @@ function App() {
             <Route path="/i/flow/profile" element={<ProfileComplete />} />
             <Route path="/i/flow/add_email" element={<UpdateEmailPopUp />} />
             <Route path="/compose/tweet" element={<CreateTweetContainer />} />
-            <Route path="/logout" element={<LogOut />} />
+            <Route path="/i/flow/logout" element={<LogOut />} />
           </Routes>
           <Toaster />
         </UserContextProvider>

@@ -513,3 +513,31 @@ export const convertNumberToShortForm = (number: number) => {
   else if (number % 1000000 <= 100000) return `${(number / 1000000)}m`;
   else return `${(number / 1000000).toFixed(1)}m`;
 }
+/**
+ * @description get a list of users with userName contain the given string 
+ * @param {username,token}
+ * @returns list of users  or null
+ */
+export const getUsersSuggestions = async (token: string,username:string) => {
+  try {
+    console.log("before")
+
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/lookup`, {
+      params: {
+        name: username.slice(1)
+    },
+      withCredentials: true,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("working")
+    return res.data.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};

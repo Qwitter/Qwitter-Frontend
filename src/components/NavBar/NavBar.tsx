@@ -60,7 +60,7 @@ export function NavBar() {
                         <PopoverTrigger>
                             <img src={`http://${user?.profileImageUrl}`} alt="profilePic" className='w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid' />
                         </PopoverTrigger>
-                        <PopoverContent className='w-[240px] cursor-pointer hover:bg-[#16181c] p-3 text-primary' onClick={()=>{navigation("/logout")}}>
+                        <PopoverContent className='w-[240px] cursor-pointer hover:bg-[#16181c] p-3 text-primary' onClick={()=>{navigation("/i/flow/logout")}}>
                         Log out {user?.userName}
                             </PopoverContent>
                     </Popover>
@@ -68,7 +68,7 @@ export function NavBar() {
                         <h3 className='font-semibold tracking-[2px] text-[15px]'>{user?.name}</h3>
                         <span className='text-gray text-[15px]'>@{user?.userName}</span>
                     </div>
-                    <div className='w-2/4  row justify-end hidden xl:flex ' onClick={()=>{navigation("/logout")}}>
+                    <div className='w-2/4  row justify-end hidden xl:flex ' onClick={()=>{navigation("/i/flow/logout")}}>
                         <LogOut className='cursor-pointer' />
                     </div>
                 </div>

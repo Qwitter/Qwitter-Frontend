@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { HighlightWithinTextarea } from "react-highlight-within-textarea"
 import getCaretCoordinates from 'textarea-caret';
@@ -26,18 +26,25 @@ const Textarea: React.FC<TextareaProps> = ({ text, setText, className, maxRows =
     index: 0,
     position: { top: 0, left: 0 },
   });
+  useEffect(()=>{
+    updateMention()
+    checkMention()
+  },[text])
+  useEffect(()=>{
+    checkMention()
 
+  },[mentionsAndTags])
 
-  const updateMention = (inputText: string) => {
-    const mentionRegex = /(^|\s)((@|#)[\w]+)/g;
-
-    const matchMention = [...inputText.matchAll(mentionRegex)]
+  const updateMention = () => {
+    const mentionRegex = /(^|\s)((@[\w]{1,20}|#[\w]+))/g;
+    
+    const matchMention = [...text.matchAll(mentionRegex)]
     const mentionsTemp: Mention[] = []
-    if (inputText.length > 280 || matchMention.length === 0) return;
+    if (text.length > 280 || matchMention.length === 0) return;
     matchMention.forEach((match) => {
       const index = match.index!;
       mentionsTemp.push({ position: index, length: match[0].length, mention: match[0] })
-
+      console.log(mentionsTemp)
       SetMentionsAndTags(mentionsTemp);
     });
 
@@ -48,9 +55,7 @@ const Textarea: React.FC<TextareaProps> = ({ text, setText, className, maxRows =
 
     const inputText = e.target.value;
     if (inputText.length > 700) return;
-    
     setText(inputText ? inputText : inputText.trim());
-    updateMention(inputText)
   };
 
   const calculateRows = () => {
@@ -67,8 +72,7 @@ const Textarea: React.FC<TextareaProps> = ({ text, setText, className, maxRows =
     const nextSpace = spaceIndex !== -1 ? spaceIndex : Infinity;
     const nextEnter = enterIndex !== -1 ? enterIndex : Infinity;
     const endPosition = Math.min(nextSpace, nextEnter, startPosition + 20)
-
-    const result = inputString.substring(startPosition, endPosition + 1);
+    const result = inputString.substring(text[0]=='@'||text[0]=='#'?startPosition-1:startPosition, endPosition + 1);
     return result;
   }
 
@@ -82,7 +86,6 @@ const Textarea: React.FC<TextareaProps> = ({ text, setText, className, maxRows =
     const cursorPosition = textAreaRef.current!.selectionStart;
 
     let foundMentionInRange = false;
-
     // Iterate through mentions
     mentionsAndTags.forEach((mention,index) => {
       if (
@@ -103,7 +106,7 @@ const Textarea: React.FC<TextareaProps> = ({ text, setText, className, maxRows =
       closePopUp()
 
   }
-  function showPopup(mention: { position: number; }, updateFlag: boolean,index:number) {
+  function showPopup(mention: { position: number;mention:string; }, updateFlag: boolean,index:number) {
     // Cursor is within the mention range, show the popup
     const cursor = getCaretCoordinates(textAreaRef.current!, textAreaRef.current!.selectionEnd);
     const popupTop = cursor.top + 30;
@@ -111,7 +114,7 @@ const Textarea: React.FC<TextareaProps> = ({ text, setText, className, maxRows =
     const popupLeft = cursor.left - 8 * mentionContent.length;
     setPopup({
       visible: true,
-      content: mentionContent,
+      content: mentionContent.trim(),
       index: index,
       position: { top: updateFlag ? popup.position.top : popupTop ^ 0, left: updateFlag ? popup.position.left : popupLeft ^ 0 },
     });
@@ -129,16 +132,17 @@ const Textarea: React.FC<TextareaProps> = ({ text, setText, className, maxRows =
   const handleUserClick = (username: string) => {
     // Find the mention in the current text and replace it with the selected username
 
-      const mention =mentionsAndTags[popup.index]
+      const mention = mentionsAndTags[popup.index]
       const startPosition = mention.position;
-      const updatedText = text.slice(0, startPosition) + ` ${mention.mention[1]+username}` + text.slice(startPosition + mention.length);
+      const updatedText = text.slice(0, startPosition) + `${text[0]=='@'||text[0]=='#'?username:" "+username}` + text.slice(startPosition + mention.length);
+      
       setText(updatedText);
   
     // Close the popup
     closePopUp();
   };
   return (
-
+<>
     <div className="relative w-full min-h-[100px] ">
       <textarea
         className={cn(
@@ -157,15 +161,18 @@ const Textarea: React.FC<TextareaProps> = ({ text, setText, className, maxRows =
       />
       <div
         className="static z-0 w-full leading-[22px] p-3  break-words text-[20px] no-scrollbar overflow-y-auto" ref={containerRef}  >
-        {<HighlightWithinTextarea textDirectionality="LTR" value={text} highlight={[{ highlight: [279, text.length], className: "bg-red-600 text-primary" }, { highlight: /(^|\s)((@|#)[\w]+)/g, className: "text-secondary bg-transparent" }]} readOnly placeholder="" />
+        {<HighlightWithinTextarea textDirectionality="LTR" value={text} highlight={[{ highlight: [279, text.length], className: "bg-red-600 text-primary" }, { highlight: /(^|\s)((@[\w]{1,20}|#[\w]+))/g, className: "text-secondary bg-transparent" }]} readOnly placeholder="" />
         }
 
       </div>
 
-      <CreateTweetPopUp popUp={popup} handleUserClick={handleUserClick} />
+    
 
 
-    </div>
+    </div>{popup.visible&&
+      <CreateTweetPopUp popUp={popup} closePopup={closePopUp} handleUserClick={handleUserClick} />
+    }
+      </>
   );
 };
 Textarea.displayName = "Textarea";

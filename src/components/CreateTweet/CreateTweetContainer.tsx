@@ -1,4 +1,4 @@
-import { useContext, useState ,useEffect} from "react";
+import { useContext, useState, useEffect } from "react";
 import { HeaderButton } from "@/models/PopUpModel";
 import { PopUpContainer } from "../PopUpContainer/PopUpContainer";
 import { useNavigate } from "react-router-dom";
@@ -22,12 +22,16 @@ const CreateTweetContainer = () => {
         setShowPopUp(false);
     };
     useEffect(() => {
-      console.log(selectedFile)
-    
-     
-    }, [selectedFile])
-    
+        console.log(selectedFile)
 
+
+    }, [selectedFile])
+
+    const handleRemoveFile = (index: number) => {
+        const updatedFiles = [...selectedFile];
+        updatedFiles.splice(index, 1);
+        setSelectedFile(updatedFiles);
+    };
     return (
         <PopUpContainer
             show={showPopUp}
@@ -35,7 +39,7 @@ const CreateTweetContainer = () => {
             headerButton={HeaderButton.close}
             headerFunction={closePopUp}
         >
-            <CreateTweetMain tweet={tweet} setTweet={setTweet}  selectedFile={selectedFile}/>
+            <CreateTweetMain tweet={tweet} setTweet={setTweet} selectedFile={selectedFile} />
             <CreateTweetFooter text={tweet} selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
         </PopUpContainer>
     );
