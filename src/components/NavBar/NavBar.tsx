@@ -39,8 +39,8 @@ export function NavBar() {
         };
     }, []);
     return (
-        <div className='items-end flex flex-col min-w-[80px]'>
-            <div className='flex flex-col items-start xl:w-[275px] px-2 h-full justify-between '>
+        <div className='items-end flex flex-col min-w-[80px] max-h-[100vh] sticky top-0'>
+            <div className='flex flex-col items-start xl:w-[275px] px-2 h-full min-h-[100vh] justify-between '>
                 <div className='flex items-start w-full flex-col'>
                     <Link to="/">
                         <img src={Logo} alt="logo" //use logo here
