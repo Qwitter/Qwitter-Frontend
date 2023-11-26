@@ -8,6 +8,7 @@ import {
 } from "@/models/EmailVerification";
 import { SignUpDataSchema } from "@/models/SignUp";
 import { BirthDay, MONTHS } from "@/models/BirthDay";
+import { UserDataSchema } from "@/models/User";
 
 const { VITE_BACKEND_URL } = import.meta.env;
 
@@ -16,7 +17,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
- * @description Get the current user from the backend after the user has logged in
+ * @description Get the user data from the backend using the token
  * @params token
  * @returns object represents the user data
  */
@@ -31,6 +32,26 @@ export const getUser = async (token: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+/**
+ * @description Get the user profile data from the backend using username
+ * @param username - the username of the user
+ * @returns object represents the user profile data
+ */
+export const getUserData = async (username: string) => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/${username}`);
+    const userData = res.data;
+    
+    const parseResult = UserDataSchema.safeParse(userData);
+    if (!parseResult.success) throw new Error("Invalid user data");
+
     return res.data;
   } catch (err) {
     console.log(err);
@@ -152,14 +173,11 @@ export const updateEmail = async ({
     //   { headers: { Authorization: `Bearer ${token}` } }
     // );
     //return res.status == 200;
-    if (email == "kaito.kid.1972002@gmail.com")
-      return true;
-    else
-      throw new Error("not valid");
+    if (email == "kaito.kid.1972002@gmail.com") return true;
+    else throw new Error("not valid");
   } catch (err) {
-    console.log(err)
+    console.log(err);
     throw new Error("not valid");
-
   }
 };
 /**
@@ -187,13 +205,11 @@ export const verifyPassword = async ({
     //   { headers: { Authorization: `Bearer ${token}` } }
     // );
     // return res.status == 200;
-    token
-    if (password == "123456as")
-      return password == "123456as"
-    else
-      throw new Error("not valid");
+    token;
+    if (password == "123456as") return password == "123456as";
+    else throw new Error("not valid");
   } catch (err) {
-    console.log(err)
+    console.log(err);
     throw new Error("not valid");
   }
 };
@@ -484,3 +500,16 @@ export const oAuthSignUp = async (token: string, birthday: BirthDay) => {
     return null;
   }
 };
+
+/**
+ * @description Convert a number to a short form
+ * @param number
+ * @returns string - the short form of the number
+ */
+export const convertNumberToShortForm = (number: number) => {
+  if (number < 1000) return number;
+  else if (number < 1000000 && number % 1000 <= 100) return `${(number / 1000)}k`;
+  else if (number < 1000000) return `${(number / 1000).toFixed(1)}k`;
+  else if (number % 1000000 <= 100000) return `${(number / 1000000)}m`;
+  else return `${(number / 1000000).toFixed(1)}m`;
+}

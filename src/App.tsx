@@ -32,6 +32,7 @@ function App() {
             {/* this is the main routs*/}
             <Route path="/" element={<Authentication />} />
             <Route path="/Settings/*" element={<Settings />} />
+            <Route path="/home" element={<TweetsList />} />
           </Routes>
           <Routes>
             {/* this is the popup routs*/}
