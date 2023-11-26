@@ -26,11 +26,9 @@ const TweetEntitiesSchema = z.object({
 });
 
 export const TweetSchema = z.object({
-  createdAt: z
-    .string()
-    .regex(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/, {
-      message: "createdAt must be in the format yyyy-mm-dd hh:mm:ss",
-    }),
+  createdAt: z.string().regex(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/, {
+    message: "createdAt must be in the format yyyy-mm-dd hh:mm:ss",
+  }),
   id: z.string(),
   user: UserDataSchema,
   replyCount: z
@@ -47,11 +45,11 @@ export const TweetSchema = z.object({
     .min(0, { message: "likesCount must be positive or zero" }),
   text: z.string(),
   source: z.string(),
-  coordinates: z
-    .string()
-    .regex(/^\d{1,3}\.\d{1,6},\d{1,3}\.\d{1,6}$/, {
-      message: "coordinates must be in the format lat,lng",
-    }),
+  liked: z.boolean(),
+  bookmarked: z.boolean(),
+  coordinates: z.string().regex(/^\d{1,3}\.\d{1,6},\d{1,3}\.\d{1,6}$/, {
+    message: "coordinates must be in the format lat,lng",
+  }),
   replyToTweetId: z.string(),
   retweetedId: z.string(),
   qouteTweetedId: z.string(),
