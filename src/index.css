@@ -119,3 +119,7 @@ button-border-color {
 .tweet-icon-radius{
   @apply rounded-full z-0 opacity-20 h-9 w-9 absolute left-[-8px] top-[-8px] transition-all;
 }
+
+.tweet-image-remover-icon{
+  @apply absolute top-2 right-2 bg-[#0f1419bf] hover:bg-[#272c30bf] cursor-pointer text-3xl p-1 rounded-full;
+}
