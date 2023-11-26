@@ -5,27 +5,52 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { cn } from "@/lib";
 import { useEffect, useRef, useState } from "react";
-export default function CreateTweetFooter({ text }: { text: string }) {
+type Images = {
+    value: string;
+    type: string;
+}
+export default function CreateTweetFooter({ text,selectedFile,setSelectedFile }: { text: string;selectedFile:Images[];setSelectedFile:React.Dispatch<React.SetStateAction<Images[]>> }) {
     const icons = [{ icon: Image, hover: "media" }, { icon: ScanSearch, hover: "GIF" }, { icon: Vote, hover: "Poll" }, { icon: Smile, hover: "Emoji" }]
     const [isPopupOpen, setPopupOpen] = useState(false);
+    const fileInput = useRef<HTMLInputElement>(null)
+
     const togglePopup = () => {
         setPopupOpen(!isPopupOpen);
     };
     const [currentWhoToReply, setCurrentWhoToReply] = useState({ ...whoToReply[0] })
+    function handleUploadImg() {
+        fileInput.current?.click()
+
+    }
+
+    const handleFileChange = () => {
+        const file = fileInput.current!.files;
+        if (file) {
+            const newFiles = [...selectedFile, { value: URL.createObjectURL(file[0]), type: "photo" }];
+            setSelectedFile(newFiles)
+            fileInput.current!.value=''
+        }
+    };
+    const handleRemoveFile = (index: number) => {
+        const updatedFiles = [...selectedFile];
+        updatedFiles.splice(index, 1);
+        console.log(updatedFiles)
+        setSelectedFile(updatedFiles);
+    };
     return (
         <div className="flex flex-col items-start w-full">
             <div className="h-12 flex flex-row items-center pb-3 w-full border-b border-primary border-opacity-20 cursor-pointer" onClick={togglePopup}>
                 <currentWhoToReply.icon color="rgb(29,155,240)" className="mr-1 w-4 h-4" strokeWidth="2.5" />
                 <span className="text-secondary text-sm font-bold">{currentWhoToReply.text} can reply</span>
             </div>
-            {isPopupOpen && <ReplyPopup closePopup={()=>{setPopupOpen(false)}} currentWhoToReply={currentWhoToReply} setCurrentWhoToReply={setCurrentWhoToReply} />}
+            {isPopupOpen && <ReplyPopup closePopup={() => { setPopupOpen(false) }} currentWhoToReply={currentWhoToReply} setCurrentWhoToReply={setCurrentWhoToReply} />}
             <div className="flex flex-row p-1 py-2 items-start w-full">
                 <div className="w-full  flex flex-row items-center ">
                     <div className="w-full h-full ">
                         <div className="flex flex-row items-center h-full ">
                             {
                                 icons.map((Icon, index) => (
-                                    <div key={index} className="text-secondary h-full group relative max-w-[40px] w-full">
+                                    <div key={index} className="text-secondary h-full group relative max-w-[40px] w-full" onClick={index == 0 ? handleUploadImg : () => { }}>
                                         <Icon.icon className="w-10 h-10 p-2 rounded-3xl group-hover:bg-secondary group-hover:bg-opacity-25" />
                                         <div className="absolute bg-[#657b8b] rounded-sm text-primary text-xs px-2 py-1 opacity-0 bg-opacity-75 group-hover:opacity-100 transition-opacity bottom-full left-1/2 transform -translate-x-1/2 -translate-y-[-65px]">
                                             {Icon.hover}
@@ -72,7 +97,7 @@ export default function CreateTweetFooter({ text }: { text: string }) {
                             <div className="w-[1px] h-[31px] bg-[#3E4144] ml-[8px] mr-3"></div>}
                         <Button variant="secondary" className=' px-5 py-2 mt-1 ml-2' type="submit"> Post</Button>
                     </div>
-
+                    <input type="file" className="hidden" onChange={handleFileChange} ref={fileInput} accept="images/*" />
                 </div>
             </div>
         </div>
@@ -82,7 +107,7 @@ function ReplyPopup({ currentWhoToReply, setCurrentWhoToReply, closePopup }: {
     currentWhoToReply: { text: string, icon: LucideIcon }, setCurrentWhoToReply: React.Dispatch<React.SetStateAction<{
         text: string;
         icon: LucideIcon;
-    }>>, closePopup:()=> void
+    }>>, closePopup: () => void
 }) {
     const [position, setPosition] = useState<'above' | 'below'>('below');
     const popupRef = useRef<HTMLDivElement>(null);
@@ -123,7 +148,7 @@ function ReplyPopup({ currentWhoToReply, setCurrentWhoToReply, closePopup }: {
             <ul >
                 {
                     whoToReply.map(option => (
-                        <li key={option.text} className="py-3 px-4 flex flex-row items-center hover:bg-[#16181c] w-full transition-all cursor-pointer" onClick={() => { setCurrentWhoToReply(option); closePopup()}}>
+                        <li key={option.text} className="py-3 px-4 flex flex-row items-center hover:bg-[#16181c] w-full transition-all cursor-pointer" onClick={() => { setCurrentWhoToReply(option); closePopup() }}>
 
 
                             <div className="rounded-full  bg-secondary mr-4 w-10 h-10 flex justify-center items-center">

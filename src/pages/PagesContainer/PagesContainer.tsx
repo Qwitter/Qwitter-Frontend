@@ -9,7 +9,7 @@ export function PagesContainer() {
     return (
         <> {location.pathname!=='/'&&
             <div className='w-full flex flex-row min-h-[750px] z-0 justify-center'>
-            <NavBar />{/*till we know how the roots will work */}
+            <NavBar />
 
             <div className=" border-l-[0.5px] border-primary border-opacity-30 max-mobile:w-full">
                 <div className="w-auto mobile:w-[920px] h-full flex flex-row large2X:w-[990px] max-largeX:max-w-[600px] flex-shrink-1 flex-grow-2">

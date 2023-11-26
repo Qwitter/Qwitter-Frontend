@@ -139,10 +139,10 @@ const Textarea: React.FC<TextareaProps> = ({ text, setText, className, maxRows =
   };
   return (
 
-    <div className="relative w-full min-h-[100px]">
+    <div className="relative w-full min-h-[100px] ">
       <textarea
         className={cn(
-          "flex absolute text-[20px] overflow-y-auto  top-0 left-0 caret-white text-[#ffffff00] leading-[22px] h-full z-[10] min-h-[80px] min-w-[95%] rounded-md border border-input bg-background p-3 ring-offset-background placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 scroll-m-0 scroll-p-0 no-scrollbar",
+          "flex absolute text-[20px] w-full overflow-y-auto  top-0 left-0 caret-white text-[#ffffff00] leading-[22px] h-full z-[10] min-h-[80px] min-w-[95%] rounded-md border border-input bg-background p-3 ring-offset-background placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 scroll-m-0 scroll-p-0 no-scrollbar",
           className
         )}
         value={text}
@@ -156,7 +156,7 @@ const Textarea: React.FC<TextareaProps> = ({ text, setText, className, maxRows =
 
       />
       <div
-        className="static z-0 w-[95%] leading-[22px] p-3  break-words text-[20px] no-scrollbar overflow-y-auto" ref={containerRef}  >
+        className="static z-0 w-full leading-[22px] p-3  break-words text-[20px] no-scrollbar overflow-y-auto" ref={containerRef}  >
         {<HighlightWithinTextarea textDirectionality="LTR" value={text} highlight={[{ highlight: [279, text.length], className: "bg-red-600 text-primary" }, { highlight: /(^|\s)((@|#)[\w]+)/g, className: "text-secondary bg-transparent" }]} readOnly placeholder="" />
         }
 
