@@ -59,6 +59,18 @@
   }
 }
 
+@layer utilities {
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
 .btn {
   @apply rounded-3xl text-white px-4 hover:bg-primary/90;
 }
@@ -107,6 +119,11 @@ button-border-color {
   top: 35%;
   left: 0;
 }
-.box-shadow{
+
+.box-shadow {
   box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 15px, rgba(255, 255, 255, 0.15) 0px 0px 3px 1px;
+}
+
+.hidden-scroll::-webkit-scrollbar {
+  display: none;
 }

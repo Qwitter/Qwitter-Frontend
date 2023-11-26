@@ -20,6 +20,7 @@ const Textarea: React.FC<TextareaProps> = ({ text, setText, className, maxRows =
   const containerRef = useRef<HTMLDivElement>(null);
   const [mentionsAndTags, SetMentionsAndTags] = useState<Mention[]>([])
   const [mentionOpenedPopup, setMentionOpenedPopup] = useState(false);
+  const [scrollValue,setScrollValue] = useState(0);
   const [popup, setPopup] = useState({
     visible: false,
     content: '',
@@ -48,9 +49,7 @@ const Textarea: React.FC<TextareaProps> = ({ text, setText, className, maxRows =
 
     const inputText = e.target.value;
     if (inputText.length > 700) return;
-    const scrollValue = textAreaRef.current?.scrollTop;
-    containerRef!.current!.style.height = `${textAreaRef.current?.offsetHeight}px`
-    containerRef!.current!.style.top = `${-scrollValue!}px` || '0px';
+    
     setText(inputText ? inputText : inputText.trim());
     updateMention(inputText)
   };
@@ -75,11 +74,10 @@ const Textarea: React.FC<TextareaProps> = ({ text, setText, className, maxRows =
   }
 
 
-  const handleScroll = () => {
-    const scrollValue = textAreaRef.current?.scrollTop;
-    containerRef!.current!.style.height = `${textAreaRef.current?.offsetHeight}px`
-    containerRef!.current!.style.top = `${-scrollValue!}px` || '0px';
+  const handleScroll = (e) => {
 
+    const scrollValue = textAreaRef.current?.scrollTop;
+    containerRef!.current!.scrollTop = scrollValue!;
   };
   function checkMention() {
     const cursorPosition = textAreaRef.current!.selectionStart;
@@ -145,21 +143,21 @@ const Textarea: React.FC<TextareaProps> = ({ text, setText, className, maxRows =
     <div className="relative w-full min-h-[100px]">
       <textarea
         className={cn(
-          "flex relative text-[20px] caret-white text-[#ffffff00] leading-[22px] h-full z-[10] min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-3 ring-offset-background placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
+          "flex absolute text-[20px] overflow-y-auto  top-0 left-0 caret-white text-[#ffffff00] leading-[22px] h-full z-[10] min-h-[80px] w-[95%] rounded-md border border-input bg-background p-3 ring-offset-background placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 scroll-m-0 scroll-p-0 no-scrollbar",
           className
         )}
         value={text}
         ref={textAreaRef}
         onChange={handleInputChange}
         rows={calculateRows()}
-        onScroll={handleScroll}
         onClick={checkMention}
+        onScroll={handleScroll}
         onKeyDown={checkMention}
         {...props}
 
       />
       <div
-        className="absolute z-0 w-full leading-[22px] py-3 px-3 top-0 left-0  break-words text-[20px] overflow-y-hidden " ref={containerRef}  >
+        className="static z-0 w-[95%] leading-[22px] p-3  break-words text-[20px] no-scrollbar overflow-y-auto" ref={containerRef}  >
         {<HighlightWithinTextarea textDirectionality="LTR" value={text} highlight={[{ highlight: [279, text.length], className: "bg-red-600 text-primary" }, { highlight: /(^|\s)((@|#)[\w]+)/g, className: "text-secondary bg-transparent" }]} readOnly placeholder="" />
         }
 

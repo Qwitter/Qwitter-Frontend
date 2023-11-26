@@ -9,7 +9,7 @@ export default function CreateTweetMain({ tweet, setTweet }: { tweet: string, se
                 <img src={img} alt="" className='w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid' />
             </div>
             
-            <Textarea placeholder='What is happing?!' text={tweet} setText={setTweet} className='bg-transparent  w-full placeholder:text-gray  focus:ring-transparent focus:border-none focus:outline-none resize-none border-none'
+            <Textarea placeholder='What is happing?!' text={tweet} setText={setTweet} className='bg-transparent  placeholder:text-gray  focus:ring-transparent focus:border-none focus:outline-none resize-none border-none'
             />
         </div>
 
