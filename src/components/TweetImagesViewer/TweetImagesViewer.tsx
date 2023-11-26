@@ -44,7 +44,8 @@ const TweetImagesViewer = ({ images }: TweetImagesViewerProps) => {
           <div
             className={cn("flex h-[290px] gap-px", {
               "h-full": images.length === 1,
-              "h-[145px]": images.length === 4,
+              "h-0": images.length === 0,
+              "h-[145px]": images.length >= 4,
             })}
           >
             {images.slice(0, 2).map((image) => (
