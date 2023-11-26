@@ -67,8 +67,7 @@ const Tweet = ({ tweet }: TweetProps) => {
           </span>
         </h3>
         <>{tweetTextHighlighter(tweet.text)}</>
-        {tweet.entities.media.findIndex((media) => media.type == "photo") >
-          -1 && <TweetImagesViewer images={tweet.entities.media} />}
+        <TweetImagesViewer images={tweet.entities.media} />
         <TweetInteractionsButtons tweet={tweet} />
       </article>
     </div>

@@ -23,9 +23,11 @@ const tempTweets: Tweet[] = [
     replyCount: 0,
     retweetCount: 0,
     qouteCount: 0,
-    likesCount: 0,
+    likesCount: 1,
     text: "this is a tweet string @ahmedoshelmy #Palestine",
     source: "Iphone",
+    liked: true,
+    bookmarked: false,
     coordinates: "30.037072,31.206344",
     replyToTweetId: "1718938551163691300",
     retweetedId: "1718938551163691300",
@@ -59,11 +61,13 @@ const tempTweets: Tweet[] = [
         //   type: "photo",
         // },
         {
-          value: "https://pbs.twimg.com/media/F_u9Wq4XkAAj0qU?format=jpg&name=large",
+          value:
+            "https://pbs.twimg.com/media/F_u9Wq4XkAAj0qU?format=jpg&name=large",
           type: "photo",
         },
         {
-          value: "https://pbs.twimg.com/media/F_u9S-Eb0AACw7j?format=jpg&name=large",
+          value:
+            "https://pbs.twimg.com/media/F_u9S-Eb0AACw7j?format=jpg&name=large",
           type: "photo",
         },
       ],
@@ -81,7 +85,7 @@ const tempTweets: Tweet[] = [
   },
   {
     createdAt: "2023-11-23 5:02:00",
-    id: "1718938551163691300",
+    id: "1718938551163691301",
     user: {
       userName: "AhmedZahran2025",
       name: "Ahmed Zahran",
@@ -104,6 +108,8 @@ const tempTweets: Tweet[] = [
     text: "this is a tweet string @ahmedoshelmy #Palestine",
     source: "Iphone",
     coordinates: "30.037072,31.206344",
+    liked: false,
+    bookmarked: false,
     replyToTweetId: "1718938551163691300",
     retweetedId: "1718938551163691300",
     qouteTweetedId: "1718938551163691300",
@@ -135,7 +141,7 @@ type TweetsListProps = {
 
 const TweetsList = ({ tweets = tempTweets }: TweetsListProps) => {
   return (
-    <div className="max-w-[600px] mx-auto border-x-[1px] border-primary border-opacity-30 border-t">
+    <div className="max-w-[600px] mx-auto border-primary border-opacity-30 border-t">
       {tweets.map((tweet) => (
         <TweetComponent tweet={tweet} key={tweet.id} />
       ))}

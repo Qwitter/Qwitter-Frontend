@@ -139,3 +139,7 @@ button-border-color {
 .hidden-scroll::-webkit-scrollbar {
   display: none;
 }
+
+.tweet-image-remover-icon{
+  @apply absolute top-2 right-2 bg-[#0f1419bf] hover:bg-[#272c30bf] cursor-pointer text-3xl p-1 rounded-full;
+}
