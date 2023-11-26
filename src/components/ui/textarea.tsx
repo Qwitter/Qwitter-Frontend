@@ -20,7 +20,6 @@ const Textarea: React.FC<TextareaProps> = ({ text, setText, className, maxRows =
   const containerRef = useRef<HTMLDivElement>(null);
   const [mentionsAndTags, SetMentionsAndTags] = useState<Mention[]>([])
   const [mentionOpenedPopup, setMentionOpenedPopup] = useState(false);
-  const [scrollValue,setScrollValue] = useState(0);
   const [popup, setPopup] = useState({
     visible: false,
     content: '',
@@ -74,7 +73,7 @@ const Textarea: React.FC<TextareaProps> = ({ text, setText, className, maxRows =
   }
 
 
-  const handleScroll = (e) => {
+  const handleScroll = () => {
 
     const scrollValue = textAreaRef.current?.scrollTop;
     containerRef!.current!.scrollTop = scrollValue!;
@@ -143,7 +142,7 @@ const Textarea: React.FC<TextareaProps> = ({ text, setText, className, maxRows =
     <div className="relative w-full min-h-[100px]">
       <textarea
         className={cn(
-          "flex absolute text-[20px] overflow-y-auto  top-0 left-0 caret-white text-[#ffffff00] leading-[22px] h-full z-[10] min-h-[80px] w-[95%] rounded-md border border-input bg-background p-3 ring-offset-background placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 scroll-m-0 scroll-p-0 no-scrollbar",
+          "flex absolute text-[20px] overflow-y-auto  top-0 left-0 caret-white text-[#ffffff00] leading-[22px] h-full z-[10] min-h-[80px] min-w-[95%] rounded-md border border-input bg-background p-3 ring-offset-background placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 scroll-m-0 scroll-p-0 no-scrollbar",
           className
         )}
         value={text}

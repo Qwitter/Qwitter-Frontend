@@ -21,7 +21,6 @@ import {
   FormMessage,
 } from "./ui/form";
 import { NavBar } from "./NavBar/NavBar";
-import { SettingsMain } from "../pages/Settings/SettingsMain";
 import {YourAccount} from "./YourAccount/YourAccount"
 import {OptionsHeader} from './OptionsHeader/OptionsHeader'
 import {ShowSuggestionsNames} from './ShowSuggestionsNames/ShowSuggestionsNames'
