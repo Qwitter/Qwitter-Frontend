@@ -35,19 +35,17 @@ export function SettingsMain() {
               path="/your_twitter_data/account"
               element={
                 <AccountInformation
-                  email="marawanSamy@gmail.com"
-                  userName="XLV"
                 />
               }
             />
             <Route path="/password" element={<ChangePassword />} />
             <Route
               path="/screen_name"
-              element={<ChangeUsername userName="Marwansmay99" />}
+              element={<ChangeUsername  />}
             />
             <Route
               path="/email"
-              element={<UpdateEmail email="marwanSamy@gmail.com" />}
+              element={<UpdateEmail  />}
             />
           </Routes>
         </div>

@@ -1,11 +1,15 @@
+import { UserContext } from "@/contexts/UserContextProvider";
 import { cn } from "@/lib";
+import { uploadImage } from "@/lib/utils";
 import { Camera } from "lucide-react";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 
 interface ImagePickerProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  defaultImage?: string;
   alt?: string;
   imageClassName?: string;
   iconSize?: string;
+  isBanner?: boolean;
   optionalOnChange?: () => void;
   name: string;
   image?: string;
@@ -16,42 +20,55 @@ interface ImagePickerProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 export const ImagePicker = ({
   optionalOnChange,
-  setImagePath,
+  // setPicChanged,
+  // id,
   iconSize = "24",
   imageClassName,
   className,
-  image = "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg",
+  // isBanner = false,
+  defaultImage = "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg",
   alt = "Upladed Image",
 }: ImagePickerProps) => {
-  const [isLoading, setIsloading] = useState<boolean>(false);
-  const [displayImage, setDisplayImage] = useState<string>(image);
+  const [profilePic, setProfilePic] = useState<
+    string | ArrayBuffer | null | undefined
+  >(defaultImage);
   const inputFileRef = useRef<HTMLInputElement | null>(null);
+
+  const { token } = useContext(UserContext);
+
+  const handleImageSubmit = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    event.preventDefault();
+    const newPicPath = event.target.files?.[0];
+
+    if (newPicPath) {
+      const userData = await uploadImage(newPicPath, token!);
+      setProfilePic(`http://${userData.profileImageUrl}`);
+    }
+
+    if (optionalOnChange) optionalOnChange();
+  };
 
   const handleIconClick = () => {
     if (inputFileRef.current) inputFileRef.current.click();
   };
 
-  // reads the local file of the user and display it
-  const handleImageChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newPicPath = event.target.files?.[0];
-    setIsloading(true);
+  // const handleImageChange = async (
+  //   event: React.ChangeEvent<HTMLInputElement>
+  // ) => {
+  //   const newPicPath = event.target.files?.[0];
 
-    if (newPicPath) {
-      setImagePath(newPicPath);
-      const reader = new FileReader();
+  //   if (newPicPath) {
+  //     const reader = new FileReader();
+  //     reader.onload = (e) => {
+  //       setProfilePic(e.target?.result);
+  //     };
 
-      reader.onload = (e) => {
-        setDisplayImage(e.target?.result?.toString() || image);
-        setIsloading(false);
-      };
-
-      reader.readAsDataURL(newPicPath);
-
-      if (optionalOnChange) optionalOnChange();
-    }
-  };
+  //     reader.readAsDataURL(newPicPath);
+  //     if (setPicChanged) setPicChanged(true);
+  //   }
+  // };
 
   return (
     <div
@@ -62,7 +79,7 @@ export const ImagePicker = ({
     >
       <img
         className={cn("rounded-full w-full h-full", imageClassName)}
-        src={displayImage}
+        src={profilePic?.toString()}
         alt={alt}
       />
       <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full p-2 bg-gray/80 hover:bg-gray/70 cursor-pointer">

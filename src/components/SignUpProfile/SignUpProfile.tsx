@@ -49,7 +49,6 @@ export const SignUpProfile = ({ nextStep }: SignUpProfileProps) => {
         className="h-[50px] font-bold mb-1 mt-auto"
         onClick={handleImageUpload}
         data-testid="skipForNow"
-      >
         {buttonText}
       </Button>
     </div>

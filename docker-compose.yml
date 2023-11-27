@@ -1,0 +1,13 @@
+version: "3"
+services:
+  reactapp:
+    stdin_open: true
+    tty: true
+    build:
+      context: .
+    image: faresatef/qwitter:react-app
+    container_name: react-app
+    ports:
+      - "4173:4173"
+    env_file:
+      - .env.local

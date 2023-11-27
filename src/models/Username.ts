@@ -1,4 +1,4 @@
-import { isAvailableUsername } from "@/lib/utils";
+import { isAvailableUserNameOrEmail } from "@/lib/utils";
 import { z } from "zod";
 
 export const UsernameSchema = z.object({
@@ -19,7 +19,7 @@ export const UsernameSchema = z.object({
     }
     if (defaultUsername === username)
         return true;
-    if (await isAvailableUsername(username))
+    if (await isAvailableUserNameOrEmail(username))
         return true;
 
     return false;

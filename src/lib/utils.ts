@@ -8,15 +8,16 @@ import {
 } from "@/models/EmailVerification";
 import { SignUpDataSchema } from "@/models/SignUp";
 import { BirthDay, MONTHS } from "@/models/BirthDay";
+import { UserDataSchema } from "@/models/User";
 
-const { VITE_BACKEND_URL } = process.env;
+const { VITE_BACKEND_URL } = import.meta.env;
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 /**
- * @description Get the current user from the backend after the user has logged in
+ * @description Get the user data from the backend using the token
  * @params token
  * @returns object represents the user data
  */
@@ -31,6 +32,26 @@ export const getUser = async (token: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+/**
+ * @description Get the user profile data from the backend using username
+ * @param username - the username of the user
+ * @returns object represents the user profile data
+ */
+export const getUserData = async (username: string) => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/${username}`);
+    const userData = res.data;
+    
+    const parseResult = UserDataSchema.safeParse(userData);
+    if (!parseResult.success) throw new Error("Invalid user data");
+
     return res.data;
   } catch (err) {
     console.log(err);
@@ -79,19 +100,19 @@ export const findEmail = async (email: string) => {
 };
 
 /**
- * @description Check if the username is available
- * @param username
- * @returns  true if available ,false otherwise  or null
+ * @description Check if the userNameOrEmail is available
+ * @param userNameOrEmail
+ * @returns  true if founded ,false otherwise  or null
  */
-export const isAvailableUsername = async (username: string) => {
-  const parseResult = z.string().safeParse(username);
+export const isAvailableUserNameOrEmail = async (userNameOrEmail: string) => {
+  const parseResult = z.string().safeParse(userNameOrEmail);
   if (!parseResult.success) return null;
 
   try {
     const res = await axios.post(
       `${VITE_BACKEND_URL}/api/v1/auth/check-existence`,
       {
-        userNameOrEmail: username,
+        userNameOrEmail: userNameOrEmail,
       }
     );
     return res.status == 200;
@@ -126,6 +147,70 @@ export const updateUsername = async ({
   } catch (err) {
     console.log(err);
     return null;
+  }
+};
+/**
+ * @description update email with new one
+ * @param {email,token}
+ * @returns  true if available ,false otherwise  or null
+ */
+export const updateEmail = async ({
+  token,
+  email,
+}: {
+  token: string;
+  email: string;
+}) => {
+  const parseToken = z.string().safeParse(token);
+  const parsedEmail = z.string().email().safeParse(email);
+  if (!parsedEmail.success || !parseToken.success) return null;
+  try {
+    // const res = await axios.patch(
+    //   `${VITE_BACKEND_URL}/api/v1/auth/change-email`,
+    //   {
+    //     email: email,
+    //   },
+    //   { headers: { Authorization: `Bearer ${token}` } }
+    // );
+    //return res.status == 200;
+    if (email == "kaito.kid.1972002@gmail.com") return true;
+    else throw new Error("not valid");
+  } catch (err) {
+    console.log(err);
+    throw new Error("not valid");
+  }
+};
+/**
+ * @description verify user password
+ * @param  password
+ * @param  token
+ * @returns  true if its the user password ,false otherwise  or null
+ */
+export const verifyPassword = async ({
+  token,
+  password,
+}: {
+  token: string;
+  password: string;
+}) => {
+  const parseToken = z.string().safeParse(token);
+  const parsePassword = z.string().safeParse(password);
+  if (!parsePassword.success || !parseToken.success) return null;
+  try {
+    // const res = await axios.post(
+    //   `${VITE_BACKEND_URL}/api/v1/auth/check-password`,
+    //   {
+    //     password: password,
+    //   },
+    //   { headers: { Authorization: `Bearer ${token}` } }
+    // );
+    // return res.status == 200;
+    token;
+    if (password == "123456as") return password == "123456as";
+    else throw new Error("not valid");
+  } catch (err) {
+    console.log(err);
+    throw new Error("not valid");
   }
 };
 /**
@@ -172,6 +257,7 @@ export const resetPasswordWithNewOne = async ({
 }) => {
   const parsePassword = z.string().safeParse(password);
   const parseToken = z.string().safeParse(token);
+
   if (!parsePassword.success || !parseToken.success)
     throw new Error("Invalid token");
   try {
@@ -183,7 +269,6 @@ export const resetPasswordWithNewOne = async ({
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    console.log(res);
     return res;
   } catch (err) {
     console.log(err);
@@ -422,3 +507,16 @@ export const oAuthSignUp = async (token: string, birthday: BirthDay) => {
     return null;
   }
 };
+
+/**
+ * @description Convert a number to a short form
+ * @param number
+ * @returns string - the short form of the number
+ */
+export const convertNumberToShortForm = (number: number) => {
+  if (number < 1000) return number;
+  else if (number < 1000000 && number % 1000 <= 100) return `${(number / 1000)}k`;
+  else if (number < 1000000) return `${(number / 1000).toFixed(1)}k`;
+  else if (number % 1000000 <= 100000) return `${(number / 1000000)}m`;
+  else return `${(number / 1000000).toFixed(1)}m`;
+}

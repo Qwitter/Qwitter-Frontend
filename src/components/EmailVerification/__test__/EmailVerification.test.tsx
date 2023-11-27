@@ -13,6 +13,7 @@ const { VITE_BACKEND_URL } = process.env;
 
 const mockFn = jest.fn();
 const mockEmail = "sofa5060@gmail.com";
+const setTokenMockFn = jest.fn();
 const client = new QueryClient();
 const server = setupServer(...handlers);
 
@@ -67,7 +68,7 @@ describe("EmailVerification testing", () => {
     // ARRANGE
     render(
       <QueryClientProvider client={client}>
-        <EmailVerification email={mockEmail} onSuccess={mockFn} />
+        <EmailVerification verificationType="signUp" email={mockEmail} onSuccess={mockFn} />
       </QueryClientProvider>
     );
 
@@ -79,7 +80,7 @@ describe("EmailVerification testing", () => {
     // ARRANGE
     render(
       <QueryClientProvider client={client}>
-        <EmailVerification email={mockEmail} onSuccess={mockFn} />
+        <EmailVerification verificationType="signUp" email={mockEmail} onSuccess={mockFn} />
       </QueryClientProvider>
     );
 
@@ -99,7 +100,7 @@ describe("EmailVerification testing", () => {
     // ARRANGE
     render(
       <QueryClientProvider client={client}>
-        <EmailVerification email={mockEmail} onSuccess={mockFn} />
+        <EmailVerification verificationType="signUp" email={mockEmail} onSuccess={mockFn} />
       </QueryClientProvider>
     );
 
@@ -119,7 +120,7 @@ describe("EmailVerification testing", () => {
     // ARRANGE
     render(
       <QueryClientProvider client={client}>
-        <EmailVerification email="wrong email" onSuccess={mockFn} />
+        <EmailVerification verificationType="signUp" email="wrong email" onSuccess={mockFn} />
       </QueryClientProvider>
     );
 
@@ -134,7 +135,7 @@ describe("EmailVerification testing", () => {
     // ARRANGE
     render(
       <QueryClientProvider client={client}>
-        <EmailVerification email={mockEmail} onSuccess={mockFn} />
+        <EmailVerification verificationType="signUp" email={mockEmail} onSuccess={mockFn} />
       </QueryClientProvider>
     );
 
@@ -154,7 +155,7 @@ describe("EmailVerification testing", () => {
     // ARRANGE
     render(
       <QueryClientProvider client={client}>
-        <EmailVerification email={mockEmail} onSuccess={mockFn} />
+        <EmailVerification verificationType="signUp" email={mockEmail} onSuccess={mockFn} />
       </QueryClientProvider>
     );
 
@@ -174,7 +175,7 @@ describe("EmailVerification testing", () => {
     // ARRANGE
     render(
       <QueryClientProvider client={client}>
-        <EmailVerification email={mockEmail} onSuccess={mockFn} />
+        <EmailVerification verificationType="signUp" email={mockEmail} onSuccess={mockFn} />
       </QueryClientProvider>
     );
 
@@ -194,7 +195,7 @@ describe("EmailVerification testing", () => {
     // ARRANGE
     render(
       <QueryClientProvider client={client}>
-        <EmailVerification email={mockEmail} onSuccess={mockFn} />
+        <EmailVerification verificationType="signUp" email={mockEmail} onSuccess={mockFn} />
       </QueryClientProvider>
     );
 
@@ -217,6 +218,7 @@ describe("EmailVerification testing", () => {
           email={mockEmail}
           verificationType="passwordReset"
           onSuccess={mockFn}
+          setToken={setTokenMockFn}
         />
       </QueryClientProvider>
     );
@@ -241,6 +243,7 @@ describe("EmailVerification testing", () => {
           email={mockEmail}
           verificationType="passwordReset"
           onSuccess={mockFn}
+          setToken={setTokenMockFn}
         />
       </QueryClientProvider>
     );
@@ -265,6 +268,7 @@ describe("EmailVerification testing", () => {
           email={mockEmail}
           verificationType="passwordReset"
           onSuccess={mockFn}
+          setToken={setTokenMockFn}
         />
       </QueryClientProvider>
     );
@@ -288,6 +292,7 @@ describe("EmailVerification testing", () => {
           email={mockEmail}
           verificationType="passwordReset"
           onSuccess={mockFn}
+          setToken={setTokenMockFn}
         />
       </QueryClientProvider>
     );
@@ -310,7 +315,7 @@ describe("EmailVerification testing", () => {
     // ARRANGE
     render(
       <QueryClientProvider client={client}>
-        <EmailVerification email={mockEmail} onSuccess={mockFn} />
+        <EmailVerification verificationType="signUp" email={mockEmail} onSuccess={mockFn} />
       </QueryClientProvider>
     );
 
@@ -335,6 +340,7 @@ describe("EmailVerification testing", () => {
           email={mockEmail}
           verificationType="passwordReset"
           onSuccess={mockFn}
+          setToken={setTokenMockFn}
         />
       </QueryClientProvider>
     );
@@ -356,7 +362,7 @@ describe("EmailVerification testing", () => {
     // ARRANGE
     render(
       <QueryClientProvider client={client}>
-        <EmailVerification email={mockEmail} onSuccess={mockFn} />
+        <EmailVerification verificationType="signUp" email={mockEmail} onSuccess={mockFn} />
       </QueryClientProvider>
     );
 
@@ -380,6 +386,7 @@ describe("EmailVerification testing", () => {
           email={mockEmail}
           verificationType="passwordReset"
           onSuccess={mockFn}
+          setToken={setTokenMockFn}
         />
       </QueryClientProvider>
     );

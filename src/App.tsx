@@ -15,6 +15,8 @@ import OAuth from "./components/OAuth/OAuth";
 import OAuthInterceptor from "./components/OAuth/OAuthInterceptor";
 import ProfileComplete from "./components/ProfileComplete/ProfileComplete";
 import UserContextProvider from "./contexts/UserContextProvider";
+import UpdateEmailPopUp from "./components/UpdateEmailContainer/UpdateEmailContainer";
+import TweetsList from "./components/TweetsList/TweetsList";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +31,7 @@ function App() {
             this is the main routs
             <Route path="/" element={<Authentication />} />
             <Route path="/Settings/*" element={<Settings />} />
+            <Route path="/home" element={<TweetsList />} />
           </Routes>
           <Routes>
             this is the popup routs
@@ -45,6 +48,7 @@ function App() {
             />
             <Route path="/i/flow/single-sign" element={<OAuth />} />
             <Route path="/i/flow/profile" element={<ProfileComplete />} />
+            <Route path="/i/flow/add_email" element={<UpdateEmailPopUp />} />
           </Routes>
           <Toaster />
         </UserContextProvider>
