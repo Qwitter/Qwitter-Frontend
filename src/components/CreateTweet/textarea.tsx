@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { HighlightWithinTextarea } from "react-highlight-within-textarea"
 import getCaretCoordinates from 'textarea-caret';
-import CreateTweetPopUp from '../CreateTweet/CreateTweetPopUp'
+import CreateTweetPopUp from './CreateTweetPopUp'
 export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   maxRows?: number;
   text: string;

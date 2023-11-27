@@ -1,5 +1,5 @@
 import img from '../../assets/temp.png'
-import { Textarea } from '../ui/textarea'
+import { Textarea } from './textarea'
 import TweetImagesViewer from "../TweetImagesViewer/TweetImagesViewer";
 import CreateTweetFooter from './CreateTweetFooter';
 import { CreateTweetMainProp } from './types/CreateTweetProps';
