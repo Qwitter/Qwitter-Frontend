@@ -7,6 +7,7 @@ interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   placeHolder?: string;
   errorMessage?: string;
   isPassword?: boolean;
+  inputClassName?: string;
 }
 
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
@@ -18,6 +19,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       errorMessage,
       type = "text",
       className,
+      inputClassName = "",
       ...props
     },
     ref
@@ -29,9 +31,8 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       else setInputType("text");
     };
 
-    let errorBorder: string = "";
     if (errorMessage) {
-      errorBorder = "border-danger";
+      inputClassName = inputClassName + " border-danger";
     }
 
     return (
@@ -45,7 +46,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             type={inputType}
             className={cn(
               "block rounded-sm z-10 px-2 pb-3 pt-6 w-full text-sm dark:bg-transparent border border-gray appearance-none dark:text-white dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer dark:disabled:border-[#101113] dark:disabled:bg-[#101113] dark:disabled:text-gray disabled:border-[#101113]/10 disabled:bg-[#101113]/10 disabled:text-gray",
-              errorBorder
+              inputClassName
             )}
             placeholder=""
           />
@@ -62,6 +63,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
                 <Eye
                   className="inline absolute hover:cursor-pointer z-20 left-[90%] bottom-4"
                   onClick={togglePassword}
+                  data-testid="passwordEye"
                 />
               )}
             </>

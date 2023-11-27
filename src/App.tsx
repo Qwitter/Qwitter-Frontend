@@ -34,7 +34,7 @@ function App() {
           </Routes>
           {location.pathname!=='/'&&!location.pathname.includes('/i/flow')&&previousLocation?.pathname!=='/' &&<PagesContainer />}
           <Routes>
-            {/* this is the popup routs*/}
+            this is the popup routs
             <Route path="/i/flow/signup" element={<SignUpSteps />} />
             <Route
               path="/i/flow/signup/input_flow_data"

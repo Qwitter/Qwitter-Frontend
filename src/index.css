@@ -125,11 +125,11 @@ button-border-color {
 }
 
 .tweet-icon{
-  @apply text-xl cursor-pointer h-5 w-5 z-10 transition-all;
+  @apply text-xl cursor-pointer h-5 w-5 z-10 transition-all duration-200 ease-in-out;
 }
 
 .tweet-icon-radius{
-  @apply rounded-full z-0 opacity-20 h-9 w-9 absolute left-[-8px] top-[-8px] transition-all;
+  @apply rounded-full z-0 opacity-20 h-9 w-9 absolute left-[-8px] top-[-8px] transition-all duration-200 ease-in-out;
 }
 
 .box-shadow {
