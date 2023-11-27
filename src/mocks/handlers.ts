@@ -16,12 +16,14 @@ import { sendResetPasswordVerificationTokenWorker } from "./SendResetPasswordVer
 import { userWorker } from "./UserWorker/UserWorker";
 import { OAuthRegisterUserWorker } from "./OAuthRegisterUserWorker/OAuthRegisterUserWorker";
 import { UploadProfileWorker } from "./RegisterUserWorker/UploadProfileWorker";
+import { EditProfileWorker } from "./EditProfileWorker/EditProfileWorker";
 import {
   bookmarkTweetWorker,
   likeTweetWorker,
   unBookmarkTweetWorker,
   unLikeTweetWorker,
 } from "./TweetWorker/TweetWorker";
+import { UploadProfileImageWorker } from "./RegisterUserWorker/UploadProfileImageWorker";
 
 const { VITE_BACKEND_URL } = import.meta.env;
 
@@ -64,8 +66,13 @@ export const handlers = [
   ),
   http.post(
     `${VITE_BACKEND_URL}/api/v1/user/profile_picture`,
-    UploadProfileWorker
+    UploadProfileImageWorker
   ),
+  http.post(
+    `${VITE_BACKEND_URL}/api/v1/user/profile_banner`,
+    UploadProfileImageWorker
+  ),
+  http.put(`${VITE_BACKEND_URL}/api/v1/user/profile`, EditProfileWorker),
   http.post(`${VITE_BACKEND_URL}/api/v1/tweets/like`, likeTweetWorker),
   http.delete(`${VITE_BACKEND_URL}/api/v1/tweets/like`, unLikeTweetWorker),
   http.post(`${VITE_BACKEND_URL}/api/v1/bookmarks`, bookmarkTweetWorker),

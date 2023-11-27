@@ -1,23 +1,23 @@
 import { useState, useContext } from "react";
 import { ImagePicker } from "../ImagePicker/ImagePicker";
 import { Button } from "../ui/button";
-import { uploadImage } from "@/lib/utils";
+import { uploadProfileImage } from "@/lib/utils";
 import { UserContext } from "@/contexts/UserContextProvider";
 
-type prob = {
+type SignUpProfileProps = {
   nextStep: () => void;
 };
 
-export const SignUpProfile = ({ nextStep }: prob) => {
+export const SignUpProfile = ({ nextStep }: SignUpProfileProps) => {
   const [imagePath, setImagePath] = useState<File>();
   const [buttonText, setButtonText] = useState<string>("Skip for now");
   const { token } = useContext(UserContext);
 
-  // upload the last chosen image and
+  // upload the last chosen image and add animation while loading
   const handleImageUpload = async () => {
     if (imagePath) {
-      await uploadImage(imagePath, token!);
-      // if the image will be put in the context
+      await uploadProfileImage(imagePath, token!);
+      // NEEDED: if the image will be put in the context
     }
 
     nextStep();
@@ -47,7 +47,8 @@ export const SignUpProfile = ({ nextStep }: prob) => {
         variant={(buttonText === "Next" && "default") || "outline"}
         size="full"
         className="h-[50px] font-bold mb-1 mt-auto"
-        onClick={() => nextStep()}
+        onClick={handleImageUpload}
+        data-testid="skipForNow"
       >
         {buttonText}
       </Button>
