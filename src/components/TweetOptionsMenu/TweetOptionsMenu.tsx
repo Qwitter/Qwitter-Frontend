@@ -3,22 +3,22 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
+  // DropdownMenuLabel,
+  // DropdownMenuPortal,
+  // DropdownMenuSeparator,
+  // DropdownMenuShortcut,
+  // DropdownMenuSub,
+  // DropdownMenuSubContent,
+  // DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Tweet } from "@/models/Tweet";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
-import { useContext, useRef, useState } from "react";
-import { UserContext } from "@/contexts/UserContextProvider";
+import { useContext, useState } from "react";
 import { FiTrash2 } from "react-icons/fi";
 import { PopUpContainer } from "../PopUpContainer/PopUpContainer";
+import { UserContext } from "@/contexts/UserContextProvider";
 
 type TweetOptionsMenuProps = {
   tweet: Tweet;
@@ -31,7 +31,12 @@ const TweetOptionsMenu = ({ tweet }: TweetOptionsMenuProps) => {
   return (
     <>
       <DropdownMenu>
-        <PopUpContainer show={showDeleteDialog} isCompact className="w-auto h-auto text-left px-8 py-10 mx-auto max-w-sm max-sm:px-0 max-sm:max-w-xs">
+        <PopUpContainer
+          show={showDeleteDialog}
+          isCompact
+          className="w-auto h-auto text-left px-8 py-10 mx-auto max-w-sm max-sm:px-8"
+          dialogClassName="max-sm:max-w-sm"
+        >
           <h2 className="font-bold text-xl self-start">Delete post ?</h2>
           <p className="text-gray mt-2 mb-4">
             This can’t be undone and it will be removed from your profile, the
@@ -61,25 +66,19 @@ const TweetOptionsMenu = ({ tweet }: TweetOptionsMenuProps) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56 mr-48 bg-black">
-          {/* {user && user.userName === tweet.user.userName ? (
-          <DropdownMenuGroup>
-            <DropdownMenuItem className="text-danger">
-              Delete
-              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-        ) : (
-          <></>
-        )} */}
-          <DropdownMenuGroup>
-            <DropdownMenuItem
-              className="text-danger gap-2 items-center font-bold"
-              onClick={() => setShowDeleteDialog(true)}
-            >
-              <FiTrash2 className="text-lg" />
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
+          {user && user.userName === tweet.user.userName ? (
+            <DropdownMenuGroup>
+              <DropdownMenuItem
+                className="text-danger gap-2 items-center font-bold"
+                onClick={() => setShowDeleteDialog(true)}
+              >
+                <FiTrash2 className="text-lg" />
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          ) : (
+            <></>
+          )}
           {/* <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
