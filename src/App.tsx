@@ -15,7 +15,6 @@ import OAuth from "./components/OAuth/OAuth";
 import OAuthInterceptor from "./components/OAuth/OAuthInterceptor";
 import ProfileComplete from "./components/ProfileComplete/ProfileComplete";
 import UserContextProvider from "./contexts/UserContextProvider";
-import { EditProfilePopUp } from "./components/EditProfilePopUp/EditProfilePopUp";
 
 const queryClient = new QueryClient();
 
@@ -26,8 +25,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <UserContextProvider>
-          <EditProfilePopUp />
-          {/* <Routes location={previousLocation || location}>
+          <Routes location={previousLocation || location}>
             this is the main routs
             <Route path="/" element={<Authentication />} />
             <Route path="/Settings/*" element={<Settings />} />
@@ -47,7 +45,7 @@ function App() {
             />
             <Route path="/i/flow/single-sign" element={<OAuth />} />
             <Route path="/i/flow/profile" element={<ProfileComplete />} />
-          </Routes> */}
+          </Routes>
           <Toaster />
         </UserContextProvider>
       </ThemeProvider>
