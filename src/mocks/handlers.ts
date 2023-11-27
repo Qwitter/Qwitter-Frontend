@@ -15,7 +15,8 @@ import { RegisterUserWorker } from "./RegisterUserWorker/RegisterUserWorker";
 import { sendResetPasswordVerificationTokenWorker } from "./SendResetPasswordVerificationTokenWorker/SendResetPasswordVerificationTokenWorker";
 import { userWorker } from "./UserWorker/UserWorker";
 import { OAuthRegisterUserWorker } from "./OAuthRegisterUserWorker/OAuthRegisterUserWorker";
-import { UploadProfileWorker } from "./RegisterUserWorker/UploadProfileWorker";
+import { UploadProfileImageWorker } from "./RegisterUserWorker/UploadProfileImageWorker";
+import { EditProfileWorker } from "./EditProfileWorker/EditProfileWorker";
 
 const { VITE_BACKEND_URL } = import.meta.env;
 
@@ -58,6 +59,11 @@ export const handlers = [
   ),
   http.post(
     `${VITE_BACKEND_URL}/api/v1/user/profile_picture`,
-    UploadProfileWorker
+    UploadProfileImageWorker
   ),
+  http.post(
+    `${VITE_BACKEND_URL}/api/v1/user/profile_banner`,
+    UploadProfileImageWorker
+  ),
+  http.put(`${VITE_BACKEND_URL}/api/v1/user/profile`, EditProfileWorker),
 ];

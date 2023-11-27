@@ -11,8 +11,12 @@ interface ImagePickerProps extends React.InputHTMLAttributes<HTMLInputElement> {
   iconSize?: string;
   isBanner?: boolean;
   optionalOnChange?: () => void;
-  setPicChanged?: React.Dispatch<React.SetStateAction<boolean>>;
+  name: string;
+  image?: string;
+  setImagePath: React.Dispatch<React.SetStateAction<File | undefined>>;
+  isRemovable?: boolean;
 }
+//NEEDED: add x button and it's functionality (will need a state)
 
 export const ImagePicker = ({
   optionalOnChange,
@@ -80,21 +84,17 @@ export const ImagePicker = ({
       />
       <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full p-2 bg-gray/80 hover:bg-gray/70 cursor-pointer">
         <Camera onClick={handleIconClick} size={iconSize} />
-        <form
-          encType="multipart/form-data"
-          // id={id}
-          // onSubmit={handleImageSubmit}
-        >
-          <input
-            ref={inputFileRef}
-            onChange={handleImageSubmit}
-            className="hidden"
-            type="file"
-            accept="images/*"
-            name="photo"
-            alt="Upload Image"
-          />
-        </form>
+        {/*Needed: {isRemovable && </>} */}
+        <input
+          ref={inputFileRef}
+          onChange={handleImageChange}
+          className="hidden"
+          type="file"
+          accept="images/*"
+          name="photo"
+          alt="Upload Image"
+          data-testid="imageBtn"
+        />
       </div>
     </div>
   );

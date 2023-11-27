@@ -28,13 +28,13 @@ function App() {
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <UserContextProvider>
           <Routes location={previousLocation || location}>
-            {/* this is the main routs*/}
+            this is the main routs
             <Route path="/" element={<Authentication />} />
             <Route path="/Settings/*" element={<Settings />} />
             <Route path="/home" element={<TweetsList />} />
           </Routes>
           <Routes>
-            {/* this is the popup routs*/}
+            this is the popup routs
             <Route path="/i/flow/signup" element={<SignUpSteps />} />
             <Route
               path="/i/flow/signup/input_flow_data"

@@ -14,21 +14,23 @@ export const Step3 = ({ nextStep, resetStep, userData }: SignUpStepsProps) => {
             placeHolder="Name"
             onClick={resetStep}
             readOnly
+            data-testid="nameAssert"
           />
           <TextInput
             value={userData?.email || ""}
             placeHolder="Email"
             onClick={resetStep}
             readOnly
+            data-testid="emailAssert"
           />
           <TextInput
-            //   NEEDED: add the birthday in the correct format
             value={`${userData?.month?.slice(0, 3)} ${userData?.day}, ${
               userData?.year
             }`}
             placeHolder="Date of birth"
             onClick={resetStep}
             readOnly
+            data-testid="dateOfBirthAssert"
           />
         </div>
       </div>
