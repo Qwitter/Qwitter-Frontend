@@ -16,7 +16,7 @@ type CreateTweetPopUpProps = {
         };
     };
     closePopup: () => void;
-    handleUserClick: (usermae: string) => void;
+    handleUserClick: (username: string) => void;
 }
 
 type User = {
@@ -44,7 +44,7 @@ function CreateTweetPopUp({ popUp, closePopup, handleUserClick }: CreateTweetPop
 
             {popUp.visible && (popUp.content[0] === '@' || popUp.content[0] === '#') && (
                 <div style={{ top: `${popUp.position.top + 70}px`, left: `${popUp.position.left + 380 > window.innerWidth ? '25%' : `${popUp.position.left}px`}` }} className=
-                    "absolute min-w-[380px] max-sm:min-w-[200px] h-[287px] min-h-[100px] overflow-y-auto box-shadow z-40 bg-black rounded-sm text-primary text-xs"
+                    "absolute min-w-[380px] max-sm:min-w-[200px] max-h-[287px] min-h-fit overflow-y-auto box-shadow z-40 bg-black rounded-sm text-primary text-xs"
                 >
                     {
                         popUp.content[0] === '@' &&

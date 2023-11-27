@@ -51,17 +51,12 @@ const Textarea: React.FC<TextareaProps> = ({ text, setText, className, maxRows =
 
   }
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-
-    const inputText = e.target.value;
-    if (inputText.length > 700) return;
-    setText(inputText ? inputText : inputText.trim());
-  };
+ 
 
   const calculateRows = () => {
     const rowsFromNewlines = text.split('\n').length; // Count the number of newline characters
 
-    const rows = text.length == 0 ? 0 : Math.floor((text.length * 10) / (textAreaRef!.current!.offsetWidth - 24));
+    const rows = text.length == 0 ? 0 : Math.floor((text.length * 10) / (textAreaRef.current?textAreaRef.current.offsetWidth - 24:1000));
     return Math.max(Math.min(rows + rowsFromNewlines, maxRows), 4);
   };
 
@@ -90,7 +85,7 @@ const Textarea: React.FC<TextareaProps> = ({ text, setText, className, maxRows =
     mentionsAndTags.forEach((mention,index) => {
       if (
         cursorPosition > mention.position + 1 &&
-        cursorPosition <= mention.position + mention.length + 1
+        cursorPosition <= mention.position + mention.length 
       ) {
         if (popup.index !== index)
           closePopUp()
@@ -151,7 +146,6 @@ const Textarea: React.FC<TextareaProps> = ({ text, setText, className, maxRows =
         )}
         value={text}
         ref={textAreaRef}
-        onChange={handleInputChange}
         rows={calculateRows()}
         onClick={checkMention}
         onScroll={handleScroll}

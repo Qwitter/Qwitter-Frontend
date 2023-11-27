@@ -9,7 +9,7 @@ type Images = {
     value: string;
     type: string;
 }
-export default function CreateTweetFooter({ text,selectedFile,setSelectedFile }: { text: string;selectedFile:Images[];setSelectedFile:React.Dispatch<React.SetStateAction<Images[]>> }) {
+export default function CreateTweetFooter({ text,selectedFile,setSelectedFile,isValid }: {isValid:boolean; text: string;selectedFile:Images[];setSelectedFile:React.Dispatch<React.SetStateAction<Images[]>> }) {
     const icons = [{ icon: Image, hover: "media" }, { icon: ScanSearch, hover: "GIF" }, { icon: Vote, hover: "Poll" }, { icon: Smile, hover: "Emoji" }]
     const [isPopupOpen, setPopupOpen] = useState(false);
     const fileInput = useRef<HTMLInputElement>(null)
@@ -20,7 +20,6 @@ export default function CreateTweetFooter({ text,selectedFile,setSelectedFile }:
     const [currentWhoToReply, setCurrentWhoToReply] = useState({ ...whoToReply[0] })
     function handleUploadImg() {
         fileInput.current?.click()
-
     }
 
     const handleFileChange = () => {
@@ -90,7 +89,7 @@ export default function CreateTweetFooter({ text,selectedFile,setSelectedFile }:
                         }
                         {text.length > 0 &&
                             <div className="w-[1px] h-[31px] bg-[#3E4144] ml-[8px] mr-3"></div>}
-                        <Button variant="secondary" className=' px-5 py-2 mt-1 ml-2' type="submit"> Post</Button>
+                        <Button variant="secondary" className=' px-5 py-2 mt-1 ml-2' disabled={!isValid} type="submit"> Post</Button>
                     </div>
                     <input type="file" className="hidden" onChange={handleFileChange} ref={fileInput} accept="images/*" />
                 </div>

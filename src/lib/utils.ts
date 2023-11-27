@@ -541,3 +541,34 @@ export const getUsersSuggestions = async (token: string,username:string) => {
     return null;
   }
 };
+/**
+ * @description create tweet for the user
+ * @param {token,text,source,coordinates,coordinates}
+ * @returns list of users  or null
+ */
+export const createTweet = async ({token,text,source,coordinates}:
+  {token: string;text:string;source:string,coordinates:string}) => {
+  try {
+
+    const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/tweets`,
+    {
+      text:text,
+      source:source,
+      coordinates:coordinates,
+      
+    },
+    {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    
+    });
+    console.log("working")
+    return res.data.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
