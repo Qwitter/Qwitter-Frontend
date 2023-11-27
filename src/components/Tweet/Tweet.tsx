@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { TbDiscountCheckFilled } from "react-icons/tb";
 import TweetInteractionsButtons from "../TweetInteractionsButtons/TweetInteractionsButtons";
 import TweetImagesViewer from "../TweetImagesViewer/TweetImagesViewer";
+import TweetOptionsMenu from "../TweetOptionsMenu/TweetOptionsMenu";
 
 const convertWordToAnchor = (word: string): JSX.Element => {
   if (word.startsWith("@")) {
@@ -65,6 +66,7 @@ const Tweet = ({ tweet }: TweetProps) => {
               ? moment(tweet.createdAt).format("MMM D")
               : moment(tweet.createdAt).fromNow(true)}
           </span>
+          <TweetOptionsMenu tweet={tweet} />
         </h3>
         <>{tweetTextHighlighter(tweet.text)}</>
         <TweetImagesViewer images={tweet.entities.media} />

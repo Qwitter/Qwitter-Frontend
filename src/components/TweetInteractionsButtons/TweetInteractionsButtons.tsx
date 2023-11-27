@@ -123,7 +123,7 @@ const TweetInteractionsButtons = ({ tweet }: TweetInteractionsButtonsProps) => {
           <div className="tweet-icon-radius group-hover:bg-secondary"></div>
           <GoComment className="tweet-icon group-hover:text-secondary" />
         </div>
-        <span className="text-gray-500 transition-all group-hover:text-secondary">
+        <span className="text-gray transition-all group-hover:text-secondary duration-200 ease-in-out">
           {convertNumberToShortForm(tweetClone.replyCount)}
         </span>
       </div>
@@ -132,7 +132,7 @@ const TweetInteractionsButtons = ({ tweet }: TweetInteractionsButtonsProps) => {
           <div className="tweet-icon-radius group-hover:bg-[#00ba7c]"></div>
           <BiRepost className="tweet-icon group-hover:text-[#00ba7c]" />
         </div>
-        <span className="text-gray-500 transition-all group-hover:text-[#00ba7c]">
+        <span className="text-gray transition-all group-hover:text-[#00ba7c] duration-200 ease-in-out">
           {convertNumberToShortForm(tweetClone.retweetCount)}
         </span>
       </div>
@@ -154,7 +154,7 @@ const TweetInteractionsButtons = ({ tweet }: TweetInteractionsButtonsProps) => {
         </div>
         <span
           className={cn(
-            "text-gray-500 transition-all group-hover:text-[#f91880]",
+            "text-gray transition-all group-hover:text-[#f91880] duration-200 ease-in-out",
             { "text-[#f91880]": tweetClone.liked }
           )}
         >
@@ -166,7 +166,7 @@ const TweetInteractionsButtons = ({ tweet }: TweetInteractionsButtonsProps) => {
           <div className="tweet-icon-radius group-hover:bg-secondary"></div>
           <IoMdStats className="tweet-icon group-hover:text-secondary" />
         </div>
-        <span className="text-gray-500 transition-all group-hover:text-secondary">
+        <span className="text-gray transition-all group-hover:text-secondary duration-200 ease-in-out">
           {convertNumberToShortForm(13000)}
         </span>
       </div>
