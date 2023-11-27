@@ -5,13 +5,9 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { cn } from "@/lib";
 import { useEffect, useRef, useState } from "react";
-type Images = {
-    value: string;
-    type: string;
-}
-export default function CreateTweetFooter({setFiles,files, text,selectedImages,setSelectedImages,isValid,handleSubmit }:
-     {files:FileList;setFiles:React.Dispatch<React.SetStateAction<File[] >>;
-         handleSubmit(): void;isValid:boolean; text: string;selectedImages:Images[];setSelectedImages:React.Dispatch<React.SetStateAction<Images[]>> }) {
+import { CreateTweetFooterProp } from "./types/CreateTweetProps";
+
+export default function CreateTweetFooter({mode,setFiles,files, text,selectedImages,setSelectedImages,isValid,handleSubmit }:CreateTweetFooterProp) {
     const icons = [{ icon: Image, hover: "media" }, { icon: ScanSearch, hover: "GIF" }, { icon: Vote, hover: "Poll" }, { icon: Smile, hover: "Emoji" }]
     const [isPopupOpen, setPopupOpen] = useState(false);
     const fileInput = useRef<HTMLInputElement>(null)
@@ -37,10 +33,11 @@ export default function CreateTweetFooter({setFiles,files, text,selectedImages,s
 
     return (
         <div className="flex flex-col items-start w-full">
-            <div className="h-12 flex flex-row items-center pb-3 w-full border-b border-primary border-opacity-20 cursor-pointer" onClick={togglePopup}>
+            {(text.length!=0||mode=="popUp"||selectedImages.length>0)&&<div className="h-12 flex flex-row items-center pb-3 w-full border-b border-primary border-opacity-20 cursor-pointer" onClick={togglePopup}>
                 <currentWhoToReply.icon color="rgb(29,155,240)" className="mr-1 w-4 h-4" strokeWidth="2.5" />
                 <span className="text-secondary text-sm font-bold">{currentWhoToReply.text} can reply</span>
             </div>
+}
             {isPopupOpen && <ReplyPopup closePopup={() => { setPopupOpen(false) }} currentWhoToReply={currentWhoToReply} setCurrentWhoToReply={setCurrentWhoToReply} />}
             <div className="flex flex-row p-1 py-2 items-start w-full">
                 <div className="w-full  flex flex-row items-center ">

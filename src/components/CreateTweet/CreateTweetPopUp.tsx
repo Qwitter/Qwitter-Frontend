@@ -1,7 +1,6 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
-import { tags } from "../../constants"
 import { useQuery } from "@tanstack/react-query";
-import { getUsersSuggestions } from "@/lib/utils";
+import { getHashtags, getUsersSuggestions } from "@/lib/utils";
 import { useContext, useEffect } from "react";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { Spinner } from "../Spinner";
@@ -39,7 +38,7 @@ function CreateTweetPopUp({ popUp, closePopup, handleUserClick }: CreateTweetPop
         <div id="popUp">
 
             {popUp.visible && (popUp.content[0] === '@' || popUp.content[0] === '#') && (
-                <div style={{ top: `${popUp.position.top + 70}px`, left: `${popUp.position.left + 380 > window.innerWidth ? '25%' : `${popUp.position.left}px`}` }} className=
+                <div style={{ top: `${popUp.position.top + 10}px`, left: `${popUp.position.left + 380 > window.innerWidth ? '25%' : `${popUp.position.left}px`}` }} className=
                     "absolute min-w-[380px] max-sm:min-w-[200px] max-h-[287px] min-h-fit overflow-y-auto box-shadow z-40 bg-black rounded-sm text-primary text-xs"
                 >
                     {
@@ -87,7 +86,7 @@ function ShowUsersSuggestions({ onUserClick, username, closePopup }: ShowUsersSu
         <ul >
 
             {
-                !data||data.length == 0 ? <div className='w-full h-[180px] p-8'>
+                !data || data.length == 0 ? <div className='w-full h-[180px] p-8'>
                     <Spinner />
                 </div> : data!.map(user => (
                     <li key={user.username} className="py-3 px-4 flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer" onClick={() => onUserClick("@" + user.username)}>
@@ -105,12 +104,40 @@ function ShowUsersSuggestions({ onUserClick, username, closePopup }: ShowUsersSu
         </ul>
     )
 }
-function ShowTagsSuggestions({ onUserClick }: ShowUsersSuggestionsProps) {
+function ShowTagsSuggestions({ onUserClick,tag,closePopup }: ShowUsersSuggestionsProps) {
+    const { token } = useContext(UserContext)
+    const {
+        isPending,
+        data,
+        refetch
+    } = useQuery<string[]>({
+        queryKey: ["getHashtags"],
+        queryFn: () => getHashtags(token!, tag!)
+        ,
+    });
+    useEffect(() => {
+        refetch();
+    }, [tag, refetch]);
+
+    if (isPending) {
+        return (
+            <div className='w-full h-[180px] p-8'>
+                <Spinner />
+            </div>
+        )
+    }
+    if (data && data.length == 0) {
+
+        closePopup()
+    }
+
+
     return (
         <ul >
-            {
-                tags.map(tag => (
-                    <li key={tag} className="py-3 px-4 flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer" onClick={() => onUserClick('#'+tag)}>
+            {!data || data.length == 0 ? <div className='w-full h-[180px] p-8'>
+                    <Spinner />
+                </div> : data!.map((tag,index) => (
+                    <li key={index} className="py-3 px-4 flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer" onClick={() => onUserClick('#' + tag)}>
 
                         <p className="text-base text-primary">#{tag}</p>
 

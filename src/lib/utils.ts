@@ -539,6 +539,31 @@ export const getUsersSuggestions = async (token: string,username:string) => {
   }
 };
 /**
+ * @description get a list of Hashtags contain the given string 
+ * @param {username,token}
+ * @returns list of Hashtags  or null
+ */
+export const getHashtags = async (token: string,tag:string) => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/lookup`, {
+      params: {
+        name: tag//.slice(1)
+    },
+      withCredentials: true,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+/**
  * @description create tweet for the user
  * @param {token,formData}
  * @returns list of users  or null

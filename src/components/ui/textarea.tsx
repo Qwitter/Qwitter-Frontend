@@ -7,6 +7,7 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
   maxRows?: number;
   text: string;
   setText: React.Dispatch<React.SetStateAction<string>>;
+  mode:"popUp"|"home"
 }
 
 interface Mention {
@@ -15,7 +16,7 @@ interface Mention {
   mention: string;
 }
 
-const Textarea: React.FC<TextareaProps> = ({ text, setText, className, maxRows = 19, ...props }) => {
+const Textarea: React.FC<TextareaProps> = ({ text, setText, className, mode,maxRows = 19, ...props }) => {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [mentionsAndTags, SetMentionsAndTags] = useState<Mention[]>([])
@@ -44,7 +45,6 @@ const Textarea: React.FC<TextareaProps> = ({ text, setText, className, maxRows =
     matchMention.forEach((match) => {
       const index = match.index!;
       mentionsTemp.push({ position: index, length: match[0].length, mention: match[0] })
-      console.log(mentionsTemp)
       SetMentionsAndTags(mentionsTemp);
     });
 
@@ -129,16 +129,17 @@ const Textarea: React.FC<TextareaProps> = ({ text, setText, className, maxRows =
 
       const mention = mentionsAndTags[popup.index]
       const startPosition = mention.position;
-      const updatedText = text.slice(0, startPosition) + `${text[0]=='@'||text[0]=='#'?username:" "+username}` + text.slice(startPosition + mention.length);
-      console.log(mention,text,updatedText)
-      setText(updatedText);
+      const updatedText = text.slice(0, startPosition) +" "+username+ text.slice(startPosition + mention.length);
+      setText(updatedText.trimStart());
   
     // Close the popup
-    closePopUp();
+    setTimeout(() => {
+      closePopUp();
+    }, 10);
   };
   return (
 <>
-    <div className="relative w-full min-h-[100px] ">
+    <div className={`relative w-full ${mode=="popUp"?'min-h-[80px]':''} `}>
       <textarea
         className={cn(
           "flex absolute text-[20px] w-full overflow-y-auto  top-0 left-0 caret-white text-[#ffffff00] leading-[22px] h-full z-[10] min-h-[80px] min-w-[95%] rounded-md border border-input bg-background p-3 ring-offset-background placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 scroll-m-0 scroll-p-0 no-scrollbar",

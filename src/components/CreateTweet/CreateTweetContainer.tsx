@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import { HeaderButton } from "@/models/PopUpModel";
 import { PopUpContainer } from "../PopUpContainer/PopUpContainer";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +17,7 @@ type Images = {
     value: string;
     type: string;
 }
-const CreateTweetContainer = () => {
+const CreateTweetContainer = ({ mode = "popUp" }: { mode?: "home" | "popUp" }) => {
     const [showPopUp, setShowPopUp] = useState<boolean>(true);
     const [userLocation, setUserLocation] = useState("")
     const [selectedImages, setSelectedImages] = useState<Images[]>([]);
@@ -110,21 +110,40 @@ const CreateTweetContainer = () => {
         files.forEach((file) => {
             formData.append('media[]', file);
         });
-         mutate({formData:formData,token:token!})
+        mutate({ formData: formData, token: token! })
     }
-    useEffect(() => {
-        getLocationOfUser()
-        console.log(getOperatingSystem())
-    }, [])
+
     const handleRemoveFile = (index: number) => {
         const updatedFiles = [...selectedImages];
         updatedFiles.splice(index, 1);
         setSelectedImages(updatedFiles);
     };
+    if (mode == "home") {
+        return (
+            <div
+                className="px-4  h-fit max-h-[1000px] py-1 justify-start "
+            > {
+                    isPending ? <div className='w-full h-[180px] p-8'>
+                        <Spinner />
+                    </div> : (<>
+                        <CreateTweetMain
+                            files={files}
+                            setFiles={setFiles}
+                            isValid={form.formState.isValid}
+                            text={tweet}
+                            handleSubmit={handleSubmit} selectedImages={selectedImages} setSelectedImages={setSelectedImages} 
+                        mode="home" tweet={tweet} form={form} setTweet={setTweet} handleRemoveFile={handleRemoveFile} />
+
+
+                    </>)
+                }
+            </div>
+        )
+    }
     return (
         <PopUpContainer
             show={showPopUp}
-            className="px-5 min-h-[220px] h-fit max-h-[1000px] py-1 justify-start "
+            className="px-5 min-h-[180px] h-fit max-h-[1000px] py-1 justify-start "
             headerButton={HeaderButton.close}
             headerFunction={closePopUp}
 
@@ -132,13 +151,14 @@ const CreateTweetContainer = () => {
                 isPending ? <div className='w-full h-[180px] p-8'>
                     <Spinner />
                 </div> : (<>
-                    <CreateTweetMain tweet={tweet} form={form} setTweet={setTweet} selectedFile={selectedImages} handleRemoveFile={handleRemoveFile} />
-                    <CreateTweetFooter 
-                    files ={files}
-                    setFiles={setFiles}
-                    isValid={form.formState.isValid} 
-                    text={tweet} 
-                     handleSubmit={handleSubmit} selectedImages={selectedImages} setSelectedImages={setSelectedImages} />
+                    <CreateTweetMain mode="popUp" tweet={tweet} form={form} setTweet={setTweet} selectedImages={selectedImages} handleRemoveFile={handleRemoveFile} />
+                    <CreateTweetFooter
+                        files={files}
+                        mode="popUp"
+                        setFiles={setFiles}
+                        isValid={form.formState.isValid}
+                        text={tweet}
+                        handleSubmit={handleSubmit} selectedImages={selectedImages} setSelectedImages={setSelectedImages} />
 
                 </>)
             }

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import TweetsList from '@/components/TweetsList/TweetsList';
 import { Skeleton } from "@/components/ui/skeleton";
+import CreateTweetContainer from "@/components/CreateTweet/CreateTweetContainer";
 
 export function Home() {
     const [active, setActive] = useState("For you");
@@ -22,6 +23,9 @@ export function Home() {
                         </span>
                     </div>
 
+                </div>
+                <div>
+                    <CreateTweetContainer mode="home" />
                 </div>
                 <TweetsList />
             </div>
