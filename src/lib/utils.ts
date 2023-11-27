@@ -48,7 +48,7 @@ export const getUserData = async (username: string) => {
   try {
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/${username}`);
     const userData = res.data;
-    
+
     const parseResult = UserDataSchema.safeParse(userData);
     if (!parseResult.success) throw new Error("Invalid user data");
 
@@ -515,8 +515,114 @@ export const oAuthSignUp = async (token: string, birthday: BirthDay) => {
  */
 export const convertNumberToShortForm = (number: number) => {
   if (number < 1000) return number;
-  else if (number < 1000000 && number % 1000 <= 100) return `${(number / 1000)}k`;
+  else if (number < 1000000 && number % 1000 <= 100) return `${number / 1000}k`;
   else if (number < 1000000) return `${(number / 1000).toFixed(1)}k`;
-  else if (number % 1000000 <= 100000) return `${(number / 1000000)}m`;
+  else if (number % 1000000 <= 100000) return `${number / 1000000}m`;
   else return `${(number / 1000000).toFixed(1)}m`;
+};
+
+/**
+ * @description Send a request to the backend to like a tweet
+ * @param tweetId
+ * @param token - the token of the user
+ * @returns success or throws error if there is an error
+ */
+export const likeTweet = async (tweetId: string, token: string) => {
+  try {
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/tweets/like`,
+      {
+        tweetId,
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error liking tweet");
+  }
+};
+
+/**
+ * @description Send a request to the backend to unlike a tweet
+ * @param tweetId
+ * @param token - the token of the user
+ * @returns success or throws error if there is an error
+ */
+export const unlikeTweet = async (tweetId: string, token: string) => {
+  try {
+    const res = await axios.delete(`${VITE_BACKEND_URL}/api/v1/tweets/like`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        tweetId,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error unlike tweet");
+  }
+};
+
+/**
+ * @description Send a request to the backend to bookmark a tweet
+ * @param tweetId
+ * @param token - the token of the user
+ * @returns success or throws error if there is an error
+ */
+export const bookmarkTweet = async (tweetId: string, token: string) => {
+  try {
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/bookmarks`,
+      {
+        tweetId,
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error bookmarking tweet");
+  }
+};
+
+/**
+ * @description Send a request to the backend to unBookmark a tweet
+ * @param tweetId
+ * @param token - the token of the user
+ * @returns success or throws error if there is an error
+ */
+export const unBookmarkTweet = async (tweetId: string, token: string) => {
+  try {
+    const res = await axios.delete(`${VITE_BACKEND_URL}/api/v1/bookmarks`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        tweetId,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error unBookmarking tweet");
+  }
 }
