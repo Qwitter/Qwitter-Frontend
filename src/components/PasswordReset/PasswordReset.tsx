@@ -2,7 +2,7 @@ import { useState } from "react";
 import { HeaderButton } from "@/models/PopUpModel";
 import { PopUpContainer } from "../PopUpContainer/PopUpContainer";
 import { FindEmailPopUp } from "../FindEmailPopUp/FindEmailPopUp";
-import { PasswordRestPopUp } from "../PasswordRestPopUp/PasswordRestPopUp";
+import { PasswordRestPopUp } from "../PasswordRestPopUp/PasswordResetPopUp";
 import EmailVerification from "../EmailVerification/EmailVerification";
 import { useNavigate } from "react-router-dom";
 

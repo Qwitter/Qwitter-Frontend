@@ -16,6 +16,7 @@ import { sendResetPasswordVerificationTokenWorker } from "./SendResetPasswordVer
 import { userWorker } from "./UserWorker/UserWorker";
 import { OAuthRegisterUserWorker } from "./OAuthRegisterUserWorker/OAuthRegisterUserWorker";
 import { UploadProfileWorker } from "./RegisterUserWorker/UploadProfileWorker";
+import { getUsersSuggestionsWorkerHandler } from "./GetUsersSuggetions/GetUsersSuggetionsWorker";
 import { EditProfileWorker } from "./EditProfileWorker/EditProfileWorker";
 import {
   bookmarkTweetWorker,
@@ -71,6 +72,10 @@ export const handlers = [
   http.post(
     `${VITE_BACKEND_URL}/api/v1/user/profile_banner`,
     UploadProfileImageWorker
+  ),
+  http.get(
+    `${VITE_BACKEND_URL}/api/v1/user/lookup`,
+    getUsersSuggestionsWorkerHandler
   ),
   http.put(`${VITE_BACKEND_URL}/api/v1/user/profile`, EditProfileWorker),
   http.post(`${VITE_BACKEND_URL}/api/v1/tweets/like`, likeTweetWorker),

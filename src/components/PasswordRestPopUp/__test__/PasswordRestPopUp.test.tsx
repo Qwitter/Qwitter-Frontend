@@ -2,7 +2,7 @@ import { TextEncoder } from "util";
 global.TextEncoder = TextEncoder;
 import "isomorphic-fetch";
 import { render, screen } from "@testing-library/react";
-import { PasswordRestPopUp } from "../PasswordRestPopUp";
+import { PasswordRestPopUp } from "../PasswordResetPopUp";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

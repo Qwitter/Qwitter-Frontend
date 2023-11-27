@@ -9,7 +9,7 @@ export const PasswordSchema = z.object({
         }, { message: " Password must contain at least one letter" }),
     ConfirmPassword: z.string(),
 }).refine((data) => data.Password === data.ConfirmPassword, {
-    message: "Password do not match",
+    message: "Passwords do not match",
     path: ["ConfirmPassword"],
 });
 
