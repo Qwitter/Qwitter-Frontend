@@ -10,17 +10,9 @@ interface ImagePickerProps extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
   image?: string;
   setImagePath: React.Dispatch<React.SetStateAction<File | undefined>>;
+  isRemovable?: boolean;
 }
-
-/*
-NEEDED:
-  this component will only read the image and display it and show when it's loading
-  while reading the image display a loading icon
-  when loading is finished use the setImage to send the image to the parent
-
-  2- add x button and it's functionality (will need a state)
-  3- add loading animation
-*/
+//NEEDED: add x button and it's functionality (will need a state)
 
 export const ImagePicker = ({
   optionalOnChange,
@@ -75,6 +67,7 @@ export const ImagePicker = ({
       />
       <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full p-2 bg-gray/80 hover:bg-gray/70 cursor-pointer">
         <Camera onClick={handleIconClick} size={iconSize} />
+        {/*Needed: {isRemovable && </>} */}
         <input
           ref={inputFileRef}
           onChange={handleImageChange}
@@ -83,6 +76,7 @@ export const ImagePicker = ({
           accept="images/*"
           name="photo"
           alt="Upload Image"
+          data-testid="imageBtn"
         />
       </div>
     </div>

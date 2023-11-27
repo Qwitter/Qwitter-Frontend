@@ -353,16 +353,23 @@ export const registerNewUser = async (newUserData: object) => {
  *
  * @param picFile The actual image from the  file input
  * @param token The token of the user for authentication
+ * @param isBanner
  * @returns New user data after the image has changed
  */
 
-export const uploadImage = async (picFile: File, token: string) => {
+export const uploadProfileImage = async (
+  picFile: File,
+  token: string,
+  isBanner: boolean = false
+) => {
   const formData = new FormData();
   formData.append("photo", picFile);
 
   try {
     const res = await axios.post(
-      `${VITE_BACKEND_URL}/api/v1/user/profile_picture`,
+      `${VITE_BACKEND_URL}/api/v1/user/profile_${
+        isBanner ? "banner" : "picture"
+      }`,
       formData,
       {
         headers: {
