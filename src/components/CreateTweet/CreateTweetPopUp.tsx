@@ -35,10 +35,6 @@ type ShowUsersSuggestionsProps = {
 };
 
 function CreateTweetPopUp({ popUp, closePopup, handleUserClick }: CreateTweetPopUpProps) {
-
-    useEffect(() => {
-        console.log(popUp)
-    }, [popUp])
     return (
         <div id="popUp">
 
@@ -114,7 +110,7 @@ function ShowTagsSuggestions({ onUserClick }: ShowUsersSuggestionsProps) {
         <ul >
             {
                 tags.map(tag => (
-                    <li key={tag} className="py-3 px-4 flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer" onClick={() => onUserClick(tag)}>
+                    <li key={tag} className="py-3 px-4 flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer" onClick={() => onUserClick('#'+tag)}>
 
                         <p className="text-base text-primary">#{tag}</p>
 

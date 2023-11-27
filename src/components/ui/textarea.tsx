@@ -130,7 +130,7 @@ const Textarea: React.FC<TextareaProps> = ({ text, setText, className, maxRows =
       const mention = mentionsAndTags[popup.index]
       const startPosition = mention.position;
       const updatedText = text.slice(0, startPosition) + `${text[0]=='@'||text[0]=='#'?username:" "+username}` + text.slice(startPosition + mention.length);
-      
+      console.log(mention,text,updatedText)
       setText(updatedText);
   
     // Close the popup

@@ -17,7 +17,6 @@ export default function CreateTweetMain({ tweet, setTweet, selectedFile, handleR
         if (inputText.length > 700) return;
         setTweet(inputText);
         form.setValue("Text", inputText);
-        console.log(form.formState.isValid)
         form.trigger("Text");
 
     };

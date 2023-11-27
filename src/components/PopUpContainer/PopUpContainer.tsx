@@ -15,11 +15,21 @@ type PopUpProps = {
   className?: string;
   headerClassName?: string;
   optionalHeader?: React.ReactNode;
+  dialogClassName?: string;
+  isCompact?: boolean;
 };
 
-export const PopUpContainer = (props: PopUpProps) => {
-  // get necessary data
-  const { show, children, headerButton, title, className } = props;
+export const PopUpContainer = ({
+  show,
+  children,
+  headerButton,
+  title,
+  className,
+  headerClassName,
+  dialogClassName,
+  isCompact = false,
+  ...props
+}: PopUpProps) => {
   const headerFunction =
     headerButton != HeaderButton.none ? props.headerFunction : () => {};
   const showLogo = props.showLogo || false;
@@ -35,16 +45,28 @@ export const PopUpContainer = (props: PopUpProps) => {
     ? "sm:h-[650px]"
     : "sm:h-auto";
 
+  const dialogContentWidth =
+    className?.includes("w-full") || !className?.includes("w-")
+      ? "sm:w-[600px]"
+      : "sm:w-auto";
+
   return (
-    <Dialog open={show} >
+    <Dialog open={show}>
       <DialogContent
-        className={`min-w-[350px] max-w-full sm:min-w-[425px] sm:max-w-[600px] h-full sm:max-h-[650px] focus:outline-none ${dialogContentHeight} p-0`}
+        className={cn(
+          `w-full max-w-full ${dialogContentWidth} sm:max-w-[600px] h-full sm:max-h-[650px] focus:outline-none ${dialogContentHeight} p-0`,
+          isCompact ?
+            cn(
+              "w-[80vw] max-w-[500px] h-[50vh] max-h-[500px] rounded-2xl",
+              dialogClassName
+            ):dialogClassName
+        )}
       >
         {(headerButton || showLogo || title) && (
           <DialogHeader
             className={cn(
               "px-4 h-[53px] flex flex-row items-center space-y-0",
-              props.headerClassName
+              headerClassName
             )}
           >
             <div className="flex flex-row">
@@ -60,7 +82,11 @@ export const PopUpContainer = (props: PopUpProps) => {
                   {headerContent[headerButton || "none"]}
                 </div>
               </span>
-              {title && <span className="text-xl font-bold">{title}</span>}
+              {title && (
+                <span className="text-xl font-bold" data-testid="stepNum">
+                  {title}
+                </span>
+              )}
             </div>
             {showLogo && (
               <div className="flex flex-row items-center justify-center w-full">
@@ -83,5 +109,5 @@ export const PopUpContainer = (props: PopUpProps) => {
         </div>
       </DialogContent>
     </Dialog>
-  );
+    );
 };

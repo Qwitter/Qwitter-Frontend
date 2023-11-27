@@ -520,8 +520,6 @@ export const convertNumberToShortForm = (number: number) => {
  */
 export const getUsersSuggestions = async (token: string,username:string) => {
   try {
-    console.log("before")
-
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/lookup`, {
       params: {
         name: username.slice(1)
@@ -534,7 +532,6 @@ export const getUsersSuggestions = async (token: string,username:string) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log("working")
     return res.data.data;
   } catch (err) {
     console.log(err);
@@ -543,32 +540,26 @@ export const getUsersSuggestions = async (token: string,username:string) => {
 };
 /**
  * @description create tweet for the user
- * @param {token,text,source,coordinates,coordinates}
+ * @param {token,formData}
  * @returns list of users  or null
  */
-export const createTweet = async ({token,text,source,coordinates}:
-  {token: string;text:string;source:string,coordinates:string}) => {
+export const createTweet = async ({token,formData}:
+  {token: string;formData:FormData;
+  }) => {
   try {
-
     const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/tweets`,
-    {
-      text:text,
-      source:source,
-      coordinates:coordinates,
-      
-    },
+    formData,
     {
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${token}`,
       },
     
     });
-    console.log("working")
-    return res.data.data;
+    return res.status==200;
   } catch (err) {
-    console.log(err);
+    console.log("lol"+err);
     return null;
   }
 };

@@ -9,7 +9,9 @@ type Images = {
     value: string;
     type: string;
 }
-export default function CreateTweetFooter({ text,selectedFile,setSelectedFile,isValid }: {isValid:boolean; text: string;selectedFile:Images[];setSelectedFile:React.Dispatch<React.SetStateAction<Images[]>> }) {
+export default function CreateTweetFooter({setFiles,files, text,selectedImages,setSelectedImages,isValid,handleSubmit }:
+     {files:FileList;setFiles:React.Dispatch<React.SetStateAction<File[] >>;
+         handleSubmit(): void;isValid:boolean; text: string;selectedImages:Images[];setSelectedImages:React.Dispatch<React.SetStateAction<Images[]>> }) {
     const icons = [{ icon: Image, hover: "media" }, { icon: ScanSearch, hover: "GIF" }, { icon: Vote, hover: "Poll" }, { icon: Smile, hover: "Emoji" }]
     const [isPopupOpen, setPopupOpen] = useState(false);
     const fileInput = useRef<HTMLInputElement>(null)
@@ -25,8 +27,10 @@ export default function CreateTweetFooter({ text,selectedFile,setSelectedFile,is
     const handleFileChange = () => {
         const file = fileInput.current!.files;
         if (file) {
-            const newFiles = [...selectedFile, { value: URL.createObjectURL(file[0]), type: "photo" }];
-            setSelectedFile(newFiles)
+            const tempFiles = [...files,file[0]];
+            const newFiles = [...selectedImages, { value: URL.createObjectURL(file[0]), type: "photo" }];
+            setSelectedImages(newFiles)
+            setFiles(tempFiles);
             fileInput.current!.value=''
         }
     };
@@ -89,7 +93,7 @@ export default function CreateTweetFooter({ text,selectedFile,setSelectedFile,is
                         }
                         {text.length > 0 &&
                             <div className="w-[1px] h-[31px] bg-[#3E4144] ml-[8px] mr-3"></div>}
-                        <Button variant="secondary" className=' px-5 py-2 mt-1 ml-2' disabled={!isValid} type="submit"> Post</Button>
+                        <Button variant="secondary" className=' px-5 py-2 mt-1 ml-2' disabled={!isValid} type="button" onClick={handleSubmit}> Post</Button>
                     </div>
                     <input type="file" className="hidden" onChange={handleFileChange} ref={fileInput} accept="images/*" />
                 </div>
