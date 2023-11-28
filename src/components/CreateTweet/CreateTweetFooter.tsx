@@ -90,7 +90,7 @@ export default function CreateTweetFooter({mode,setFiles,files, text,selectedIma
                         }
                         {text.length > 0 &&
                             <div className="w-[1px] h-[31px] bg-[#3E4144] ml-[8px] mr-3"></div>}
-                        <Button variant="secondary" className=' px-5 py-2 mt-1 ml-2' disabled={!isValid} type="button" onClick={handleSubmit}> Post</Button>
+                        <Button variant="secondary" className=' px-5 py-2 mt-1 ml-2'  {...{ disabled: (text.length==0&&selectedImages.length>0) ? false:!isValid }} type="button" onClick={handleSubmit}> Post</Button>
                     </div>
                     <input type="file" className="hidden" onChange={handleFileChange} ref={fileInput} accept="images/*" />
                 </div>
