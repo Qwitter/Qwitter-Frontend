@@ -114,9 +114,13 @@ const CreateTweetContainer = ({ mode = "popUp" }: { mode?: "home" | "popUp" }) =
     }
 
     const handleRemoveFile = (index: number) => {
-        const updatedFiles = [...selectedImages];
+        const updatedImages = [...selectedImages];
+        const updatedFiles = [...files];
+        updatedImages.splice(index, 1);
         updatedFiles.splice(index, 1);
-        setSelectedImages(updatedFiles);
+        setSelectedImages(updatedImages);
+        setFiles(updatedFiles);
+
     };
     if (mode == "home") {
         return (
