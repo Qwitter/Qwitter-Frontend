@@ -14,15 +14,10 @@ export const UsernameSchema = z.object({
     ,
     defaultUsername: z.string().optional()
 }).refine(async ({ username, defaultUsername }) => {
-    if (username.length < 4 || username.length > 15) {
-        return false;
+    if (defaultUsername === username){
+        return true;
     }
-    if (defaultUsername === username)
-        return true;
-    if (await isAvailableUserNameOrEmail(username))
-        return true;
-
-    return false;
+    return isAvailableUserNameOrEmail(username);
 }
     , { message: "That username has been taken. Please choose another.", path: ["username"], })
 
