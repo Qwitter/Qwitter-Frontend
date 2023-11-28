@@ -33,6 +33,7 @@ export function UsernameSuggestion({ nextStep }: Props) {
     useEffect(() => {
         form.setValue("defaultUsername", user!.userName!)
         setInputFieldValue(user!.userName!)
+        form.trigger("defaultUsername")
     }, [])
 
     const [inputValue, setInputValue] = useState("");
@@ -44,7 +45,7 @@ export function UsernameSuggestion({ nextStep }: Props) {
     const onSubmit = ({ username }: { username: string }) => {
         if (user!.userName! === username) nextStep();
 
-        mutate({ token: token || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImExZjk0MDRmLWI1ODEtNDhmZS05NTM1LTlmNzE1YzBmZThkOSIsImlhdCI6MTY5OTcxOTY2NCwiZXhwIjoxNzAwNTgzNjY0fQ.5-0Xp0LC6LQWusaI8xoogwbP0H8RPiR5iOp3oTqPzRg", username })
+        mutate({ token: token! , username })
     };
     if (isPending) {
         return (
