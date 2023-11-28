@@ -21,7 +21,11 @@ export const Step2 = ({ nextStep }: SignUpStepsProps) => {
               browsing history will never be stored with your name, email, or
               phone number.
             </label>
-            <Checkbox id="check" className="w-5 h-5 border-gray border-2" />
+            <Checkbox
+              id="check"
+              className="w-5 h-5 border-gray border-2"
+              checked
+            />
           </div>
         </div>
         <p className="mt-10 text-[15px] text-gray leading-4">

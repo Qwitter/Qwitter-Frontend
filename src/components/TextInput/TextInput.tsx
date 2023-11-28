@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { cn } from "@/lib/utils";
-import { Eye } from "lucide-react";
+import { Eye, LucideIcon } from "lucide-react";
 import { useState } from "react";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -8,6 +8,10 @@ interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string;
   isPassword?: boolean;
   inputClassName?: string;
+  RightIcon?: LucideIcon;
+  LeftIcon?: LucideIcon;
+  rightIconFunction?: () => void;
+  hasAnimation?: boolean;
 }
 
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
@@ -20,6 +24,10 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       type = "text",
       className,
       inputClassName = "",
+      RightIcon,
+      LeftIcon,
+      rightIconFunction,
+      hasAnimation = true,
       ...props
     },
     ref
@@ -38,14 +46,26 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     return (
       <>
         <div className={cn("relative w-full flex flex-row pt-3", className)}>
+          {LeftIcon && (
+            <LeftIcon
+              size="1.5rem"
+              className="inline absolute hover:cursor-pointer z-20 left-[2%] bottom-[20%]"
+              onClick={rightIconFunction}
+            />
+          )}
           <input
             disabled={disabled}
             {...props}
+            id={props.name?.toString()}
             role={props.role}
             ref={ref}
             type={inputType}
             className={cn(
-              "block rounded-sm z-10 px-2 pb-3 pt-6 w-full text-sm dark:bg-transparent border border-gray appearance-none dark:text-white dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer dark:disabled:border-[#101113] dark:disabled:bg-[#101113] dark:disabled:text-gray disabled:border-[#101113]/10 disabled:bg-[#101113]/10 disabled:text-gray",
+              "block rounded-sm z-10 px-2 py-3 w-full text-sm dark:bg-transparent border border-gray appearance-none dark:text-white  dark:disabled:border-[#101113] dark:disabled:bg-[#101113] dark:disabled:text-gray disabled:border-[#101113]/10 disabled:bg-[#101113]/10 disabled:text-gray dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer",
+              hasAnimation && "pt-6",
+              (isPassword || inputType === "password" || RightIcon) &&
+                "pr-[15%] sm:pr-[12%]",
+              LeftIcon && "pl-[13.5%] sm:pl-[10%]",
               inputClassName
             )}
             placeholder=""
@@ -55,20 +75,37 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
               {inputType === "text" && (
                 <AiOutlineEyeInvisible
                   size="1.5rem"
-                  className="inline absolute hover:cursor-pointer z-20 left-[90%] bottom-4"
+                  className="inline absolute hover:cursor-pointer z-20 left-[85%] sm:left-[90%] bottom-[20%]"
                   onClick={togglePassword}
                 />
               )}
               {inputType === "password" && (
                 <Eye
-                  className="inline absolute hover:cursor-pointer z-20 left-[90%] bottom-4"
+                  size="1.5rem"
+                  className="inline absolute hover:cursor-pointer z-20 left-[85%] sm:left-[90%] bottom-[20%]"
                   onClick={togglePassword}
                   data-testid="passwordEye"
                 />
               )}
             </>
           )}
-          <label className="absolute inline text-[17px] font-normal text-gray dark:text-gray z-10 duration-300 transform -translate-y-4 scale-75 top-7 origin-[0] left-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4">
+          {RightIcon && (
+            <RightIcon
+              size="1.5rem"
+              className="inline absolute hover:cursor-pointer z-20 left-[85%] sm:left-[90%] bottom-[20%]"
+              onClick={rightIconFunction}
+            />
+          )}
+          <label
+            htmlFor={props.name?.toString()}
+            className={cn(
+              "absolute text-[17px] font-normal text-gray dark:text-gray z-10 duration-300 transform -translate-y-4 scale-75 top-[40%] origin-[0] left-2 hover:cursor-text peer-focus:text-blue-600 peer-focus:dark:text-blue-500 hidden peer-placeholder-shown:inline peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0",
+              hasAnimation &&
+                "inline top-7 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:pl-0 sm:peer-focus:pl-0",
+              LeftIcon &&
+                "peer-placeholder-shown:pl-[11%] sm:peer-placeholder-shown:pl-[8.5%]"
+            )}
+          >
             {placeHolder}
           </label>
         </div>
