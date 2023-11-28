@@ -519,19 +519,19 @@ export const convertNumberToShortForm = (number: number) => {
   else if (number < 1000000) return `${(number / 1000).toFixed(1)}k`;
   else if (number % 1000000 <= 100000) return `${number / 1000000}m`;
   else return `${(number / 1000000).toFixed(1)}m`;
-}
+};
 
 /**
- * @description get a list of users with userName contain the given string 
+ * @description get a list of users with userName contain the given string
  * @param {username,token}
  * @returns list of users  or null
  */
-export const getUsersSuggestions = async (token: string,username:string) => {
+export const getUsersSuggestions = async (token: string, username: string) => {
   try {
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/lookup`, {
       params: {
-        name: username.slice(1)
-    },
+        name: username.slice(1),
+      },
       withCredentials: true,
       headers: {
         Accept: "application/json",
@@ -548,16 +548,16 @@ export const getUsersSuggestions = async (token: string,username:string) => {
 };
 
 /**
- * @description get a list of Hashtags contain the given string 
+ * @description get a list of Hashtags contain the given string
  * @param {username,token}
  * @returns list of Hashtags  or null
  */
-export const getHashtags = async (token: string,tag:string) => {
+export const getHashtags = async (token: string, tag: string) => {
   try {
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/lookup`, {
       params: {
-        name: tag//.slice(1)
-    },
+        name: tag, //.slice(1)
+      },
       withCredentials: true,
       headers: {
         Accept: "application/json",
@@ -578,23 +578,28 @@ export const getHashtags = async (token: string,tag:string) => {
  * @param {token,formData}
  * @returns list of users  or null
  */
-export const createTweet = async ({token,formData}:
-  {token: string;formData:FormData;
-  }) => {
+export const createTweet = async ({
+  token,
+  formData,
+}: {
+  token: string;
+  formData: FormData;
+}) => {
   try {
-    const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/tweets`,
-    formData,
-    {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`,
-      },
-    
-    });
-    return res.status==200;
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/tweets`,
+      formData,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.status == 200;
   } catch (err) {
-    console.log("lol"+err);
+    console.log("lol" + err);
     return null;
   }
 };
@@ -697,5 +702,30 @@ export const unBookmarkTweet = async (tweetId: string, token: string) => {
   } catch (error) {
     console.log(error);
     throw new Error("Error unBookmarking tweet");
+  }
+};
+
+/**
+ * @description Send a request to the backend to delete a tweet
+ * @param tweetId 
+ * @param token - the token of the user
+ * @returns success or throws error if there is an error
+ */
+export const deleteTweet = async (tweetId: string, token: string) => {
+  try {
+    const res = await axios.delete(
+      `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error deleting tweet");
   }
 };
