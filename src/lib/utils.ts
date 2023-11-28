@@ -530,10 +530,8 @@ export const convertNumberToShortForm = (number: number) => {
 export const likeTweet = async (tweetId: string, token: string) => {
   try {
     const res = await axios.post(
-      `${VITE_BACKEND_URL}/api/v1/tweets/like`,
-      {
-        tweetId,
-      },
+      `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}/like`,
+      {},
       {
         headers: {
           Accept: "application/json",
@@ -557,16 +555,15 @@ export const likeTweet = async (tweetId: string, token: string) => {
  */
 export const unlikeTweet = async (tweetId: string, token: string) => {
   try {
-    const res = await axios.delete(`${VITE_BACKEND_URL}/api/v1/tweets/like`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      data: {
-        tweetId,
-      },
-    });
+    const res = await axios.delete(
+      `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}/like`,
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return res.data;
   } catch (error) {
     console.log(error);
@@ -583,10 +580,8 @@ export const unlikeTweet = async (tweetId: string, token: string) => {
 export const bookmarkTweet = async (tweetId: string, token: string) => {
   try {
     const res = await axios.post(
-      `${VITE_BACKEND_URL}/api/v1/bookmarks`,
-      {
-        tweetId,
-      },
+      `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}/bookmark`,
+      {},
       {
         headers: {
           Accept: "application/json",
@@ -610,19 +605,19 @@ export const bookmarkTweet = async (tweetId: string, token: string) => {
  */
 export const unBookmarkTweet = async (tweetId: string, token: string) => {
   try {
-    const res = await axios.delete(`${VITE_BACKEND_URL}/api/v1/bookmarks`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      data: {
-        tweetId,
-      },
-    });
+    const res = await axios.delete(
+      `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}/bookmark`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return res.data;
   } catch (error) {
     console.log(error);
     throw new Error("Error unBookmarking tweet");
   }
-}
+};
