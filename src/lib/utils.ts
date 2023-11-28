@@ -18,12 +18,12 @@ export function cn(...inputs: ClassValue[]) {
 
 /**
  * @description Get the user data from the backend using the token
- * @params token
- * @returns object represents the user data
+ * @param token
+ * @return object represents the user data
  */
-export const getUser = async (token: string) => {
+export const getUserData = async (token: string) => {
   try {
-    const res = await axios.get(`${VITE_BACKEND_URL}/api/user`, {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user`, {
       withCredentials: true,
       headers: {
         Accept: "application/json",
@@ -44,7 +44,7 @@ export const getUser = async (token: string) => {
  * @param username - the username of the user
  * @returns object represents the user profile data
  */
-export const getUserData = async (username: string) => {
+export const getUserProfileData = async (username: string) => {
   try {
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/${username}`);
     const userData = res.data;
