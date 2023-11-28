@@ -165,7 +165,7 @@ export const updateEmail = async ({
   const parsedEmail = z.string().email().safeParse(email);
   if (!parsedEmail.success || !parseToken.success) return null;
   try {
-    // const res = await axios.patch(
+    // const res = await axios.post(
     //   `${VITE_BACKEND_URL}/api/v1/auth/change-email`,
     //   {
     //     email: email,
@@ -519,6 +519,84 @@ export const convertNumberToShortForm = (number: number) => {
   else if (number < 1000000) return `${(number / 1000).toFixed(1)}k`;
   else if (number % 1000000 <= 100000) return `${number / 1000000}m`;
   else return `${(number / 1000000).toFixed(1)}m`;
+}
+
+/**
+ * @description get a list of users with userName contain the given string 
+ * @param {username,token}
+ * @returns list of users  or null
+ */
+export const getUsersSuggestions = async (token: string,username:string) => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/lookup`, {
+      params: {
+        name: username.slice(1)
+    },
+      withCredentials: true,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+/**
+ * @description get a list of Hashtags contain the given string 
+ * @param {username,token}
+ * @returns list of Hashtags  or null
+ */
+export const getHashtags = async (token: string,tag:string) => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/lookup`, {
+      params: {
+        name: tag//.slice(1)
+    },
+      withCredentials: true,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+/**
+ * @description create tweet for the user
+ * @param {token,formData}
+ * @returns list of users  or null
+ */
+export const createTweet = async ({token,formData}:
+  {token: string;formData:FormData;
+  }) => {
+  try {
+    const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/tweets`,
+    formData,
+    {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    
+    });
+    return res.status==200;
+  } catch (err) {
+    console.log("lol"+err);
+    return null;
+  }
 };
 
 /**
