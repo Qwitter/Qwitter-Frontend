@@ -16,7 +16,7 @@ export function NavBar() {
     const { user } = useContext(UserContext)
     const [active, setActive] = useState("")
     const [isShown, setIsShown] = useState(false)
-    const navigation =useNavigate()
+    const navigation = useNavigate()
     const location = useLocation()
 
     useEffect(() => {
@@ -43,7 +43,8 @@ export function NavBar() {
             <div className='flex flex-col items-start xl:w-[275px] px-2 h-full min-h-[100vh] justify-between '>
                 <div className='flex items-start w-full flex-col'>
                     <Link to="/">
-                        <img src={Logo} alt="logo" //use logo here
+                        <img src={Logo} alt="logo"
+                            data-testid="logo"
                             className='w-16 h-16 p-[6px] mt-1 transition-all hover:bg-[#191919] hover:rounded-full font-extrabold'
                             onClick={() => { setActive("") }}
                         />
@@ -60,15 +61,15 @@ export function NavBar() {
                         <PopoverTrigger>
                             <img src={`http://${user?.profileImageUrl}`} alt="profilePic" className='w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid' />
                         </PopoverTrigger>
-                        <PopoverContent className='w-[240px] cursor-pointer hover:bg-[#16181c] p-3 text-primary' onClick={()=>{navigation("/i/flow/logout")}}>
-                        Log out {user?.userName}
-                            </PopoverContent>
+                        <PopoverContent className='w-[240px] cursor-pointer hover:bg-[#16181c] p-3 text-primary' onClick={() => { navigation("/i/flow/logout") }}>
+                            Log out {user?.userName}
+                        </PopoverContent>
                     </Popover>
                     <div className=' flex-col mx-3 hidden xl:flex'>
                         <h3 className='font-semibold tracking-[2px] text-[15px]'>{user?.name}</h3>
                         <span className='text-gray text-[15px]'>@{user?.userName}</span>
                     </div>
-                    <div className='w-2/4  row justify-end hidden xl:flex ' onClick={()=>{navigation("/i/flow/logout")}}>
+                    <div className='w-2/4  row justify-end hidden xl:flex ' onClick={() => { navigation("/i/flow/logout") }}>
                         <LogOut className='cursor-pointer' />
                     </div>
                 </div>

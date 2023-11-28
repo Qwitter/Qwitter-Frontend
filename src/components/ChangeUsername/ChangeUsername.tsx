@@ -48,7 +48,12 @@ export function ChangeUsername() {
   const [isClickChange, setIsClickChange] = useState(false);
 
   useEffect(() => {
-    setInputFieldValue(user?.userName||"");
+    setTimeout(()=>{
+      setInputFieldValue(user?.userName||"");
+
+      form.setValue("defaultUsername", user?.userName||"")
+      form.trigger("defaultUsername")
+    },100)
   }, []);
 
   const setInputFieldValue = (value: string, clickFlag = false) => {
@@ -58,7 +63,7 @@ export function ChangeUsername() {
     form.trigger("username");
   };
   const onSubmit = ({ username }: { username: string }) => {
-    mutate({ token: token || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImExZjk0MDRmLWI1ODEtNDhmZS05NTM1LTlmNzE1YzBmZThkOSIsImlhdCI6MTY5OTcxOTY2NCwiZXhwIjoxNzAwNTgzNjY0fQ.5-0Xp0LC6LQWusaI8xoogwbP0H8RPiR5iOp3oTqPzRg", username })
+    mutate({ token: token! , username })
   };
 
   if (isPending) {
