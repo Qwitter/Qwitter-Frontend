@@ -47,7 +47,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       <>
         <div className={cn("relative w-full flex flex-row pt-3", className)}>
           {LeftIcon && (
-            <Eye
+            <LeftIcon
               size="1.5rem"
               className="inline absolute hover:cursor-pointer z-20 left-[2%] bottom-[20%]"
               onClick={rightIconFunction}
