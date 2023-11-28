@@ -6,7 +6,7 @@ const tempTweets: Tweet[] = [
     createdAt: "2023-11-23 5:02:00",
     id: "1718938551163691300",
     user: {
-      userName: "AhmedZahran2025",
+      userName: "seifeldeenhanya3818c",
       name: "Ahmed Zahran",
       profileImageUrl: "qwitter/photos/213902323",
       profileBannerUrl: "qwitter/photos/213902323",

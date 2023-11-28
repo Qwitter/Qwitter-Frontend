@@ -25,7 +25,7 @@ const BirthDayInput = ({ className, form }: BirthDayInputProps) => {
         control={form.control}
         name="month"
         render={({ field }) => (
-          <FormItem className="w-full" role="testing">
+          <FormItem className="w-full" role="testing" data-testid="months">
             <Select
               onValueChange={(val: Month) => {
                 setMonth(val);
@@ -71,7 +71,7 @@ const BirthDayInput = ({ className, form }: BirthDayInputProps) => {
         control={form.control}
         name="day"
         render={({ field }) => (
-          <FormItem className="w-full max-w-[140px]">
+          <FormItem className="w-full max-w-[140px]" data-testid="days">
             <Select
               onValueChange={field.onChange}
               defaultValue={form.formState.defaultValues?.day?.toString()}
@@ -108,7 +108,7 @@ const BirthDayInput = ({ className, form }: BirthDayInputProps) => {
         control={form.control}
         name="year"
         render={({ field }) => (
-          <FormItem className="w-full max-w-[200px] ">
+          <FormItem className="w-full max-w-[200px]" data-testid="years">
             <Select
               onValueChange={field.onChange}
               defaultValue={form.formState.defaultValues?.year?.toString()}

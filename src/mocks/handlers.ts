@@ -15,11 +15,11 @@ import { RegisterUserWorker } from "./RegisterUserWorker/RegisterUserWorker";
 import { sendResetPasswordVerificationTokenWorker } from "./SendResetPasswordVerificationTokenWorker/SendResetPasswordVerificationTokenWorker";
 import { userWorker } from "./UserWorker/UserWorker";
 import { OAuthRegisterUserWorker } from "./OAuthRegisterUserWorker/OAuthRegisterUserWorker";
-import { UploadProfileWorker } from "./RegisterUserWorker/UploadProfileWorker";
 import { getUsersSuggestionsWorkerHandler } from "./GetUsersSuggetions/GetUsersSuggetionsWorker";
 import { EditProfileWorker } from "./EditProfileWorker/EditProfileWorker";
 import {
   bookmarkTweetWorker,
+  deleteTweetWorker,
   likeTweetWorker,
   unBookmarkTweetWorker,
   unLikeTweetWorker,
@@ -79,7 +79,17 @@ export const handlers = [
   ),
   http.put(`${VITE_BACKEND_URL}/api/v1/user/profile`, EditProfileWorker),
   http.post(`${VITE_BACKEND_URL}/api/v1/tweets/:tweetId/like`, likeTweetWorker),
-  http.delete(`${VITE_BACKEND_URL}/api/v1/tweets/:tweetId/like`, unLikeTweetWorker),
-  http.post(`${VITE_BACKEND_URL}/api/v1/tweets/:tweetId/bookmark`, bookmarkTweetWorker),
-  http.delete(`${VITE_BACKEND_URL}/api/v1/tweets/:tweetId/bookmark`, unBookmarkTweetWorker),
+  http.delete(
+    `${VITE_BACKEND_URL}/api/v1/tweets/:tweetId/like`,
+    unLikeTweetWorker
+  ),
+  http.post(
+    `${VITE_BACKEND_URL}/api/v1/tweets/:tweetId/bookmark`,
+    bookmarkTweetWorker
+  ),
+  http.delete(
+    `${VITE_BACKEND_URL}/api/v1/tweets/:tweetId/bookmark`,
+    unBookmarkTweetWorker
+  ),
+  http.delete(`${VITE_BACKEND_URL}/api/v1/tweets/:tweetId`, deleteTweetWorker),
 ];
