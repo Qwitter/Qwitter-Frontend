@@ -14,6 +14,7 @@ export function OptionsHeader({ header, className ,defaultBack=false}: Props) {
     return (
         <div className="px-4 py-2 flex flex-row gap-8 items-center ">
             <div className= "hover:bg-[#191919] h-10 rounded-full transition-all p-2 cursor-pointer"
+            data-testid="Back"
             onClick={() => {
                 defaultBack?navigate('/'):navigate(-1)
                 }}>

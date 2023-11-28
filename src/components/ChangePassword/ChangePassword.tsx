@@ -64,6 +64,7 @@ export function ChangePassword() {
             placeHolder="Current password"
             className="w-full mb-2"
             isPassword
+            data-testid="currentPassword"
             {...form.register("CurrentPassword", {
               required: "Enter your password",
             })}
@@ -83,6 +84,7 @@ export function ChangePassword() {
               placeHolder="New password"
               className="w-full mb-2"
               type="password"
+              data-testid="newPassword"
               role="text"
               isPassword
               {...form.register("Password", {
@@ -96,6 +98,8 @@ export function ChangePassword() {
               isPassword
               placeHolder="Confirm password"
               className="w-full mb-2"
+              data-testid="confirmPassword"
+              
               role="confirmPassword"
               type="password"
               {...form.register("ConfirmPassword", {
@@ -109,6 +113,7 @@ export function ChangePassword() {
           <Button
             variant="secondary"
             className="block ml-auto"
+            data-testid="save"
             type="submit"
             disabled={!(form.formState.dirtyFields.ConfirmPassword&&form.formState.dirtyFields.CurrentPassword&&form.formState.dirtyFields.Password)}
           >

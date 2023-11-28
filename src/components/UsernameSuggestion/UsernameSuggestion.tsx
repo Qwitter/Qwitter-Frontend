@@ -65,6 +65,7 @@ export function UsernameSuggestion({ nextStep }: Props) {
                     required
                     placeHolder='Username'
                     className='w-full'
+                    data-testid='username'
                     {...form.register("username", {
                         required: "Enter your username",
                         onChange: (e) => setInputFieldValue(e.target.value),
