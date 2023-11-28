@@ -4,17 +4,19 @@ import { whoToReply } from "../../constants"
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { cn } from "@/lib";
-import { useEffect, useRef, useState } from "react";
+import {  useRef, useState } from "react";
 import { CreateTweetFooterProp } from "./types/CreateTweetProps";
-
-export default function CreateTweetFooter({mode,setFiles,files, text,selectedImages,setSelectedImages,isValid,handleSubmit }:CreateTweetFooterProp) {
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+export default function CreateTweetFooter({ mode, setFiles, files, text, selectedImages, setSelectedImages, isValid, handleSubmit }: CreateTweetFooterProp) {
     const icons = [{ icon: Image, hover: "media" }, { icon: ScanSearch, hover: "GIF" }, { icon: Vote, hover: "Poll" }, { icon: Smile, hover: "Emoji" }]
-    const [isPopupOpen, setPopupOpen] = useState(false);
+    const [isPopupOpen, setPopupOpen] = useState(true);
     const fileInput = useRef<HTMLInputElement>(null)
 
-    const togglePopup = () => {
-        setPopupOpen(!isPopupOpen);
-    };
+
     const [currentWhoToReply, setCurrentWhoToReply] = useState({ ...whoToReply[0] })
     function handleUploadImg() {
         fileInput.current?.click()
@@ -23,22 +25,30 @@ export default function CreateTweetFooter({mode,setFiles,files, text,selectedIma
     const handleFileChange = () => {
         const file = fileInput.current!.files;
         if (file) {
-            const tempFiles = [...files,file[0]];
+            const tempFiles = [...files, file[0]];
             const newFiles = [...selectedImages, { value: URL.createObjectURL(file[0]), type: "photo" }];
             setSelectedImages(newFiles)
             setFiles(tempFiles);
-            fileInput.current!.value=''
+            fileInput.current!.value = ''
         }
     };
 
     return (
         <div className="flex flex-col items-start w-full">
-            {(text.length!=0||mode=="popUp"||selectedImages.length>0)&&<div className="h-12 flex flex-row items-center pb-3 w-full border-b border-primary border-opacity-20 cursor-pointer" onClick={togglePopup}>
-                <currentWhoToReply.icon color="rgb(29,155,240)" className="mr-1 w-4 h-4" strokeWidth="2.5" />
-                <span className="text-secondary text-sm font-bold">{currentWhoToReply.text} can reply</span>
-            </div>
-}
-            {isPopupOpen && <ReplyPopup closePopup={() => { setPopupOpen(false) }} currentWhoToReply={currentWhoToReply} setCurrentWhoToReply={setCurrentWhoToReply} />}
+            {(text.length != 0 || mode == "popUp" || selectedImages.length > 0) &&
+                <Popover open={isPopupOpen} onOpenChange={setPopupOpen} >
+                    <PopoverTrigger className="z-[100] w-full">
+                        <div className="h-12 flex flex-row items-center pb-3 w-full border-b border-primary border-opacity-20 cursor-pointer">
+                            <currentWhoToReply.icon color="rgb(29,155,240)" className="mr-1 w-4 h-4" strokeWidth="2.5" />
+                            <span className="text-secondary text-sm font-bold">{currentWhoToReply.text} can reply</span>
+                        </div>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[320px] h-[380px] min-h-[100px]  overflow-y-auto box-shadow bg-black  text-primary text-xs rounded-xl">
+                        <ReplyPopup closePopup={() => { setPopupOpen(false) }} currentWhoToReply={currentWhoToReply} setCurrentWhoToReply={setCurrentWhoToReply} />
+                    </PopoverContent>
+                </Popover>
+
+            }
             <div className="flex flex-row p-1 py-2 items-start w-full">
                 <div className="w-full  flex flex-row items-center ">
                     <div className="w-full h-full ">
@@ -90,7 +100,7 @@ export default function CreateTweetFooter({mode,setFiles,files, text,selectedIma
                         }
                         {text.length > 0 &&
                             <div className="w-[1px] h-[31px] bg-[#3E4144] ml-[8px] mr-3"></div>}
-                        <Button variant="secondary" className=' px-5 py-2 mt-1 ml-2'  {...{ disabled: (text.length==0&&selectedImages.length>0) ? false:!isValid }} type="button" onClick={handleSubmit}> Post</Button>
+                        <Button variant="secondary" className=' px-5 py-2 mt-1 ml-2'  {...{ disabled: (text.length == 0 && selectedImages.length > 0) ? false : !isValid }} type="button" onClick={handleSubmit}> Post</Button>
                     </div>
                     <input type="file" className="hidden" onChange={handleFileChange} ref={fileInput} accept="images/*" />
                 </div>
@@ -104,38 +114,9 @@ function ReplyPopup({ currentWhoToReply, setCurrentWhoToReply, closePopup }: {
         icon: LucideIcon;
     }>>, closePopup: () => void
 }) {
-    const [position, setPosition] = useState<'above' | 'below'>('below');
-    const popupRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        // Calculate the height of the popup
-        const popupHeight = popupRef.current!.offsetHeight!;
-
-        // Calculate the distance from the bottom of the parent container to the bottom of the viewport
-        const distanceToBottom = window.innerHeight - popupRef.current!.getBoundingClientRect().bottom;
-
-        // Calculate the distance from the top of the parent container to the top of the viewport
-        const distanceToTop = popupRef.current!.getBoundingClientRect().top;
-
-        // Determine whether there is enough space below or above the parent container
-        const hasSpaceBelow = distanceToBottom >= popupHeight + 50;
-        const hasSpaceAbove = distanceToTop >= popupHeight + 50;
-
-        // Set the position of the popup accordingly
-        if (hasSpaceBelow && !hasSpaceAbove) {
-            setPosition('below');
-        } else if (hasSpaceAbove && !hasSpaceBelow) {
-            setPosition('above');
-        }
-
-    }, []);
     return (
-        <div
-            ref={popupRef}
-            style={{ [position === 'above' ? 'bottom' : 'top']: 'calc(50%)' }}
-            className=
-            "absolute w-[320px] h-[350px] min-h-[100px] pt-4 overflow-y-auto box-shadow z-40 bg-black  text-primary text-xs rounded-xl"
-        >
+        <>
             <div className="w-full px-4 py-3 flex flex-col gap-1">
                 <span className="text-primary font-bold text-[15px]">who can reply?</span>
                 <p className="text-gray text-[15px] ">Choose who can reply to this post. Anyone mentioned can always reply</p>
@@ -159,6 +140,6 @@ function ReplyPopup({ currentWhoToReply, setCurrentWhoToReply, closePopup }: {
 
                 }
             </ul>
-        </div>
+        </>
     )
 }
