@@ -15,7 +15,6 @@ import { RegisterUserWorker } from "./RegisterUserWorker/RegisterUserWorker";
 import { sendResetPasswordVerificationTokenWorker } from "./SendResetPasswordVerificationTokenWorker/SendResetPasswordVerificationTokenWorker";
 import { userWorker } from "./UserWorker/UserWorker";
 import { OAuthRegisterUserWorker } from "./OAuthRegisterUserWorker/OAuthRegisterUserWorker";
-import { UploadProfileWorker } from "./RegisterUserWorker/UploadProfileWorker";
 import { getUsersSuggestionsWorkerHandler } from "./GetUsersSuggetions/GetUsersSuggetionsWorker";
 import { EditProfileWorker } from "./EditProfileWorker/EditProfileWorker";
 import {
