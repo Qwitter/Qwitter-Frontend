@@ -1,7 +1,7 @@
 import { UserContext } from "@/contexts/UserContextProvider";
 import { PopUpContainer } from "../PopUpContainer/PopUpContainer";
 import { Button } from "../ui/button";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useContext } from "react";
 import { deleteTweet } from "@/lib/utils";
 import { toast } from "../ui/use-toast";
@@ -16,13 +16,14 @@ const DeleteTweetPopUp = ({
   showDeleteDialog,
   setShowDeleteDialog,
 }: DeleteTweetPopUpProps) => {
+  const queryClient = useQueryClient();
   const { token } = useContext(UserContext);
   const { mutate: deleteTweetMutation, isPending } = useMutation({
     mutationFn: token
       ? (tweetId: string) => deleteTweet(tweetId, token)
       : undefined,
     onSuccess: () => {
-      // TODO: revalidate tweets
+      queryClient.invalidateQueries({ queryKey: ["tweets"] });
       setShowDeleteDialog(false);
       toast({
         title: "Tweet deleted successfully",
