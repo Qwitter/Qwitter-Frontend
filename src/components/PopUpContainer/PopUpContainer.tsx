@@ -57,7 +57,7 @@ export const PopUpContainer = ({
           `w-full max-w-full ${dialogContentWidth} sm:max-w-[600px] h-full sm:max-h-[650px] focus:outline-none ${dialogContentHeight} p-0`,
           isCompact
             ? cn(
-                "w-[80vw] max-w-[500px] h-[50vh] max-h-[500px] rounded-2xl",
+                "w-[80vw] max-w-[500px] h-[50vh] max-h-[500px] mx-auto rounded-2xl",
                 dialogClassName
               )
             : dialogClassName
