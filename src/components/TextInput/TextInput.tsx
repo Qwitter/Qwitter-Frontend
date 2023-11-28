@@ -11,7 +11,9 @@ interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   RightIcon?: LucideIcon;
   LeftIcon?: LucideIcon;
   rightIconFunction?: () => void;
+  leftIconFunction?: () => void;
   hasAnimation?: boolean;
+  iconSize?: string;
 }
 
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
@@ -27,7 +29,9 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       RightIcon,
       LeftIcon,
       rightIconFunction,
+      leftIconFunction,
       hasAnimation = true,
+      iconSize = "1.5rem",
       ...props
     },
     ref
@@ -45,12 +49,13 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 
     return (
       <>
-        <div className={cn("relative w-full flex flex-row pt-3", className)}>
+        <div className={cn("relative w-full flex flex-row pt-3", className)} >
           {LeftIcon && (
             <LeftIcon
-              size="1.5rem"
-              className="inline absolute hover:cursor-pointer z-20 left-[2%] bottom-[20%]"
-              onClick={rightIconFunction}
+              size={iconSize}
+              className={`inline absolute  z-20 left-[5%] ${disabled ? "text-gray" : "text-secondary"
+                }`}
+              onClick={leftIconFunction}
             />
           )}
           <input
@@ -61,27 +66,27 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             ref={ref}
             type={inputType}
             className={cn(
-              "block rounded-sm z-10 px-2 py-3 w-full text-sm dark:bg-transparent border border-gray appearance-none dark:text-white  dark:disabled:border-[#101113] dark:disabled:bg-[#101113] dark:disabled:text-gray disabled:border-[#101113]/10 disabled:bg-[#101113]/10 disabled:text-gray dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer",
+              "block rounded-sm z-10 px-2 py-3 w-full text-sm bg-black border border-gray appearance-none dark:text-white  dark:disabled:border-[#202327] dark:disabled:bg-[#202327] dark:disabled:text-gray disabled:border-[#202327]/10 disabled:bg-[#202327]/10 disabled:text-gray dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer",
               hasAnimation && "pt-6",
               (isPassword || inputType === "password" || RightIcon) &&
-                "pr-[15%] sm:pr-[12%]",
+              "pr-[15%] sm:pr-[12%]",
               LeftIcon && "pl-[13.5%] sm:pl-[10%]",
               inputClassName
             )}
-            placeholder=""
+            placeholder={type == "homeSearch" ? "Search" : ""}
           />
           {isPassword && (
             <>
               {inputType === "text" && (
                 <AiOutlineEyeInvisible
-                  size="1.5rem"
+                  size={iconSize}
                   className="inline absolute hover:cursor-pointer z-20 left-[85%] sm:left-[90%] bottom-[20%]"
                   onClick={togglePassword}
                 />
               )}
               {inputType === "password" && (
                 <Eye
-                  size="1.5rem"
+                  size={iconSize}
                   className="inline absolute hover:cursor-pointer z-20 left-[85%] sm:left-[90%] bottom-[20%]"
                   onClick={togglePassword}
                   data-testid="passwordEye"
@@ -91,8 +96,8 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           )}
           {RightIcon && (
             <RightIcon
-              size="1.5rem"
-              className="inline absolute hover:cursor-pointer z-20 left-[85%] sm:left-[90%] bottom-[20%]"
+              size={iconSize}
+              className="inline absolute hover:cursor-pointer z-20 left-[85%] sm:left-[88%] bg-secondary text-black p-[2px]  rounded-full "
               onClick={rightIconFunction}
             />
           )}
@@ -101,9 +106,9 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             className={cn(
               "absolute text-[17px] font-normal text-gray dark:text-gray z-10 duration-300 transform -translate-y-4 scale-75 top-[40%] origin-[0] left-2 hover:cursor-text peer-focus:text-blue-600 peer-focus:dark:text-blue-500 hidden peer-placeholder-shown:inline peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0",
               hasAnimation &&
-                "inline top-7 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:pl-0 sm:peer-focus:pl-0",
+              "inline top-7 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:pl-0 sm:peer-focus:pl-0",
               LeftIcon &&
-                "peer-placeholder-shown:pl-[11%] sm:peer-placeholder-shown:pl-[8.5%]"
+              "peer-placeholder-shown:pl-[11%] sm:peer-placeholder-shown:pl-[8.5%]"
             )}
           >
             {placeHolder}
