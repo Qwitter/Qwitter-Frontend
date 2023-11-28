@@ -1,8 +1,11 @@
 import { HttpResponse, ResponseResolver } from "msw";
 
-export const likeTweetWorker: ResponseResolver = async ({ request }) => {
+export const likeTweetWorker: ResponseResolver = async ({
+  request,
+  params,
+}) => {
   const token = request.headers.get("Authorization")?.split(" ")[1];
-  const { tweetId } = (await request.json()) as {
+  const { tweetId } = params as {
     tweetId: string;
   };
 
@@ -21,9 +24,12 @@ export const likeTweetWorker: ResponseResolver = async ({ request }) => {
   );
 };
 
-export const unLikeTweetWorker: ResponseResolver = async ({ request }) => {
+export const unLikeTweetWorker: ResponseResolver = async ({
+  request,
+  params,
+}) => {
   const token = request.headers.get("Authorization")?.split(" ")[1];
-  const { tweetId } = (await request.json()) as {
+  const { tweetId } = params as {
     tweetId: string;
   };
 
@@ -42,9 +48,12 @@ export const unLikeTweetWorker: ResponseResolver = async ({ request }) => {
   );
 };
 
-export const bookmarkTweetWorker: ResponseResolver = async ({ request }) => {
+export const bookmarkTweetWorker: ResponseResolver = async ({
+  request,
+  params,
+}) => {
   const token = request.headers.get("Authorization")?.split(" ")[1];
-  const { tweetId } = (await request.json()) as {
+  const { tweetId } = params as {
     tweetId: string;
   };
 
@@ -63,9 +72,12 @@ export const bookmarkTweetWorker: ResponseResolver = async ({ request }) => {
   );
 };
 
-export const unBookmarkTweetWorker: ResponseResolver = async ({ request }) => {
+export const unBookmarkTweetWorker: ResponseResolver = async ({
+  request,
+  params,
+}) => {
   const token = request.headers.get("Authorization")?.split(" ")[1];
-  const { tweetId } = (await request.json()) as {
+  const { tweetId } = params as {
     tweetId: string;
   };
 

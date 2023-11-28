@@ -78,8 +78,8 @@ export const handlers = [
     getUsersSuggestionsWorkerHandler
   ),
   http.put(`${VITE_BACKEND_URL}/api/v1/user/profile`, EditProfileWorker),
-  http.post(`${VITE_BACKEND_URL}/api/v1/tweets/like`, likeTweetWorker),
-  http.delete(`${VITE_BACKEND_URL}/api/v1/tweets/like`, unLikeTweetWorker),
-  http.post(`${VITE_BACKEND_URL}/api/v1/bookmarks`, bookmarkTweetWorker),
-  http.delete(`${VITE_BACKEND_URL}/api/v1/bookmarks`, unBookmarkTweetWorker),
+  http.post(`${VITE_BACKEND_URL}/api/v1/tweets/:tweetId/like`, likeTweetWorker),
+  http.delete(`${VITE_BACKEND_URL}/api/v1/tweets/:tweetId/like`, unLikeTweetWorker),
+  http.post(`${VITE_BACKEND_URL}/api/v1/tweets/:tweetId/bookmark`, bookmarkTweetWorker),
+  http.delete(`${VITE_BACKEND_URL}/api/v1/tweets/:tweetId/bookmark`, unBookmarkTweetWorker),
 ];
