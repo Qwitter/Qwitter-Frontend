@@ -18,12 +18,12 @@ export function cn(...inputs: ClassValue[]) {
 
 /**
  * @description Get the user data from the backend using the token
- * @params token
- * @returns object represents the user data
+ * @param token
+ * @return object represents the user data
  */
-export const getUser = async (token: string) => {
+export const getUserData = async (token: string) => {
   try {
-    const res = await axios.get(`${VITE_BACKEND_URL}/api/user`, {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user`, {
       withCredentials: true,
       headers: {
         Accept: "application/json",
@@ -44,7 +44,7 @@ export const getUser = async (token: string) => {
  * @param username - the username of the user
  * @returns object represents the user profile data
  */
-export const getUserData = async (username: string) => {
+export const getUserProfileData = async (username: string) => {
   try {
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/${username}`);
     const userData = res.data;
@@ -165,7 +165,7 @@ export const updateEmail = async ({
   const parsedEmail = z.string().email().safeParse(email);
   if (!parsedEmail.success || !parseToken.success) return null;
   try {
-    // const res = await axios.patch(
+    // const res = await axios.post(
     //   `${VITE_BACKEND_URL}/api/v1/auth/change-email`,
     //   {
     //     email: email,
@@ -547,5 +547,213 @@ export const timelineTweets = async (
   } catch (error) {
     console.log(error);
     return null;
+  }
+};
+
+ * @description get a list of users with userName contain the given string
+ * @param {username,token}
+ * @returns list of users  or null
+ */
+export const getUsersSuggestions = async (token: string, username: string) => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/lookup`, {
+      params: {
+        name: username.slice(1),
+      },
+      withCredentials: true,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+/**
+ * @description get a list of Hashtags contain the given string
+ * @param {username,token}
+ * @returns list of Hashtags  or null
+ */
+export const getHashtags = async (token: string, tag: string) => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/lookup`, {
+      params: {
+        name: tag, //.slice(1)
+      },
+      withCredentials: true,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+/**
+ * @description create tweet for the user
+ * @param {token,formData}
+ * @returns list of users  or null
+ */
+export const createTweet = async ({
+  token,
+  formData,
+}: {
+  token: string;
+  formData: FormData;
+}) => {
+  try {
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/tweets`,
+      formData,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.status == 200;
+  } catch (err) {
+    console.log("lol" + err);
+    return null;
+  }
+};
+
+/**
+ * @description Send a request to the backend to like a tweet
+ * @param tweetId
+ * @param token - the token of the user
+ * @returns success or throws error if there is an error
+ */
+export const likeTweet = async (tweetId: string, token: string) => {
+  try {
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}/like`,
+      {},
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error liking tweet");
+  }
+};
+
+/**
+ * @description Send a request to the backend to unlike a tweet
+ * @param tweetId
+ * @param token - the token of the user
+ * @returns success or throws error if there is an error
+ */
+export const unlikeTweet = async (tweetId: string, token: string) => {
+  try {
+    const res = await axios.delete(
+      `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}/like`,
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error unlike tweet");
+  }
+};
+
+/**
+ * @description Send a request to the backend to bookmark a tweet
+ * @param tweetId
+ * @param token - the token of the user
+ * @returns success or throws error if there is an error
+ */
+export const bookmarkTweet = async (tweetId: string, token: string) => {
+  try {
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}/bookmark`,
+      {},
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error bookmarking tweet");
+  }
+};
+
+/**
+ * @description Send a request to the backend to unBookmark a tweet
+ * @param tweetId
+ * @param token - the token of the user
+ * @returns success or throws error if there is an error
+ */
+export const unBookmarkTweet = async (tweetId: string, token: string) => {
+  try {
+    const res = await axios.delete(
+      `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}/bookmark`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error unBookmarking tweet");
+  }
+};
+
+/**
+ * @description Send a request to the backend to delete a tweet
+ * @param tweetId 
+ * @param token - the token of the user
+ * @returns success or throws error if there is an error
+ */
+export const deleteTweet = async (tweetId: string, token: string) => {
+  try {
+    const res = await axios.delete(
+      `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error deleting tweet");
   }
 };

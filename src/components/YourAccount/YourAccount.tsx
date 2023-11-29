@@ -23,7 +23,7 @@ function Options() {
         <ul className='flex flex-col w-full'>
             {accountOptions.map((link) => (
                 <Link to={`/settings${link.id}`} key={link.id} className='group ' >
-                    <div className='flex flex-row p-3 w-full justify-between items-center group-hover:bg-[#191919] transition-all '>
+                    <div data-testid={`${link.title}`} className='flex flex-row p-3 w-full justify-between items-center group-hover:bg-[#191919] transition-all '>
                         <div className='flex flex-row items-center'>
                             <div className='mr-2 w-12 h-12 flex justify-center items-center '>
                                 <link.icon className='w-5 h-5 text-gray' />

@@ -110,5 +110,5 @@ export const PopUpContainer = ({
         </div>
       </DialogContent>
     </Dialog>
-  );
+    );
 };
