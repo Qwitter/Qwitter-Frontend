@@ -747,13 +747,28 @@ export const GetFollowSuggestionsService = async () => {
 
 /**
  * @description follow specific user
- * @param 
- * @returns  users array represents the response from the backend or null
+ * @param username
+ * @returns  success or throws error if there is an error
  */
-export const FollowService = async () => {
+export const FollowService = async (username:string) => {
   try {
-    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/suggestions`);
-    return res.data.data;
+    const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/user/follow/${username}`);
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+/**
+ * @description unfollow specific user
+ * @param username
+ * @returns  success or throws error if there is an error
+ */
+export const UnFollowService = async (username:string) => {
+  try {
+    
+    const res = await axios.delete(`${VITE_BACKEND_URL}/api/v1/user/follow/${username}`);
+    return res.data;
   } catch (err) {
     console.log(err);
     return null;

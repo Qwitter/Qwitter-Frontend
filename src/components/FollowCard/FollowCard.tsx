@@ -6,9 +6,7 @@ export function FollowCard() {
   return (
     <Card className="w-[350px] bg-[#16181c]  absolute left-96 top-64 border-none">
       <CardHeader className=" h-[50px] mb-1 flex justify-center items-start">
-        <CardTitle className="text-xl w-[50%] font-bold ">
-          Who to follow
-        </CardTitle>
+        <CardTitle className="text-xl font-bold ">Who to follow</CardTitle>
       </CardHeader>
       <UsersList showDesc={false} getusers={GetFollowSuggestionsService} />
       <CardFooter className="hover:cursor-pointer mt-3">

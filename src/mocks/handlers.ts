@@ -26,6 +26,7 @@ import {
 } from "./TweetWorker/TweetWorker";
 import { UploadProfileImageWorker } from "./RegisterUserWorker/UploadProfileImageWorker";
 import { GetFollowersWorker } from "./GetFollowersWorker/GetFollowersWorker";
+import { FollowUserWorker, UnFollowUserWorker } from "./FollowUserWorker/FollowUserWorker";
 
 const { VITE_BACKEND_URL } = import.meta.env;
 
@@ -94,4 +95,6 @@ export const handlers = [
   ),
   http.delete(`${VITE_BACKEND_URL}/api/v1/tweets/:tweetId`, deleteTweetWorker),
   http.get(`${VITE_BACKEND_URL}/api/v1/user/suggestions`, GetFollowersWorker),
+  http.post(`${VITE_BACKEND_URL}/api/v1/user/follow/:username`, FollowUserWorker),
+  http.delete(`${VITE_BACKEND_URL}/api/v1/user/follow/:username`, UnFollowUserWorker),
 ];
