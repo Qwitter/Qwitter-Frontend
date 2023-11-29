@@ -1,13 +1,14 @@
 import { Button, OptionsHeader, TextInput } from "@/components";
-import { Ban, MailPlus, Search, Settings, Trash2, X, XCircle } from "lucide-react";
+import { Ban, Search, Settings, Trash2, X, XCircle } from "lucide-react";
 import { useState } from "react";
 import { MessageUser, MessagesListProp, MessagesRequestPopUpProp, MessagesSearchProp, MessagesSideProp } from "./types/MessagesTypes";
-import { AllowMessagesOptions, pinnedConversations, userArray } from "@/constants";
+import { AllowMessagesOptions, userArray } from "@/constants";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { cn } from "@/lib/utils";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { RadioGroup, RadioGroupItem } from "../../components/ui/radio-group";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { MessagesMain } from "./MessagesMain";
 export function Messages() {
     const location = useLocation();
     const previousLocation = location.state?.previousLocation;
@@ -30,86 +31,6 @@ export function Messages() {
 
         </>
     );
-}
-
-function MessagesMain() {
-    const [messagesSearchText, setMessagesSearchText] = useState("");
-    const navigate = useNavigate()
-
-    const [selectedUser, SetSelectedUser] = useState<MessageUser>({
-        imageUrl: "",
-        username: "",
-        name: "",
-        isVerified: false,
-        lastMessage: "",
-        lastMessageTime: "3h"
-    });
-    const handleSettingClick = () => {
-        navigate('/Messages/settings');
-    }
-
-    const handleRequestClick = () => {
-        navigate('/Messages/requests')
-    }
-    const messagesRequests = 2;
-    const newMessageRequest = true;
-    return (
-        <>
-            <div className="px-4 w-full h-[53px] flex flex-row justify-center  sticky  top-[-1px] bg-black bg-opacity-60 backdrop-blur-xl z-50 items-center">
-                <div className="w-full h-full flex  items-center">
-                    <h2 className="font-bold text-xl">Messages</h2>
-                </div>
-                <div className="flex justify-between items-center min-w-[56px] min-h-[32px]">
-                    <div className='w-10 h-10 flex justify-center items-center cursor-pointer' onClick={handleSettingClick}>
-                        <Settings className=' w-5 h-5' />
-                    </div>
-                    <div className='w-10 h-10 flex justify-center items-center '>
-                        <MailPlus className=' w-5 h-5' />
-                    </div>
-                </div>
-            </div>
-            <MessagesSearch text={messagesSearchText} setText={setMessagesSearchText} />
-            <div>
-                {messagesRequests > 0 &&
-                    <div className="py-3 px-4 flex flex-row justify-between  hover:bg-[#16181c] w-full transition-all cursor-pointer" onClick={handleRequestClick}>
-                        <div className=" flex flex-row">
-                            <div className="mr-4 w-12 flex justify-center items-center h-12 bg-black rounded-full border border-primary border-opacity-30">
-                                <MailPlus className="w-5 h-5" />
-                            </div><div className="flex flex-col h-full">
-                                <h3 className="text-primary text-[15px] font-semibold">Message requests</h3>
-                                <span className="text-gray text-[13px]">{messagesRequests} requests</span>
-                            </div>
-                        </div>
-                        {newMessageRequest && <div className="bg-secondary rounded-full w-[10px] h-[10px] mt-2"></div>}
-                    </div>
-                }
-                {
-                    pinnedConversations.length > 0 && (<>
-                        <div className="w-full py-3 pl-4">
-                            <span className="text-primary text-xl font-bold">
-                                Pinned conversations
-                            </span>
-                        </div>
-                        < MessagesList users={pinnedConversations}
-                            selectedUser={selectedUser}
-                            mode="normal"
-                            setSelectedUser={SetSelectedUser}
-                        />
-                        <div className="w-full py-3 pl-4">
-                            <span className="text-primary text-xl font-bold">
-                                All conversations
-                            </span>
-                        </div>
-                    </>
-                    )
-                }
-                < MessagesList users={userArray}
-                    mode={"normal"}
-                    selectedUser={selectedUser}
-                    setSelectedUser={SetSelectedUser}
-                />
-            </div></>
-    )
 }
 
 function MessagesSettings() {
@@ -155,7 +76,7 @@ function MessagesSide({ p, showButton }: MessagesSideProp) {
         </div>
     )
 }
-function MessagesSearch({ text, setText, }: MessagesSearchProp) {
+export function MessagesSearch({ text, setText, }: MessagesSearchProp) {
     const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value
         setText(value)
@@ -180,7 +101,7 @@ function MessagesSearch({ text, setText, }: MessagesSearchProp) {
     </>)
 }
 
-function MessagesList({ users, selectedUser, setSelectedUser, mode = "normal" }: MessagesListProp) {
+export function MessagesList({ users, selectedUser, setSelectedUser, mode = "normal" }: MessagesListProp) {
 
     return (<>
 

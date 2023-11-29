@@ -5,6 +5,7 @@ import { Home } from '../home/Home';
 import { Notifications } from '../Notifications/Notifications';
 import { Messages } from '../Messages/Messages';
 import { cn } from '@/lib/utils';
+import { MessagesAccordion } from '../Messages/MessagesAccordion';
 
 export function PagesContainer() {
     const location = useLocation();
@@ -26,6 +27,8 @@ export function PagesContainer() {
                     </Routes>
                 </div>
             </div>
+            <MessagesAccordion />
+
         </div>
         }
         </>

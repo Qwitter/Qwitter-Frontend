@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/popover"
 export default function CreateTweetFooter({ mode, setFiles, files, text, selectedImages, setSelectedImages, isValid, handleSubmit }: CreateTweetFooterProp) {
     const icons = [{ icon: Image, hover: "media" }, { icon: ScanSearch, hover: "GIF" }, { icon: Vote, hover: "Poll" }, { icon: Smile, hover: "Emoji" }]
-    const [isPopupOpen, setPopupOpen] = useState(true);
+    const [isPopupOpen, setPopupOpen] = useState(false);
     const fileInput = useRef<HTMLInputElement>(null)
 
 
