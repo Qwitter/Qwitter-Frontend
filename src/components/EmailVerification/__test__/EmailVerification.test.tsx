@@ -13,11 +13,9 @@ const { VITE_BACKEND_URL } = process.env;
 
 const mockFn = jest.fn();
 const mockEmail = "sofa5060@gmail.com";
+const setTokenMockFn = jest.fn();
 const client = new QueryClient();
 const server = setupServer(...handlers);
-
-const CORRECT_TOKEN = "123456";
-const WRONG_TOKEN = "123457";
 
 const failingHandler: ResponseResolver = async ({ request }) => {
   const body = (await request.json()) as { email: string };
@@ -40,7 +38,10 @@ const failingHandler: ResponseResolver = async ({ request }) => {
 };
 
 const failingHandlers = [
-  http.post(`${VITE_BACKEND_URL}/api/user/verify-email`, failingHandler),
+  http.post(
+    `${VITE_BACKEND_URL}/api/v1/auth/send-verification-email`,
+    failingHandler
+  ),
 ];
 
 beforeEach(() => {
@@ -67,7 +68,7 @@ describe("EmailVerification testing", () => {
     // ARRANGE
     render(
       <QueryClientProvider client={client}>
-        <EmailVerification email={mockEmail} onSuccess={mockFn} />
+        <EmailVerification verificationType="signUp" email={mockEmail} onSuccess={mockFn} />
       </QueryClientProvider>
     );
 
@@ -79,7 +80,7 @@ describe("EmailVerification testing", () => {
     // ARRANGE
     render(
       <QueryClientProvider client={client}>
-        <EmailVerification email={mockEmail} onSuccess={mockFn} />
+        <EmailVerification verificationType="signUp" email={mockEmail} onSuccess={mockFn} />
       </QueryClientProvider>
     );
 
@@ -99,7 +100,7 @@ describe("EmailVerification testing", () => {
     // ARRANGE
     render(
       <QueryClientProvider client={client}>
-        <EmailVerification email={mockEmail} onSuccess={mockFn} />
+        <EmailVerification verificationType="signUp" email={mockEmail} onSuccess={mockFn} />
       </QueryClientProvider>
     );
 
@@ -119,7 +120,7 @@ describe("EmailVerification testing", () => {
     // ARRANGE
     render(
       <QueryClientProvider client={client}>
-        <EmailVerification email="wrong email" onSuccess={mockFn} />
+        <EmailVerification verificationType="signUp" email="wrong email" onSuccess={mockFn} />
       </QueryClientProvider>
     );
 
@@ -129,12 +130,12 @@ describe("EmailVerification testing", () => {
     expect(screen.getByText("Back")).toBeTruthy();
   });
 
-  it("Should next button stay disabled when given code less than 6 characters", async () => {
+  it("Should disable submit button when given code less than 6 characters in sign up", async () => {
     const user = userEvent.setup();
     // ARRANGE
     render(
       <QueryClientProvider client={client}>
-        <EmailVerification email={mockEmail} onSuccess={mockFn} />
+        <EmailVerification verificationType="signUp" email={mockEmail} onSuccess={mockFn} />
       </QueryClientProvider>
     );
 
@@ -149,12 +150,12 @@ describe("EmailVerification testing", () => {
     }, 3000);
   });
 
-  it("Should disable next button when given code more than 6 characters", async () => {
+  it("Should disable submit button when given code more than 6 characters in sign up", async () => {
     const user = userEvent.setup();
     // ARRANGE
     render(
       <QueryClientProvider client={client}>
-        <EmailVerification email={mockEmail} onSuccess={mockFn} />
+        <EmailVerification verificationType="signUp" email={mockEmail} onSuccess={mockFn} />
       </QueryClientProvider>
     );
 
@@ -169,63 +170,235 @@ describe("EmailVerification testing", () => {
     }, 3000);
   });
 
-  it("Should enable next button when given correct code length", async () => {
+  it("Should disable submit button when given code that contain alphabetical characters in sign up", async () => {
     const user = userEvent.setup();
     // ARRANGE
     render(
       <QueryClientProvider client={client}>
-        <EmailVerification email={mockEmail} onSuccess={mockFn} />
+        <EmailVerification verificationType="signUp" email={mockEmail} onSuccess={mockFn} />
       </QueryClientProvider>
     );
 
     setTimeout(async () => {
       // ACT
       const input = screen.getByRole("textbox", { name: "token" });
-      await user.type(input, CORRECT_TOKEN);
+      await user.type(input, "12345a");
+
+      // ASSERT
+      expect(screen.getByText("Next")).toBeDisabled();
+      expect(mockFn).not.toHaveBeenCalled();
+    }, 3000);
+  });
+
+  it("Should enable next button when given token consists of 6 numbers in sign up", async () => {
+    const user = userEvent.setup();
+    // ARRANGE
+    render(
+      <QueryClientProvider client={client}>
+        <EmailVerification verificationType="signUp" email={mockEmail} onSuccess={mockFn} />
+      </QueryClientProvider>
+    );
+
+    setTimeout(async () => {
+      // ACT
+      const input = screen.getByRole("textbox", { name: "token" });
+      await user.type(input, "123456");
 
       // ASSERT
       expect(screen.getByText("Next")).toBeEnabled();
     }, 3000);
-  })
+  });
 
-  it("Should highlight that wrong code has been given", async () => {
+  it("Should disable submit button when given code less than 8 characters in password reset", async () => {
     const user = userEvent.setup();
     // ARRANGE
     render(
       <QueryClientProvider client={client}>
-        <EmailVerification email={mockEmail} onSuccess={mockFn} />
+        <EmailVerification
+          email={mockEmail}
+          verificationType="passwordReset"
+          onSuccess={mockFn}
+          setToken={setTokenMockFn}
+        />
       </QueryClientProvider>
     );
 
     setTimeout(async () => {
       // ACT
       const input = screen.getByRole("textbox", { name: "token" });
-      await user.type(input, WRONG_TOKEN);
+      await user.type(input, "1234567");
+
+      // ASSERT
+      expect(screen.getByText("Next")).toBeDisabled();
+      expect(mockFn).not.toHaveBeenCalled();
+    }, 3000);
+  });
+
+  it("Should disable submit button when given code more than 8 characters in password reset", async () => {
+    const user = userEvent.setup();
+    // ARRANGE
+    render(
+      <QueryClientProvider client={client}>
+        <EmailVerification
+          email={mockEmail}
+          verificationType="passwordReset"
+          onSuccess={mockFn}
+          setToken={setTokenMockFn}
+        />
+      </QueryClientProvider>
+    );
+
+    setTimeout(async () => {
+      // ACT
+      const input = screen.getByRole("textbox", { name: "token" });
+      await user.type(input, "123456789");
+
+      // ASSERT
+      expect(screen.getByText("Next")).toBeDisabled();
+      expect(mockFn).not.toHaveBeenCalled();
+    }, 3000);
+  });
+
+  it("Should enable submit button when given code that contain alphabetical characters in password reset", async () => {
+    const user = userEvent.setup();
+    // ARRANGE
+    render(
+      <QueryClientProvider client={client}>
+        <EmailVerification
+          email={mockEmail}
+          verificationType="passwordReset"
+          onSuccess={mockFn}
+          setToken={setTokenMockFn}
+        />
+      </QueryClientProvider>
+    );
+
+    setTimeout(async () => {
+      // ACT
+      const input = screen.getByRole("textbox", { name: "token" });
+      await user.type(input, "12345a78");
+
+      // ASSERT
+      expect(screen.getByText("Next")).toBeEnabled();
+    }, 3000);
+  });
+
+  it("Should enable submit button when given token consists of 8 characters in password reset", async () => {
+    const user = userEvent.setup();
+    // ARRANGE
+    render(
+      <QueryClientProvider client={client}>
+        <EmailVerification
+          email={mockEmail}
+          verificationType="passwordReset"
+          onSuccess={mockFn}
+          setToken={setTokenMockFn}
+        />
+      </QueryClientProvider>
+    );
+
+    setTimeout(async () => {
+      // ACT
+      const input = screen.getByRole("textbox", { name: "token" });
+      await user.type(input, "12345678");
+      const submitButton = screen.getByText("Next");
+      await user.click(submitButton);
+
+      // ASSERT
+      expect(submitButton).toBeEnabled();
+      expect(mockFn).toHaveBeenCalled();
+    }, 3000);
+  });
+
+  it("Should highlight that wrong code has been given in sign up", async () => {
+    const user = userEvent.setup();
+    // ARRANGE
+    render(
+      <QueryClientProvider client={client}>
+        <EmailVerification verificationType="signUp" email={mockEmail} onSuccess={mockFn} />
+      </QueryClientProvider>
+    );
+
+    setTimeout(async () => {
+      // ACT
+      const input = screen.getByRole("textbox", { name: "token" });
+      await user.type(input, "123456ss");
       await user.click(screen.getByText("Next"));
-      
+
       // ASSERT
       expect(mockFn).not.toHaveBeenCalled();
       expect(screen.getByText("Invalid token")).toBeTruthy();
     }, 3000);
-  })
+  });
 
-  it("Should call onSuccess when given correct code", async () => {
+  it("Should highlight that wrong code has been given in password reset", async () => {
     const user = userEvent.setup();
     // ARRANGE
     render(
       <QueryClientProvider client={client}>
-        <EmailVerification email={mockEmail} onSuccess={mockFn} />
+        <EmailVerification
+          email={mockEmail}
+          verificationType="passwordReset"
+          onSuccess={mockFn}
+          setToken={setTokenMockFn}
+        />
       </QueryClientProvider>
     );
 
     setTimeout(async () => {
       // ACT
       const input = screen.getByRole("textbox", { name: "token" });
-      await user.type(input, CORRECT_TOKEN);
+      await user.type(input, "12345678");
       await user.click(screen.getByText("Next"));
-      
+
+      // ASSERT
+      expect(mockFn).not.toHaveBeenCalled();
+      expect(screen.getByText("Invalid token")).toBeTruthy();
+    }, 3000);
+  });
+
+  it("Should call onSuccess when given correct code in sign up", async () => {
+    const user = userEvent.setup();
+    // ARRANGE
+    render(
+      <QueryClientProvider client={client}>
+        <EmailVerification verificationType="signUp" email={mockEmail} onSuccess={mockFn} />
+      </QueryClientProvider>
+    );
+
+    setTimeout(async () => {
+      // ACT
+      const input = screen.getByRole("textbox", { name: "token" });
+      await user.type(input, "123456");
+      await user.click(screen.getByText("Next"));
+
       // ASSERT
       expect(mockFn).toHaveBeenCalled();
     }, 3000);
-  })
+  });
+
+  it("Should call onSuccess when given correct code in password reset", async () => {
+    const user = userEvent.setup();
+    // ARRANGE
+    render(
+      <QueryClientProvider client={client}>
+        <EmailVerification
+          email={mockEmail}
+          verificationType="passwordReset"
+          onSuccess={mockFn}
+          setToken={setTokenMockFn}
+        />
+      </QueryClientProvider>
+    );
+
+    setTimeout(async () => {
+      // ACT
+      const input = screen.getByRole("textbox", { name: "token" });
+      await user.type(input, "123456ss");
+      await user.click(screen.getByText("Next"));
+
+      // ASSERT
+      expect(mockFn).toHaveBeenCalled();
+    }, 3000);
+  });
 });

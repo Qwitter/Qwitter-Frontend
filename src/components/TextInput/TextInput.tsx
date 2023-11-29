@@ -1,12 +1,19 @@
 import { forwardRef } from "react";
 import { cn } from "@/lib/utils";
-import { Eye } from "lucide-react";
+import { Eye, LucideIcon } from "lucide-react";
 import { useState } from "react";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   placeHolder?: string;
   errorMessage?: string;
   isPassword?: boolean;
+  inputClassName?: string;
+  RightIcon?: LucideIcon;
+  LeftIcon?: LucideIcon;
+  rightIconFunction?: () => void;
+  leftIconFunction?: () => void;
+  hasAnimation?: boolean;
+  iconSize?: string;
 }
 
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
@@ -18,6 +25,13 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       errorMessage,
       type = "text",
       className,
+      inputClassName = "",
+      RightIcon,
+      LeftIcon,
+      rightIconFunction,
+      leftIconFunction,
+      hasAnimation = true,
+      iconSize = "1.5rem",
       ...props
     },
     ref
@@ -29,47 +43,74 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       else setInputType("text");
     };
 
-    let errorBorder: string = "";
     if (errorMessage) {
-      errorBorder = "border-danger";
+      inputClassName = inputClassName + " border-danger";
     }
 
     return (
       <>
-        <div className={cn("relative w-full flex flex-row pt-3", className)}>
+        <div className={cn("relative w-full flex flex-row pt-3", className)} >
+          {LeftIcon && (
+            <LeftIcon
+              size={iconSize}
+              className={`inline absolute  z-20 left-[5%] ${disabled ? "text-gray" : "text-secondary"
+                }`}
+              onClick={leftIconFunction}
+            />
+          )}
           <input
             disabled={disabled}
             {...props}
+            id={props.name?.toString()}
+            role={props.role}
             ref={ref}
             type={inputType}
             className={cn(
-              "block rounded-sm z-20 px-2 pb-3 pt-6 w-full text-sm text-gray-900 bg-gray-50 dark:bg-transparent border border-gray appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer",
-              errorBorder
+              "block rounded-sm z-10 px-2 py-3 w-full text-sm bg-black border border-gray appearance-none dark:text-white  dark:disabled:border-[#202327] dark:disabled:bg-[#202327] dark:disabled:text-gray disabled:border-[#202327]/10 disabled:bg-[#202327]/10 disabled:text-gray dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer",
+              hasAnimation && "pt-6",
+              (isPassword || inputType === "password" || RightIcon) &&
+              "pr-[15%] sm:pr-[12%]",
+              LeftIcon && "pl-[13.5%] sm:pl-[10%]",
+              inputClassName
             )}
-            placeholder=""
+            placeholder={type == "homeSearch" ? "Search" : ""}
           />
           {isPassword && (
             <>
-              {
-                inputType === "text" && (
-                  < AiOutlineEyeInvisible
-                    size="1.5rem"
-                    className="inline absolute hover:cursor-pointer z-30 left-[90%] bottom-4 bg-black"
-                    onClick={togglePassword}
-                  />
-                )
-              }
-              {
-                inputType === "password" && (
-                  <Eye
-                    className="inline absolute hover:cursor-pointer z-30 left-[90%] bottom-4 bg-black"
-                    onClick={togglePassword}
-                  />
-                )
-              }
+              {inputType === "text" && (
+                <AiOutlineEyeInvisible
+                  size={iconSize}
+                  className="inline absolute hover:cursor-pointer z-20 left-[85%] sm:left-[90%] bottom-[20%]"
+                  onClick={togglePassword}
+                />
+              )}
+              {inputType === "password" && (
+                <Eye
+                  size={iconSize}
+                  className="inline absolute hover:cursor-pointer z-20 left-[85%] sm:left-[90%] bottom-[20%]"
+                  onClick={togglePassword}
+                  data-testid="passwordEye"
+                />
+              )}
             </>
           )}
-          <label className="absolute inline text-[17px] font-normal text-gray-500 dark:text-gray duration-300 transform -translate-y-4 scale-75 top-7 z-10 origin-[0] left-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4">
+          {RightIcon && (
+            <RightIcon
+              size={iconSize}
+              className="inline absolute hover:cursor-pointer z-20 left-[85%] sm:left-[88%] bg-secondary text-black p-[2px]  rounded-full "
+              onClick={rightIconFunction}
+            />
+          )}
+          <label
+            htmlFor={props.name?.toString()}
+            className={cn(
+              "absolute text-[17px] font-normal text-gray dark:text-gray z-10 duration-300 transform -translate-y-4 scale-75 top-[40%] origin-[0] left-2 hover:cursor-text peer-focus:text-blue-600 peer-focus:dark:text-blue-500 hidden peer-placeholder-shown:inline peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0",
+              hasAnimation &&
+              "inline top-7 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:pl-0 sm:peer-focus:pl-0",
+              LeftIcon &&
+              "peer-placeholder-shown:pl-[11%] sm:peer-placeholder-shown:pl-[8.5%]"
+            )}
+          >
             {placeHolder}
           </label>
         </div>

@@ -78,9 +78,12 @@ module.exports = {
       },
       screens: {
         'large2X': '1100px',
-        'largeX': '980px'
+        'largeX': '980px',
+        'mobile':'680px'
       }
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"),
+    require('flowbite/plugin')
+],
 };

@@ -1,33 +1,34 @@
 import { useForm } from 'react-hook-form';
-import { Button, TextInput } from '../'
+import { Button } from '../ui/button'
+import { TextInput } from '../TextInput/TextInput'
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EmailSchema } from '@/models/Email';
 import { useMutation } from '@tanstack/react-query';
 import { Skeleton } from '../ui/skeleton';
-import { findEmail } from '@/lib/utils';
+import { sendResetPasswordVerificationEmail } from '@/lib/utils';
 import { useState } from 'react';
 
 type prob = {
     nextStep: () => void;
-    setEmail:React.Dispatch<React.SetStateAction<string>>;
+    setEmail: React.Dispatch<React.SetStateAction<string>>;
 }
-export function FindEmailPopUp({ nextStep,setEmail }: prob) {
+export function FindEmailPopUp({ nextStep, setEmail }: prob) {
     const form = useForm<z.infer<typeof EmailSchema>>({
-        resolver: zodResolver(EmailSchema)
+        resolver: zodResolver(EmailSchema),
+        mode: 'onChange'
     });
-    const [error, seterror] = useState("")
+    const [error, setError] = useState("")
     const { mutate, isPending } = useMutation({
-        mutationFn: findEmail,
-        onSuccess: data => {
-            if (data.data){
-                setEmail(data.data)
-                nextStep();
-            }
-            else{
-                seterror(data.message)
-            }
-
+        mutationFn: sendResetPasswordVerificationEmail,
+        onSuccess: (_, email) => {
+            setEmail(email)
+            nextStep();
+        },
+        onError: (data) => {
+        
+            setError(data.message)
+            setEmail("")
         },
     })
     const onSubmit = ({ email }: { email: string }) => {
@@ -36,8 +37,8 @@ export function FindEmailPopUp({ nextStep,setEmail }: prob) {
     if (isPending) {
         return (
             <>
-                <Skeleton className="mt-5 w-full h-[170px]" />
-                <Skeleton className="w-full h-[50px] mt-auto mb-16" />
+                <Skeleton data-testid="skeleton" className="mt-5 w-full h-[170px]" />
+                <Skeleton data-testid="skeleton" className="w-full h-[50px] mt-auto mb-16" />
             </>
         )
     }
@@ -50,13 +51,14 @@ export function FindEmailPopUp({ nextStep,setEmail }: prob) {
                 <TextInput
                     placeHolder='Email'
                     className='w-full'
+                    role='text'
                     {...form.register("email", {
                         required: "Enter your Email",
                     })}
-                    errorMessage={error??form.formState.errors.email?.message?.toString()}
+                    errorMessage={form.formState.errors.email?.message?.toString() ?? error}
                 />
             </div>
-            <Button variant={'default'} className='w-full py-3 cursor-pointer' type='submit'  disabled={!form.formState.isValid}>Next</Button>
+            <Button variant={'default'} className='w-full py-3 cursor-pointer' type='submit' role='submitButton' disabled={!form.formState.isValid}>Next</Button>
         </form>
     )
 }

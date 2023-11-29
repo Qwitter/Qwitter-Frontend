@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { SignUpSteps } from "../SignUpSteps";
-
+jest.mock('../../../assets/logo.png', () => 'path-to-mock-image');
 test("Sign UP UI Test", () => {
   render(<SignUpSteps />);
   expect(screen.getByText("Step 1 of 5")).toBeTruthy();

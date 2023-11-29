@@ -36,7 +36,7 @@ export const verificationTokenWorkerHandler: ResponseResolver = async ({
     },
     {
       email: "test@gmail.com",
-      token: "12345",
+      token: "123457",
     },
   ];
 
@@ -73,3 +73,46 @@ export const verificationTokenWorkerHandler: ResponseResolver = async ({
     }
   );
 };
+
+export const resetPasswordVerificationTokenWorkerHandler: ResponseResolver =
+  async ({ params }) => {
+    const { token } = params as { token: string };
+
+    const emailsTokens = [
+      {
+        email: "sofa5060@gmail.com",
+        token: "123456ss",
+      },
+    ];
+
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    const emailToken = emailsTokens.find(
+      (emailToken) => emailToken.token === token
+    );
+
+    if (!emailToken) {
+      return HttpResponse.json(
+        {
+          message: "Invalid token",
+          data: {
+            token: `${token}`,
+          },
+        },
+        {
+          status: 400,
+          statusText: "Invalid token",
+        }
+      );
+    }
+
+    return HttpResponse.json(
+      {
+        message: "Email verified successfully",
+        token: "q98ehwniudwe98fehwf094r12i3112321",
+      },
+      {
+        status: 200,
+      }
+    );
+  };

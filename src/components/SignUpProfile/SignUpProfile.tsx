@@ -1,12 +1,30 @@
+import { useState, useContext } from "react";
 import { ImagePicker } from "../ImagePicker/ImagePicker";
-import { PopUpContainer } from "../PopUpContainer/PopUpContainer";
 import { Button } from "../ui/button";
+import { uploadProfileImage } from "@/lib/utils";
+import { UserContext } from "@/contexts/UserContextProvider";
 
-export const SignUpProfile = () => {
-  // NEEDED: go to the next step
+type SignUpProfileProps = {
+  nextStep: () => void;
+};
+
+export const SignUpProfile = ({ nextStep }: SignUpProfileProps) => {
+  const [imagePath, setImagePath] = useState<File>();
+  const [buttonText, setButtonText] = useState<string>("Skip for now");
+  const { token } = useContext(UserContext);
+
+  // upload the last chosen image and add animation while loading
+  const handleImageUpload = async () => {
+    if (imagePath) {
+      await uploadProfileImage(imagePath, token!);
+      // NEEDED: if the image will be put in the context
+    }
+
+    nextStep();
+  };
 
   return (
-    <PopUpContainer show={true} showLogo={true} className="justify-between">
+    <div className="flex flex-col justify-between h-full w-full sm:w-[424px]">
       <div className="w-full flex flex-col justify-start items-start">
         <div className="my-5">
           <h2 className="text-3xl font-bold">Pick a profile picture</h2>
@@ -15,12 +33,25 @@ export const SignUpProfile = () => {
           </h5>
         </div>
         <div className="w-full h-[320px] flex justify-center items-center">
-          <ImagePicker defaultImage="https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg" />
+          <ImagePicker
+            name="photo"
+            image="https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
+            setImagePath={setImagePath}
+            optionalOnChange={() => {
+              setButtonText("Next");
+            }}
+          />
         </div>
       </div>
-      <Button variant="outline" size="full" className="h-[50px] font-bold my-1">
-        Skip for now
+      <Button
+        variant={(buttonText === "Next" && "default") || "outline"}
+        size="full"
+        className="h-[50px] font-bold mb-1 mt-auto"
+        onClick={handleImageUpload}
+        data-testid="skipForNow"
+      >
+        {buttonText}
       </Button>
-    </PopUpContainer>
+    </div>
   );
 };

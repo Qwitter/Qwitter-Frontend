@@ -5,18 +5,19 @@ export const emailCheckWorker: ResponseResolver = async ({
 }) => {
     const { email } = (await request.json()) as { email: string };
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     const emails = [
         "sofa5060@gmail.com",
         "test@gmail.com",
         "marwanSamy998@gmail.com",
         "mroan.samy99@gmail.com",
-
+        "yousef@gmail.com",
     ];
     if (emails.includes(email)) {
 
         return HttpResponse.json(
             {
+                available: true,
                 message: "Email is Found successfully",
                 data: true
             },
@@ -28,6 +29,7 @@ export const emailCheckWorker: ResponseResolver = async ({
     else {
         return HttpResponse.json(
             {
+                available: false,
                 message: "Email is not Found",
                 data: false
             },

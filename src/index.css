@@ -59,6 +59,18 @@
   }
 }
 
+@layer utilities {
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
 .btn {
   @apply rounded-3xl text-white px-4 hover:bg-primary/90;
 }
@@ -106,4 +118,28 @@ button-border-color {
   background-color: rgb(239, 243, 244);
   top: 35%;
   left: 0;
+}
+
+.tweet-icon-container{
+  @apply flex gap-2 items-center cursor-pointer;
+}
+
+.tweet-icon{
+  @apply text-xl cursor-pointer h-5 w-5 z-10 transition-all duration-200 ease-in-out;
+}
+
+.tweet-icon-radius{
+  @apply rounded-full z-0 opacity-20 h-9 w-9 absolute left-[-8px] top-[-8px] transition-all duration-200 ease-in-out;
+}
+
+.box-shadow {
+  box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 15px, rgba(255, 255, 255, 0.15) 0px 0px 3px 1px;
+}
+
+.hidden-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.tweet-image-remover-icon{
+  @apply absolute top-2 right-2 bg-[#0f1419bf] hover:bg-[#272c30bf] cursor-pointer text-3xl p-1 rounded-full;
 }

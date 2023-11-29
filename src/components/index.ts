@@ -4,7 +4,6 @@ import { Button } from "./ui/button";
 import { PopUpContainer } from "./PopUpContainer/PopUpContainer";
 import { SignUpSteps } from "./SignUpSteps/SignUpSteps";
 import { TextInput } from "./TextInput/TextInput";
-import SignUpButton from "./SignUpButton/SignUpButton";
 import {
   Select,
   SelectContent,
@@ -22,13 +21,12 @@ import {
   FormMessage,
 } from "./ui/form";
 import { NavBar } from "./NavBar/NavBar";
-import { SettingsMain } from "../pages/Settings/SettingsMain";
 import {YourAccount} from "./YourAccount/YourAccount"
 import {OptionsHeader} from './OptionsHeader/OptionsHeader'
 import {ShowSuggestionsNames} from './ShowSuggestionsNames/ShowSuggestionsNames'
 import { ChangeUsername } from './ChangeUsername/ChangeUsername'
 import { FindEmailPopUp } from './FindEmailPopUp/FindEmailPopUp'
-import {PasswordRestPopUp} from './PasswordRestPopUp/PasswordRestPopUp'
+import {PasswordRestPopUp} from './PasswordRestPopUp/PasswordResetPopUp'
 import { AccountInformation } from "./AccountInformation/AccountInformation";
 export {
   YourAccount,
@@ -44,7 +42,6 @@ export {
   SignUpSteps,
   TextInput,
   UsernameSuggestion,
-  SignUpButton,
   NavBar,
   SettingsMain,
   Select,

@@ -1,7 +1,10 @@
-import { PopUpContainer, Button } from "../";
+import {  Button } from "../";
 import { Bell } from "lucide-react";
-
-export function NotificationAllow() {
+type NotificationAllowProps = {
+nextStep: () => void;
+  
+};
+export function NotificationAllow({nextStep}:NotificationAllowProps) {
   async function acceptNotification() {
     if (!("Notification" in window))
       alert("Browser Doesn't support Notifications");
@@ -10,12 +13,12 @@ export function NotificationAllow() {
         if (permission === "granted") {
           new Notification("you will be updated with what's happing");
         }
+        nextStep()
       });
   }
   return (
-    <PopUpContainer show={true} className={"pt-[100px]"}>
-      <div className="w-full flex flex-col">
-        <Bell className=" w-14 h-14 text-secondary self-center mb-14" />
+      <div className="w-full flex flex-col justify-center h-[90%]">
+        <Bell className=" w-14 h-14 text-secondary self-center mb-20" />
         <h2 className=" text-primary font-bold text-2xl mb-1">
           Turn on notification
         </h2>
@@ -23,14 +26,13 @@ export function NotificationAllow() {
           Get the most out of Qwitter by staying up to date with what's
           happening
         </p>
-        <Button className="my-4 py-6 " onClick={acceptNotification}>
+        <Button className="my-6 py-3 " onClick={acceptNotification}>
           Allow notification
         </Button>
-        <Button variant="outline" className="py-6">
+        <Button variant="outline" className="py-3" onClick={()=>nextStep()}>
           Skip for now
-        </Button>{" "}
-        {/*Move to next state*/}
+        </Button>
+
       </div>
-    </PopUpContainer>
   );
 }

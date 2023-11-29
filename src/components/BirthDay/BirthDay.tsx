@@ -4,20 +4,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Form } from "../ui/form";
 import { Button } from "../ui/button";
-import { BirthDaySchema } from "../../models/BirthDay";
+import { RefinedBirthDaySchema } from "../../models/BirthDay";
 import BirthDayInput from "../BirthDayInput/BirthDayInput";
 
 type BirthDayProps = {
   nextStep: () => void;
   setBirthDay: React.Dispatch<
-    React.SetStateAction<z.infer<typeof BirthDaySchema> | null>
+    React.SetStateAction<z.infer<typeof RefinedBirthDaySchema> | null>
   >;
-  birthDay: z.infer<typeof BirthDaySchema> | null;
+  birthDay: z.infer<typeof RefinedBirthDaySchema> | null;
 };
 
 const BirthDay = ({ nextStep, setBirthDay, birthDay }: BirthDayProps) => {
-  const form = useForm<z.infer<typeof BirthDaySchema>>({
-    resolver: zodResolver(BirthDaySchema),
+  const form = useForm<z.infer<typeof RefinedBirthDaySchema>>({
+    resolver: zodResolver(RefinedBirthDaySchema),
     defaultValues: {
       //@ts-ignore
       day: birthDay?.day.toString(),
@@ -27,7 +27,7 @@ const BirthDay = ({ nextStep, setBirthDay, birthDay }: BirthDayProps) => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof BirthDaySchema>) => {
+  const onSubmit = (data: z.infer<typeof RefinedBirthDaySchema>) => {
     setBirthDay(data);
     nextStep();
   };
@@ -43,7 +43,12 @@ const BirthDay = ({ nextStep, setBirthDay, birthDay }: BirthDayProps) => {
         </h2>
         <p className="self-start text-gray text-sm">This won't be public.</p>
         <BirthDayInput className="mt-8" form={form} />
-        <Button size="full" className="mt-auto mb-2" type="submit" disabled={!form.formState.isValid}>
+        <Button
+          size="full"
+          className="mt-auto mb-2"
+          type="submit"
+          disabled={!form.formState.isValid}
+        >
           Next
         </Button>
       </form>

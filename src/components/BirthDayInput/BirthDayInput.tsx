@@ -25,12 +25,15 @@ const BirthDayInput = ({ className, form }: BirthDayInputProps) => {
         control={form.control}
         name="month"
         render={({ field }) => (
-          <FormItem className="w-full">
+          <FormItem className="w-full" role="testing" data-testid="months">
             <Select
               onValueChange={(val: Month) => {
                 setMonth(val);
                 if (DAYS_IN_MONTH[val] < form.getValues("day")) {
-                  form.resetField("day");
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  //@ts-ignore
+                  form.setValue("day", "1");
+                  form.trigger("day");
                 }
                 field.onChange(val);
               }}
@@ -68,10 +71,11 @@ const BirthDayInput = ({ className, form }: BirthDayInputProps) => {
         control={form.control}
         name="day"
         render={({ field }) => (
-          <FormItem className="w-full max-w-[140px]">
+          <FormItem className="w-full max-w-[140px]" data-testid="days">
             <Select
               onValueChange={field.onChange}
               defaultValue={form.formState.defaultValues?.day?.toString()}
+              value={form.getValues("day")?.toString()}
             >
               <SelectTrigger
                 className={cn({
@@ -104,7 +108,7 @@ const BirthDayInput = ({ className, form }: BirthDayInputProps) => {
         control={form.control}
         name="year"
         render={({ field }) => (
-          <FormItem className="w-full max-w-[200px] ">
+          <FormItem className="w-full max-w-[200px]" data-testid="years">
             <Select
               onValueChange={field.onChange}
               defaultValue={form.formState.defaultValues?.year?.toString()}
@@ -119,11 +123,11 @@ const BirthDayInput = ({ className, form }: BirthDayInputProps) => {
               <SelectContent className="max-h-[var(--radix-select-content-available-height)]">
                 {[...Array(123)].map((_, i) => (
                   <SelectItem
-                    key={2023 - i}
-                    value={(2023 - i).toString()}
+                    key={2007 - i}
+                    value={(2007 - i).toString()}
                     role="option"
                   >
-                    {2023 - i}
+                    {2007 - i}
                   </SelectItem>
                 ))}
               </SelectContent>
