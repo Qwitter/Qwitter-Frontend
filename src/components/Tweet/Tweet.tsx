@@ -51,17 +51,17 @@ const Tweet = ({ tweet }: TweetProps) => {
   return (
     <div className="w-full flex px-4 py-3 gap-4 border-b border-primary border-opacity-30">
       <Avatar>
-        <AvatarImage src={`${tweet.user.profileImageUrl}`} />
-        <AvatarFallback>{tweet.user.userName.substring(0, 2)}</AvatarFallback>
+        <AvatarImage src={`${tweet.author.profileImageUrl}`} />
+        <AvatarFallback>{tweet.author.userName.substring(0, 2)}</AvatarFallback>
       </Avatar>
       <article className="w-full">
         <h3 className="flex gap-1 font-semibold items-center">
-          {tweet.user.name}
-          {tweet.user.verified && (
+          {tweet.author.name}
+          {tweet.author.verified && (
             <TbDiscountCheckFilled className="text-blue-400 text-xl" />
           )}
           <span className="flex text-gray font-normal">
-            @{tweet.user.userName} ·{" "}
+            @{tweet.author.userName} ·{" "}
             {moment().diff(moment(tweet.createdAt), "days") >= 1
               ? moment(tweet.createdAt).format("MMM D")
               : moment(tweet.createdAt).fromNow(true)}

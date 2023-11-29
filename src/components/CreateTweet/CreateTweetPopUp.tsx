@@ -110,7 +110,7 @@ function ShowTagsSuggestions({ onUserClick,tag,closePopup }: ShowUsersSuggestion
         isPending,
         data,
         refetch
-    } = useQuery<string[]>({
+    } = useQuery<{}[]>({
         queryKey: ["getHashtags"],
         queryFn: () => getHashtags(token!, tag!)
         ,
@@ -137,9 +137,9 @@ function ShowTagsSuggestions({ onUserClick,tag,closePopup }: ShowUsersSuggestion
             {!data || data.length == 0 ? <div className='w-full h-[180px] p-8'>
                     <Spinner />
                 </div> : data!.map((tag,index) => (
-                    <li key={index} className="py-3 px-4 flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer" onClick={() => onUserClick('#' + tag)}>
+                    <li key={index} className="py-3 px-4 flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer" onClick={() => onUserClick(tag.text)}>
 
-                        <p className="text-base text-primary">#{tag}</p>
+                        <p className="text-base text-primary">{tag.text}</p>
 
                     </li>
                 ))

@@ -9,12 +9,10 @@ import { UserContext } from "@/contexts/UserContextProvider";
 export function Home() {
   const [active, setActive] = useState("For you");
   const { token } = useContext(UserContext);
-  const { data, ref } = useInfiniteScroll(
-    token
-      ? async ({ pageParam }) => {
-          return await timelineTweets(pageParam, 10, token!); // "123456" should be replaced with token
-        }
-      : async () => ([]),
+  const { data, ref, refetch } = useInfiniteScroll(
+    async ({ pageParam }) => {
+      return await timelineTweets(pageParam, 10, token!); // "123456" should be replaced with token
+    },
     ["tweets", "timeline"]
   );
 
@@ -23,8 +21,10 @@ export function Home() {
   }, [data]);
 
   useEffect(() => {
-    console.log(token);
-  }, [token]);
+    if (!token) return;
+      refetch();
+      console.log("refetch")
+  }, [token, refetch]);
 
   return (
     <>
@@ -63,7 +63,7 @@ export function Home() {
         <div>
           <CreateTweetContainer mode="home" />
         </div>
-        <TweetsList fetcherRef={ref} pages={data!.pages} />
+        <TweetsList fetcherRef={ref} pages={data?.pages || [[]]} />
       </div>
       <div className="max-w-[600px]  pb-16 relative flex flex-col z-0 w-[36.5%] max-largeX:hidden  h-full">
         <div className="w-full sticky top-0 z-50 bg-black   ">

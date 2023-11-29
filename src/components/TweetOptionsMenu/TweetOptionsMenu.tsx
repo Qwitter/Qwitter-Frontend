@@ -41,7 +41,7 @@ const TweetOptionsMenu = ({ tweet }: TweetOptionsMenuProps) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56 mr-48 bg-black">
-          {user && user.userName === tweet.user.userName ? (
+          {user && user.userName === tweet.author.userName ? (
             <DropdownMenuGroup>
               <DropdownMenuItem
                 className="text-danger gap-2 items-center font-bold"

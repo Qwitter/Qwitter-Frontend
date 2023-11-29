@@ -533,7 +533,7 @@ export const timelineTweets = async (
   limit: number = 10,
   token: string
 ) => {
-  console.log("timelineTweets", pageParam, limit, token)
+  if(!token) return [];
   try {
     const response = await axios.get(
       `${VITE_BACKEND_URL}/api/v1/tweets?page=${pageParam}&limit=${limit}`,
@@ -584,19 +584,12 @@ export const getUsersSuggestions = async (token: string, username: string) => {
  */
 export const getHashtags = async (token: string, tag: string) => {
   try {
-    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/lookup`, {
-      params: {
-        name: tag, //.slice(1)
-      },
-      withCredentials: true,
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/tweets/hashtags?q=${tag.slice(1)}`, {
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true,
         Authorization: `Bearer ${token}`,
       },
     });
-    return res.data.data;
+    return res.data;
   } catch (err) {
     console.log(err);
     return null;
@@ -627,9 +620,9 @@ export const createTweet = async ({
         },
       }
     );
-    return res.status == 200;
+    return res.status == 201;
   } catch (err) {
-    console.log("lol" + err);
+    console.log(err);
     return null;
   }
 };
