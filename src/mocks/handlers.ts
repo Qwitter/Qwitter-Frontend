@@ -17,6 +17,7 @@ import { userWorker } from "./UserWorker/UserWorker";
 import { OAuthRegisterUserWorker } from "./OAuthRegisterUserWorker/OAuthRegisterUserWorker";
 import { UploadProfileImageWorker } from "./RegisterUserWorker/UploadProfileImageWorker";
 import { EditProfileWorker } from "./EditProfileWorker/EditProfileWorker";
+import { TimelineTweetsWorker } from "./TimelineTweetsWorker/TimelineTweetsWorkers";
 
 const { VITE_BACKEND_URL } = import.meta.env;
 
@@ -66,4 +67,8 @@ export const handlers = [
     UploadProfileImageWorker
   ),
   http.put(`${VITE_BACKEND_URL}/api/v1/user/profile`, EditProfileWorker),
+  http.get(
+    `${VITE_BACKEND_URL}/api/v1/tweets?page=1&limit=10`,
+    TimelineTweetsWorker
+  ),
 ];

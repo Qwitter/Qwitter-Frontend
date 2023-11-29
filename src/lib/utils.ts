@@ -48,7 +48,7 @@ export const getUserData = async (username: string) => {
   try {
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/${username}`);
     const userData = res.data;
-    
+
     const parseResult = UserDataSchema.safeParse(userData);
     if (!parseResult.success) throw new Error("Invalid user data");
 
@@ -438,7 +438,7 @@ export const registerNewUser = async (newUserData: object) => {
  *
  * @param picFile The actual image from the  file input
  * @param token The token of the user for authentication
- * @param isBanner
+ * @param isBanner Used to upload the profile banner
  * @returns New user data after the image has changed
  */
 
@@ -515,8 +515,37 @@ export const oAuthSignUp = async (token: string, birthday: BirthDay) => {
  */
 export const convertNumberToShortForm = (number: number) => {
   if (number < 1000) return number;
-  else if (number < 1000000 && number % 1000 <= 100) return `${(number / 1000)}k`;
+  else if (number < 1000000 && number % 1000 <= 100) return `${number / 1000}k`;
   else if (number < 1000000) return `${(number / 1000).toFixed(1)}k`;
-  else if (number % 1000000 <= 100000) return `${(number / 1000000)}m`;
+  else if (number % 1000000 <= 100000) return `${number / 1000000}m`;
   else return `${(number / 1000000).toFixed(1)}m`;
-}
+};
+
+/**
+ * @description Load timeline tweets
+ * @param pageParam used for infinite queries
+ * @param limit used to specify the array length
+ * @param token used to authorize the request
+ * @returns Array of tweets
+ */
+export const timelineTweets = async (
+  pageParam: number = 1,
+  limit: number = 10,
+  token: string
+) => {
+  try {
+    const response = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/tweets?page=${pageParam}&limit=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "applicationjson",
+        },
+      }
+    );
+    return response.data.tweets;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
