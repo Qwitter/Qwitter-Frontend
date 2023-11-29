@@ -25,6 +25,7 @@ import {
   unLikeTweetWorker,
 } from "./TweetWorker/TweetWorker";
 import { UploadProfileImageWorker } from "./RegisterUserWorker/UploadProfileImageWorker";
+import { GetFollowersWorker } from "./GetFollowersWorker/GetFollowersWorker";
 
 const { VITE_BACKEND_URL } = import.meta.env;
 
@@ -92,4 +93,5 @@ export const handlers = [
     unBookmarkTweetWorker
   ),
   http.delete(`${VITE_BACKEND_URL}/api/v1/tweets/:tweetId`, deleteTweetWorker),
+  http.get(`${VITE_BACKEND_URL}/api/v1/user/suggestions`, GetFollowersWorker),
 ];

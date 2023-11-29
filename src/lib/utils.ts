@@ -729,3 +729,33 @@ export const deleteTweet = async (tweetId: string, token: string) => {
     throw new Error("Error deleting tweet");
   }
 };
+/**
+ * @description to get the user followers suggestions list
+ * @param 
+ * @returns  users array represents the response from the backend or null
+ */
+export const GetFollowSuggestionsService = async () => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/suggestions`);
+    return res.data.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+
+/**
+ * @description follow specific user
+ * @param 
+ * @returns  users array represents the response from the backend or null
+ */
+export const FollowService = async () => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/suggestions`);
+    return res.data.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};

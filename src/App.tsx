@@ -19,6 +19,8 @@ import { LogOut } from "./components/LogOut/LogOut";
 import { PagesContainer } from "./pages/PagesContainer/PagesContainer";
 import Authentication from "../src/pages/Authentication/Authentication";
 import { FollowCard } from "./components/FollowCard/FollowCard";
+import { UsersList } from "./components/UsersList/UsersList";
+import { GetFollowSuggestionsService } from "./lib/utils";
 
 const queryClient = new QueryClient();
 
