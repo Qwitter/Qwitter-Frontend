@@ -8,7 +8,11 @@ export function FollowCard() {
       <CardHeader className=" h-[50px] mb-1 flex justify-center items-start">
         <CardTitle className="text-xl font-bold ">Who to follow</CardTitle>
       </CardHeader>
-      <UsersList showDesc={false} getusers={GetFollowSuggestionsService} />
+      <UsersList
+        showDesc={false}
+        getusers={GetFollowSuggestionsService}
+        listType={true}
+      />
       <CardFooter className="hover:cursor-pointer mt-3">
         <span className="text-secondary">show more</span>
       </CardFooter>

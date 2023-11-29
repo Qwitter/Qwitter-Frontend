@@ -7,7 +7,7 @@ export const GetFollowersWorker: ResponseResolver = async () => {
       data: [
         {
           name: "yousef",
-          username: "yousef02",
+          userName: "yousef02",
           verified: true,
           description: "this is the fucking description",
           profileImageUrl:
@@ -15,7 +15,7 @@ export const GetFollowersWorker: ResponseResolver = async () => {
         },
         {
           name: "osama",
-          username: "osama02",
+          userName: "osama02",
           verified: false,
           description: "this is the fucking description",
           profileImageUrl:

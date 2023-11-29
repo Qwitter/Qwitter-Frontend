@@ -17,6 +17,8 @@ export type User = {
   google_id: string;
   profileImageUrl: string;
   profileBannerUrl: string;
+  description: string;
+  verified: boolean
 };
 
 export const EditUserSchema = z
