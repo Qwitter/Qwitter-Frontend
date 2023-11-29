@@ -6,6 +6,7 @@ import { Notifications } from '../Notifications/Notifications';
 import { Messages } from '../Messages/Messages';
 import { cn } from '@/lib/utils';
 import { MessagesAccordion } from '../Messages/MessagesAccordion';
+import { Profile } from '../Profile/Profile';
 
 export function PagesContainer() {
     const location = useLocation();
@@ -24,6 +25,7 @@ export function PagesContainer() {
                         <Route index path="/home" element={<Home />} />
                         <Route path="/Notification" element={<Notifications />} />
                         <Route path="/messages/*" element={<Messages />} />
+                        <Route path="/:username/*" element={<Profile />} />
                     </Routes>
                 </div>
             </div>

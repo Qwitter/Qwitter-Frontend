@@ -53,6 +53,7 @@ function App() {
             <Route path="/compose/tweet" element={<CreateTweetContainer />} />
             <Route path="/i/flow/logout" element={<LogOut />} />
             <Route path="Messages/compose" element={<MessagesNewMessage />} />
+            {/* <Route path="settings/profile" element={<MessagesNewMessage />} /> */}
 
           </Routes>
           <Toaster />
