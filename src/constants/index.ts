@@ -115,74 +115,138 @@ const userArray = [
     username: 'user1',
     name: 'John Doe',
     isVerified: true,
+    lastMessage: 'Hey there!',
+    lastMessageTime:"5h",
   },
   {
     imageUrl: 'https://github.com/shadcn.png',
     username: 'user2',
     name: 'Jane Smith',
     isVerified: false,
+    lastMessage: 'How are you doing?',
+    lastMessageTime:"9h"
   },
   {
     imageUrl: 'https://github.com/shadcn.png',
     username: 'user3',
     name: 'Bob Johnson',
     isVerified: true,
+    lastMessage: 'Nice to meet you!',
+    lastMessageTime:"yesterday"
   },
   {
     imageUrl: 'https://github.com/shadcn.png',
     username: 'user4',
     name: 'Alice Williams',
     isVerified: false,
+    lastMessage: "What's up?",
+    lastMessageTime:"yesterday"
+
   },
   {
     imageUrl: 'https://github.com/shadcn.png',
     username: 'user5',
     name: 'Charlie Brown',
     isVerified: true,
+    lastMessage: 'Greetings!',
+    lastMessageTime:"a week ago"
+
   },
   {
     imageUrl: 'https://github.com/shadcn.png',
     username: 'marwanSamy',
     name: 'Eva Davis',
     isVerified: false,
+    lastMessage: 'Hello world!',
+    lastMessageTime:"a month ago"
+
   },
   {
     imageUrl: 'https://github.com/shadcn.png',
     username: 'ahmedCR7',
     name: 'Frank White',
     isVerified: true,
+    lastMessage: "How's it going?",
+    lastMessageTime:"yesterday"
+
   },
   {
     imageUrl: 'https://github.com/shadcn.png',
     username: 'KillYou',
     name: 'Grace Miller',
     isVerified: false,
+    lastMessage: "Nice day, isn't it?",
+    lastMessageTime:"19h"
+
   },
   {
     imageUrl: 'https://github.com/shadcn.png',
     username: 'yarab',
     name: 'Harry Wilson',
     isVerified: true,
+    lastMessage: "What's on your mind?",
+    lastMessageTime:"10h"
+
   },
   {
-    imageUrl: 'https://github.com/shadcn.pngg',
+    imageUrl: 'https://github.com/shadcn.png',
     username: 'user10',
     name: 'Ivy Taylor',
     isVerified: false,
+    lastMessage: 'Howdy!',
+    lastMessageTime:"15h"
+
   },
   {
-    imageUrl: 'https://github.com/shadcn.pngg',
+    imageUrl: 'https://github.com/shadcn.png',
     username: 'user11',
     name: 'Kevin Brown',
     isVerified: true,
+    lastMessage: 'Greetings from Kevin!',
+    lastMessageTime:"last year"
+
   },
   {
-    imageUrl: 'https://github.com/shadcn.pngg',
+    imageUrl: 'https://github.com/shadcn.png',
     username: 'user12',
     name: 'Laura Harris',
     isVerified: false,
+    lastMessage: 'Hi there!',
+    lastMessageTime:"two months ago"
+
+  },
+  {
+    imageUrl: 'https://github.com/shadcn.png',
+    username: 'chatGPT',
+    name: 'ChatGPT',
+    isVerified: true,
+    lastMessage: 'Hello from ChatGPT! 😊',
+    lastMessageTime:"yesterday"
+
   },
 ];
+const pinnedConversations = [{
+  imageUrl: 'https://github.com/shadcn.png',
+  username: 'user12',
+  name: 'Laura Harris',
+  isVerified: false,
+  lastMessage: 'Hi there!',
+  lastMessageTime:"two months ago"
+
+},
+{
+  imageUrl: 'https://github.com/shadcn.png',
+  username: 'chatGPT',
+  name: 'ChatGPT',
+  isVerified: true,
+  lastMessage: 'Hello from ChatGPT! 😊',
+  lastMessageTime:"yesterday"
+
+},
+];
+const AllowMessagesOptions =[
+  "No one","Verified Users","Everyone"
+]
 const whoToReply = [
   {
     text: "Everyone",
@@ -203,4 +267,4 @@ const whoToReply = [
 
 ]
 
-export { navLinks, settingsOptions, accountOptions, userArray, whoToReply,tags };
+export { navLinks, settingsOptions, accountOptions, userArray,pinnedConversations, whoToReply,tags,AllowMessagesOptions };

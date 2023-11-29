@@ -41,7 +41,6 @@ function SearchInput() {
         setSearchText(value)
     }
     const handleXClick = () => {
-        console.log("Dsd")
         setPopupOpen(true)
         setSearchText("")
     }
@@ -140,7 +139,7 @@ function UsersResults({ users, text }: { users: User[], text: string }) {
         <ul >
 
             {
-               users&&users.map(user => (
+                users && users.map(user => (
                     <li key={user.username} className="py-3 px-4 flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer" >
 
                         <Avatar className="mr-4">
@@ -153,8 +152,8 @@ function UsersResults({ users, text }: { users: User[], text: string }) {
                 ))
 
             }
-            <li  className="p-4 flex flex-row rounded-md hover:bg-[#16181c] w-full transition-all cursor-pointer" >
-                    <Link to={`/${text}`} className="text-primary text-[15px]">Go to @{text}</Link>
+            <li className="p-4 flex flex-row rounded-md hover:bg-[#16181c] w-full transition-all cursor-pointer" >
+                <Link to={`/${text}`} className="text-primary text-[15px]">Go to @{text}</Link>
             </li>
         </ul>
     )

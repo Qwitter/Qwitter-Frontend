@@ -1,7 +1,5 @@
 import { useState } from "react";
-import TweetsList from '@/components/TweetsList/TweetsList';
 import { Skeleton } from "@/components/ui/skeleton";
-import CreateTweetContainer from "@/components/CreateTweet/CreateTweetContainer";
 import SearchInput from "@/components/SearchInput/SearchInput";
 export function Notifications() {
     const [active, setActive] = useState("ALL");
