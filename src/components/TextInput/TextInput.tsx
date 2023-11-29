@@ -55,7 +55,6 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
               size={iconSize}
               className={`inline absolute  z-20 left-[5%] ${disabled ? "text-gray" : "text-secondary"
                 }`}
-              onClick={leftIconFunction}
             />
           )}
           <input

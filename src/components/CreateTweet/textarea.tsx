@@ -156,7 +156,7 @@ const Textarea: React.FC<TextareaProps> = ({ text, setText, className, mode,maxR
       />
       <div
         className="static z-0 w-full leading-[22px] p-3  break-words text-[20px] no-scrollbar overflow-y-auto" ref={containerRef}  >
-        {<HighlightWithinTextarea textDirectionality="LTR" value={text} highlight={[{ highlight: [279, text.length], className: "bg-red-600 text-primary" }, { highlight: /(^|\s)((@[\w]{1,20}|#[\w]+))/g, className: "text-secondary bg-transparent" }]} readOnly placeholder="" />
+        {<HighlightWithinTextarea textDirectionality="LTR" value={text} highlight={[{ highlight: [280, text.length], className: "bg-red-600 text-primary" }, { highlight: /(^|\s)((@[\w]{1,20}|#[\w]+))/g, className: "text-secondary bg-transparent" }]} readOnly placeholder="" />
         }
 
       </div>
