@@ -1,34 +1,35 @@
 import "./App.css";
 import { ThemeProvider } from "./components/theme-provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { SignUpSteps } from "./components";
-import PasswordRest from "./components/PasswordReset/PasswordReset";
+// import { SignUpSteps } from "./components";
+// import PasswordRest from "./components/PasswordReset/PasswordReset";
 
-import { Login } from "./pages/login/Login";
+// import { Login } from "./pages/login/Login";
 
-import { Toaster } from "./components/ui/toaster";
-import { Routes, Route ,useLocation} from "react-router-dom";
-import { LoginSignUp } from "./components/LoginSignUp/LoginSignUp";
-import OAuth from "./components/OAuth/OAuth";
-import OAuthInterceptor from "./components/OAuth/OAuthInterceptor";
-import ProfileComplete from "./components/ProfileComplete/ProfileComplete";
-import UserContextProvider from "./contexts/UserContextProvider";
-import UpdateEmailPopUp from "./components/UpdateEmailContainer/UpdateEmailContainer";
-import CreateTweetContainer from "./components/CreateTweet/CreateTweetContainer";
-import { LogOut } from "./components/LogOut/LogOut";
-import { PagesContainer } from "./pages/PagesContainer/PagesContainer";
-import  Authentication  from "../src/pages/Authentication/Authentication";
+// import { Toaster } from "./components/ui/toaster";
+// import { Routes, Route, useLocation } from "react-router-dom";
+// import { LoginSignUp } from "./components/LoginSignUp/LoginSignUp";
+// import OAuth from "./components/OAuth/OAuth";
+// import OAuthInterceptor from "./components/OAuth/OAuthInterceptor";
+// import ProfileComplete from "./components/ProfileComplete/ProfileComplete";
+// import UserContextProvider from "./contexts/UserContextProvider";
+// import UpdateEmailPopUp from "./components/UpdateEmailContainer/UpdateEmailContainer";
+// import CreateTweetContainer from "./components/CreateTweet/CreateTweetContainer";
+// import { LogOut } from "./components/LogOut/LogOut";
+// import { PagesContainer } from "./pages/PagesContainer/PagesContainer";
+// import Authentication from "../src/pages/Authentication/Authentication";
+import { FollowCard } from "./components/FollowCard/FollowCard";
 
 const queryClient = new QueryClient();
 
 function App() {
-  const location = useLocation();
-  const previousLocation = location.state?.previousLocation;
+  // const location = useLocation();
+  // const previousLocation = location.state?.previousLocation;
 
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <UserContextProvider>
+        {/* <UserContextProvider>
           <Routes location={previousLocation || location}>
             <Route path="/" element={<Authentication />} />
           </Routes>
@@ -53,7 +54,8 @@ function App() {
             <Route path="/i/flow/logout" element={<LogOut />} />
           </Routes>
           <Toaster />
-        </UserContextProvider>
+        </UserContextProvider> */}
+        <FollowCard />
       </ThemeProvider>
     </QueryClientProvider>
   );
