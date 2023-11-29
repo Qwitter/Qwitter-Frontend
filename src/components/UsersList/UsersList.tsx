@@ -5,35 +5,38 @@ import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { FollowService } from "@/lib/utils";
 export type UsersListProp = {
-  getusers: any;
+  getusers: () => Promise<any>;
   showDesc: boolean;
 };
 
 export function UsersList({ showDesc, getusers }: UsersListProp) {
-  const [users, setUsers] = useState<any>([]);
+  const [users, setUsers] = useState([]);
   const {
-    mutateAsync: GetFollowSuggestionsServiceFn,
+    mutateAsync: getusersFn,
     // isPending: FollowSuggestionsServicePending,
   } = useMutation({
     mutationFn: getusers,
   });
   const {
     mutateAsync: FollowServiceFn,
-    // isPending: FollowSuggestionsServicePending,
+    // isPending: FollowServicePending,
   } = useMutation({
     mutationFn: FollowService,
   });
   useEffect(() => {
     (async () => {
-      const users: any = await GetFollowSuggestionsServiceFn();
+      const users: any = await getusersFn();
       setUsers(users);
       console.log(users);
     })();
   }, []);
   return (
     <>
-      {users.map((user: any) => (
-        <CardContent className="hover:cursor-pointer py-3 hover:bg-light-gray">
+      {users.map((user: any, index) => (
+        <CardContent
+          key={index}
+          className="hover:cursor-pointer py-3 hover:bg-light-gray"
+        >
           <div className="flex ">
             <img
               src={user.profileImageUrl}
