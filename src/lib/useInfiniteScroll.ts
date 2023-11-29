@@ -8,6 +8,7 @@ NEEDED:
 */
 
 export const useInfiniteScroll = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   fetchFunction: ({ pageParam }: { pageParam: number }) => Promise<any>,
   queryKey: string[]
 ) => {
@@ -24,7 +25,7 @@ export const useInfiniteScroll = (
     queryKey: queryKey,
     queryFn: fetchFunction,
     initialPageParam: 1,
-    getNextPageParam: (lastPage, allPages) => {
+    getNextPageParam: (_, allPages) => {
       return allPages.length + 1;
     },
   });

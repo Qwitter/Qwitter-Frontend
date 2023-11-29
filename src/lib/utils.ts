@@ -533,6 +533,7 @@ export const timelineTweets = async (
   limit: number = 10,
   token: string
 ) => {
+  console.log("timelineTweets", pageParam, limit, token)
   try {
     const response = await axios.get(
       `${VITE_BACKEND_URL}/api/v1/tweets?page=${pageParam}&limit=${limit}`,
@@ -550,6 +551,7 @@ export const timelineTweets = async (
   }
 };
 
+/*
  * @description get a list of users with userName contain the given string
  * @param {username,token}
  * @returns list of users  or null
@@ -735,7 +737,7 @@ export const unBookmarkTweet = async (tweetId: string, token: string) => {
 
 /**
  * @description Send a request to the backend to delete a tweet
- * @param tweetId 
+ * @param tweetId
  * @param token - the token of the user
  * @returns success or throws error if there is an error
  */
