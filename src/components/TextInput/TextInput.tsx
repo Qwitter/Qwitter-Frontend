@@ -73,7 +73,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
               LeftIcon && "pl-[13.5%] sm:pl-[10%]",
               inputClassName
             )}
-            placeholder={type == "homeSearch" ? "Search" : ""}
+            placeholder={type == "homeSearch" ? "Search" : type=="messages"?"Search Direct Messages":""}
           />
           {isPassword && (
             <>
