@@ -2,6 +2,7 @@ import { NavBar } from '../../components'
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Settings } from '../Settings/Settings';
 import { Home } from '../home/Home';
+import { Notifications } from '../Notifications/Notifications';
 
 export function PagesContainer() {
     const location = useLocation();
@@ -18,6 +19,7 @@ export function PagesContainer() {
                         {/* this is the main routs*/}
                         <Route path="/Settings/*" element={<Settings />} />
                         <Route index path="/home" element={<Home />} />
+                        <Route index path="/Notification" element={<Notifications />} />
                     </Routes>
                 </div>
             </div>
