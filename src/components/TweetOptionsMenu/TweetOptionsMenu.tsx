@@ -17,8 +17,8 @@ import { Tweet } from "@/models/Tweet";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { useContext, useState } from "react";
 import { FiTrash2 } from "react-icons/fi";
-import { PopUpContainer } from "../PopUpContainer/PopUpContainer";
 import { UserContext } from "@/contexts/UserContextProvider";
+import DeleteTweetPopUp from "../DeleteTweetPopUp/DeleteTweetPopUp";
 
 type TweetOptionsMenuProps = {
   tweet: Tweet;
@@ -31,32 +31,7 @@ const TweetOptionsMenu = ({ tweet }: TweetOptionsMenuProps) => {
   return (
     <>
       <DropdownMenu>
-        <PopUpContainer
-          show={showDeleteDialog}
-          isCompact
-          className="w-auto h-auto text-left px-8 py-10 mx-auto max-w-sm max-sm:px-8"
-          dialogClassName="max-sm:max-w-sm"
-        >
-          <h2 className="font-bold text-xl self-start">Delete post ?</h2>
-          <p className="text-gray mt-2 mb-4">
-            This can’t be undone and it will be removed from your profile, the
-            timeline of any accounts that follow you, and from search results.{" "}
-          </p>
-          <div className="flex flex-col gap-2 w-full">
-            <Button variant="destructive" size="full">
-              Delete
-            </Button>
-            <Button
-              variant="outline"
-              size="full"
-              onClick={() => {
-                setShowDeleteDialog(false);
-              }}
-            >
-              Cancel
-            </Button>
-          </div>
-        </PopUpContainer>
+        <DeleteTweetPopUp tweetId={tweet.id} showDeleteDialog={showDeleteDialog} setShowDeleteDialog={setShowDeleteDialog}/>
         <DropdownMenuTrigger asChild>
           <Button
             variant="outline"
@@ -66,7 +41,7 @@ const TweetOptionsMenu = ({ tweet }: TweetOptionsMenuProps) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56 mr-48 bg-black">
-          {user && user.userName === tweet.user.userName ? (
+          {user && user.userName === tweet.author.userName ? (
             <DropdownMenuGroup>
               <DropdownMenuItem
                 className="text-danger gap-2 items-center font-bold"

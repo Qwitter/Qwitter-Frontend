@@ -3,7 +3,7 @@ import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "@/contexts/UserContextProvider";
-import { getUser } from "@/lib/utils";
+import { getUserData } from "@/lib/utils";
 
 let windowObjectReference: Window | null = null;
 let previousUrl: string | null = null;
@@ -19,9 +19,6 @@ const GoogleSignUpButton = () => {
       params: { token: string; authenticationMethod: "login" | "signup" };
     };
   }) => {
-    if (event.origin !== "http://localhost:5173") {
-      return;
-    }
     const { data } = event;
 
     // if we trust the sender and the source is our popup
@@ -30,13 +27,11 @@ const GoogleSignUpButton = () => {
         params: { token, authenticationMethod },
       } = data;
       if (authenticationMethod === "login") {
-        console.log("login");
-        const user = await getUser(token);
+        const user = await getUserData(token);
         console.log(user);
         saveUser(user, token);
         navigate("/success");
       } else {
-        console.log("signup");
         setToken(token);
         navigate("/i/flow/single-sign", { state: { token } });
       }

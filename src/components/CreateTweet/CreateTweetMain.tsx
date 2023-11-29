@@ -21,7 +21,7 @@ export default function CreateTweetMain({ selectedImages, setSelectedImages, han
                 <img src={img} alt="" className='w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid' />
             </div>
             <div className='w-[90%]'>
-                <div className={`${tweet.length>100||selectedImages.length>0?'overflow-y-auto':"" } max-h-[480px] relative`}>
+                <div className={`${tweet.length>300||selectedImages.length>0?'overflow-y-auto':"" } max-h-[480px] relative`}>
                     <Textarea
                         {...form.register("Text", {
                             required: "Enter a tweet",
