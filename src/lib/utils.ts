@@ -438,7 +438,7 @@ export const registerNewUser = async (newUserData: object) => {
  *
  * @param picFile The actual image from the  file input
  * @param token The token of the user for authentication
- * @param isBanner
+ * @param isBanner Used to upload the profile banner
  * @returns New user data after the image has changed
  */
 
@@ -522,6 +522,34 @@ export const convertNumberToShortForm = (number: number) => {
 };
 
 /**
+ * @description Load timeline tweets
+ * @param pageParam used for infinite queries
+ * @param limit used to specify the array length
+ * @param token used to authorize the request
+ * @returns Array of tweets
+ */
+export const timelineTweets = async (
+  pageParam: number = 1,
+  limit: number = 10,
+  token: string
+) => {
+  try {
+    const response = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/tweets?page=${pageParam}&limit=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "applicationjson",
+        },
+      }
+    );
+    return response.data.tweets;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
  * @description get a list of users with userName contain the given string
  * @param {username,token}
  * @returns list of users  or null
