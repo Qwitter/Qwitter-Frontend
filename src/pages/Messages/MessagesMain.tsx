@@ -3,7 +3,8 @@ import { useState } from "react";
 import { MessageUser } from "./types/MessagesTypes";
 import { pinnedConversations, userArray } from "@/constants";
 import { useNavigate } from "react-router-dom";
-import { MessagesSearch, MessagesList } from "./Messages";
+import { MessagesList } from "./MessagesList";
+import { MessagesSearch } from "./MessagesSearch";
 import { MessagesHeader } from "./MessagesHeader";
 
 type MessagesMainProps = {
@@ -22,9 +23,6 @@ export function MessagesMain({ showMessagesHeader = true }: MessagesMainProps) {
         lastMessage: "",
         lastMessageTime: "3h"
     });
-    const handleSettingClick = () => {
-        navigate('/Messages/settings');
-    };
 
     const handleRequestClick = () => {
         navigate('/Messages/requests');
@@ -35,7 +33,7 @@ export function MessagesMain({ showMessagesHeader = true }: MessagesMainProps) {
         <>
             {
                 showMessagesHeader && (<>
-                    <MessagesHeader handleSettingsClick={handleSettingClick} settingsIcon={true} />
+                    <MessagesHeader settingsIcon={true} />
                     <MessagesSearch text={messagesSearchText} setText={setMessagesSearchText} />
                 </>
                 )}

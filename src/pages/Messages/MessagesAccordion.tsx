@@ -14,7 +14,7 @@ export function MessagesAccordion() {
                 <AccordionTrigger className="pr-4 py-0 relative font-bold text-xl hover:no-underline">
                     <MessagesHeader settingsIcon={false}/>
                 </AccordionTrigger>
-                <AccordionContent className="max-h-[300px] overflow-y-auto">
+                <AccordionContent className="max-h-[400px] overflow-y-auto">
                     <MessagesMain showMessagesHeader={false} />
                 </AccordionContent>
             </AccordionItem>

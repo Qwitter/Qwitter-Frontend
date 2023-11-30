@@ -1,6 +1,8 @@
 export type MessagesSearchProp = {
     text: string;
     setText: React.Dispatch<React.SetStateAction<string>>;
+    className?:string;
+    inputClassName?:string;
 }
 export type MessageUser ={
     id?:string;

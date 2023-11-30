@@ -452,8 +452,7 @@ export const uploadProfileImage = async (
 
   try {
     const res = await axios.post(
-      `${VITE_BACKEND_URL}/api/v1/user/profile_${
-        isBanner ? "banner" : "picture"
+      `${VITE_BACKEND_URL}/api/v1/user/profile_${isBanner ? "banner" : "picture"
       }`,
       formData,
       {
@@ -533,7 +532,7 @@ export const timelineTweets = async (
   limit: number = 10,
   token: string
 ) => {
-  if(!token) return [];
+  if (!token) return [];
   try {
     const response = await axios.get(
       `${VITE_BACKEND_URL}/api/v1/tweets?page=${pageParam}&limit=${limit}`,
@@ -558,19 +557,175 @@ export const timelineTweets = async (
  */
 export const getUsersSuggestions = async (token: string, username: string) => {
   try {
-    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/lookup`, {
-      params: {
-        name: username.slice(1),
+    // const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/lookup`, {
+    //   params: {
+    //     name: username.slice(1),
+    //   },
+    //   withCredentials: true,
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json",
+    //     "Access-Control-Allow-Credentials": true,
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // });
+    // console.log(res)
+    // return res.data.data;
+    const users = [
+      {
+        name: "John Doe",
+        email: "john.doe@example.com",
+        birthDate: "1990-01-01",
+        userName: "john_doe",
+        createdAt: "2023-01-01T12:00:00Z",
+        location: "Cityville",
+        bio: "A passionate individual",
+        website: "http://www.johndoe.com",
+        passwordChangedAt: "2023-01-02T08:30:00Z",
+        id: "1",
+        google_id: "google123",
+        profileImageUrl: "github.com/shadcn.png",
+        profileBannerUrl: "github.com/shadcn.png",
       },
-      withCredentials: true,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true,
-        Authorization: `Bearer ${token}`,
+      {
+        name: "Jane Smith",
+        email: "jane.smith@example.com",
+        birthDate: "1985-05-15",
+        userName: "jane_smith",
+        createdAt: "2023-01-05T14:30:00Z",
+        location: "Townsville",
+        bio: "Loves exploring new things",
+        website: "http://www.janesmith.com",
+        passwordChangedAt: "2023-01-06T09:45:00Z",
+        id: "2",
+        google_id: "google456",
+        profileImageUrl: "github.com/shadcn.png",
+        profileBannerUrl: "github.com/shadcn.png",
       },
-    });
-    return res.data.data;
+      {
+        name: "Alice Johnson",
+        email: "alice.johnson@example.com",
+        birthDate: "1988-08-20",
+        userName: "alice_j",
+        createdAt: "2023-01-10T18:45:00Z",
+        location: "Villagetown",
+        bio: "Enjoys reading and painting",
+        website: "http://www.alicejohnson.com",
+        passwordChangedAt: "2023-01-12T11:15:00Z",
+        id: "3",
+        google_id: "google789",
+        profileImageUrl: "github.com/shadcn.png",
+        profileBannerUrl: "http://www.example.com/alicejohnson-banner.jpg",
+      },
+      {
+        name: "Bob Williams",
+        email: "bob.williams@example.com",
+        birthDate: "1977-12-08",
+        userName: "bob_w",
+        createdAt: "2023-01-15T08:00:00Z",
+        location: "Countryville",
+        bio: "Outdoor enthusiast and nature lover",
+        website: "http://www.bobwilliams.com",
+        passwordChangedAt: "2023-01-17T14:30:00Z",
+        id: "4",
+        google_id: "google987",
+        profileImageUrl: "github.com/shadcn.png",
+        profileBannerUrl: "http://www.example.com/bobwilliams-banner.jpg",
+      },
+      {
+        name: "Eva Thompson",
+        email: "eva.thompson@example.com",
+        birthDate: "1995-04-25",
+        userName: "eva_t",
+        createdAt: "2023-01-20T16:30:00Z",
+        location: "Mountainville",
+        bio: "Passionate about environmental conservation",
+        website: "http://www.evathompson.com",
+        passwordChangedAt: "2023-01-22T10:45:00Z",
+        id: "5",
+        google_id: "google654",
+        profileImageUrl: "github.com/shadcn.png",
+        profileBannerUrl: "http://www.example.com/evathompson-banner.jpg",
+      },
+      {
+        name: "Charlie Davis",
+        email: "charlie.davis@example.com",
+        birthDate: "1983-09-12",
+        userName: "charlie_d",
+        createdAt: "2023-01-25T11:45:00Z",
+        location: "Suburbia",
+        bio: "Tech geek and gadget lover",
+        website: "http://www.charliedavis.com",
+        passwordChangedAt: "2023-01-27T18:15:00Z",
+        id: "6",
+        google_id: "google321",
+        profileImageUrl: "github.com/shadcn.png",
+        profileBannerUrl: "http://www.example.com/charliedavis-banner.jpg",
+      },
+      {
+        name: "Sophie Martin",
+        email: "sophie.martin@example.com",
+        birthDate: "1992-07-18",
+        userName: "sophie_m",
+        createdAt: "2023-01-30T09:15:00Z",
+        location: "Coastal City",
+        bio: "Foodie and travel enthusiast",
+        website: "http://www.sophiemartin.com",
+        passwordChangedAt: "2023-02-01T15:30:00Z",
+        id: "7",
+        google_id: "google876",
+        profileImageUrl: "github.com/shadcn.png",
+        profileBannerUrl: "http://www.example.com/sophiemartin-banner.jpg",
+      },
+      {
+        name: "Ryan Patel",
+        email: "ryan.patel@example.com",
+        birthDate: "1989-11-05",
+        userName: "ryan_p",
+        createdAt: "2023-02-05T13:00:00Z",
+        location: "Metropolis",
+        bio: "Sports fanatic and fitness enthusiast",
+        website: "http://www.ryanpatel.com",
+        passwordChangedAt: "2023-02-07T17:45:00Z",
+        id: "8",
+        google_id: "google234",
+        profileImageUrl: "github.com/shadcn.png",
+        profileBannerUrl: "http://www.example.com/ryanpatel-banner.jpg",
+      },
+      {
+        name: "Linda Turner",
+        email: "linda.turner@example.com",
+        birthDate: "1970-03-30",
+        userName: "linda_t",
+        createdAt: "2023-02-10T19:30:00Z",
+        location: "Rural Village",
+        bio: "Simple living, high thinking",
+        website: "http://www.lindaturner.com",
+        passwordChangedAt: "2023-02-12T14:15:00Z",
+        id: "9",
+        google_id: "google567",
+        profileImageUrl: "github.com/shadcn.png",
+       
+        profileBannerUrl: "http://www.example.com/lindaturner-banner.jpg",
+      },
+      {
+        name: "Alex Rodriguez",
+        email: "alex.rodriguez@example.com",
+        birthDate: "1993-06-22",
+        userName: "alex_r",
+        createdAt: "2023-02-15T10:00:00Z",
+        location: "Cityscape",
+        bio: "Art and music lover",
+        website: "http://www.alexrodriguez.com",
+        passwordChangedAt: "2023-02-17T16:45:00Z",
+        id: "10",
+        google_id: "google876",
+        profileImageUrl: "https://github.com/shadcn.png",
+      
+        profileBannerUrl: "http://www.example.com/alexrodriguez-banner.jpg",
+      },
+    ];
+    return users.filter((e) => e.userName.includes(username))
   } catch (err) {
     console.log(err);
     return null;
