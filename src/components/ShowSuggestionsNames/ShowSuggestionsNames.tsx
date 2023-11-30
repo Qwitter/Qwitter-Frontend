@@ -62,7 +62,7 @@ export function ShowSuggestionsNames(
             ))
             }
             {!showAllSuggestion && (
-                <button className='text-base text-secondary cursor-pointer w-full text-left mt-2' onClick={handleShowMore}>Show more</button>
+                <button className='text-base text-secondary cursor-pointer w-full text-left mt-2' onClick={handleShowMore} data-testid="ShowMore">Show more</button>
             )}
         </ul>
     )
