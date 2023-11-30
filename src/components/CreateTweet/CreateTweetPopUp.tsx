@@ -1,151 +1,174 @@
-import { Avatar, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useQuery } from "@tanstack/react-query";
 import { getHashtags, getUsersSuggestions } from "@/lib/utils";
 import { useContext, useEffect } from "react";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { Spinner } from "../Spinner";
 type CreateTweetPopUpProps = {
-    popUp: {
-        visible: boolean;
-        content: string;
-        index: number;
-        position: {
-            top: number;
-            left: number;
-        };
+  popUp: {
+    visible: boolean;
+    content: string;
+    index: number;
+    position: {
+      top: number;
+      left: number;
     };
-    closePopup: () => void;
-    handleUserClick: (username: string) => void;
-}
-
-type User = {
-    username: string;
-    imageUrl: string;
-    name: string;
-    isVerified: boolean;
-    data?: User;
-}
-
-type ShowUsersSuggestionsProps = {
-    onUserClick: (username: string) => void;
-    closePopup: () => void;
-    username?: string;
-    tag?: string;
+  };
+  closePopup: () => void;
+  handleUserClick: (username: string) => void;
 };
 
-function CreateTweetPopUp({ popUp, closePopup, handleUserClick }: CreateTweetPopUpProps) {
-    return (
-        <div id="popUp">
+type User = {
+  username: string;
+  imageUrl: string;
+  name: string;
+  isVerified: boolean;
+  data?: User;
+};
 
-            {popUp.visible && (popUp.content[0] === '@' || popUp.content[0] === '#') && (
-                <div style={{ top: `${popUp.position.top + 10}px`, left: `${popUp.position.left + 380 > window.innerWidth ? '25%' : `${popUp.position.left}px`}` }} className=
-                    "absolute min-w-[380px] max-sm:min-w-[200px] max-h-[287px] min-h-fit overflow-y-auto box-shadow z-40 bg-black rounded-sm text-primary text-xs"
-                >
-                    {
-                        popUp.content[0] === '@' &&
-                        <ShowUsersSuggestions username={popUp.content} closePopup={closePopup} onUserClick={handleUserClick} />
-                    }
-                    {popUp.content[0] === '#' &&
-                        <ShowTagsSuggestions tag={popUp.content} closePopup={closePopup} onUserClick={handleUserClick} />
-                    }
-                </div>
+type ShowUsersSuggestionsProps = {
+  onUserClick: (username: string) => void;
+  closePopup: () => void;
+  username?: string;
+  tag?: string;
+};
+
+function CreateTweetPopUp({
+  popUp,
+  closePopup,
+  handleUserClick,
+}: CreateTweetPopUpProps) {
+  return (
+    <div id="popUp">
+      {popUp.visible &&
+        (popUp.content[0] === "@" || popUp.content[0] === "#") && (
+          <div
+            style={{
+              top: `${popUp.position.top + 10}px`,
+              left: `${
+                popUp.position.left + 380 > window.innerWidth
+                  ? "25%"
+                  : `${popUp.position.left}px`
+              }`,
+            }}
+            className="absolute min-w-[380px] max-sm:min-w-[200px] max-h-[287px] min-h-fit overflow-y-auto box-shadow z-40 bg-black rounded-sm text-primary text-xs"
+          >
+            {popUp.content[0] === "@" && (
+              <ShowUsersSuggestions
+                username={popUp.content}
+                closePopup={closePopup}
+                onUserClick={handleUserClick}
+              />
             )}
-        </div>
+            {popUp.content[0] === "#" && (
+              <ShowTagsSuggestions
+                tag={popUp.content}
+                closePopup={closePopup}
+                onUserClick={handleUserClick}
+              />
+            )}
+          </div>
+        )}
+    </div>
+  );
+}
+function ShowUsersSuggestions({
+  onUserClick,
+  username,
+  closePopup,
+}: ShowUsersSuggestionsProps) {
+  const { token } = useContext(UserContext);
+  const { isPending, data, refetch } = useQuery<User[]>({
+    queryKey: ["getUsersSuggestions"],
+    queryFn: () => getUsersSuggestions(token!, username!),
+  });
+  useEffect(() => {
+    refetch();
+  }, [username, refetch]);
+
+  if (isPending) {
+    return (
+      <div className="w-full h-[180px] p-8">
+        <Spinner />
+      </div>
     );
-}
-function ShowUsersSuggestions({ onUserClick, username, closePopup }: ShowUsersSuggestionsProps) {
-    const { token } = useContext(UserContext)
-    const {
-        isPending,
-        data,
-        refetch
-    } = useQuery<User[]>({
-        queryKey: ["getUsersSuggestions"],
-        queryFn: () => getUsersSuggestions(token!, username!)
-        ,
-    });
-    useEffect(() => {
+  }
+  if (data && data.length == 0) {
+    closePopup();
+  }
 
-        refetch();
-    }, [username, refetch]);
-
-    if (isPending) {
-        return (
-            <div className='w-full h-[180px] p-8'>
-                <Spinner />
+  return (
+    <ul>
+      {!data || data.length == 0 ? (
+        <div className="w-full h-[180px] p-8">
+          <Spinner />
+        </div>
+      ) : (
+        data!.map((user) => (
+          <li
+            key={user.username}
+            className="py-3 px-4 flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer"
+            onClick={() => onUserClick("@" + user.username)}
+          >
+            <Avatar className="mr-4">
+              <AvatarImage
+                className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid"
+                src={user.imageUrl}
+              />
+            </Avatar>
+            <div className="flex flex-col h-full gap-1 ">
+              <h3 className="text-primary text-[15px]">{user.name}</h3>
+              <span className="text-gray">@{user.username}</span>
             </div>
-        )
-    }
-    if (data && data.length == 0) {
-
-        closePopup()
-    }
-
-
-    return (
-        <ul >
-
-            {
-                !data || data.length == 0 ? <div className='w-full h-[180px] p-8'>
-                    <Spinner />
-                </div> : data!.map(user => (
-                    <li key={user.username} className="py-3 px-4 flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer" onClick={() => onUserClick("@" + user.username)}>
-
-                        <Avatar className="mr-4">
-                            <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" src={user.imageUrl} />
-                        </Avatar><div className="flex flex-col h-full gap-1 ">
-                            <h3 className="text-primary text-[15px]">{user.name}</h3>
-                            <span className="text-gray">@{user.username}</span>
-                        </div>
-                    </li>
-                ))
-
-            }
-        </ul>
-    )
+          </li>
+        ))
+      )}
+    </ul>
+  );
 }
-function ShowTagsSuggestions({ onUserClick,tag,closePopup }: ShowUsersSuggestionsProps) {
-    const { token } = useContext(UserContext)
-    const {
-        isPending,
-        data,
-        refetch
-    } = useQuery<{}[]>({
-        queryKey: ["getHashtags"],
-        queryFn: () => getHashtags(token!, tag!)
-        ,
-    });
-    useEffect(() => {
-        refetch();
-    }, [tag, refetch]);
+function ShowTagsSuggestions({
+  onUserClick,
+  tag,
+  closePopup,
+}: ShowUsersSuggestionsProps) {
+  const { token } = useContext(UserContext);
+  const { isPending, data, refetch } = useQuery<{text: string}[]>({
+    queryKey: ["getHashtags"],
+    queryFn: () => getHashtags(token!, tag!),
+  });
+  useEffect(() => {
+    refetch();
+  }, [tag, refetch]);
 
-    if (isPending) {
-        return (
-            <div className='w-full h-[180px] p-8'>
-                <Spinner />
-            </div>
-        )
-    }
-    if (data && data.length == 0) {
-
-        closePopup()
-    }
-
-
+  if (isPending) {
     return (
-        <ul >
-            {!data || data.length == 0 ? <div className='w-full h-[180px] p-8'>
-                    <Spinner />
-                </div> : data!.map((tag,index) => (
-                    <li key={index} className="py-3 px-4 flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer" onClick={() => onUserClick(tag.text)}>
+      <div className="w-full h-[180px] p-8">
+        <Spinner />
+      </div>
+    );
+  }
+  if (data && data.length == 0) {
+    closePopup();
+  }
 
-                        <p className="text-base text-primary">{tag.text}</p>
-
-                    </li>
-                ))
-
-            }
-        </ul>
-    )
+  return (
+    <ul>
+      {!data || data.length == 0 ? (
+        <div className="w-full h-[180px] p-8">
+          <Spinner />
+        </div>
+      ) : (
+        data!.map((tag, index) => (
+          <li
+            key={index}
+            className="py-3 px-4 flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer"
+            onClick={() => onUserClick(tag.text)}
+          >
+            <p className="text-base text-primary">{tag.text}</p>
+          </li>
+        ))
+      )}
+    </ul>
+  );
 }
-export default CreateTweetPopUp 
+export default CreateTweetPopUp;
