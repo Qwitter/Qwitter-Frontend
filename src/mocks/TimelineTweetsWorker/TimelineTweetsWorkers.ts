@@ -4,7 +4,7 @@ import { type Tweet } from "@/models/Tweet";
 const tweet1: Tweet = {
   createdAt: "2023-11-23 5:02:00",
   id: "1718938551163691300",
-  user: {
+  author: {
     userName: "AhmedZahran2025",
     name: "Ahmed Zahran",
     profileImageUrl: "qwitter/photos/213902323",
@@ -85,7 +85,7 @@ const tweet1: Tweet = {
 const tweet2: Tweet = {
   createdAt: "2023-11-23 5:02:00",
   id: "1718938551163691301",
-  user: {
+  author: {
     userName: "AhmedZahran2025",
     name: "Ahmed Zahran",
     profileImageUrl: "qwitter/photos/213902323",
@@ -146,13 +146,11 @@ const tweetsList: Tweet[] = [
   tweet2,
 ];
 
-export const TimelineTweetsWorker: ResponseResolver = async ({ request }) => {
+export const TimelineTweetsWorker: ResponseResolver = async () => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  const url = request.url;
-
   return HttpResponse.json({
-    tweets: tweetsList.map((tweet: Tweet, index) => {
+    tweets: tweetsList.map((tweet: Tweet) => {
       tweet.id += Math.floor(Math.random() * 50000);
       return tweet;
     }),

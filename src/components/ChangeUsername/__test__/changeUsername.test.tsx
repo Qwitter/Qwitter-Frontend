@@ -40,7 +40,7 @@ describe("ChangeUsername testing", () => {
         render(
             <BrowserRouter>
                 <QueryClientProvider client={client}>
-                    <ChangeUsername userName="xlxlx" />
+                    <ChangeUsername />
                 </QueryClientProvider>
             </BrowserRouter>
         );
@@ -62,7 +62,7 @@ describe("ChangeUsername testing", () => {
         render(
             <BrowserRouter>
                 <QueryClientProvider client={client}>
-                    <ChangeUsername userName="" />
+                    <ChangeUsername />
                 </QueryClientProvider>
             </BrowserRouter>
         );
@@ -82,7 +82,7 @@ describe("ChangeUsername testing", () => {
         render(
             <BrowserRouter>
                 <QueryClientProvider client={client}>
-                    <ChangeUsername userName="" />
+                    <ChangeUsername />
                 </QueryClientProvider>
             </BrowserRouter>
         );
@@ -101,7 +101,7 @@ describe("ChangeUsername testing", () => {
         render(
             <BrowserRouter>
                 <QueryClientProvider client={client}>
-                    <ChangeUsername userName="marwan99" />
+                    <ChangeUsername />
                 </QueryClientProvider>
             </BrowserRouter>
         );
