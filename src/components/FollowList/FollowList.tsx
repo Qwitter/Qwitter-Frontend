@@ -1,7 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { useState } from "react";
-import "../index.css";
-export function Test() {
+import "../../index.css";
+export function FollowList() {
   const [Liststate, setListstate] = useState("Following");
   return (
     <>

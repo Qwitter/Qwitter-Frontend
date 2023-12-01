@@ -22,7 +22,7 @@ import { FollowCard } from "./components/FollowCard/FollowCard";
 import { UsersList } from "./components/UsersList/UsersList";
 import { GetFollowSuggestionsService } from "./lib/utils";
 import { TrendCard } from "./components/TrendCard/TrendCard";
-import { Test } from "./components/test";
+import { FollowList } from "./components/FollowList/FollowList";
 
 const queryClient = new QueryClient();
 
@@ -33,7 +33,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme"> */}
-        {/* <UserContextProvider>
+      {/* <UserContextProvider>
           <Routes location={previousLocation || location}>
             <Route path="/" element={<Authentication />} />
           </Routes>
@@ -61,10 +61,10 @@ function App() {
           </Routes>
           <Toaster />
         </UserContextProvider> */}
-        {/* <FollowCard /> */}
-        {/* <TrendCard /> */}
+      {/* <FollowCard /> */}
+      {/* <TrendCard /> */}
       {/* </ThemeProvider> */}
-      <Test />
+      <FollowList />
     </QueryClientProvider>
   );
 }
