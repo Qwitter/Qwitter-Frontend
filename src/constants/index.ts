@@ -111,117 +111,131 @@ const tags = [
 ]
 const userArray = [
   {
+    id: 48418786,
+
     imageUrl: 'https://github.com/shadcn.png',
     username: 'user1',
     name: 'John Doe',
     isVerified: true,
     lastMessage: 'Hey there!',
-    lastMessageTime:"5h",
+    lastMessageTime: "5h",
   },
   {
+    id: 48418787,
     imageUrl: 'https://github.com/shadcn.png',
     username: 'user2',
     name: 'Jane Smith',
     isVerified: false,
     lastMessage: 'How are you doing?',
-    lastMessageTime:"9h"
+    lastMessageTime: "9h"
   },
   {
+    id: 48418686,
     imageUrl: 'https://github.com/shadcn.png',
     username: 'user3',
     name: 'Bob Johnson',
     isVerified: true,
     lastMessage: 'Nice to meet you!',
-    lastMessageTime:"yesterday"
+    lastMessageTime: "yesterday"
   },
   {
+    id: 4878786,
     imageUrl: 'https://github.com/shadcn.png',
     username: 'user4',
     name: 'Alice Williams',
     isVerified: false,
     lastMessage: "What's up?",
-    lastMessageTime:"yesterday"
+    lastMessageTime: "yesterday"
 
   },
   {
+    id: 28418786,
     imageUrl: 'https://github.com/shadcn.png',
     username: 'user5',
     name: 'Charlie Brown',
     isVerified: true,
     lastMessage: 'Greetings!',
-    lastMessageTime:"a week ago"
+    lastMessageTime: "a week ago"
 
   },
   {
+    id: 18418786,
     imageUrl: 'https://github.com/shadcn.png',
     username: 'marwanSamy',
     name: 'Eva Davis',
     isVerified: false,
     lastMessage: 'Hello world!',
-    lastMessageTime:"a month ago"
+    lastMessageTime: "a month ago"
 
   },
   {
+    id: 68418786,
     imageUrl: 'https://github.com/shadcn.png',
     username: 'ahmedCR7',
     name: 'Frank White',
     isVerified: true,
     lastMessage: "How's it going?",
-    lastMessageTime:"yesterday"
+    lastMessageTime: "yesterday"
 
   },
   {
+    id: 46418786,
     imageUrl: 'https://github.com/shadcn.png',
     username: 'KillYou',
     name: 'Grace Miller',
     isVerified: false,
     lastMessage: "Nice day, isn't it?",
-    lastMessageTime:"19h"
+    lastMessageTime: "19h"
 
   },
   {
+    id: 48818786,
     imageUrl: 'https://github.com/shadcn.png',
     username: 'yarab',
     name: 'Harry Wilson',
     isVerified: true,
     lastMessage: "What's on your mind?",
-    lastMessageTime:"10h"
+    lastMessageTime: "10h"
 
   },
   {
+    id: 48416786,
     imageUrl: 'https://github.com/shadcn.png',
     username: 'user10',
     name: 'Ivy Taylor',
     isVerified: false,
     lastMessage: 'Howdy!',
-    lastMessageTime:"15h"
+    lastMessageTime: "15h"
 
   },
   {
+    id: 48410786,
     imageUrl: 'https://github.com/shadcn.png',
     username: 'user11',
     name: 'Kevin Brown',
     isVerified: true,
     lastMessage: 'Greetings from Kevin!',
-    lastMessageTime:"last year"
+    lastMessageTime: "last year"
 
   },
   {
+    id: 48418586,
     imageUrl: 'https://github.com/shadcn.png',
     username: 'user12',
     name: 'Laura Harris',
     isVerified: false,
     lastMessage: 'Hi there!',
-    lastMessageTime:"two months ago"
+    lastMessageTime: "two months ago"
 
   },
   {
+    id: 48418776,
     imageUrl: 'https://github.com/shadcn.png',
     username: 'chatGPT',
     name: 'ChatGPT',
     isVerified: true,
     lastMessage: 'Hello from ChatGPT! 😊',
-    lastMessageTime:"yesterday"
+    lastMessageTime: "yesterday"
 
   },
 ];
@@ -231,7 +245,7 @@ const pinnedConversations = [{
   name: 'Laura Harris',
   isVerified: false,
   lastMessage: 'Hi there!',
-  lastMessageTime:"two months ago"
+  lastMessageTime: "two months ago"
 
 },
 {
@@ -240,12 +254,12 @@ const pinnedConversations = [{
   name: 'ChatGPT',
   isVerified: true,
   lastMessage: 'Hello from ChatGPT! 😊',
-  lastMessageTime:"yesterday"
+  lastMessageTime: "yesterday"
 
 },
 ];
-const AllowMessagesOptions =[
-  "No one","Verified Users","Everyone"
+const AllowMessagesOptions = [
+  "No one", "Verified Users", "Everyone"
 ]
 const whoToReply = [
   {
@@ -266,5 +280,28 @@ const whoToReply = [
   }
 
 ]
+const searchHeaderOptions = [
+  "ALL", "People", "Groups", "Messages"
+]
+const tempMessagesSearch =
+{
+  conversations: [{
+    imageUrl: 'https://github.com/shadcn.png',
+    username: 'user12',
+    name: 'Laura Harris',
+    isVerified: false,
+    lastMessage: 'Hi there!',
+    lastMessageTime: "two months ago"
+  }],
+  users: [{
+    imageUrl: 'https://github.com/shadcn.png',
+    username: 'chatGPT',
+    name: 'ChatGPT',
+    isVerified: true,
+    lastMessage: 'Hello from ChatGPT! 😊',
+    lastMessageTime: "yesterday"
+  }]
+}
 
-export { navLinks, settingsOptions, accountOptions, userArray,pinnedConversations, whoToReply,tags,AllowMessagesOptions };
+
+export { navLinks, tempMessagesSearch, settingsOptions, accountOptions, searchHeaderOptions, userArray, pinnedConversations, whoToReply, tags, AllowMessagesOptions };

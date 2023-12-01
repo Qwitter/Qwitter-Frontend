@@ -1,6 +1,6 @@
 import { cn } from "@/lib";
 import { MailPlus, Settings } from "lucide-react";
-import { useLocation, Link } from 'react-router-dom'
+import {  Link } from 'react-router-dom'
 type MessageProps = {
     settingsIcon?: boolean;
     className?: string;

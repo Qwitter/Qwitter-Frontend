@@ -1,18 +1,20 @@
-import { Button, OptionsHeader } from "@/components";
+import { OptionsHeader } from "@/components";
 import { Ban, Settings, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { MessageUser, MessagesRequestPopUpProp, MessagesSideProp } from "./types/MessagesTypes";
-import { AllowMessagesOptions, userArray } from "@/constants";
+import { MessageUser, MessagesRequestPopUpProp } from "./types/MessagesTypes";
+import { userArray } from "@/constants";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { RadioGroup, RadioGroupItem } from "../../components/ui/radio-group";
 import { MessagesMain } from "./MessagesMain";
 import { MessagesList } from "./MessagesList";
+import { MessagesSettings } from "./MessagesSettings";
+import { MessagesConversation } from "./MessagesConversation";
+import { MessagesSide } from "./MessagesSide";
 export function Messages() {
     const location = useLocation();
     const previousLocation = location.state?.previousLocation;
     return (
         <>
-            <div className="max-w-[600px]  pb-16 relative flex flex-col z-0 flex-grow w-[72%] max-largeX:hidden  h-full">
+            <div className="max-w-[600px]  max-h-[100vh] scrollbar-thin overflow-y-auto pb-16 relative flex flex-col z-0 flex-grow w-[72%] max-largeX:hidden  h-full">
                 <Routes location={previousLocation || location} >
                     <Route path="/requests" element={<MessagesRequests />} />
                     <Route index path="/*" element={<MessagesMain />} />
@@ -21,6 +23,7 @@ export function Messages() {
             <div className="max-w-[600px] w-full h-full flex-grow border-x border-primary border-opacity-30 ">
                 <Routes location={previousLocation || location} >
                     <Route path="/settings" element={<MessagesSettings />} />
+                    <Route path="/:conversationId" element={<MessagesConversation />} />
                     <Route index path="/" element={<MessagesSide p={"Choose from your existing conversations, start a new one, or just keep swimming."} showButton />} />
                     <Route path="/requests" element={<MessagesSide showButton={false} p={"Message requests from people you don't follow live here. To reply to their messages, you need to accept the request"} />} />
                 </Routes>
@@ -31,49 +34,6 @@ export function Messages() {
     );
 }
 
-function MessagesSettings() {
-    const [optionValue, setOptionValue] = useState('Everyone');
-    return (
-        <div className=" w-full h-full border-r border-primary border-opacity-30 mb-20">
-            <OptionsHeader header='Direct Messages' />
-            <div className="px-4 py-3">
-                <div className="flex flex-col">
-                    <span className="text-primary text-[15px] font-semibold"> Allow message requests from:</span>
-                    <span className="text-gray text-[13px]"> People you follow will always be able to message you</span>
-                </div>
-                <RadioGroup defaultValue="option-one"
-                    value={optionValue}
-                    onValueChange={setOptionValue}
-                >
-                    <ul className="mt-2">
-                        {
-                            AllowMessagesOptions.map((option, index) => (
-                                <li key={index} id={option} className="w-full flex flex-row items-center justify-between py-1 cursor-pointer" onClick={() => setOptionValue(option)}>
-                                    <label >{option}</label>
-                                    <RadioGroupItem className="w-5 h-5 border-gray border text-secondary" value={option} />
-                                </li>
-                            ))
-                        }
-                    </ul>
-                </RadioGroup>
-            </div>
-        </div>
-    )
-}
-function MessagesSide({ p, showButton }: MessagesSideProp) {
-    const navigate = useNavigate();
-    const location = useLocation();
-    return (
-        <div className="w-full h-full max-h-[100vh] flex justify-center items-center">
-            <div className="max-w-[400px] px-8 mx-8 ">
-                <h2 className="text-primary text-[31px] font-bold">Select a message</h2>
-                <p className="text-gray text-[15px] break-words mb-7">{p}
-                </p>
-                {showButton && <Button variant={"secondary"} className="py-3 w-[200px]" onClick={() => navigate('/Messages/compose', { state: { previousLocation: location } })} >New Messages</Button>
-                }</div>
-        </div>
-    )
-}
 export function MessagesRequestPopUp({conversationUsername,handleBlock,handleRemoveConversation}:MessagesRequestPopUpProp) {
     return (
         <>
@@ -114,7 +74,7 @@ function MessagesRequests() {
 
     return (
         <>
-            <div className="px-4 w-full h-[53px] flex flex-row justify-between  sticky  top-[-1px] bg-black bg-opacity-60 backdrop-blur-xl z-50 items-center" onClick={handleSettingClick}>
+            <div className="px-4 w-full h-[53px] flex flex-row justify-between  sticky  top-0 bg-black bg-opacity-60 backdrop-blur-xl z-50 items-center" onClick={handleSettingClick}>
                 <OptionsHeader header={"Message requests"} />
                 <div className="flex justify-end items-center min-w-[56px] min-h-[32px]">
                     <div className='w-10 h-10 flex justify-center items-center cursor-pointer'>

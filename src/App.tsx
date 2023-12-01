@@ -52,7 +52,7 @@ function App() {
             <Route path="/i/flow/add_email" element={<UpdateEmailPopUp />} />
             <Route path="/compose/tweet" element={<CreateTweetContainer />} />
             <Route path="/i/flow/logout" element={<LogOut />} />
-            <Route path="Messages/compose" element={<MessagesNewMessage />} />
+            <Route path="/Messages/compose" element={<MessagesNewMessage />} />
             {/* <Route path="settings/profile" element={<MessagesNewMessage />} /> */}
 
           </Routes>

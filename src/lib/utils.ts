@@ -557,20 +557,13 @@ export const timelineTweets = async (
  */
 export const getUsersSuggestions = async (token: string, username: string) => {
   try {
-    // const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/lookup`, {
-    //   params: {
-    //     name: username.slice(1),
-    //   },
-    //   withCredentials: true,
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json",
-    //     "Access-Control-Allow-Credentials": true,
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    // });
-    // console.log(res)
-    // return res.data.data;
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user?q=${username.slice(1)}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data.users;
+
     const users = [
       {
         name: "John Doe",
