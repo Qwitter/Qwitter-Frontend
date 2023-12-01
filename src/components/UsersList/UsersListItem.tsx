@@ -1,14 +1,9 @@
 import { MdOutlineVerified } from "react-icons/md";
 import { CardContent } from "../ui/card";
-import { Button } from "../ui/button";
-import { FollowService } from "@/lib/utils";
-import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { FollowButton } from "../FollowButton/FollowButton";
+import { FollowRelation } from "@/models/FollowRelation";
 
-export enum FollowRelation {
-  follower,
-  following,
-}
+
 export type UsersListItemProp = {
   showDesc: boolean;
   itemType: FollowRelation;
@@ -26,19 +21,6 @@ export function UsersListItem({
   description,
   showDesc,
 }: UsersListItemProp) {
-  const [isHovered, setIsHovered] = useState(false);
-  const {
-    mutateAsync: FollowServiceFn,
-    // isPending: FollowServicePending,
-  } = useMutation({
-    mutationFn: FollowService,
-  });
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
   return (
     <CardContent className="hover:cursor-pointer py-3 hover:bg-light-gray">
       <div className="flex ">
@@ -56,7 +38,11 @@ export function UsersListItem({
               </div>
               <div className="text-[#595d62]">{username}</div>
             </div>
-            <Button
+            <FollowButton
+              FollowState={FollowRelation.notfollowing}
+              username={username}
+            />
+            {/* <Button
               onClick={() => {
                 FollowServiceFn(username);
               }}
@@ -73,7 +59,7 @@ export function UsersListItem({
               <span className="text-white">
                 {isHovered ? "Unfollow" : "Following"}
               </span>
-            </Button>
+            </Button> */}
           </div>
           {showDesc && <div>{description}</div>}
         </div>
