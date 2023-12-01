@@ -4,8 +4,7 @@ import { forwardRef, useContext, useRef, useState } from "react";
 import { Link } from 'react-router-dom'
 import { Images, Mention, MessagesMessage } from "./types/MessagesTypes";
 import CreateTweetPopUp from "@/components/CreateTweet/CreateTweetPopUp";
-import { MessagesList } from "./MessagesList";
-import { chat, userArray } from "@/constants";
+import { chat } from "@/constants";
 import { useInView } from "react-intersection-observer";
 import { cn } from "@/lib";
 import TweetImagesViewer from "@/components/TweetImagesViewer/TweetImagesViewer";
@@ -79,7 +78,7 @@ function MessagesConversationMessage({ status, date, id, media, text, userName, 
             return date.format('MMM D, YYYY, h:mm A');
 
     };
-    if (userName == user!.userName) {
+    if (userName == user?.userName) {
         return (
             <div className="flex flex-col items-end pb-6">
                 <div className="flex flex-row justify-end" >
