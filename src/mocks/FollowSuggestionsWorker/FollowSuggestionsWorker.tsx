@@ -1,6 +1,6 @@
 import { HttpResponse, ResponseResolver } from "msw";
 
-export const GetFollowersWorker: ResponseResolver = async () => {
+export const FollowSuggestionsWorker: ResponseResolver = async () => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   return HttpResponse.json(
     {

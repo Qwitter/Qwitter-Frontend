@@ -16,6 +16,7 @@ export function UsersList({ showDesc, getusers }: UsersListProp) {
   useEffect(() => {
     (async () => {
       const users: any = await getusersFn();
+      debugger;
       setUsers(users);
     })();
   }, []);

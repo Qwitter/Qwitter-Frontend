@@ -789,3 +789,19 @@ export const GetTrendsService = async () => {
     return null;
   }
 };
+
+
+/**
+ * @description get Followers in Profile page(Followers section)
+ * @param 
+ * @returns  users array represents the response from the backend or null
+ */
+export const GetFollowersService = async () => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/followers`);
+    return res.data.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};

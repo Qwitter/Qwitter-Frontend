@@ -25,9 +25,10 @@ import {
   unLikeTweetWorker,
 } from "./TweetWorker/TweetWorker";
 import { UploadProfileImageWorker } from "./RegisterUserWorker/UploadProfileImageWorker";
-import { GetFollowersWorker } from "./GetFollowersWorker/GetFollowersWorker";
+import { FollowSuggestionsWorker } from "./FollowSuggestionsWorker/FollowSuggestionsWorker";
 import { FollowUserWorker, UnFollowUserWorker } from "./FollowUserWorker/FollowUserWorker";
 import { TrendsWorker } from "./TrendsWorker/TrendsWorker";
+import { FollowersWorker } from "./FollowersWorker/FollowersWorker";
 
 const { VITE_BACKEND_URL } = import.meta.env;
 
@@ -95,8 +96,9 @@ export const handlers = [
     unBookmarkTweetWorker
   ),
   http.delete(`${VITE_BACKEND_URL}/api/v1/tweets/:tweetId`, deleteTweetWorker),
-  http.get(`${VITE_BACKEND_URL}/api/v1/user/suggestions`, GetFollowersWorker),
+  http.get(`${VITE_BACKEND_URL}/api/v1/user/suggestions`, FollowSuggestionsWorker),
   http.post(`${VITE_BACKEND_URL}/api/v1/user/follow/:username`, FollowUserWorker),
   http.delete(`${VITE_BACKEND_URL}/api/v1/user/follow/:username`, UnFollowUserWorker),
   http.get(`${VITE_BACKEND_URL}/api/v1/trends`, TrendsWorker),
+  http.get(`${VITE_BACKEND_URL}/api/v1/user/followers`, FollowersWorker),
 ];
