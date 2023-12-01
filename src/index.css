@@ -150,10 +150,7 @@ button-border-color {
 .active-tab {
   @apply inline-block p-4 border-b-4 border-blue-600 rounded-t-lg ;
 }
-.tab:hover
+.tabhover:hover
 {
 @apply bg-[#181818]
-}
-.active-tab:hover {
-  @apply bg-[#181818]
 }

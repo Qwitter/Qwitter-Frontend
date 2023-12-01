@@ -4,24 +4,28 @@ import "../../index.css";
 import { UsersList } from "../UsersList/UsersList";
 import { GetFollowersService, GetFollowingsService } from "@/lib/utils";
 export function FollowList() {
-  const [Liststate, setListstate] = useState("Followers");
+  const [Liststate, setListstate] = useState("Following");
   return (
     <>
-      <Tabs defaultValue="Followers" className="w-[400px]">
+      <Tabs defaultValue={Liststate} className="w-[400px]">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger
-            className={Liststate == "Following" ? "active-tab" : "tab"}
+            className="flex justify-center tabhover"
             value="Following"
             onClick={() => setListstate("Following")}
           >
-            Following
+            <div className={Liststate == "Following" ? "active-tab" : "tab"}>
+              Following
+            </div>
           </TabsTrigger>
           <TabsTrigger
-            className={Liststate == "Followers" ? "active-tab" : "tab"}
+            className="flex justify-center tabhover"
             value="Followers"
             onClick={() => setListstate("Followers")}
           >
-            Followers
+            <div className={Liststate == "Followers" ? "active-tab" : "tab"}>
+              Followers
+            </div>
           </TabsTrigger>
         </TabsList>
         <TabsContent value="Following">
