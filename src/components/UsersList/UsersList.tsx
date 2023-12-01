@@ -1,13 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { UsersListItem } from "./UsersListItem";
+import { UsersListItem } from "../UsersListItem/UsersListItem";
 import { User } from "@/models/User";
 import { FollowRelation } from "@/models/FollowRelation";
-export type UsersListProp = {
-  getusers: () => Promise<any>;
-  showDesc: boolean;
-  listType: boolean;
-};
+import { UsersListProp } from "./UsersListProp";
 
 export function UsersList({ showDesc, getusers }: UsersListProp) {
   const [users, setUsers] = useState<User[]>([]);

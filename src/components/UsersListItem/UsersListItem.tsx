@@ -2,17 +2,8 @@ import { MdOutlineVerified } from "react-icons/md";
 import { CardContent } from "../ui/card";
 import { FollowButton } from "../FollowButton/FollowButton";
 import { FollowRelation } from "@/models/FollowRelation";
+import { UsersListItemProp } from "./UsersListItemProp";
 
-
-export type UsersListItemProp = {
-  showDesc: boolean;
-  itemType: FollowRelation;
-  verified: boolean;
-  profileImageUrl: string;
-  name: string;
-  username: string;
-  description: string;
-};
 export function UsersListItem({
   profileImageUrl,
   name,
@@ -42,24 +33,6 @@ export function UsersListItem({
               FollowState={FollowRelation.notfollowing}
               username={username}
             />
-            {/* <Button
-              onClick={() => {
-                FollowServiceFn(username);
-              }}
-              className="text-sm w-[100px] h-[30px] font-bold"
-            >
-              <span className="text-black">Follow</span>
-            </Button>
-            <Button
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              className="text-sm w-[100px] h-[30px] font-bold"
-              variant={"danger"}
-            >
-              <span className="text-white">
-                {isHovered ? "Unfollow" : "Following"}
-              </span>
-            </Button> */}
           </div>
           {showDesc && <div>{description}</div>}
         </div>
