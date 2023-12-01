@@ -2,7 +2,6 @@ import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { UsersListItem } from "../UsersListItem/UsersListItem";
 import { User } from "@/models/User";
-import { FollowRelation } from "@/models/FollowRelation";
 import { UsersListProp } from "./UsersListProp";
 
 export function UsersList({ showDesc, getusers }: UsersListProp) {
@@ -31,7 +30,6 @@ export function UsersList({ showDesc, getusers }: UsersListProp) {
           showDesc={showDesc}
           verified={user.verified}
           profileImageUrl={user.profileImageUrl}
-          itemType={FollowRelation.following}
           isFollowing={user.isFollowing}
         />
       ))}
