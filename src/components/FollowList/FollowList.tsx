@@ -2,7 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { useState } from "react";
 import "../../index.css";
 import { UsersList } from "../UsersList/UsersList";
-import { GetFollowersService } from "@/lib/utils";
+import { GetFollowersService, GetFollowingsService } from "@/lib/utils";
 export function FollowList() {
   const [Liststate, setListstate] = useState("Followers");
   return (
@@ -24,7 +24,9 @@ export function FollowList() {
             Followers
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="Following"></TabsContent>
+        <TabsContent value="Following">
+          <UsersList showDesc={true} getusers={GetFollowingsService} />
+        </TabsContent>
         <TabsContent value="Followers">
           <UsersList showDesc={true} getusers={GetFollowersService} />
         </TabsContent>

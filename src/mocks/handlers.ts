@@ -29,6 +29,7 @@ import { FollowSuggestionsWorker } from "./FollowSuggestionsWorker/FollowSuggest
 import { FollowUserWorker, UnFollowUserWorker } from "./FollowUserWorker/FollowUserWorker";
 import { TrendsWorker } from "./TrendsWorker/TrendsWorker";
 import { FollowersWorker } from "./FollowersWorker/FollowersWorker";
+import { FollowingsWorker } from "./FollowingsWorker/FollowingsWorker";
 
 const { VITE_BACKEND_URL } = import.meta.env;
 
@@ -101,4 +102,5 @@ export const handlers = [
   http.delete(`${VITE_BACKEND_URL}/api/v1/user/follow/:username`, UnFollowUserWorker),
   http.get(`${VITE_BACKEND_URL}/api/v1/trends`, TrendsWorker),
   http.get(`${VITE_BACKEND_URL}/api/v1/user/followers`, FollowersWorker),
+  http.get(`${VITE_BACKEND_URL}/api/v1/user/follow`, FollowingsWorker),
 ];

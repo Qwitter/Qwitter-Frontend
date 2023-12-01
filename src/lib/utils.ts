@@ -805,3 +805,18 @@ export const GetFollowersService = async () => {
     return null;
   }
 };
+
+/**
+ * @description get Followings in Profile page(Following section)
+ * @param 
+ * @returns  users array represents the response from the backend or null
+ */
+export const GetFollowingsService = async () => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/follow`);
+    return res.data.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
