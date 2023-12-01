@@ -27,6 +27,7 @@ import {
 import { UploadProfileImageWorker } from "./RegisterUserWorker/UploadProfileImageWorker";
 import { GetFollowersWorker } from "./GetFollowersWorker/GetFollowersWorker";
 import { FollowUserWorker, UnFollowUserWorker } from "./FollowUserWorker/FollowUserWorker";
+import { TrendsWorker } from "./TrendsWorker/TrendsWorker";
 
 const { VITE_BACKEND_URL } = import.meta.env;
 
@@ -97,4 +98,5 @@ export const handlers = [
   http.get(`${VITE_BACKEND_URL}/api/v1/user/suggestions`, GetFollowersWorker),
   http.post(`${VITE_BACKEND_URL}/api/v1/user/follow/:username`, FollowUserWorker),
   http.delete(`${VITE_BACKEND_URL}/api/v1/user/follow/:username`, UnFollowUserWorker),
+  http.get(`${VITE_BACKEND_URL}/api/v1/trends`, TrendsWorker),
 ];

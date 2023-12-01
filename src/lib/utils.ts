@@ -774,3 +774,18 @@ export const UnFollowService = async (username:string) => {
     return null;
   }
 };
+
+/**
+ * @description get trends in home page(What's hapenning section)
+ * @param 
+ * @returns  users array represents the response from the backend or null
+ */
+export const GetTrendsService = async () => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/trends`);
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
