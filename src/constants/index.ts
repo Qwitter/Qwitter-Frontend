@@ -111,78 +111,156 @@ const tags = [
 ]
 const userArray = [
   {
+    id: 48418786,
+
     imageUrl: 'https://github.com/shadcn.png',
     username: 'user1',
     name: 'John Doe',
     isVerified: true,
+    lastMessage: 'Hey there!',
+    lastMessageTime: "5h",
   },
   {
+    id: 48418787,
     imageUrl: 'https://github.com/shadcn.png',
     username: 'user2',
     name: 'Jane Smith',
     isVerified: false,
+    lastMessage: 'How are you doing?',
+    lastMessageTime: "9h"
   },
   {
+    id: 48418686,
     imageUrl: 'https://github.com/shadcn.png',
     username: 'user3',
     name: 'Bob Johnson',
     isVerified: true,
+    lastMessage: 'Nice to meet you!',
+    lastMessageTime: "yesterday"
   },
   {
+    id: 4878786,
     imageUrl: 'https://github.com/shadcn.png',
     username: 'user4',
     name: 'Alice Williams',
     isVerified: false,
+    lastMessage: "What's up?",
+    lastMessageTime: "yesterday"
+
   },
   {
+    id: 28418786,
     imageUrl: 'https://github.com/shadcn.png',
     username: 'user5',
     name: 'Charlie Brown',
     isVerified: true,
+    lastMessage: 'Greetings!',
+    lastMessageTime: "a week ago"
+
   },
   {
+    id: 18418786,
     imageUrl: 'https://github.com/shadcn.png',
     username: 'marwanSamy',
     name: 'Eva Davis',
     isVerified: false,
+    lastMessage: 'Hello world!',
+    lastMessageTime: "a month ago"
+
   },
   {
+    id: 68418786,
     imageUrl: 'https://github.com/shadcn.png',
     username: 'ahmedCR7',
     name: 'Frank White',
     isVerified: true,
+    lastMessage: "How's it going?",
+    lastMessageTime: "yesterday"
+
   },
   {
+    id: 46418786,
     imageUrl: 'https://github.com/shadcn.png',
     username: 'KillYou',
     name: 'Grace Miller',
     isVerified: false,
+    lastMessage: "Nice day, isn't it?",
+    lastMessageTime: "19h"
+
   },
   {
+    id: 48818786,
     imageUrl: 'https://github.com/shadcn.png',
     username: 'yarab',
     name: 'Harry Wilson',
     isVerified: true,
+    lastMessage: "What's on your mind?",
+    lastMessageTime: "10h"
+
   },
   {
-    imageUrl: 'https://github.com/shadcn.pngg',
+    id: 48416786,
+    imageUrl: 'https://github.com/shadcn.png',
     username: 'user10',
     name: 'Ivy Taylor',
     isVerified: false,
+    lastMessage: 'Howdy!',
+    lastMessageTime: "15h"
+
   },
   {
-    imageUrl: 'https://github.com/shadcn.pngg',
+    id: 48410786,
+    imageUrl: 'https://github.com/shadcn.png',
     username: 'user11',
     name: 'Kevin Brown',
     isVerified: true,
+    lastMessage: 'Greetings from Kevin!',
+    lastMessageTime: "last year"
+
   },
   {
-    imageUrl: 'https://github.com/shadcn.pngg',
+    id: 48418586,
+    imageUrl: 'https://github.com/shadcn.png',
     username: 'user12',
     name: 'Laura Harris',
     isVerified: false,
+    lastMessage: 'Hi there!',
+    lastMessageTime: "two months ago"
+
+  },
+  {
+    id: 48418776,
+    imageUrl: 'https://github.com/shadcn.png',
+    username: 'chatGPT',
+    name: 'ChatGPT',
+    isVerified: true,
+    lastMessage: 'Hello from ChatGPT! 😊',
+    lastMessageTime: "yesterday"
+
   },
 ];
+const pinnedConversations = [{
+  imageUrl: 'https://github.com/shadcn.png',
+  username: 'user12',
+  name: 'Laura Harris',
+  isVerified: false,
+  lastMessage: 'Hi there!',
+  lastMessageTime: "two months ago"
+
+},
+{
+  imageUrl: 'https://github.com/shadcn.png',
+  username: 'chatGPT',
+  name: 'ChatGPT',
+  isVerified: true,
+  lastMessage: 'Hello from ChatGPT! 😊',
+  lastMessageTime: "yesterday"
+
+},
+];
+const AllowMessagesOptions = [
+  "No one", "Verified Users", "Everyone"
+]
 const whoToReply = [
   {
     text: "Everyone",
@@ -202,5 +280,89 @@ const whoToReply = [
   }
 
 ]
+const searchHeaderOptions = [
+  "ALL", "People", "Groups", "Messages"
+]
+const tempMessagesSearch =
+  {
+    conversations: [{
+      imageUrl: 'https://github.com/shadcn.png',
+      username: 'user12',
+      name: 'Laura Harris',
+      isVerified: false,
+      lastMessage: 'Hi there!',
+      lastMessageTime: "two months ago"
+    }],
+    users: [{
+      imageUrl: 'https://github.com/shadcn.png',
+      username: 'chatGPT',
+      name: 'ChatGPT',
+      isVerified: true,
+      lastMessage: 'Hello from ChatGPT! 😊',
+      lastMessageTime: "yesterday"
+    }]
+  }
 
-export { navLinks, settingsOptions, accountOptions, userArray, whoToReply,tags };
+ const chat = [
+  {
+    "status": "unseen",
+    "id": "chat123",
+    "date": "2023-12-01T15:45:00Z",
+    "text": "Hello User2! How's your day going?",
+    "userName": "marwanSamy99",
+    "userPhoto": "https://example.com/user1.jpg",
+    "media": {
+      "url": "https://example.com/image1.jpg",
+      "type": "image"
+    }
+  },
+  {
+    "status": "seen",
+    "id": "chat124",
+    "date": "2023-11-30T16:30:00Z",
+    "text": "Hi User1! My day is good, thank you. Yours?",
+    "userName": "User2",
+    "userPhoto": "https://example.com/user2.jpg",
+    "media": {
+      "url": "https://i.ibb.co/DRXmdvR/sunset-anime-girl-hd-wallpaper-1080x608.jpg%22%20alt=%22sunset-anime-girl-hd-wallpaper-1080x608",
+      "type": "audio"
+    }
+  },
+  {
+    "status": "unseen",
+    "id": "chat125",
+    "date": "2023-11-25T17:15:00Z",
+    "text": "I'm doing well too! Any exciting plans for the evening?",
+    "userName": "marwanSamy99",
+    "userPhoto": "https://example.com/user1.jpg",
+    "media": {
+      "url": "https://example.com/video1.mp4",
+      "type": "video"
+    }
+  },
+  {
+    "status": "seen",
+    "id": "chat126",
+    "date": "2023-10-01T18:00:00Z",
+    "text": "Not much, just relaxing. How about you?",
+    "userName": "User2",
+    "userPhoto": "https://example.com/user2.jpg",
+    "media": {
+      "url": "https://example.com/image2.jpg",
+      "type": "image"
+    }
+  },
+  {
+    "status": "unseen",
+    "id": "chat127",
+    "date": "2023-09-01T19:30:00Z",
+    "text": "I'm planning to catch up on some reading. Any book recommendations?",
+    "userName": "marwanSamy99",
+    "userPhoto": "https://example.com/user1.jpg",
+    "media": {
+      "url": "https://i.ibb.co/DRXmdvR/sunset-anime-girl-hd-wallpaper-1080x608.jpg%22%20alt=%22sunset-anime-girl-hd-wallpaper-1080x608",
+      "type": "value"
+    }
+  }
+  ]
+export { navLinks, tempMessagesSearch,chat, settingsOptions, accountOptions, searchHeaderOptions, userArray, pinnedConversations, whoToReply, tags, AllowMessagesOptions };
