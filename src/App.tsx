@@ -32,8 +32,8 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme"> */}
-      {/* <UserContextProvider>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        {/* <UserContextProvider>
           <Routes location={previousLocation || location}>
             <Route path="/" element={<Authentication />} />
           </Routes>
@@ -61,10 +61,10 @@ function App() {
           </Routes>
           <Toaster />
         </UserContextProvider> */}
-      {/* <FollowCard /> */}
-      {/* <TrendCard /> */}
-      {/* </ThemeProvider> */}
-      <FollowList />
+        {/* <FollowCard /> */}
+        {/* <TrendCard /> */}
+        <FollowList />
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
