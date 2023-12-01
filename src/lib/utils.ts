@@ -783,7 +783,7 @@ export const UnFollowService = async (username:string) => {
 export const GetTrendsService = async () => {
   try {
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/trends`);
-    return res.data;
+    return res.data.data;
   } catch (err) {
     console.log(err);
     return null;
