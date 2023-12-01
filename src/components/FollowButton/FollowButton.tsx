@@ -2,14 +2,12 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { FollowService, UnFollowService } from "@/lib/utils";
-import { FollowRelation } from "../../models/FollowRelation";
 import { WarningPopUp } from "../WarningPopUp/WarningPopUp";
 import { FollowButtonProp } from "./FollowButtonProp";
 
-
-export function FollowButton({ username, FollowState }: FollowButtonProp) {
+export function FollowButton({ username, isFollowing }: FollowButtonProp) {
   const [isHovered, setIsHovered] = useState(false);
-  const [state, setstate] = useState(FollowState);
+  const [state, setstate] = useState(isFollowing);
   const [showDialog, setshowDialog] = useState(false);
   const {
     mutateAsync: FollowServiceFn,
@@ -31,19 +29,19 @@ export function FollowButton({ username, FollowState }: FollowButtonProp) {
   };
   const handleFollowButton = () => {
     FollowServiceFn(username);
-    setstate(FollowRelation.following);
+    setstate(true);
   };
   const handleunFollowButton = () => {
     setshowDialog(true);
   };
   const confirmUnFollowButton = () => {
     unFollowServiceFn(username);
-    setstate(FollowRelation.notfollowing);
+    setstate(false);
     setshowDialog(false);
   };
   return (
     <>
-      {state === FollowRelation.notfollowing && (
+      {state === false && (
         <Button
           onClick={handleFollowButton}
           className="text-sm w-[100px] h-[30px] font-bold"
@@ -51,7 +49,7 @@ export function FollowButton({ username, FollowState }: FollowButtonProp) {
           <span className="text-black">Follow</span>
         </Button>
       )}
-      {state === FollowRelation.following && (
+      {state === true && (
         <Button
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}

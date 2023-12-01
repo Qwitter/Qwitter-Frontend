@@ -1,7 +1,6 @@
 import { MdOutlineVerified } from "react-icons/md";
 import { CardContent } from "../ui/card";
 import { FollowButton } from "../FollowButton/FollowButton";
-import { FollowRelation } from "@/models/FollowRelation";
 import { UsersListItemProp } from "./UsersListItemProp";
 
 export function UsersListItem({
@@ -11,6 +10,7 @@ export function UsersListItem({
   verified,
   description,
   showDesc,
+  isFollowing,
 }: UsersListItemProp) {
   return (
     <CardContent className="hover:cursor-pointer py-3 hover:bg-light-gray">
@@ -29,10 +29,7 @@ export function UsersListItem({
               </div>
               <div className="text-[#595d62]">{username}</div>
             </div>
-            <FollowButton
-              FollowState={FollowRelation.notfollowing}
-              username={username}
-            />
+            <FollowButton isFollowing={isFollowing} username={username} />
           </div>
           {showDesc && <div>{description}</div>}
         </div>

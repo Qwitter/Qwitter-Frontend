@@ -12,6 +12,7 @@ export const FollowingsWorker: ResponseResolver = async () => {
                     description: "this is the fucking description",
                     profileImageUrl:
                         "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg",
+                    isFollowing:true,
                 },
                 {
                     name: "helmy",
@@ -20,6 +21,7 @@ export const FollowingsWorker: ResponseResolver = async () => {
                     description: "this is the fucking description",
                     profileImageUrl:
                         "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg",
+                    isFollowing: true,
                 },
             ],
         },

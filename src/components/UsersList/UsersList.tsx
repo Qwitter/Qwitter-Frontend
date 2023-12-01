@@ -32,6 +32,7 @@ export function UsersList({ showDesc, getusers }: UsersListProp) {
           verified={user.verified}
           profileImageUrl={user.profileImageUrl}
           itemType={FollowRelation.following}
+          isFollowing={user.isFollowing}
         />
       ))}
     </>
