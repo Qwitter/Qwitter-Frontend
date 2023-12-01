@@ -57,7 +57,7 @@ export function Login(pros?:loginprops) {
         if (res) {
             form.reset();
             saveUser(res.user,res.token);
-            navigate("/settings");
+            navigate("/home");
         }
         else {
             toast({

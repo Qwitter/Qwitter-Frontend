@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { z } from "zod";
 import {
   PasswordChangeEmailVerificationTokenSchema,
@@ -143,10 +143,9 @@ export const updateUsername = async ({
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    return res.status == 200;
+    return res.status;
   } catch (err) {
-    console.log(err);
-    return null;
+    return err.response.status||null;
   }
 };
 /**
@@ -165,16 +164,14 @@ export const updateEmail = async ({
   const parsedEmail = z.string().email().safeParse(email);
   if (!parsedEmail.success || !parseToken.success) return null;
   try {
-    // const res = await axios.post(
-    //   `${VITE_BACKEND_URL}/api/v1/auth/change-email`,
-    //   {
-    //     email: email,
-    //   },
-    //   { headers: { Authorization: `Bearer ${token}` } }
-    // );
-    //return res.status == 200;
-    if (email == "kaito.kid.1972002@gmail.com") return true;
-    else throw new Error("not valid");
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/auth/change-email`,
+      {
+        email: email,
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return res;
   } catch (err) {
     console.log(err);
     throw new Error("not valid");
@@ -197,17 +194,15 @@ export const verifyPassword = async ({
   const parsePassword = z.string().safeParse(password);
   if (!parsePassword.success || !parseToken.success) return null;
   try {
-    // const res = await axios.post(
-    //   `${VITE_BACKEND_URL}/api/v1/auth/check-password`,
-    //   {
-    //     password: password,
-    //   },
-    //   { headers: { Authorization: `Bearer ${token}` } }
-    // );
-    // return res.status == 200;
-    token;
-    if (password == "123456as") return password == "123456as";
-    else throw new Error("not valid");
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/auth/check-password`,
+      {
+        password: password,
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return res.data.correct;
+  
   } catch (err) {
     console.log(err);
     throw new Error("not valid");
