@@ -1,8 +1,6 @@
 import { HttpResponse, ResponseResolver } from "msw";
 
-export const UploadProfileImageWorker: ResponseResolver = async ({
-  request,
-}) => {
+export const UploadProfileImageWorker: ResponseResolver = async () => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   // if (request.headers.get("Authorization") == "Bearer abc123") {

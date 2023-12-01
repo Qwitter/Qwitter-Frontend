@@ -364,9 +364,7 @@ export const verifySignUpEmail = async (email: string, token: string) => {
     );
     return res;
   } catch (err) {
-    const errObj = err as { response: { data: { message: string } } };
-    if (errObj.response) throw new Error(errObj.response.data.message);
-    else throw new Error("Error Verifying Email");
+    throw new Error("Wrong Token. Please check again");
   }
 };
 
@@ -376,6 +374,7 @@ export const verifySignUpEmail = async (email: string, token: string) => {
  * @returns object represents the response from the backend or throws error
  */
 export const verifyResetPasswordEmail = async (token: string) => {
+  console.log(token);
   const parseResult =
     PasswordChangeEmailVerificationTokenSchema.safeParse(token);
   if (!parseResult.success) throw new Error("Invalid token");
@@ -388,9 +387,7 @@ export const verifyResetPasswordEmail = async (token: string) => {
     return res;
   } catch (err) {
     console.log(err);
-    const errObj = err as { response: { data: { message: string } } };
-    if (errObj.response) throw new Error(errObj.response.data.message);
-    else throw new Error("Error Verifying Email");
+    throw new Error("Wrong Token. Please check again");
   }
 };
 
@@ -575,11 +572,14 @@ export const getUsersSuggestions = async (token: string, username: string) => {
  */
 export const getHashtags = async (token: string, tag: string) => {
   try {
-    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/tweets/hashtags?q=${tag.slice(1)}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/tweets/hashtags?q=${tag.slice(1)}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return res.data;
   } catch (err) {
     console.log(err);

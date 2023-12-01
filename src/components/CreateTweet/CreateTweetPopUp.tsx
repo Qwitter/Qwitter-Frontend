@@ -1,4 +1,4 @@
-import { Avatar, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useQuery } from "@tanstack/react-query";
 import { getHashtags, getUsersSuggestions } from "@/lib/utils";
 import { useContext, useEffect } from "react";
@@ -28,10 +28,10 @@ type User = {
 }
 
 type ShowUsersSuggestionsProps = {
-    onUserClick: (username: string) => void;
-    closePopup: () => void;
-    username?: string;
-    tag?: string;
+  onUserClick: (username: string) => void;
+  closePopup: () => void;
+  username?: string;
+  tag?: string;
 };
 
 function CreateTweetPopUp({ popUp, closePopup, handleUserClick ,mode="createTweet" }: CreateTweetPopUpProps) {
@@ -71,18 +71,16 @@ function ShowUsersSuggestions({ onUserClick, username, closePopup }: ShowUsersSu
         refetch();
     }, [username, refetch]);
 
-    if (isPending) {
-        return (
-            <div className='w-full h-[180px] p-8'>
-                <Spinner />
-            </div>
-        )
-    }
-    if (data && data.length == 0) {
-
-        closePopup()
-    }
-
+  if (isPending) {
+    return (
+      <div className="w-full h-[180px] p-8">
+        <Spinner />
+      </div>
+    );
+  }
+  if (data && data.length == 0) {
+    closePopup();
+  }
 
     return (
         <ul >
@@ -121,33 +119,35 @@ function ShowTagsSuggestions({ onUserClick,tag,closePopup }: ShowUsersSuggestion
         refetch();
     }, [tag, refetch]);
 
-    if (isPending) {
-        return (
-            <div className='w-full h-[180px] p-8'>
-                <Spinner />
-            </div>
-        )
-    }
-    if (data && data.length == 0) {
-
-        closePopup()
-    }
-
-
+  if (isPending) {
     return (
-        <ul >
-            {!data || data.length == 0 ? <div className='w-full h-[180px] p-8'>
-                    <Spinner />
-                </div> : data!.map((tag,index) => (
-                    <li key={index} className="py-3 px-4 flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer" onClick={() => onUserClick(tag.text)}>
+      <div className="w-full h-[180px] p-8">
+        <Spinner />
+      </div>
+    );
+  }
+  if (data && data.length == 0) {
+    closePopup();
+  }
 
-                        <p className="text-base text-primary">{tag.text}</p>
-
-                    </li>
-                ))
-
-            }
-        </ul>
-    )
+  return (
+    <ul>
+      {!data || data.length == 0 ? (
+        <div className="w-full h-[180px] p-8">
+          <Spinner />
+        </div>
+      ) : (
+        data!.map((tag, index) => (
+          <li
+            key={index}
+            className="py-3 px-4 flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer"
+            onClick={() => onUserClick(tag.text)}
+          >
+            <p className="text-base text-primary">{tag.text}</p>
+          </li>
+        ))
+      )}
+    </ul>
+  );
 }
-export default CreateTweetPopUp 
+export default CreateTweetPopUp;
