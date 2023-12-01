@@ -284,24 +284,85 @@ const searchHeaderOptions = [
   "ALL", "People", "Groups", "Messages"
 ]
 const tempMessagesSearch =
-{
-  conversations: [{
-    imageUrl: 'https://github.com/shadcn.png',
-    username: 'user12',
-    name: 'Laura Harris',
-    isVerified: false,
-    lastMessage: 'Hi there!',
-    lastMessageTime: "two months ago"
-  }],
-  users: [{
-    imageUrl: 'https://github.com/shadcn.png',
-    username: 'chatGPT',
-    name: 'ChatGPT',
-    isVerified: true,
-    lastMessage: 'Hello from ChatGPT! 😊',
-    lastMessageTime: "yesterday"
-  }]
-}
+  {
+    conversations: [{
+      imageUrl: 'https://github.com/shadcn.png',
+      username: 'user12',
+      name: 'Laura Harris',
+      isVerified: false,
+      lastMessage: 'Hi there!',
+      lastMessageTime: "two months ago"
+    }],
+    users: [{
+      imageUrl: 'https://github.com/shadcn.png',
+      username: 'chatGPT',
+      name: 'ChatGPT',
+      isVerified: true,
+      lastMessage: 'Hello from ChatGPT! 😊',
+      lastMessageTime: "yesterday"
+    }]
+  }
 
-
-export { navLinks, tempMessagesSearch, settingsOptions, accountOptions, searchHeaderOptions, userArray, pinnedConversations, whoToReply, tags, AllowMessagesOptions };
+ const chat = [
+  {
+    "status": "unseen",
+    "id": "chat123",
+    "date": "2023-12-01T15:45:00Z",
+    "text": "Hello User2! How's your day going?",
+    "userName": "marwanSamy99",
+    "userPhoto": "https://example.com/user1.jpg",
+    "media": {
+      "url": "https://example.com/image1.jpg",
+      "type": "image"
+    }
+  },
+  {
+    "status": "seen",
+    "id": "chat124",
+    "date": "2023-11-30T16:30:00Z",
+    "text": "Hi User1! My day is good, thank you. Yours?",
+    "userName": "User2",
+    "userPhoto": "https://example.com/user2.jpg",
+    "media": {
+      "url": "https://example.com/audio.mp3",
+      "type": "audio"
+    }
+  },
+  {
+    "status": "unseen",
+    "id": "chat125",
+    "date": "2023-11-25T17:15:00Z",
+    "text": "I'm doing well too! Any exciting plans for the evening?",
+    "userName": "marwanSamy99",
+    "userPhoto": "https://example.com/user1.jpg",
+    "media": {
+      "url": "https://example.com/video1.mp4",
+      "type": "video"
+    }
+  },
+  {
+    "status": "seen",
+    "id": "chat126",
+    "date": "2023-10-01T18:00:00Z",
+    "text": "Not much, just relaxing. How about you?",
+    "userName": "User2",
+    "userPhoto": "https://example.com/user2.jpg",
+    "media": {
+      "url": "https://example.com/image2.jpg",
+      "type": "image"
+    }
+  },
+  {
+    "status": "unseen",
+    "id": "chat127",
+    "date": "2023-09-01T19:30:00Z",
+    "text": "I'm planning to catch up on some reading. Any book recommendations?",
+    "userName": "marwanSamy99",
+    "userPhoto": "https://example.com/user1.jpg",
+    "media": {
+      "url": "https://example.com/location1.png",
+      "type": "location"
+    }
+  }
+  ]
+export { navLinks, tempMessagesSearch,chat, settingsOptions, accountOptions, searchHeaderOptions, userArray, pinnedConversations, whoToReply, tags, AllowMessagesOptions };
