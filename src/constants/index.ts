@@ -324,7 +324,7 @@ const tempMessagesSearch =
     "userName": "User2",
     "userPhoto": "https://example.com/user2.jpg",
     "media": {
-      "url": "https://example.com/audio.mp3",
+      "url": "https://i.ibb.co/DRXmdvR/sunset-anime-girl-hd-wallpaper-1080x608.jpg%22%20alt=%22sunset-anime-girl-hd-wallpaper-1080x608",
       "type": "audio"
     }
   },
@@ -360,8 +360,8 @@ const tempMessagesSearch =
     "userName": "marwanSamy99",
     "userPhoto": "https://example.com/user1.jpg",
     "media": {
-      "url": "https://example.com/location1.png",
-      "type": "location"
+      "url": "https://i.ibb.co/DRXmdvR/sunset-anime-girl-hd-wallpaper-1080x608.jpg%22%20alt=%22sunset-anime-girl-hd-wallpaper-1080x608",
+      "type": "value"
     }
   }
   ]

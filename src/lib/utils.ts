@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { z } from "zod";
 import {
   PasswordChangeEmailVerificationTokenSchema,
@@ -144,8 +144,9 @@ export const updateUsername = async ({
       { headers: { Authorization: `Bearer ${token}` } }
     );
     return res.status;
-  } catch (err) {
-    return err.response.status||null;
+  } catch (err ) {
+    const error = err as {response:{status:string}}
+    return error.response.status||null;
   }
 };
 /**
