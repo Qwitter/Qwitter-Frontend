@@ -21,6 +21,7 @@ import Authentication from "../src/pages/Authentication/Authentication";
 import { FollowCard } from "./components/FollowCard/FollowCard";
 import { UsersList } from "./components/UsersList/UsersList";
 import { GetFollowSuggestionsService } from "./lib/utils";
+import { TrendCard } from "./components/TrendCard/TrendCard";
 
 const queryClient = new QueryClient();
 
@@ -59,7 +60,8 @@ function App() {
           </Routes>
           <Toaster />
         </UserContextProvider> */}
-        <FollowCard />
+        {/* <FollowCard /> */}
+        <TrendCard />
       </ThemeProvider>
     </QueryClientProvider>
   );
