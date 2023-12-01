@@ -8,7 +8,7 @@ export function TrendCard() {
           <CardTitle className="text-xl font-bold ">What’s happening</CardTitle>
         </CardHeader>
         <TrendList />
-        <CardFooter className="hover:cursor-pointer mt-3">
+        <CardFooter className="hover:cursor-pointer mt-3 pt-3 hover:bg-light-gray rounded">
           <span className="text-secondary">show more</span>
         </CardFooter>
       </Card>

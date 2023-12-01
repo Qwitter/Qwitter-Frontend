@@ -13,7 +13,7 @@ export function FollowCard() {
         getusers={GetFollowSuggestionsService}
         listType={true}
       />
-      <CardFooter className="hover:cursor-pointer mt-3">
+      <CardFooter className="hover:cursor-pointer mt-3 pt-3 hover:bg-light-gray rounded">
         <span className="text-secondary">show more</span>
       </CardFooter>
     </Card>
