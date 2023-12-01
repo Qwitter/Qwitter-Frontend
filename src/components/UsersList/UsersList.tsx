@@ -21,7 +21,6 @@ export function UsersList({ showDesc, getusers }: UsersListProp) {
     (async () => {
       const users: any = await getusersFn();
       setUsers(users);
-      console.log(users);
     })();
   }, []);
   return (
