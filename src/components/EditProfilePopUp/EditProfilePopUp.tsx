@@ -13,6 +13,7 @@ import { EditUserSchema } from "@/models/User";
 import { useToast } from "../ui/use-toast";
 import { DiscardProfileChanges } from "./DiscardProfileChanges";
 import { uploadProfileImage } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 type EditProfileProps = {
@@ -33,6 +34,7 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
   const [showDiscardChanges, setShowDiscardChanges] = useState<boolean>(false);
   const { user, token } = useContext(UserContext); // token will be used for authorization
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const contextBirthDate = new Date(user?.birthDate!);
   const birthDay = contextBirthDate.getDate();
@@ -75,6 +77,7 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
   const handleClose = (): void => {
     setShowEditProfile(false);
     if (onClose) onClose();
+    navigate(-1);
   };
 
   // NEEDED: handle loading state
@@ -84,6 +87,7 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
     if (Object.keys(form.formState.errors).length > 0) {
       if (form.formState.errors.website) {
         toast({
+          variant: "secondary",
           title: "Account Update Failed",
           description: form.formState.errors.website?.message?.toString(),
         });

@@ -4,7 +4,7 @@ import { type Tweet } from "@/models/Tweet";
 const tweet1: Tweet = {
   createdAt: "2023-11-23 5:02:00",
   id: "1718938551163691300",
-  user: {
+  author: {
     userName: "AhmedZahran2025",
     name: "Ahmed Zahran",
     profileImageUrl: "qwitter/photos/213902323",
@@ -85,7 +85,7 @@ const tweet1: Tweet = {
 const tweet2: Tweet = {
   createdAt: "2023-11-23 5:02:00",
   id: "1718938551163691301",
-  user: {
+  author: {
     userName: "AhmedZahran2025",
     name: "Ahmed Zahran",
     profileImageUrl: "qwitter/photos/213902323",

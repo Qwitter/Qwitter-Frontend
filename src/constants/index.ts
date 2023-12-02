@@ -1,4 +1,19 @@
-import { Home, Globe2, Search, UserCheck, Bell, Mail, AlignJustify, Bookmark, Users, User, Settings, KeyRound, BadgeCheck, AtSign } from 'lucide-react';
+import {
+  Home,
+  Globe2,
+  Search,
+  UserCheck,
+  Bell,
+  Mail,
+  AlignJustify,
+  Bookmark,
+  Users,
+  User,
+  Settings,
+  KeyRound,
+  BadgeCheck,
+  AtSign,
+} from "lucide-react";
 
 const navLinks = [
   {
@@ -6,71 +21,64 @@ const navLinks = [
     title: "Home",
     icon: Home,
     clicked: { strokeWidth: 3 },
-    notificationCount: 1
-
+    notificationCount: 1,
   },
   {
     id: "search",
     title: "Search",
     icon: Search,
     clicked: { strokeWidth: 3 },
-    notificationCount: 5
-
+    notificationCount: 5,
   },
   {
     id: "notification",
     title: "Notification",
     icon: Bell,
-    clicked: { fill: 'white' },
-    notificationCount: 0
+    clicked: { fill: "white" },
+    notificationCount: 0,
   },
   {
     id: "messages",
     title: "Messages",
     icon: Mail,
     clicked: { strokeWidth: 4 },
-    notificationCount: 0
+    notificationCount: 0,
   },
   {
     id: "lists",
     title: "Lists",
     icon: AlignJustify,
-    clicked: { strokeWidth: 4 }
-    ,
-    notificationCount: 0
+    clicked: { strokeWidth: 4 },
+    notificationCount: 0,
   },
   {
     id: "bookmarks",
     title: "Bookmarks",
     icon: Bookmark,
-    clicked: { fill: 'white' }
-    ,
-    notificationCount: 0
-
+    clicked: { fill: "white" },
+    notificationCount: 0,
   },
   {
     id: "community",
     title: "Community",
     icon: Users,
-    clicked: { fill: 'white' },
-    notificationCount: 0
-
+    clicked: { fill: "white" },
+    notificationCount: 0,
   },
   {
     id: "profile",
     title: "Profile",
     icon: User,
-    clicked: { fill: 'white' },
-    notificationCount: 0
-
+    clicked: { fill: "white" },
+    notificationCount: 0,
   },
   {
     id: "settings",
     title: "Settings",
     icon: Settings,
     clicked: { strokeWidth: 3 },
-    notificationCount: 100
-  }
+    notificationCount: 100,
+  },
 ];
 const settingsOptions = [
   {
@@ -81,190 +89,191 @@ const settingsOptions = [
   //   id: "privacy_and_safety",
   //   title: "Privacy and safety",
   // }
-]
+];
 const accountOptions = [
   {
     id: "/your_twitter_data/account",
     title: "Account information",
-    description: "See your account information like your phone number and email address.",
-    icon: User
+    description:
+      "See your account information like your phone number and email address.",
+    icon: User,
   },
   {
     id: "/password",
     title: "Change your password",
     description: "Change your password at any time.",
-    icon: KeyRound
+    icon: KeyRound,
   },
-
-]
+];
 const tags = [
-  'JoyfulmemoriesinDublin!',
-  'UnityforabetterfutureinGaza',
-  'Thoughts on the current situation in Gaza.',
-  'Exploring the streets of Dublin.',
-  'Fun times in Dublin!',
-  'Discovering hidden gems in Dublin.',
-  'Memorable moments in Dublin.',
-  'A call for peace in Gaza.',
-
-
-]
+  "JoyfulmemoriesinDublin!",
+  "UnityforabetterfutureinGaza",
+  "Thoughts on the current situation in Gaza.",
+  "Exploring the streets of Dublin.",
+  "Fun times in Dublin!",
+  "Discovering hidden gems in Dublin.",
+  "Memorable moments in Dublin.",
+  "A call for peace in Gaza.",
+];
 const userArray = [
   {
-    imageUrl: 'https://github.com/shadcn.png',
-    username: 'user1',
-    name: 'John Doe',
+    imageUrl: "https://github.com/shadcn.png",
+    username: "user1",
+    name: "John Doe",
     isVerified: true,
-    lastMessage: 'Hey there!',
-    lastMessageTime:"5h",
+    lastMessage: "Hey there!",
+    lastMessageTime: "5h",
   },
   {
-    imageUrl: 'https://github.com/shadcn.png',
-    username: 'user2',
-    name: 'Jane Smith',
+    imageUrl: "https://github.com/shadcn.png",
+    username: "user2",
+    name: "Jane Smith",
     isVerified: false,
-    lastMessage: 'How are you doing?',
-    lastMessageTime:"9h"
+    lastMessage: "How are you doing?",
+    lastMessageTime: "9h",
   },
   {
-    imageUrl: 'https://github.com/shadcn.png',
-    username: 'user3',
-    name: 'Bob Johnson',
+    imageUrl: "https://github.com/shadcn.png",
+    username: "user3",
+    name: "Bob Johnson",
     isVerified: true,
-    lastMessage: 'Nice to meet you!',
-    lastMessageTime:"yesterday"
+    lastMessage: "Nice to meet you!",
+    lastMessageTime: "yesterday",
   },
   {
-    imageUrl: 'https://github.com/shadcn.png',
-    username: 'user4',
-    name: 'Alice Williams',
+    imageUrl: "https://github.com/shadcn.png",
+    username: "user4",
+    name: "Alice Williams",
     isVerified: false,
     lastMessage: "What's up?",
-    lastMessageTime:"yesterday"
-
+    lastMessageTime: "yesterday",
   },
   {
-    imageUrl: 'https://github.com/shadcn.png',
-    username: 'user5',
-    name: 'Charlie Brown',
+    imageUrl: "https://github.com/shadcn.png",
+    username: "user5",
+    name: "Charlie Brown",
     isVerified: true,
-    lastMessage: 'Greetings!',
-    lastMessageTime:"a week ago"
-
+    lastMessage: "Greetings!",
+    lastMessageTime: "a week ago",
   },
   {
-    imageUrl: 'https://github.com/shadcn.png',
-    username: 'marwanSamy',
-    name: 'Eva Davis',
+    imageUrl: "https://github.com/shadcn.png",
+    username: "marwanSamy",
+    name: "Eva Davis",
     isVerified: false,
-    lastMessage: 'Hello world!',
-    lastMessageTime:"a month ago"
-
+    lastMessage: "Hello world!",
+    lastMessageTime: "a month ago",
   },
   {
-    imageUrl: 'https://github.com/shadcn.png',
-    username: 'ahmedCR7',
-    name: 'Frank White',
+    imageUrl: "https://github.com/shadcn.png",
+    username: "ahmedCR7",
+    name: "Frank White",
     isVerified: true,
     lastMessage: "How's it going?",
-    lastMessageTime:"yesterday"
-
+    lastMessageTime: "yesterday",
   },
   {
-    imageUrl: 'https://github.com/shadcn.png',
-    username: 'KillYou',
-    name: 'Grace Miller',
+    imageUrl: "https://github.com/shadcn.png",
+    username: "KillYou",
+    name: "Grace Miller",
     isVerified: false,
     lastMessage: "Nice day, isn't it?",
-    lastMessageTime:"19h"
-
+    lastMessageTime: "19h",
   },
   {
-    imageUrl: 'https://github.com/shadcn.png',
-    username: 'yarab',
-    name: 'Harry Wilson',
+    imageUrl: "https://github.com/shadcn.png",
+    username: "yarab",
+    name: "Harry Wilson",
     isVerified: true,
     lastMessage: "What's on your mind?",
-    lastMessageTime:"10h"
-
+    lastMessageTime: "10h",
   },
   {
-    imageUrl: 'https://github.com/shadcn.png',
-    username: 'user10',
-    name: 'Ivy Taylor',
+    imageUrl: "https://github.com/shadcn.png",
+    username: "user10",
+    name: "Ivy Taylor",
     isVerified: false,
-    lastMessage: 'Howdy!',
-    lastMessageTime:"15h"
-
+    lastMessage: "Howdy!",
+    lastMessageTime: "15h",
   },
   {
-    imageUrl: 'https://github.com/shadcn.png',
-    username: 'user11',
-    name: 'Kevin Brown',
+    imageUrl: "https://github.com/shadcn.png",
+    username: "user11",
+    name: "Kevin Brown",
     isVerified: true,
-    lastMessage: 'Greetings from Kevin!',
-    lastMessageTime:"last year"
-
+    lastMessage: "Greetings from Kevin!",
+    lastMessageTime: "last year",
   },
   {
-    imageUrl: 'https://github.com/shadcn.png',
-    username: 'user12',
-    name: 'Laura Harris',
+    imageUrl: "https://github.com/shadcn.png",
+    username: "user12",
+    name: "Laura Harris",
     isVerified: false,
-    lastMessage: 'Hi there!',
-    lastMessageTime:"two months ago"
-
+    lastMessage: "Hi there!",
+    lastMessageTime: "two months ago",
   },
   {
-    imageUrl: 'https://github.com/shadcn.png',
-    username: 'chatGPT',
-    name: 'ChatGPT',
+    imageUrl: "https://github.com/shadcn.png",
+    username: "chatGPT",
+    name: "ChatGPT",
     isVerified: true,
-    lastMessage: 'Hello from ChatGPT! 😊',
-    lastMessageTime:"yesterday"
-
+    lastMessage: "Hello from ChatGPT! 😊",
+    lastMessageTime: "yesterday",
   },
 ];
-const pinnedConversations = [{
-  imageUrl: 'https://github.com/shadcn.png',
-  username: 'user12',
-  name: 'Laura Harris',
-  isVerified: false,
-  lastMessage: 'Hi there!',
-  lastMessageTime:"two months ago"
-
-},
-{
-  imageUrl: 'https://github.com/shadcn.png',
-  username: 'chatGPT',
-  name: 'ChatGPT',
-  isVerified: true,
-  lastMessage: 'Hello from ChatGPT! 😊',
-  lastMessageTime:"yesterday"
-
-},
+const pinnedConversations = [
+  {
+    imageUrl: "https://github.com/shadcn.png",
+    username: "user12",
+    name: "Laura Harris",
+    isVerified: false,
+    lastMessage: "Hi there!",
+    lastMessageTime: "two months ago",
+  },
+  {
+    imageUrl: "https://github.com/shadcn.png",
+    username: "chatGPT",
+    name: "ChatGPT",
+    isVerified: true,
+    lastMessage: "Hello from ChatGPT! 😊",
+    lastMessageTime: "yesterday",
+  },
 ];
-const AllowMessagesOptions =[
-  "No one","Verified Users","Everyone"
-]
+const AllowMessagesOptions = ["No one", "Verified Users", "Everyone"];
 const whoToReply = [
   {
     text: "Everyone",
-    icon: Globe2
+    icon: Globe2,
   },
   {
     text: "Accounts you follow",
-    icon: UserCheck
+    icon: UserCheck,
   },
   {
     text: "Verified accounts",
-    icon: BadgeCheck
+    icon: BadgeCheck,
   },
   {
     text: "Only accounts you mention",
-    icon: AtSign
-  }
+    icon: AtSign,
+  },
+];
 
-]
+const profileSections = [
+  { title: "Posts", dataLink: "" },
+  { title: "Replies", dataLink: "/with_replies" },
+  { title: "Media", dataLink: "/media" },
+  { title: "Likes", dataLink: "/likes" },
+];
 
-export { navLinks, settingsOptions, accountOptions, userArray,pinnedConversations, whoToReply,tags,AllowMessagesOptions };
+export {
+  navLinks,
+  settingsOptions,
+  accountOptions,
+  userArray,
+  pinnedConversations,
+  whoToReply,
+  tags,
+  AllowMessagesOptions,
+  profileSections,
+};

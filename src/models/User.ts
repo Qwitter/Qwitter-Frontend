@@ -36,14 +36,17 @@ export const EditUserSchema = z
     website: z
       .string()
       .nullish()
-      .refine((val) => {
-        if (val?.trim() === "") {
-          return true;
-        }
-        return /^(?:\w+:)?\/\/([^\s./]+\.\S{2}|localhost[\:?\d]*)\S*$/.test(
-          val?.includes("http") ? val : `http://${val!}`
-        );
-      }),
+      .refine(
+        (val) => {
+          if (val?.trim() === "") {
+            return true;
+          }
+          return /^(?:\w+:)?\/\/([^\s./]+\.\S{2}|localhost[\:?\d]*)\S*$/.test(
+            val?.includes("http") ? val : `http://${val!}`
+          );
+        },
+        { message: "Url is not valid." }
+      ),
     day: Step1DataSchema.shape.day,
     month: Step1DataSchema.shape.month,
     year: Step1DataSchema.shape.year,
@@ -73,11 +76,9 @@ export const EditUserSchema = z
 export const UserDataSchema = z.object({
   userName: z.string(),
   name: z.string(),
-  birthDate: z
-    .string()
-    .regex(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/, {
-      message: "birthDate must be in the format yyyy-mm-dd hh:mm:ss",
-    }),
+  birthDate: z.string().regex(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/, {
+    message: "birthDate must be in the format yyyy-mm-dd hh:mm:ss",
+  }),
   url: z.string().optional(),
   description: z.string(),
   protected: z.boolean().optional(),
@@ -88,11 +89,9 @@ export const UserDataSchema = z.object({
   followingCount: z
     .number()
     .min(0, { message: "followingCount must be positive or zero" }),
-  createdAt: z
-    .string()
-    .regex(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/, {
-      message: "createdAt must be in the format yyyy-mm-dd hh:mm:ss",
-    }),
+  createdAt: z.string().regex(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/, {
+    message: "createdAt must be in the format yyyy-mm-dd hh:mm:ss",
+  }),
   profileBannerUrl: z.string().url(),
   profileImageUrl: z.string().url(),
   email: z.string().email(),

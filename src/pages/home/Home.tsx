@@ -22,8 +22,8 @@ export function Home() {
 
   useEffect(() => {
     if (!token) return;
-      refetch();
-      console.log("refetch")
+    refetch();
+    console.log("refetch");
   }, [token, refetch]);
 
   return (

@@ -1,6 +1,7 @@
 import { SignUpStepsProps } from "@/models/SignUp";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
+import { useState } from "react";
 
 // step 2 of the sign up with terms and conditions
 export const Step2 = ({ nextStep }: SignUpStepsProps) => {
@@ -24,7 +25,7 @@ export const Step2 = ({ nextStep }: SignUpStepsProps) => {
             <Checkbox
               id="check"
               className="w-5 h-5 border-gray border-2"
-              checked
+              defaultChecked
             />
           </div>
         </div>
