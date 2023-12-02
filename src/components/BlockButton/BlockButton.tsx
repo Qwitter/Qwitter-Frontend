@@ -5,8 +5,8 @@ import { BlockService, UnBlockService } from "@/lib/utils";
 import { WarningPopUp } from "../WarningPopUp/WarningPopUp";
 import { BlockButtonProp } from "./BlockButtonProp";
 
-export function BlockButton({ username, isBlocked }: BlockButtonProp) {
-  const [state, setstate] = useState(isBlocked);
+export function BlockButton({ username }: BlockButtonProp) {
+  const [state, setstate] = useState(true);
   const [showDialog, setshowDialog] = useState(false);
   const {
     mutateAsync: BlockServiceFn,

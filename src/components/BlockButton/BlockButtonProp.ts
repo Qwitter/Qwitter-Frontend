@@ -1,4 +1,4 @@
 export type BlockButtonProp = {
     username: string;
-    isBlocked: boolean;
+    // isBlocked: boolean;
 };

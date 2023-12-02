@@ -36,7 +36,7 @@ export function UsersListItem({
               <FollowButton isFollowing={isFollowing} username={username} />
             )}
             {listType == "BlockList" && (
-              <BlockButton isBlocked={true} username={username} />
+              <BlockButton username={username} />
             )}
           </div>
           {showDesc && <div>{description}</div>}
