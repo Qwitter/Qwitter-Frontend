@@ -28,7 +28,13 @@ export function WarningPopUp({
             onClick={ButtonFunc}
             className="mt-4 w-full h-[45px] font-bold"
           >
-            <span className="text-black">{UserAction}</span>
+            <span
+              className={
+                ButtonVariant == "destructive" ? "text-white" : "text-black"
+              }
+            >
+              {UserAction}
+            </span>
           </Button>
           <Button
             variant={"outline"}

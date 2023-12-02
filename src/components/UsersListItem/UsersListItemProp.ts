@@ -7,4 +7,5 @@ export type UsersListItemProp = {
     username: string;
     description: string;
     isFollowing: boolean;
+    listType: string;
 };

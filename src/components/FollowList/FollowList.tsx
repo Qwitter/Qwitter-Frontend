@@ -3,6 +3,7 @@ import { useState } from "react";
 import "../../index.css";
 import { UsersList } from "../UsersList/UsersList";
 import { GetFollowersService, GetFollowingsService } from "@/lib/utils";
+import { BlockButton } from "../BlockButton/BlockButton";
 export function FollowList() {
   const [Liststate, setListstate] = useState("Following");
   return (
@@ -29,10 +30,19 @@ export function FollowList() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="Following">
-          <UsersList showDesc={true} getusers={GetFollowingsService} />
+          <UsersList
+            listType={"FollowList"}
+            showDesc={true}
+            getusers={GetFollowingsService}
+          />
+          <BlockButton isBlocked={false} username="yousefjoo" />
         </TabsContent>
         <TabsContent value="Followers">
-          <UsersList showDesc={true} getusers={GetFollowersService} />
+          <UsersList
+            listType={"FollowList"}
+            showDesc={true}
+            getusers={GetFollowersService}
+          />
         </TabsContent>
       </Tabs>
     </>

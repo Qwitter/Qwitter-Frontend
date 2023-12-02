@@ -4,7 +4,7 @@ import { UsersListItem } from "../UsersListItem/UsersListItem";
 import { User } from "@/models/User";
 import { UsersListProp } from "./UsersListProp";
 
-export function UsersList({ showDesc, getusers }: UsersListProp) {
+export function UsersList({ showDesc, getusers, listType }: UsersListProp) {
   const [users, setUsers] = useState<User[]>([]);
   const {
     mutateAsync: getusersFn,
@@ -30,6 +30,7 @@ export function UsersList({ showDesc, getusers }: UsersListProp) {
           verified={user.verified}
           profileImageUrl={user.profileImageUrl}
           isFollowing={user.isFollowing}
+          listType={listType}
         />
       ))}
     </>

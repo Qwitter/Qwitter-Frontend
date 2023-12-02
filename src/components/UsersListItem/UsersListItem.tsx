@@ -2,6 +2,7 @@ import { MdOutlineVerified } from "react-icons/md";
 import { CardContent } from "../ui/card";
 import { FollowButton } from "../FollowButton/FollowButton";
 import { UsersListItemProp } from "./UsersListItemProp";
+import { BlockButton } from "../BlockButton/BlockButton";
 
 export function UsersListItem({
   profileImageUrl,
@@ -11,6 +12,7 @@ export function UsersListItem({
   description,
   showDesc,
   isFollowing,
+  listType,
 }: UsersListItemProp) {
   return (
     <CardContent className="hover:cursor-pointer py-3 hover:bg-light-gray">
@@ -29,7 +31,13 @@ export function UsersListItem({
               </div>
               <div className="text-[#595d62]">{username}</div>
             </div>
-            <FollowButton isFollowing={isFollowing} username={username} />
+
+            {listType == "FollowList" && (
+              <FollowButton isFollowing={isFollowing} username={username} />
+            )}
+            {listType == "BlockList" && (
+              <BlockButton isBlocked={true} username={username} />
+            )}
           </div>
           {showDesc && <div>{description}</div>}
         </div>
