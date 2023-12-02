@@ -30,6 +30,8 @@ import { FollowUserWorker, UnFollowUserWorker } from "./FollowUserWorker/FollowU
 import { TrendsWorker } from "./TrendsWorker/TrendsWorker";
 import { FollowersWorker } from "./FollowersWorker/FollowersWorker";
 import { FollowingsWorker } from "./FollowingsWorker/FollowingsWorker";
+import { BlockUserWorker, UnBlockUserWorker } from "./BlockUserWorker/BlockUserWorker";
+import { BlockedWorker } from "./BlockedWorker/BlockedWorker";
 
 const { VITE_BACKEND_URL } = import.meta.env;
 
@@ -103,4 +105,7 @@ export const handlers = [
   http.get(`${VITE_BACKEND_URL}/api/v1/trends`, TrendsWorker),
   http.get(`${VITE_BACKEND_URL}/api/v1/user/followers`, FollowersWorker),
   http.get(`${VITE_BACKEND_URL}/api/v1/user/follow`, FollowingsWorker),
+  http.post(`${VITE_BACKEND_URL}/api/v1/user/block/:username`, BlockUserWorker),
+  http.delete(`${VITE_BACKEND_URL}/api/v1/user/block/:username`, UnBlockUserWorker),
+  http.get(`${VITE_BACKEND_URL}/api/v1/user/block`, BlockedWorker),
 ];

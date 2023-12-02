@@ -766,7 +766,6 @@ export const FollowService = async (username:string) => {
  */
 export const UnFollowService = async (username:string) => {
   try {
-    
     const res = await axios.delete(`${VITE_BACKEND_URL}/api/v1/user/follow/${username}`);
     return res.data;
   } catch (err) {
@@ -814,6 +813,52 @@ export const GetFollowersService = async () => {
 export const GetFollowingsService = async () => {
   try {
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/follow`);
+    return res.data.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+
+/**
+ * @description Block specific user
+ * @param username
+ * @returns  success or throws error if there is an error
+ */
+export const BlockService = async (username: string) => {
+  try {
+    const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/user/block/${username}`);
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+/**
+ * @description unblock specific user
+ * @param username
+ * @returns  success or throws error if there is an error
+ */
+export const UnBlockService = async (username: string) => {
+  try {
+
+    const res = await axios.delete(`${VITE_BACKEND_URL}/api/v1/user/block/${username}`);
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+/**
+ * @description get Blocked list in Settings page (Block and mute section)
+ * @param 
+ * @returns  users array represents the response from the backend or null
+ */
+export const GetBlockedService = async () => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/block`);
     return res.data.data;
   } catch (err) {
     console.log(err);
