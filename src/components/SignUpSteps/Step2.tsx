@@ -24,7 +24,7 @@ export const Step2 = ({ nextStep }: SignUpStepsProps) => {
             <Checkbox
               id="check"
               className="w-5 h-5 border-gray border-2"
-              checked
+              defaultChecked
             />
           </div>
         </div>
