@@ -1,21 +1,25 @@
 import { useMutation } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UsersListItem } from "../UsersListItem/UsersListItem";
 import { User } from "@/models/User";
 import { UsersListProp } from "./UsersListProp";
+import { UserContext } from "@/contexts/UserContextProvider";
 
 export function UsersList({ showDesc, getusers, listType }: UsersListProp) {
   const [users, setUsers] = useState<User[]>([]);
+  // const { token } = useContext(UserContext);
+  const token: string | null = "12";
   const {
     mutateAsync: getusersFn,
     // isPending: FollowSuggestionsServicePending,
   } = useMutation({
-    mutationFn: getusers,
+    mutationFn: token ? () => getusers(token) : undefined,
   });
   useEffect(() => {
     (async () => {
       const users: any = await getusersFn();
       setUsers(users);
+      console.log(users);
     })();
   }, []);
   return (

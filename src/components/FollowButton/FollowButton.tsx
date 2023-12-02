@@ -1,25 +1,34 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { FollowService, UnFollowService } from "@/lib/utils";
 import { WarningPopUp } from "../WarningPopUp/WarningPopUp";
 import { FollowButtonProp } from "./FollowButtonProp";
+import { UserContext } from "@/contexts/UserContextProvider";
 
 export function FollowButton({ username, isFollowing }: FollowButtonProp) {
   const [isHovered, setIsHovered] = useState(false);
   const [state, setstate] = useState(isFollowing);
   const [showDialog, setshowDialog] = useState(false);
+  // const { token } = useContext(UserContext);
+  const token: string | null = "12";
   const {
     mutateAsync: FollowServiceFn,
     // isPending: FollowServicePending,
   } = useMutation({
-    mutationFn: FollowService,
+    mutationFn: token
+      ? (username: string) => FollowService(username, token)
+      : undefined,
+    // mutationFn: FollowService,
   });
   const {
     mutateAsync: unFollowServiceFn,
     // isPending: FollowServicePending,
   } = useMutation({
-    mutationFn: UnFollowService,
+    mutationFn: token
+      ? (username: string) => UnFollowService(username, token)
+      : undefined,
+    // mutationFn: UnFollowService,
   });
   const handleMouseEnter = () => {
     setIsHovered(true);

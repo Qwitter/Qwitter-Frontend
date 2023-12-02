@@ -1,5 +1,5 @@
 export type UsersListProp = {
-    getusers: () => Promise<any>;
+    getusers: (token:string) => Promise<any>;
     showDesc: boolean;
     listType: string;
 };

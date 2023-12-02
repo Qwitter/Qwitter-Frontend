@@ -9,6 +9,7 @@ export function FollowCard() {
         <CardTitle className="text-xl font-bold ">Who to follow</CardTitle>
       </CardHeader>
       <UsersList
+        listType={"FollowList"}
         showDesc={false}
         getusers={GetFollowSuggestionsService}
       />

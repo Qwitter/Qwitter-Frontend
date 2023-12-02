@@ -18,17 +18,13 @@ import CreateTweetContainer from "./components/CreateTweet/CreateTweetContainer"
 import { LogOut } from "./components/LogOut/LogOut";
 import { PagesContainer } from "./pages/PagesContainer/PagesContainer";
 import Authentication from "../src/pages/Authentication/Authentication";
-import { FollowCard } from "./components/FollowCard/FollowCard";
-import { UsersList } from "./components/UsersList/UsersList";
-import { GetFollowSuggestionsService } from "./lib/utils";
-import { TrendCard } from "./components/TrendCard/TrendCard";
 import { FollowList } from "./components/FollowList/FollowList";
 
 const queryClient = new QueryClient();
 
 function App() {
   const location = useLocation();
-  // const previousLocation = location.state?.previousLocation;
+  const previousLocation = location.state?.previousLocation;
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -61,9 +57,7 @@ function App() {
           </Routes>
           <Toaster />
         </UserContextProvider> */}
-        {/* <FollowCard /> */}
-        {/* <TrendCard /> */}
-        <FollowList />
+        <FollowList type={"Following"} />
       </ThemeProvider>
     </QueryClientProvider>
   );

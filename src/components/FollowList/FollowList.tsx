@@ -3,8 +3,8 @@ import { useState } from "react";
 import "../../index.css";
 import { UsersList } from "../UsersList/UsersList";
 import { GetFollowersService, GetFollowingsService } from "@/lib/utils";
-export function FollowList() {
-  const [Liststate, setListstate] = useState("Following");
+export function FollowList({ type }: { type: string }) {
+  const [Liststate, setListstate] = useState(type);
   return (
     <>
       <Tabs defaultValue={Liststate} className="w-[400px]">
@@ -30,7 +30,7 @@ export function FollowList() {
         </TabsList>
         <TabsContent value="Following">
           <UsersList
-            listType={"BlockList"}
+            listType={"FollowList"}
             showDesc={true}
             getusers={GetFollowingsService}
           />
