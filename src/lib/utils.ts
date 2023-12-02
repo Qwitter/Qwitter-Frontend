@@ -842,7 +842,6 @@ export const BlockService = async (username: string) => {
  */
 export const UnBlockService = async (username: string) => {
   try {
-
     const res = await axios.delete(`${VITE_BACKEND_URL}/api/v1/user/block/${username}`);
     return res.data;
   } catch (err) {

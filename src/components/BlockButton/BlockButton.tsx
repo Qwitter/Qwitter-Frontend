@@ -1,35 +1,34 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
-import { FollowService, UnFollowService } from "@/lib/utils";
+import { BlockService, UnBlockService } from "@/lib/utils";
 import { WarningPopUp } from "../WarningPopUp/WarningPopUp";
 import { BlockButtonProp } from "./BlockButtonProp";
-
 
 export function BlockButton({ username, isBlocked }: BlockButtonProp) {
   const [state, setstate] = useState(isBlocked);
   const [showDialog, setshowDialog] = useState(false);
   const {
-    mutateAsync: FollowServiceFn,
+    mutateAsync: BlockServiceFn,
     // isPending: FollowServicePending,
   } = useMutation({
-    mutationFn: FollowService,
+    mutationFn: BlockService,
   });
   const {
-    mutateAsync: unFollowServiceFn,
+    mutateAsync: unBlockServiceFn,
     // isPending: FollowServicePending,
   } = useMutation({
-    mutationFn: UnFollowService,
+    mutationFn: UnBlockService,
   });
   const handleBlockButton = () => {
     setshowDialog(true);
   };
   const handleunBlockButton = () => {
-    unFollowServiceFn(username);
+    unBlockServiceFn(username);
     setstate(false);
   };
   const confirmBlockButton = () => {
-    FollowServiceFn(username);
+    BlockServiceFn(username);
     setstate(true);
     setshowDialog(false);
   };
