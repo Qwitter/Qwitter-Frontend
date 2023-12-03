@@ -7,6 +7,7 @@ import { MessagesList } from "./MessagesList";
 import { MessagesSearch } from "./MessagesSearch";
 import { MessagesHeader } from "./MessagesHeader";
 import { MessagesSide } from "./MessagesSide";
+import { ConversationLeavePopUp } from "./ConversationLeavePopUp";
 
 type MessagesMainProps = {
     showMessagesHeader?: boolean;
@@ -130,8 +131,8 @@ function SearchNoResult({ text }: { text: string; }) {
 function Main({ messagesRequests, newMessageRequest }: { newMessageRequest: boolean; messagesRequests: number; }) {
     const navigate = useNavigate();
     const [selectedUser, SetSelectedUser] = useState<MessageUser>({
-        imageUrl: "",
-        username: "",
+        userPhoto: "",
+        userName: "",
         name: "",
         isVerified: false,
         lastMessage: "",
@@ -141,6 +142,7 @@ function Main({ messagesRequests, newMessageRequest }: { newMessageRequest: bool
     const handleRequestClick = () => {
         navigate('/Messages/requests');
     };
+    const [show, setShow] = useState<boolean>(false);
     return (
         <div>
             {messagesRequests > 0 &&
@@ -175,7 +177,9 @@ function Main({ messagesRequests, newMessageRequest }: { newMessageRequest: bool
             <MessagesList users={userArray}
                 mode={"normal"}
                 selectedUser={selectedUser}
+                showDeletePopUp={()=>setShow(true)}
                 setSelectedUser={SetSelectedUser} />
+            <ConversationLeavePopUp show={show} setShow={setShow} leaveFunction={()=>{}}/>
         </div>
     )
 }

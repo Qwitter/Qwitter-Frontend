@@ -144,9 +144,9 @@ export const updateUsername = async ({
       { headers: { Authorization: `Bearer ${token}` } }
     );
     return res.status;
-  } catch (err ) {
-    const error = err as {response:{status:string}}
-    return error.response.status||null;
+  } catch (err) {
+    const error = err as { response: { status: string } }
+    return error.response.status || null;
   }
 };
 /**
@@ -203,7 +203,7 @@ export const verifyPassword = async ({
       { headers: { Authorization: `Bearer ${token}` } }
     );
     return res.data.correct;
-  
+
   } catch (err) {
     console.log(err);
     throw new Error("not valid");
@@ -550,7 +550,7 @@ export const timelineTweets = async (
  */
 export const getUsersSuggestions = async (token: string, username: string) => {
   try {
-      if(!username) return []
+    if (!username) return []
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user?q=${username.slice(1)}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -687,6 +687,35 @@ export const bookmarkTweet = async (tweetId: string, token: string) => {
         },
       }
     );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error bookmarking tweet");
+  }
+};
+/**
+ * @description Change the groupName for a Conversation
+ * @param name
+ * @param token - the token of the user
+ * @param conversationId - the conversationId of the conversation
+ * @returns success or throws error if there is an error
+ */
+export const changeGroupName = async ({name,token,conversationId}:{name: string, token: string, conversationId: string}) => {
+  try {
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/name`,
+      {
+        name: name
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(res.data)
     return res.data;
   } catch (error) {
     console.log(error);

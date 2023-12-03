@@ -62,13 +62,6 @@ function MessagesNewMessage() {
         refetch();
     }, [peopleSearchText, refetch]);
 
-    if (isPending) {
-        return (
-            <div className='w-full h-[180px] p-8'>
-                <Spinner />
-            </div>
-        )
-    }
     const handlePickUser = (user: User) => {
         const isUserSelected = selectedUsers.some((selectedUser) => selectedUser.userName === user.userName);
 
@@ -99,6 +92,9 @@ function MessagesNewMessage() {
             isCompact
             className="  p-0"
             title="New message">
+                {isPending?   <div className='w-full h-[180px] p-8'>
+                <Spinner />
+            </div>:
             <div className="w-full h-full items-start flex flex-col max-h-[calc(100vh-55px)]">
                 <div className={cn("flex flex-col w-full ",selectedUsers.length>0?"":"border-b border-primary border-opacity-30")}>
                     <div className="flex flex-row w-full items-center">
@@ -132,7 +128,7 @@ function MessagesNewMessage() {
                     <ShowUsersSuggestions onUserClick={handlePickUser} selectedUsers={selectedUsers} users={peopleSearchText.length > 0 ? data! : userConversations} />
                 </div>
             </div>
-
+        }
         </PopUpContainer>
     )
 }

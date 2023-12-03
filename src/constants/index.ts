@@ -240,8 +240,8 @@ const userArray = [
   },
 ];
 const pinnedConversations = [{
-  imageUrl: 'https://github.com/shadcn.png',
-  username: 'user12',
+  userPhoto: 'https://github.com/shadcn.png',
+  userName: 'user12',
   name: 'Laura Harris',
   isVerified: false,
   lastMessage: 'Hi there!',
@@ -249,8 +249,8 @@ const pinnedConversations = [{
 
 },
 {
-  imageUrl: 'https://github.com/shadcn.png',
-  username: 'chatGPT',
+  userPhoto: 'https://github.com/shadcn.png',
+  userName: 'chatGPT',
   name: 'ChatGPT',
   isVerified: true,
   lastMessage: 'Hello from ChatGPT! 😊',
@@ -284,26 +284,66 @@ const searchHeaderOptions = [
   "ALL", "People", "Groups", "Messages"
 ]
 const tempMessagesSearch =
-  {
-    conversations: [{
-      imageUrl: 'https://github.com/shadcn.png',
-      username: 'user12',
-      name: 'Laura Harris',
-      isVerified: false,
-      lastMessage: 'Hi there!',
-      lastMessageTime: "two months ago"
-    }],
-    users: [{
-      imageUrl: 'https://github.com/shadcn.png',
-      username: 'chatGPT',
-      name: 'ChatGPT',
-      isVerified: true,
-      lastMessage: 'Hello from ChatGPT! 😊',
-      lastMessageTime: "yesterday"
-    }]
-  }
-
- const chat = [
+{
+  conversations: [{
+    userPhoto: 'https://github.com/shadcn.png',
+    userName: 'user12',
+    name: 'Laura Harris',
+    isVerified: false,
+    lastMessage: 'Hi there!',
+    lastMessageTime: "two months ago"
+  }],
+  users: [{
+    userPhoto: 'https://github.com/shadcn.png',
+    userName: 'chatGPT',
+    name: 'ChatGPT',
+    isVerified: true,
+    lastMessage: 'Hello from ChatGPT! 😊',
+    lastMessageTime: "yesterday"
+  }]
+}
+const tempInfo =[
+{
+  id:0,
+  mode: "group",
+  imageUrl: "https://i.ibb.co/S7XN04r/01eab91ff04ea5832a33040f7ebdb3d0.jpg",
+  groupName: "Awesome Team",
+  users: [
+    {
+      userName: "JohnDoe",
+      name:"DoeJohn",
+      userPhoto: "https://i.ibb.co/S7XN04r/01eab91ff04ea5832a33040f7ebdb3d0.jpg",
+      isFollowing: true,
+    },
+    {
+      userName: "JaneSmith",
+      name:"Smith",
+      userPhoto: "https://i.ibb.co/S7XN04r/01eab91ff04ea5832a33040f7ebdb3d0.jpg",
+      isFollowing: false,
+    },
+    {
+      userName: "BobJohnson",
+      name:"Bob",
+      userPhoto: "https://i.ibb.co/S7XN04r/01eab91ff04ea5832a33040f7ebdb3d0.jpg",
+      isFollowing: true,
+    },
+  ],
+},
+{
+  id:1,
+  mode: "direct",
+  imageUrl: "https://i.ibb.co/S7XN04r/01eab91ff04ea5832a33040f7ebdb3d0.jpg",
+  users: [
+    {
+      userName: "JohnDoe",
+      name:"DoeJohn",
+      userPhoto: "https://i.ibb.co/S7XN04r/01eab91ff04ea5832a33040f7ebdb3d0.jpg",
+      isFollowing: true,
+    },
+  ],
+}
+]
+const chat = [
   {
     "status": "unseen",
     "id": "chat123",
@@ -311,44 +351,48 @@ const tempMessagesSearch =
     "text": "Hello User2! How's your day going?",
     "userName": "marwanSamy99",
     "userPhoto": "https://example.com/user1.jpg",
+    "isReply": "",
     "media": {
-      "url": "https://example.com/image1.jpg",
-      "type": "image"
+      "url": "",
+      "type": "Photo"
     }
   },
   {
     "status": "seen",
     "id": "chat124",
-    "date": "2023-11-30T16:30:00Z",
+    "date": "2023-11-30T15:45:00Z",
+    "isReply": "",
     "text": "Hi User1! My day is good, thank you. Yours?",
     "userName": "User2",
     "userPhoto": "https://example.com/user2.jpg",
     "media": {
       "url": "https://i.ibb.co/DRXmdvR/sunset-anime-girl-hd-wallpaper-1080x608.jpg%22%20alt=%22sunset-anime-girl-hd-wallpaper-1080x608",
-      "type": "audio"
+      "type": "Photo"
     }
   },
   {
-    "status": "unseen",
+    "status": "seen",
     "id": "chat125",
+    "isReply": "",
     "date": "2023-11-25T17:15:00Z",
     "text": "I'm doing well too! Any exciting plans for the evening?",
     "userName": "marwanSamy99",
     "userPhoto": "https://example.com/user1.jpg",
     "media": {
-      "url": "https://example.com/video1.mp4",
+      "url": "",
       "type": "video"
     }
   },
   {
     "status": "seen",
     "id": "chat126",
+    "isReply": "123456",
     "date": "2023-10-01T18:00:00Z",
     "text": "Not much, just relaxing. How about you?",
     "userName": "User2",
     "userPhoto": "https://example.com/user2.jpg",
     "media": {
-      "url": "https://example.com/image2.jpg",
+      "url": "",
       "type": "image"
     }
   },
@@ -356,13 +400,14 @@ const tempMessagesSearch =
     "status": "unseen",
     "id": "chat127",
     "date": "2023-09-01T19:30:00Z",
+    "isReply": "123456",
     "text": "I'm planning to catch up on some reading. Any book recommendations?",
     "userName": "marwanSamy99",
     "userPhoto": "https://example.com/user1.jpg",
     "media": {
       "url": "https://i.ibb.co/DRXmdvR/sunset-anime-girl-hd-wallpaper-1080x608.jpg%22%20alt=%22sunset-anime-girl-hd-wallpaper-1080x608",
-      "type": "value"
+      "type": "Photo"
     }
   }
-  ]
-export { navLinks, tempMessagesSearch,chat, settingsOptions, accountOptions, searchHeaderOptions, userArray, pinnedConversations, whoToReply, tags, AllowMessagesOptions };
+]
+export { navLinks, tempInfo, tempMessagesSearch, chat, settingsOptions, accountOptions, searchHeaderOptions, userArray, pinnedConversations, whoToReply, tags, AllowMessagesOptions };

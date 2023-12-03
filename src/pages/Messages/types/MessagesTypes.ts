@@ -13,12 +13,12 @@ export type Images = {
 };
 export type MessageUser = {
     id?: number;
-    imageUrl: string;
-    username: string;
+    userPhoto: string;
+    userName: string;
     name: string;
-    isVerified: boolean;
-    lastMessage: string;
-    lastMessageTime: string;
+    isVerified?: boolean;
+    lastMessage?: string;
+    lastMessageTime?: string;
 }
 export type Mention = {
     position: number;
@@ -33,6 +33,10 @@ export type MessagesListProp = {
     mode: "normal" | "request" | "People" | "conversations";
     matchedPart?: string;
     setSelectedUser?: React.Dispatch<React.SetStateAction<MessageUser>>
+    followButton?: React.ComponentType<{
+        className?: string;
+    }>;
+    showDeletePopUp?: () => void
 }
 export type MessagesSideProp = {
     p: string;
@@ -53,8 +57,22 @@ export type MessagesMessage = {
     "date": string,
     "userName": string,
     "userPhoto": string,
+    "isReply": string,
     "media": {
         "url": string,
         "type": string
     }
+}
+export type MessagesConversationInfoProps = {
+    type: "group" | "direct" | string;
+    imageUrl: string;
+    id: number;
+    name:string;
+    groupName?: string;
+    users: { userName: string; userPhoto: string; isFollowing: boolean; }[]
+}
+export type ConversationPopUpProps = {
+    show: boolean;
+    setShow?: React.Dispatch<React.SetStateAction<boolean>>;
+    leaveFunction?: () => void;
 }
