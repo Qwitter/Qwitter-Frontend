@@ -3,7 +3,7 @@ import { TrendList } from "../TrendList/TrendList";
 export function TrendCard() {
   return (
     <>
-      <Card className="w-[350px] bg-[#16181c]  absolute left-96 top-64 border-none">
+      <Card className="bg-[#16181c] w-full  border-none">
         <CardHeader className=" h-[50px] mb-1 flex justify-center items-start">
           <CardTitle className="text-xl font-bold ">What’s happening</CardTitle>
         </CardHeader>

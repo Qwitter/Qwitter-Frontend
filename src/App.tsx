@@ -18,7 +18,6 @@ import CreateTweetContainer from "./components/CreateTweet/CreateTweetContainer"
 import { LogOut } from "./components/LogOut/LogOut";
 import { PagesContainer } from "./pages/PagesContainer/PagesContainer";
 import Authentication from "../src/pages/Authentication/Authentication";
-// import { FollowList } from "./components/FollowList/FollowList";
 
 const queryClient = new QueryClient();
 
