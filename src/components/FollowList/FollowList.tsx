@@ -3,8 +3,10 @@ import { useState } from "react";
 import "../../index.css";
 import { UsersList } from "../UsersList/UsersList";
 import { GetFollowersService, GetFollowingsService } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 export function FollowList({ type }: { type: string }) {
   const [Liststate, setListstate] = useState(type);
+  const navigate = useNavigate();
   return (
     <>
       <Tabs defaultValue={Liststate} className="w-[400px]">
@@ -12,7 +14,10 @@ export function FollowList({ type }: { type: string }) {
           <TabsTrigger
             className="flex justify-center tabhover"
             value="Following"
-            onClick={() => setListstate("Following")}
+            onClick={() => {
+              setListstate("Following");
+              navigate("/Following");
+            }}
           >
             <div className={Liststate == "Following" ? "active-tab" : "tab"}>
               Following
@@ -21,7 +26,10 @@ export function FollowList({ type }: { type: string }) {
           <TabsTrigger
             className="flex justify-center tabhover"
             value="Followers"
-            onClick={() => setListstate("Followers")}
+            onClick={() => {
+              setListstate("Followers");
+              navigate("/Followers");
+            }}
           >
             <div className={Liststate == "Followers" ? "active-tab" : "tab"}>
               Followers

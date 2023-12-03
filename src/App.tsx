@@ -18,7 +18,7 @@ import CreateTweetContainer from "./components/CreateTweet/CreateTweetContainer"
 import { LogOut } from "./components/LogOut/LogOut";
 import { PagesContainer } from "./pages/PagesContainer/PagesContainer";
 import Authentication from "../src/pages/Authentication/Authentication";
-import { FollowList } from "./components/FollowList/FollowList";
+// import { FollowList } from "./components/FollowList/FollowList";
 
 const queryClient = new QueryClient();
 
@@ -29,7 +29,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        {/* <UserContextProvider>
+        <UserContextProvider>
           <Routes location={previousLocation || location}>
             <Route path="/" element={<Authentication />} />
           </Routes>
@@ -56,8 +56,7 @@ function App() {
             <Route path="/i/flow/logout" element={<LogOut />} />
           </Routes>
           <Toaster />
-        </UserContextProvider> */}
-        <FollowList type={"Following"} />
+        </UserContextProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );

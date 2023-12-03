@@ -1,17 +1,17 @@
-import { useContext, useState } from "react";
+import {  useState } from "react";
 import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { FollowService, UnFollowService } from "@/lib/utils";
 import { WarningPopUp } from "../WarningPopUp/WarningPopUp";
 import { FollowButtonProp } from "./FollowButtonProp";
-import { UserContext } from "@/contexts/UserContextProvider";
+// import { UserContext } from "@/contexts/UserContextProvider";
 
 export function FollowButton({ username, isFollowing }: FollowButtonProp) {
   const [isHovered, setIsHovered] = useState(false);
   const [state, setstate] = useState(isFollowing);
   const [showDialog, setshowDialog] = useState(false);
   // const { token } = useContext(UserContext);
-  const token: string | null = "12";
+  const token: string | null = localStorage.getItem("token");
   const {
     mutateAsync: FollowServiceFn,
     // isPending: FollowServicePending,
