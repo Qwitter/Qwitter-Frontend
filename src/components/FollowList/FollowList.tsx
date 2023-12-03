@@ -9,7 +9,7 @@ export function FollowList({ type }: { type: string }) {
   const navigate = useNavigate();
   return (
     <>
-      <Tabs defaultValue={Liststate} className="w-[600px]">
+      <Tabs defaultValue={Liststate} className="max-w-[600px] w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger
             className="flex justify-center tabhover"
