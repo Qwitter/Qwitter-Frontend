@@ -17,7 +17,9 @@ import UpdateEmailPopUp from "./components/UpdateEmailContainer/UpdateEmailConta
 import CreateTweetContainer from "./components/CreateTweet/CreateTweetContainer";
 import { LogOut } from "./components/LogOut/LogOut";
 import { PagesContainer } from "./pages/PagesContainer/PagesContainer";
-import Authentication from "../src/pages/Authentication/Authentication";
+import  Authentication  from "../src/pages/Authentication/Authentication";
+import MessagesNewMessage from "./pages/Messages/MessagesNewMessage";
+
 
 const queryClient = new QueryClient();
 
@@ -53,6 +55,9 @@ function App() {
             <Route path="/i/flow/add_email" element={<UpdateEmailPopUp />} />
             <Route path="/compose/tweet" element={<CreateTweetContainer />} />
             <Route path="/i/flow/logout" element={<LogOut />} />
+            <Route path="/Messages/compose" element={<MessagesNewMessage />} />
+            {/* <Route path="settings/profile" element={<MessagesNewMessage />} /> */}
+
           </Routes>
           <Toaster />
         </UserContextProvider>

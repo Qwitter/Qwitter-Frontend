@@ -69,6 +69,28 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+  .scrollbar-thin::-webkit-scrollbar{
+    width:4px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: #88888879; 
+
+  }
+   
+  /* Handle */
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #f1f1f1; 
+
+  }
+  
+  /* Handle on hover */
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    
+    background: #adadad; 
+  }
+  .scrollbar-thin{
+    scrollbar-width: thin;
+  }
 }
 
 .btn {

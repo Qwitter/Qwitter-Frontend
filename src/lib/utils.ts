@@ -144,10 +144,10 @@ export const updateUsername = async ({
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    return res.status == 200;
-  } catch (err) {
-    console.log(err);
-    return null;
+    return res.status;
+  } catch (err ) {
+    const error = err as {response:{status:string}}
+    return error.response.status||null;
   }
 };
 /**
@@ -166,16 +166,14 @@ export const updateEmail = async ({
   const parsedEmail = z.string().email().safeParse(email);
   if (!parsedEmail.success || !parseToken.success) return null;
   try {
-    // const res = await axios.post(
-    //   `${VITE_BACKEND_URL}/api/v1/auth/change-email`,
-    //   {
-    //     email: email,
-    //   },
-    //   { headers: { Authorization: `Bearer ${token}` } }
-    // );
-    //return res.status == 200;
-    if (email == "kaito.kid.1972002@gmail.com") return true;
-    else throw new Error("not valid");
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/auth/change-email`,
+      {
+        email: email,
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return res;
   } catch (err) {
     console.log(err);
     throw new Error("not valid");
@@ -198,17 +196,15 @@ export const verifyPassword = async ({
   const parsePassword = z.string().safeParse(password);
   if (!parsePassword.success || !parseToken.success) return null;
   try {
-    // const res = await axios.post(
-    //   `${VITE_BACKEND_URL}/api/v1/auth/check-password`,
-    //   {
-    //     password: password,
-    //   },
-    //   { headers: { Authorization: `Bearer ${token}` } }
-    // );
-    // return res.status == 200;
-    token;
-    if (password == "123456as") return password == "123456as";
-    else throw new Error("not valid");
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/auth/check-password`,
+      {
+        password: password,
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return res.data.correct;
+  
   } catch (err) {
     console.log(err);
     throw new Error("not valid");
@@ -369,9 +365,7 @@ export const verifySignUpEmail = async (email: string, token: string) => {
     );
     return res;
   } catch (err) {
-    const errObj = err as { response: { data: { message: string } } };
-    if (errObj.response) throw new Error(errObj.response.data.message);
-    else throw new Error("Error Verifying Email");
+    throw new Error("Wrong Token. Please check again");
   }
 };
 
@@ -381,6 +375,7 @@ export const verifySignUpEmail = async (email: string, token: string) => {
  * @returns object represents the response from the backend or throws error
  */
 export const verifyResetPasswordEmail = async (token: string) => {
+  console.log(token);
   const parseResult =
     PasswordChangeEmailVerificationTokenSchema.safeParse(token);
   if (!parseResult.success) throw new Error("Invalid token");
@@ -393,9 +388,7 @@ export const verifyResetPasswordEmail = async (token: string) => {
     return res;
   } catch (err) {
     console.log(err);
-    const errObj = err as { response: { data: { message: string } } };
-    if (errObj.response) throw new Error(errObj.response.data.message);
-    else throw new Error("Error Verifying Email");
+    throw new Error("Wrong Token. Please check again");
   }
 };
 
@@ -439,7 +432,7 @@ export const registerNewUser = async (newUserData: object) => {
  *
  * @param picFile The actual image from the  file input
  * @param token The token of the user for authentication
- * @param isBanner
+ * @param isBanner Used to upload the profile banner
  * @returns New user data after the image has changed
  */
 
@@ -453,8 +446,7 @@ export const uploadProfileImage = async (
 
   try {
     const res = await axios.post(
-      `${VITE_BACKEND_URL}/api/v1/user/profile_${
-        isBanner ? "banner" : "picture"
+      `${VITE_BACKEND_URL}/api/v1/user/profile_${isBanner ? "banner" : "picture"
       }`,
       formData,
       {
@@ -523,25 +515,51 @@ export const convertNumberToShortForm = (number: number) => {
 };
 
 /**
+ * @description Load timeline tweets
+ * @param pageParam used for infinite queries
+ * @param limit used to specify the array length
+ * @param token used to authorize the request
+ * @returns Array of tweets
+ */
+export const timelineTweets = async (
+  pageParam: number = 1,
+  limit: number = 10,
+  token: string
+) => {
+  if (!token) return [];
+  try {
+    const response = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/tweets?page=${pageParam}&limit=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "applicationjson",
+        },
+      }
+    );
+    return response.data.tweets;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+/*
  * @description get a list of users with userName contain the given string
  * @param {username,token}
  * @returns list of users  or null
  */
 export const getUsersSuggestions = async (token: string, username: string) => {
   try {
-    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/lookup`, {
-      params: {
-        name: username.slice(1),
-      },
-      withCredentials: true,
+      if(!username) return []
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user?q=${username.slice(1)}`, {
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true,
         Authorization: `Bearer ${token}`,
       },
     });
-    return res.data.data;
+    console.log(res.data.users)
+    return res.data.users;
+
   } catch (err) {
     console.log(err);
     return null;
@@ -555,19 +573,15 @@ export const getUsersSuggestions = async (token: string, username: string) => {
  */
 export const getHashtags = async (token: string, tag: string) => {
   try {
-    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/lookup`, {
-      params: {
-        name: tag, //.slice(1)
-      },
-      withCredentials: true,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true,
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return res.data.data;
+    const res = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/tweets/hashtags?q=${tag.slice(1)}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
   } catch (err) {
     console.log(err);
     return null;
@@ -598,9 +612,9 @@ export const createTweet = async ({
         },
       }
     );
-    return res.status == 200;
+    return res.status == 201;
   } catch (err) {
-    console.log("lol" + err);
+    console.log(err);
     return null;
   }
 };
@@ -708,7 +722,7 @@ export const unBookmarkTweet = async (tweetId: string, token: string) => {
 
 /**
  * @description Send a request to the backend to delete a tweet
- * @param tweetId 
+ * @param tweetId
  * @param token - the token of the user
  * @returns success or throws error if there is an error
  */

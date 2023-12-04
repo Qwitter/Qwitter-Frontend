@@ -17,6 +17,7 @@ import { userWorker } from "./UserWorker/UserWorker";
 import { OAuthRegisterUserWorker } from "./OAuthRegisterUserWorker/OAuthRegisterUserWorker";
 import { getUsersSuggestionsWorkerHandler } from "./GetUsersSuggetions/GetUsersSuggetionsWorker";
 import { EditProfileWorker } from "./EditProfileWorker/EditProfileWorker";
+import { TimelineTweetsWorker } from "./TimelineTweetsWorker/TimelineTweetsWorkers";
 import {
   bookmarkTweetWorker,
   deleteTweetWorker,
@@ -85,6 +86,10 @@ export const handlers = [
     getUsersSuggestionsWorkerHandler
   ),
   http.put(`${VITE_BACKEND_URL}/api/v1/user/profile`, EditProfileWorker),
+  http.get(
+    `${VITE_BACKEND_URL}/api/v1/tweets?page=1&limit=10`,
+    TimelineTweetsWorker
+  ),
   http.post(`${VITE_BACKEND_URL}/api/v1/tweets/:tweetId/like`, likeTweetWorker),
   http.delete(
     `${VITE_BACKEND_URL}/api/v1/tweets/:tweetId/like`,

@@ -13,63 +13,60 @@ import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "@/contexts/UserContextProvider";
 
-type loginprops = {
-  fn?: () => void;
-};
-export function Login(pros?: loginprops) {
-  const [step, setStep] = useState(1);
-  const [showDialog, setshowDialog] = useState(true);
-  const { toast } = useToast();
-  const { saveUser } = useContext(UserContext);
-  const navigate = useNavigate();
-  const {
-    mutateAsync: checkEmailExistence,
-    isPending: checkEmailExistencePending,
-  } = useMutation({
-    mutationFn: findEmail,
-  });
-  const {
-    mutateAsync: loginServiceFn,
-    isPending: loginServicePending,
-  } = useMutation({
-    mutationFn: loginService,
-  });
-  const form = useForm<SignIn>({
-    mode: "onChange",
-    resolver: zodResolver(SignInSchema),
-  });
-  function closeDialog(): void {
-    navigate(-1);
-    setshowDialog(false);
-  }
-  async function incrementStep(): Promise<void> {
-    if (step == 1) {
-      const res = await checkEmailExistence(form.getValues("email"));
-      if (!res?.available) {
-        toast({
-          description: "Sorry,we couldn't find your account",
-          variant: "secondary",
-          duration: 2000,
-        });
-        if (pros?.fn) pros?.fn();
-        return;
-      }
+type loginprops={
+    fn?:()=>void;
+}
+export function Login(pros?:loginprops) {
+    const [step, setStep] = useState(1);
+    const [showDialog, setshowDialog] = useState(true);
+    const { toast } = useToast();
+    const { saveUser } = useContext(UserContext);
+    const navigate = useNavigate();
+    const { mutateAsync: checkEmailExistence, isPending: checkEmailExistencePending } = useMutation({
+        mutationFn: findEmail,
+    });
+    const { mutateAsync: loginServiceFn, isPending: loginServicePending } = useMutation({
+        mutationFn: loginService,
+    });
+    const form = useForm<SignIn>({
+        mode: 'onChange',
+        resolver: zodResolver(SignInSchema)
     }
-    setStep(step + 1);
-  }
-  const onSubmit = async (data: SignIn) => {
-    const res = await loginServiceFn(data);
-    if (res) {
-      form.reset();
-      saveUser(res.user, res.token);
-      navigate("/settings");
-    } else {
-      toast({
-        description: "wrong password or email",
-        variant: "secondary",
-        duration: 2000,
-      });
-      return;
+    );
+    function closeDialog(): void {
+        navigate(-1)
+        setshowDialog(false);
+    }
+    async function incrementStep(): Promise<void> {
+        if (step == 1) {
+            const res = await checkEmailExistence(form.getValues("email"));
+            if (!res?.available) {
+                toast({
+                    description: "Sorry,we couldn't find your account",
+                    variant: "secondary",
+                    duration: 2000,
+                })
+                if(pros?.fn)  pros?.fn() 
+                return;
+            }
+        }
+        setStep(step + 1);
+    }
+    const onSubmit = async (data: SignIn) => {
+        const res = await loginServiceFn(data);
+        if (res) {
+            form.reset();
+            saveUser(res.user,res.token);
+            navigate("/home");
+        }
+        else {
+            toast({
+                description: "wrong password or email",
+                variant: "secondary",
+                duration: 2000,
+            })
+            return;
+        }
     }
   };
   return (

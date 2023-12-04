@@ -6,11 +6,13 @@ export function LoginPassword({ incrementStep, form }: SignInProp) {
     return (
         <div className="w-full h-full flex flex-col items-center justify-between">
             <div>
-                <p className='my-5 text-3xl font-bold break-words text-start h-[40px] w-[440px]'>Enter your password</p>
+                <p className='my-5 text-3xl font-bold break-words text-start h-[40px] w-[440px]' data-testid="enterPassword">Enter your password</p>
                 <TextInput disabled={true}
                     defaultValue={form.getValues("email")}
                     className="w-[440px]"
-                    placeHolder="Email" />
+                    placeHolder="Email" 
+                    data-testid='emailPassword'
+                    />
                 <TextInput
                     {...form.register("password")}
                     data-testid="pass"
@@ -22,7 +24,7 @@ export function LoginPassword({ incrementStep, form }: SignInProp) {
                 />
                 <Link to="/i/flow/password_reset">
 
-                    <span className="w-[440px] hover:underline hover:cursor-pointer font-light text-secondary">Forgot password?	</span>
+                    <span className="w-[440px] hover:underline hover:cursor-pointer font-light text-secondary" data-testid="forgotPasswordPassword">Forgot password?	</span>
                 </Link>
             </div>
             <div>

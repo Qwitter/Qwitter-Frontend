@@ -30,7 +30,7 @@ export const TweetSchema = z.object({
     message: "createdAt must be in the format yyyy-mm-dd hh:mm:ss",
   }),
   id: z.string(),
-  user: UserDataSchema,
+  author: UserDataSchema,
   replyCount: z
     .number()
     .min(0, { message: "replyCount must be positive or zero" }),

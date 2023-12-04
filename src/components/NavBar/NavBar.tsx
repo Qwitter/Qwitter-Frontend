@@ -78,11 +78,12 @@ export function NavBar() {
     )
 }
 function NavElements({ active, setActive }: { active: string, setActive: React.Dispatch<React.SetStateAction<string>> }) {
+    const {user } = useContext(UserContext)
     return (
         <ul className='flex flex-col w-full '>
             {navLinks.map((link) => (
-                <Link to={`/${link.title}`} key={link.id} className='group' onClick={() => setActive(link.title)}>
-                    <div className='flex flex-row p-3 items-center max-xl:justify-center group-hover:bg-[#191919]  group-hover:rounded-full transition-all '>
+                <Link to={`/${link.title != "Profile" ? link.title : user?.userName}`} key={link.id} className='group' onClick={() => setActive(link.title)}>
+                <div className='flex flex-row p-3 items-center max-xl:justify-center group-hover:bg-[#191919]  group-hover:rounded-full transition-all 'data-testid={`${link.title}`}>
                         <div className='relative'>
                             <link.icon {...active == link.title ? link.clicked : {}} />
                             {link.notificationCount > 0 && (

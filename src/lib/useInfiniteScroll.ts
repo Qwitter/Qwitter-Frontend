@@ -1,33 +1,42 @@
-// import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 
-// type InfiniteScrollProps = {
-//   queryFn: (pageParam: number) => Promise<object>;
-//   queryKey: string[];
-// };
+/*
+NEEDED:
+  loading state & error
+*/
 
-// type infiniteQueryType = {
-//   data: object;
-//   nextPage: number;
-// };
+export const useInfiniteScroll = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  fetchFunction: ({ pageParam }: { pageParam: number }) => Promise<any>,
+  queryKey: string[]
+) => {
+  const { ref, inView } = useInView();
 
-// export const useInfiniteScroll = ({ fetchNext }: InfiniteScrollProps) => {
-//   // const {
-//   //   data,
-//   //   error,
-//   //   fetchNextPage,
-//   //   hasNextPage,
-//   //   isFetching,
-//   //   isFetchingNextPage,
-//   //   status,
-//   // }
-//   const testing = useInfiniteQuery<infiniteQueryType, Error>({queryKey: queryKey, qu});
-//   console.log(
-//     data,
-//     error,
-//     fetchNextPage,
-//     hasNextPage,
-//     isFetching,
-//     isFetchingNextPage,
-//     status
-//   );
-// };
+  const {
+    data,
+    error,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    refetch
+  } = useInfiniteQuery({
+    queryKey: queryKey,
+    queryFn: fetchFunction,
+    initialPageParam: 1,
+    getNextPageParam: (_, allPages) => {
+      return allPages.length + 1;
+    },
+  });
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
+
+  
+  return { data, ref, isFetchingNextPage, error, isError, refetch };
+};
