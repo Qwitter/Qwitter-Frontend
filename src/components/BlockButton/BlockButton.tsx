@@ -1,15 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { BlockService, UnBlockService } from "@/lib/utils";
 import { WarningPopUp } from "../WarningPopUp/WarningPopUp";
 import { BlockButtonProp } from "./BlockButtonProp";
+import { UserContext } from "@/contexts/UserContextProvider";
 
 export function BlockButton({ username }: BlockButtonProp) {
   const [state, setstate] = useState(true);
   const [showDialog, setshowDialog] = useState(false);
-  // const { token } = useContext(UserContext);
-  const token: string | null = localStorage.getItem("token");
+  const { token } = useContext(UserContext);
   const {
     mutateAsync: BlockServiceFn,
     // isPending: FollowServicePending,
@@ -17,16 +17,13 @@ export function BlockButton({ username }: BlockButtonProp) {
     mutationFn: token
       ? (username: string) => BlockService(username, token)
       : undefined,
-    // mutationFn: BlockService,
   });
   const {
     mutateAsync: unBlockServiceFn,
-    // isPending: FollowServicePending,
   } = useMutation({
     mutationFn: token
       ? (username: string) => UnBlockService(username, token)
       : undefined,
-    // mutationFn: UnBlockService,
   });
   const handleBlockButton = () => {
     setshowDialog(true);

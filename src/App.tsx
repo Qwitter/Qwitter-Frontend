@@ -17,9 +17,9 @@ import UpdateEmailPopUp from "./components/UpdateEmailContainer/UpdateEmailConta
 import CreateTweetContainer from "./components/CreateTweet/CreateTweetContainer";
 import { LogOut } from "./components/LogOut/LogOut";
 import { PagesContainer } from "./pages/PagesContainer/PagesContainer";
-import  Authentication  from "../src/pages/Authentication/Authentication";
+import Authentication from "../src/pages/Authentication/Authentication";
 import MessagesNewMessage from "./pages/Messages/MessagesNewMessage";
-
+import { FollowList } from "./components/FollowList/FollowList";
 
 const queryClient = new QueryClient();
 
@@ -57,7 +57,14 @@ function App() {
             <Route path="/i/flow/logout" element={<LogOut />} />
             <Route path="/Messages/compose" element={<MessagesNewMessage />} />
             {/* <Route path="settings/profile" element={<MessagesNewMessage />} /> */}
-
+            <Route
+              path="/Followers"
+              element={<FollowList type={"Followers"} />}
+            />
+            <Route
+              path="/Following"
+              element={<FollowList type={"Following"} />}
+            />
           </Routes>
           <Toaster />
         </UserContextProvider>

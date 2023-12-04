@@ -93,8 +93,7 @@ export const findEmail = async (email: string) => {
         userNameOrEmail: email,
       }
     );
-    // yousef osama is asking why not ?!
-    return { available: res.data.available };
+    return { available: !res.data.available };
   } catch (err) {
     return { available: true };
   }
