@@ -14,7 +14,7 @@ export default function Authentication() {
         <div className="flex flex-col lg:justify-center items-center">
           <div className='flex flex-col justify-center items-start'>
             <p className='my-3 text-6xl font-black break-words text-start min-[1025px]:w-[550px] w-[350px]' >Happening now</p>
-            <p className='my-3 text-2xl font-extrabold'>Join tod.</p>
+            <p className='my-3 text-2xl font-extrabold'>Join today.</p>
             <GoogleSignUpButton />
             {/* <Button variant="default" className="items-center my-1 h-[40px] w-[300px]">
               <AiFillApple size="1.5rem" />
