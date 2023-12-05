@@ -57,7 +57,7 @@ export default function CreateTweetFooter({ mode, setFiles, files, text, selecte
                                 icons.map((Icon, index) => (
                                     <div key={index} className="text-secondary h-full group relative max-w-[40px] w-full cursor-pointer" onClick={index == 0 ? handleUploadImg : () => { }}>
                                         <Icon.icon className="w-10 h-10 p-2 rounded-3xl group-hover:bg-secondary group-hover:bg-opacity-25" />
-                                        <div className="absolute bg-[#657b8b] rounded-sm text-primary text-xs px-2 py-1 opacity-0 bg-opacity-75 group-hover:opacity-100 transition-opacity bottom-full left-1/2 transform -translate-x-1/2 -translate-y-[-65px]">
+                                        <div className="absolute bg-[#657b8b] rounded-sm text-primary text-xs px-2 py-1 opacity-0 bg-opacity-75 group-hover:opacity-100 transition-opacity bottom-full left-1/2 transform -translate-x-1/2 -translate-y-[-65px]" data-testid={Icon.hover}>
                                             {Icon.hover}
                                         </div>
                                     </div>
@@ -69,7 +69,7 @@ export default function CreateTweetFooter({ mode, setFiles, files, text, selecte
                     <div className="flex flex-row items-center">
                         {
                             text.length <= 290 && text.length > 0 &&
-                            (<div className={cn("transition-all w-[30px] h-[30px] flex flex-col justify-center items-center ", text.length + 1 > 260 ? "w-[38px] h-[38px]" : "")}>
+                            (<div className={cn("transition-all w-[30px] h-[30px] flex flex-col justify-center items-center ", text.length + 1 > 260 ? "w-[38px] h-[38px]" : "")} data-testid="charsLeft">
                                 <CircularProgressbar value={text.length} maxValue={280} text={text.length + 1 > 260 ? `${280 - text.length}` : ""}
                                     styles={{
                                         path: {
@@ -100,9 +100,9 @@ export default function CreateTweetFooter({ mode, setFiles, files, text, selecte
                         }
                         {text.length > 0 &&
                             <div className="w-[1px] h-[31px] bg-[#3E4144] ml-[8px] mr-3"></div>}
-                        <Button variant="secondary" className=' px-5 py-2 mt-1 ml-2'  {...{ disabled: (text.length == 0 && selectedImages.length > 0) ? false : !isValid }} type="button" onClick={handleSubmit}> Post</Button>
+                        <Button variant="secondary" className=' px-5 py-2 mt-1 ml-2'  {...{ disabled: (text.length == 0 && selectedImages.length > 0) ? false : !isValid }} type="button" onClick={handleSubmit} data-testid="postTweet"> Post</Button>
                     </div>
-                    <input type="file" className="hidden" onChange={handleFileChange} ref={fileInput} accept="images/*" />
+                    <input type="file" className="hidden" onChange={handleFileChange} ref={fileInput} accept="images/*" data-testid="uploadImage"/>
                 </div>
             </div>
         </div>
@@ -117,8 +117,8 @@ function ReplyPopup({ currentWhoToReply, setCurrentWhoToReply, closePopup }: {
 
     return (
         <>
-            <div className="w-full px-4 py-3 flex flex-col gap-1">
-                <span className="text-primary font-bold text-[15px]">who can reply?</span>
+            <div className="w-full px-4 py-3 flex flex-col gap-1" data-testid="whoCanReplyPopup" >
+                <span className="text-primary font-bold text-[15px]" data-testid="whoCanReply">who can reply?</span>
                 <p className="text-gray text-[15px] ">Choose who can reply to this post. Anyone mentioned can always reply</p>
             </div>
             <ul >

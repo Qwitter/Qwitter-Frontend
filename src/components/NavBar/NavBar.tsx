@@ -51,7 +51,7 @@ export function NavBar() {
 
                     </Link>
                     <NavElements active={active} setActive={setActive} />
-                    <Link to={'/compose/tweet'} state={{ previousLocation: location }} className='w-full'>
+                    <Link to={'/compose/tweet'} state={{ previousLocation: location }} className='w-full' data-testid="composeTweet">
                         <Button variant="secondary" className='w-11/12 py-4 font-bold mt-3'> {isShown ? <Feather /> : 'Post'}</Button>
                     </Link>
                 </div>
