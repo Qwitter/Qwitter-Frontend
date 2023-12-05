@@ -4,10 +4,8 @@ import { useMutation } from "@tanstack/react-query";
 import { GetTrendsService } from "@/lib/utils";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/contexts/UserContextProvider";
+import { TrendsListProp } from "./TrendListProp";
 
-export type TrendsListProp = {
-  isCard: boolean;
-};
 export function TrendList({ isCard }: TrendsListProp) {
   const [trends, setTrends] = useState<Trend[]>([]);
   const { token } = useContext(UserContext);
