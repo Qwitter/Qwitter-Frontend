@@ -23,7 +23,7 @@ export function TrendList() {
       console.log(trends);
       setTrends(trends.slice(0, 3));
     })();
-  }, [trends]);
+  }, [token, trends]);
   return (
     <>
       {trends &&

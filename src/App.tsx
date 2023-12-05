@@ -19,7 +19,6 @@ import { LogOut } from "./components/LogOut/LogOut";
 import { PagesContainer } from "./pages/PagesContainer/PagesContainer";
 import Authentication from "../src/pages/Authentication/Authentication";
 import MessagesNewMessage from "./pages/Messages/MessagesNewMessage";
-import { FollowList } from "./components/FollowList/FollowList";
 
 const queryClient = new QueryClient();
 
