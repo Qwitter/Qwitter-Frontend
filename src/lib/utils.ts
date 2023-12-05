@@ -9,7 +9,6 @@ import {
 import { SignUpDataSchema } from "@/models/SignUp";
 import { BirthDay, MONTHS } from "@/models/BirthDay";
 import { UserDataSchema } from "@/models/User";
-import { debug } from "console";
 
 const { VITE_BACKEND_URL } = import.meta.env;
 
@@ -747,6 +746,7 @@ export const deleteTweet = async (tweetId: string, token: string) => {
 /**
  * @description to get the user followers suggestions list
  * @param token
+ * @param {currentUser username} 
  * @returns  users array represents the response from the backend or null
  */
 export const GetFollowSuggestionsService = async (username:string,token:string) => {
@@ -771,7 +771,7 @@ export const GetFollowSuggestionsService = async (username:string,token:string) 
 
 /**
  * @description follow specific user
- * @param username
+ * @param username of this specific user
  * @param token
  * @returns  success or throws error if there is an error
  */
@@ -794,7 +794,7 @@ export const FollowService = async (username: string,token: string) => {
 };
 /**
  * @description unfollow specific user
- * @param username
+ * @param username of this specific user
  * @param token
  * @returns  success or throws error if there is an error
  */
@@ -844,6 +844,7 @@ export const GetTrendsService = async (token:string) => {
 /**
  * @description get Followers in Profile page(Followers section)
  * @param token
+ * @param {currentUser username} 
  * @returns  users array represents the response from the backend or null
  */
 export const GetFollowersService = async (username:string,token:string) => {
@@ -869,6 +870,7 @@ export const GetFollowersService = async (username:string,token:string) => {
 /**
  * @description get Followings in Profile page(Following section)
  * @param token
+ * @param {currentUser username} 
  * @returns  users array represents the response from the backend or null
  */
 export const GetFollowingsService = async (username:string,token: string) => {
@@ -892,7 +894,7 @@ export const GetFollowingsService = async (username:string,token: string) => {
 
 /**
  * @description Block specific user
- * @param username
+ * @param username of this specific use
  * @param token
  * @returns  success or throws error if there is an error
  */
@@ -913,7 +915,7 @@ export const BlockService = async (username: string,token:string) => {
 };
 /**
  * @description unblock specific user
- * @param username 
+ * @param username of this specific user
  * @param token
  * @returns  success or throws error if there is an error
  */
