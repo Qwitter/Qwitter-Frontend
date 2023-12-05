@@ -16,9 +16,8 @@ export function UsersList({ showDesc, getusers, listType }: UsersListProp) {
   });
   useEffect(() => {
     (async () => {
-      const users: any = await getusersFn();
-      setUsers(users);
-      console.log(token);
+      const users: User[] = await getusersFn();
+      setUsers(users.slice(0, 3));
     })();
   }, [token]);
 

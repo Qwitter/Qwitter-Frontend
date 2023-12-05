@@ -17,7 +17,9 @@ export function TrendList() {
   });
   useEffect(() => {
     (async () => {
+      // debugger;
       const trends: Trend[] = await gettrendsFn();
+      console.log(trends);
       setTrends(trends);
     })();
   }, []);

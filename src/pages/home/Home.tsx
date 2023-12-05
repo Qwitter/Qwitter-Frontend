@@ -18,7 +18,7 @@ export function Home() {
   );
 
   useEffect(() => {
-    console.log(data);
+    // console.log(data);
   }, [data]);
 
   useEffect(() => {

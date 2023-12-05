@@ -29,7 +29,7 @@ export function UsersListItem({
                 <span className="mr-1">{name}</span>
                 {verified && <MdOutlineVerified className="text-blue-600" />}
               </div>
-              <div className="text-[#595d62]">{username}</div>
+              <div className="text-[#595d62]">@{username}</div>
             </div>
 
             {listType == "FollowList" && (
