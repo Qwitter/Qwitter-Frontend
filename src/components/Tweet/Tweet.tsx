@@ -49,7 +49,7 @@ type TweetProps = {
 
 const Tweet = ({ tweet }: TweetProps) => {
   return (
-    <div className="w-full flex px-4 py-3 gap-4 border-b border-primary border-opacity-30">
+    <div className="w-full flex px-4 py-3 gap-4 border-b border-primary border-opacity-30" data-testid="tweetDiv">
       <Avatar>
         <AvatarImage src={`${tweet.author.profileImageUrl}`} />
         <AvatarFallback>{tweet.author.userName.substring(0, 2)}</AvatarFallback>
