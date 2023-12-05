@@ -779,13 +779,15 @@ export const FollowService = async (username: string,token: string) => {
   try {
     debugger;
     const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
+      {},
       {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-      });
+      }
+);
     return res.data;
   } catch (err) {
     console.log(err);
@@ -900,7 +902,9 @@ export const GetFollowingsService = async (username:string,token: string) => {
  */
 export const BlockService = async (username: string,token:string) => {
   try {
-    const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/user/block/${username}`, {
+    const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/user/block/${username}`,
+      {},
+      {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
