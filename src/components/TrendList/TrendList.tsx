@@ -17,12 +17,13 @@ export function TrendList() {
   });
   useEffect(() => {
     (async () => {
-      // debugger;
       const trends: Trend[] = await gettrendsFn();
+      // setUsers(trends.slice(0, 3));
+      // debugger;
       console.log(trends);
-      setTrends(trends);
+      setTrends(trends.slice(0, 3));
     })();
-  }, []);
+  }, [trends]);
   return (
     <>
       {trends &&
