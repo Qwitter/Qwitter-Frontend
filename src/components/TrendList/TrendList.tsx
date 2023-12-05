@@ -5,7 +5,10 @@ import { GetTrendsService } from "@/lib/utils";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/contexts/UserContextProvider";
 
-export function TrendList() {
+export type TrendsListProp = {
+  isCard: boolean;
+};
+export function TrendList({ isCard }: TrendsListProp) {
   const [trends, setTrends] = useState<Trend[]>([]);
   const { token } = useContext(UserContext);
   const {
@@ -19,7 +22,8 @@ export function TrendList() {
     (async () => {
       const trends: Trend[] = await gettrendsFn();
       console.log(trends);
-      setTrends(trends.slice(0, 3));
+      if (isCard) setTrends(trends.slice(0, 3));
+      else setTrends(trends);
     })();
   }, [token, trends]);
   return (

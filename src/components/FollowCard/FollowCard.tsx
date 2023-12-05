@@ -12,6 +12,7 @@ export function FollowCard() {
         listType={"FollowList"}
         showDesc={false}
         getusers={GetFollowSuggestionsService}
+        isCard={true}
       />
       <CardFooter className="hover:cursor-pointer mt-3 pt-3 hover:bg-light-gray rounded-br-lg rounded-bl-lg">
         <span className="text-secondary">show more</span>

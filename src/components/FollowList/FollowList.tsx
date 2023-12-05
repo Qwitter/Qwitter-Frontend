@@ -41,6 +41,7 @@ export function FollowList({ type }: { type: string }) {
             listType={"FollowList"}
             showDesc={true}
             getusers={GetFollowingsService}
+            isCard={false}
           />
         </TabsContent>
         <TabsContent value="Followers">
@@ -48,6 +49,7 @@ export function FollowList({ type }: { type: string }) {
             listType={"FollowList"}
             showDesc={true}
             getusers={GetFollowersService}
+            isCard={false}
           />
         </TabsContent>
       </Tabs>

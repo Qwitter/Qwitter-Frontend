@@ -5,7 +5,12 @@ import { User } from "@/models/User";
 import { UsersListProp } from "./UsersListProp";
 import { UserContext } from "@/contexts/UserContextProvider";
 
-export function UsersList({ showDesc, getusers, listType }: UsersListProp) {
+export function UsersList({
+  showDesc,
+  getusers,
+  listType,
+  isCard,
+}: UsersListProp) {
   const [users, setUsers] = useState<User[]>([]);
   const { token, user } = useContext(UserContext);
   const {
@@ -17,7 +22,8 @@ export function UsersList({ showDesc, getusers, listType }: UsersListProp) {
   useEffect(() => {
     (async () => {
       const users: User[] = await getusersFn();
-      setUsers(users.slice(0, 3));
+      if (isCard) setUsers(users.slice(0, 3));
+      else setUsers(users);
     })();
   }, [token, users]);
 
