@@ -34,6 +34,7 @@ export function FollowButton({ username, isFollowing }: FollowButtonProp) {
     setIsHovered(false);
   };
   const handleFollowButton = () => {
+    // debugger;
     FollowServiceFn(username);
     setstate(true);
   };
