@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { MessagesAccordion } from "../Messages/MessagesAccordion";
 import { Profile } from "../Profile/Profile";
 import { FollowList } from "@/components/FollowList/FollowList";
+import { ExploreList } from "@/components/ExploreList/ExploreList.";
 
 export function PagesContainer() {
   const location = useLocation();
@@ -35,6 +36,7 @@ export function PagesContainer() {
                 <Route path="/Notification" element={<Notifications />} />
                 <Route path="/Messages/*" element={<Messages />} />
                 <Route path="/:username/*" element={<Profile />} />
+                <Route path="/Explore" element={<ExploreList />} />
                 <Route
                   path="/Followers"
                   element={<FollowList type={"Followers"} />}

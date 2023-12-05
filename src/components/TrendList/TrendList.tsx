@@ -18,8 +18,6 @@ export function TrendList() {
   useEffect(() => {
     (async () => {
       const trends: Trend[] = await gettrendsFn();
-      // setUsers(trends.slice(0, 3));
-      // debugger;
       console.log(trends);
       setTrends(trends.slice(0, 3));
     })();
