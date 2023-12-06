@@ -19,6 +19,8 @@ import { LogOut } from "./components/LogOut/LogOut";
 import { PagesContainer } from "./pages/PagesContainer/PagesContainer";
 import Authentication from "../src/pages/Authentication/Authentication";
 import MessagesNewMessage from "./pages/Messages/MessagesNewMessage";
+import { MessagesGroupEditPopup } from "./pages/Messages/MessagesGroupEditPopup";
+import MessagesContextProvider from "./contexts/MessagesContextProvider";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +32,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <UserContextProvider>
+          <MessagesContextProvider>
           <Routes location={previousLocation || location}>
             <Route path="/" element={<Authentication />} />
           </Routes>
@@ -55,9 +58,13 @@ function App() {
             <Route path="/compose/tweet" element={<CreateTweetContainer />} />
             <Route path="/i/flow/logout" element={<LogOut />} />
             <Route path="/Messages/compose" element={<MessagesNewMessage />} />
+            <Route path="/Messages/:conversationId/group-info" element={<MessagesGroupEditPopup />} />
+            <Route path="/Messages/:conversationId/add" element={<MessagesNewMessage />} />
+            {/* <Route path="settings/profile" element={<MessagesNewMessage />} /> */}
             <Route path="settings/profile" element={<MessagesNewMessage />} />
           </Routes>
           <Toaster />
+          </MessagesContextProvider>
         </UserContextProvider>
       </ThemeProvider>
     </QueryClientProvider>

@@ -144,9 +144,9 @@ export const updateUsername = async ({
       { headers: { Authorization: `Bearer ${token}` } }
     );
     return res.status;
-  } catch (err ) {
-    const error = err as {response:{status:string}}
-    return error.response.status||null;
+  } catch (err) {
+    const error = err as { response: { status: string } }
+    return error.response.status || null;
   }
 };
 /**
@@ -203,7 +203,7 @@ export const verifyPassword = async ({
       { headers: { Authorization: `Bearer ${token}` } }
     );
     return res.data.correct;
-  
+
   } catch (err) {
     console.log(err);
     throw new Error("not valid");
@@ -550,13 +550,12 @@ export const timelineTweets = async (
  */
 export const getUsersSuggestions = async (token: string, username: string) => {
   try {
-      if(!username) return []
+    if (!username) return []
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user?q=${username.slice(1)}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(res.data.users)
     return res.data.users;
 
   } catch (err) {
@@ -574,6 +573,28 @@ export const getHashtags = async (token: string, tag: string) => {
   try {
     const res = await axios.get(
       `${VITE_BACKEND_URL}/api/v1/tweets/hashtags?q=${tag.slice(1)}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+/**
+ * @description get a list of user conversations
+ * @param token
+ * @returns list of user conversations  or null
+ */
+export const getUserConversations = async (token: string) => {
+  try {
+
+    const res = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/conversation/`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -693,6 +714,124 @@ export const bookmarkTweet = async (tweetId: string, token: string) => {
     throw new Error("Error bookmarking tweet");
   }
 };
+/**
+ * @description Change the groupName for a Conversation
+ * @param name
+ * @param token - the token of the user
+ * @param conversationId - the conversationId of the conversation
+ * @returns success or throws error if there is an error
+ */
+export const changeGroupName = async ({ name, token, conversationId }: { name: string, token: string, conversationId: string }) => {
+  try {
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/name`,
+      {
+        name: name
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(res.data)
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    return null
+  }
+};
+/**
+ * @description Create a new conversation
+ * @param conversation_name
+ * @param token - the token of the user
+ * @param users - array of userNames
+ * @returns success or throws error if there is an error
+ */
+export const CreateConversation = async ({ conversation_name, token, users }: { conversation_name: string, token: string, users: string[] }) => {
+  try {
+    console.log(conversation_name, token, users)
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/conversation/`,
+      {
+        users: users,
+        conversation_name: conversation_name,
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(res.data)
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    return null
+  }
+};
+/**
+ * @description Create a new message
+ * @param formData 
+ * @param token - the token of the user
+ * @returns success or throws error if there is an error
+ */
+export const CreateMessage = async ({ formData, token,conversationId }: { conversationId:string,formData: FormData;token:string}) => {
+  try {
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/message`,
+      formData,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(res)
+    return res.status == 201;
+  } catch (error) {
+    console.log(error);
+    return null
+  }
+};
+/**
+ * @description get user conversation by id
+ * @param conversationId
+ * @param token - the token of the user
+ * @returns get the conversation data
+ */
+export const getConversation = async ({ token, conversationId }: { conversationId: string, token: string }) => {
+  try {
+    console.log(conversationId, )
+    const res = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/conversation/` + conversationId,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const modifiedData = {
+      ...res.data,
+      users: res.data.users.map((user: { Name: string; }) => ({
+        ...user,
+        name: user.Name,
+      })),
+    };
+    console.log(modifiedData)
+    return modifiedData;
+  } catch (error) {
+    console.log(error);
+    return null
+  }
+};
+
 
 /**
  * @description Send a request to the backend to unBookmark a tweet

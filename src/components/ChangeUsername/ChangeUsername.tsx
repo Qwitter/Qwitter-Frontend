@@ -69,7 +69,7 @@ export function ChangeUsername() {
       setInputFieldValue(user?.userName||"");
      
     },0)
-  }, []);
+  }, [user]);
 
   const setInputFieldValue = (value: string, clickFlag = false) => {
     setIsClickChange(clickFlag);
@@ -140,7 +140,7 @@ export function ChangeUsername() {
             variant="secondary"
             role="save"
             className="block ml-auto"
-            disabled={user?.userName!=form.getValues('username')&&!form.formState.isValid}
+            disabled={user?.userName==inputValue||!form.formState.isValid}
           >
             Save
           </Button>

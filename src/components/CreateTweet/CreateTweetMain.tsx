@@ -13,8 +13,8 @@ export default function CreateTweetMain({ selectedImages, setSelectedImages, han
         content: '',
         index: 0,
         position: { top: 0, left: 0 },
-      });
-      const {user}=useContext(UserContext)
+    });
+    const { user } = useContext(UserContext)
     const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
 
         const inputText = e.target.value;
@@ -35,14 +35,14 @@ export default function CreateTweetMain({ selectedImages, setSelectedImages, han
 
         // Close the popup
         setTimeout(() => {
-            setPopup({visible:false,content:"",index:0,position:{top:0,left:0}});
+            setPopup({ visible: false, content: "", index: 0, position: { top: 0, left: 0 } });
         }, 50);
     };
 
     return (
         <div className="flex flex-row items-start h-full w-full ">
             <div className='mr-1 mt-3 min-w-fit'>
-                <img src={user?.profileImageUrl||img} alt="" className='w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid' />
+                <img src={user?.profileImageUrl || img} alt="" className='w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid' />
             </div>
             <div className='w-[90%] relative'>
                 <div className=" overflow-y-auto max-h-[480px] relative">
@@ -63,7 +63,7 @@ export default function CreateTweetMain({ selectedImages, setSelectedImages, han
                     <TweetImagesViewer images={selectedImages} mode='edit' removeAttachment={handleRemoveFile} />
                 </div>
                 {popup.visible &&
-                    <CreateTweetPopUp popUp={popup} closePopup={()=>setPopup({visible:false,content:"",index:0,position:{top:0,left:0}})} handleUserClick={handleUserClick} />
+                    <CreateTweetPopUp popUp={popup} closePopup={() => setPopup({ visible: false, content: "", index: 0, position: { top: 0, left: 0 } })} handleUserClick={handleUserClick} />
                 }
 
                 {mode == "home" && <CreateTweetFooter
