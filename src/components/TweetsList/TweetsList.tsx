@@ -20,7 +20,7 @@ const TweetsList = ({ pages, fetcherRef }: TweetsListProps) => {
       </div>
     );
   return (
-    <div className="max-w-[600px] mx-auto border-primary border-opacity-30 border-t">
+    <div className="max-w-[600px] mx-auto border-primary border-opacity-30 border-t" data-testid="Tweet">
       {pages.map((page, i) =>
         page.map((tweet: Tweet, j) => (
           <>

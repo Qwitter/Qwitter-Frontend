@@ -118,7 +118,7 @@ const TweetInteractionsButtons = ({ tweet }: TweetInteractionsButtonsProps) => {
 
   return (
     <div className="flex gap-4 mt-4 text-gray justify-between">
-      <div className="tweet-icon-container group">
+      <div className="tweet-icon-container group" data-testid="Comment">
         <div className="relative">
           <div className="tweet-icon-radius group-hover:bg-secondary"></div>
           <GoComment className="tweet-icon group-hover:text-secondary" />
@@ -127,7 +127,7 @@ const TweetInteractionsButtons = ({ tweet }: TweetInteractionsButtonsProps) => {
           {convertNumberToShortForm(tweetClone.replyCount)}
         </span>
       </div>
-      <div className="tweet-icon-container group">
+      <div className="tweet-icon-container group" data-testid="Retweet">
         <div className="relative">
           <div className="tweet-icon-radius group-hover:bg-[#00ba7c]"></div>
           <BiRepost className="tweet-icon group-hover:text-[#00ba7c]" />
@@ -143,6 +143,7 @@ const TweetInteractionsButtons = ({ tweet }: TweetInteractionsButtonsProps) => {
             ? () => unLikeTweetMutate(tweet.id)
             : () => likeTweetMutate(tweet.id)
         }
+        data-testid="Like"
       >
         <div className="relative">
           <div className="tweet-icon-radius group-hover:bg-[#f91880]"></div>
