@@ -8,7 +8,7 @@ import { UserContext } from "@/contexts/UserContextProvider";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { MessagesConversationPopUp } from "./MessagesConversationPopUp";
 
-export function MessagesConversationMessage({ status, date, id, media, text, userName }: MessagesMessage) {
+export function MessagesConversationMessage({ status, date, id, entities,replyToMessage, text, userName }: MessagesMessage) {
     const { user } = useContext(UserContext);
     const [isOpen, setIsOpen] = useState(false);
     const formatDate = (dateString: string) => {
@@ -30,22 +30,22 @@ export function MessagesConversationMessage({ status, date, id, media, text, use
             <div className={cn("flex flex-row ", userName == user?.userName && "justify-end")}>
                 <div className={cn("w-[87.5%] group flex flex-row", userName == user?.userName && "flex-row-reverse")}>
                     <div className={cn("flex flex-col gap-1 flex-shrink-1", userName == user?.userName && " items-end")}>
-                        {<div className={cn("flex flex-col mt-3 w-full -mb-7", userName == user?.userName && "justify-end", media.url && " -mb-10")}>
-                            <div className={cn("pb-2 gap-1 flex flex-row items-center", userName == user?.userName && "justify-end")}>
+                        {replyToMessage&&<div className={cn("flex flex-col mt-3 w-full -mb-7", userName == user?.userName && "justify-end", entities.media.value && " -mb-10")}>
+                            <div className={cn("pb-2 gap-1 min-w-max flex flex-row items-center", userName == user?.userName && "justify-end")}>
                                 {userName == user?.userName ? <Reply strokeWidth={5} className="w-[10px] h-[10px] text-[#71767B]" /> : <ForwardIcon strokeWidth={5} className="w-[10px] h-[10px] text-[#71767B]" />}
                                 <span className="text-gray text-[11px]">Replying to</span>
                             </div>
                             <div className={cn("bg-[#16181C] mt-2 text-[13px] px-4 py-3 max-w-full text-gray  rounded-3xl pb-8 ", userName == user?.userName && "justify-end")}>
-                                <span>{text}</span>
+                                <span>{replyToMessage.text}</span>
                             </div>
                         </div>}
                         <div className={cn("flex-shrink flex flex-col items-start ", userName == user?.userName && "items-end")}>
 
-                            {media.url && <div className="max-w-[80%] ">
-                                <TweetImagesViewer images={[{ value: media.url, type: media.type }]} />
+                            { entities.media.value && <div className="max-w-[80%] ">
+                                <TweetImagesViewer images={[{ value:  entities.media.value, type:  entities.media.type }]} />
                             </div>}
 
-                            <div className={cn("bg-[#2f3336] text-[15px] px-4 py-3 mt-1 w-fit rounded-3xl ", userName == user?.userName ? "bg-secondary rounded-br-sm" : "rounded-bl-sm")}>
+                            <div className={cn("bg-[#2f3336] text-[15px] px-4 py-3 mt-1 min-w-max rounded-3xl ", userName == user?.userName ? "bg-secondary rounded-br-sm" : "rounded-bl-sm")}>
                                 <span className="text-primary text-[15px]">{text}</span>
                             </div>
                         </div>

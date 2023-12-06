@@ -1,5 +1,5 @@
-import {  MoreHorizontal, Pin, Trash2, XCircle } from "lucide-react";
-import { MessageUser, MessagesListProp } from "./types/MessagesTypes";
+import { MoreHorizontal, Pin, Trash2, XCircle } from "lucide-react";
+import { conversation, conversationWithUserUser, MessagesListProp } from "./types/MessagesTypes";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -7,72 +7,94 @@ import { MessagesRequestPopUp } from "./Messages";
 import Highlighter from 'react-highlight-words'
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components";
+import moment from "moment";
+import { useContext,  } from "react";
+import { MessagesContext } from "@/contexts/MessagesContextProvider";
 // import { useEffect } from "react";
 
-export function MessagesList({ users, selectedUser, setSelectedUser,showDeletePopUp=()=>{}, matchedPart = "", mode = "normal" }: MessagesListProp) {
+export function MessagesList({
+    conversations, showDeletePopUp = () => { },
+    matchedPart = "", mode = "normal" }: MessagesListProp) {
     const navigate = useNavigate()
-    const handleConversationClick = (user: MessageUser) => {
-        setSelectedUser && setSelectedUser(user)
+    const  {currentConversation,setCurrentConversation}= useContext(MessagesContext)
+
+    const handleConversationClick = (user: conversation) => {
+        setCurrentConversation&&setCurrentConversation(user.id!);
         navigate("/Messages/" + user.id)
     }
-    // const formatDate = (dateString: string) => {
-    //     const date = moment(dateString);
-    //     const now = moment();
-    //     if (now.diff(date, 'days') === 0)
-    //         return date.format('h:mm A');
-    //     else if (now.diff(date, 'days') === 1)
-    //         return 'Yesterday,' + date.format('h:mm A');
-    //     else if (now.diff(date, 'days') < 7)
-    //         return date.format('ddd h:mm A');
+    const formatDate = (dateString: string) => {
+        try {
+            const date = moment(dateString);
+            const now = moment();
+            if (now.diff(date, 'days') === 0)
+                return date.format('h:mm A');
+            else if (now.diff(date, 'days') === 1)
+                return 'Yesterday,' + date.format('h:mm A');
+            else if (now.diff(date, 'days') < 7)
+                return date.format('ddd h:mm A');
 
-    //     else
-    //         return date.format('MMM D, YYYY, h:mm A');
+            else
+                return date.format('MMM D, YYYY, h:mm A');
+        } catch (e) {
+            return "";
+        }
 
-    // };
-    // useEffect(()=>{
-    //     console.log(users)
-    // },[users])
+    };
+    const handleNameOfChat = (users: conversationWithUserUser[]): string => {
+
+        if (users.length === 0) {
+            return '';
+        }
+        
+
+        // Exclude the last user and concatenate names
+        const concatenatedNames = users!.slice(0, -1).map((user) => user.name).join(', ');
+
+        // Return the result
+        return concatenatedNames;
+    };
+
     return (<>
 
-        {users.map(user => (
-            <li key={user.userName} className={cn("py-3 px-4 flex flex-row justify-between group  hover:bg-[#16181c] w-full transition-all cursor-pointer items-start", user.userName == selectedUser?.userName ? "bg-[#16181c]  border-secondary border-r-2 " : "")} >
+        {conversations&& conversations.map((user, index) => (
+            <li key={index} className={cn("py-3 px-4 flex flex-row justify-between group  hover:bg-[#16181c] w-full transition-all cursor-pointer items-start ",( user.id == currentConversation) ? "bg-[#16181c]  border-secondary border-r-4 " : "")} >
                 <div className="flex flex-row flex-grow" onClick={() => handleConversationClick(user)}>
-                    <Avatar className="mr-4">
-                        <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" src={user.userPhoto} />
+                    <Avatar className="mr-4 min-w-max">
+                        <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" src={user.photo || "https://i1.sndcdn.com/artworks-000647897398-mk0598-t240x240.jpg"} />
                     </Avatar>
-                    <div className="flex flex-col gap-0 overflow-hidden">
-                        <div className={cn("flex flex-row gap-1 items-center ",mode=="People"&&'justify-between w-full')}>
+                    <div className="flex flex-col gap-0 ">
+                        <div className={cn("flex flex-row gap-1 items-center  flex-wrap", mode == "People" && 'justify-between w-full')}>
                             {mode == "People" ? <Highlighter searchWords={[matchedPart]} highlightClassName="text-black" ClassName="text-primary font-semibold text-[15px]" autoEscape={true}
-                                textToHighlight={user.name}
-                            /> : <span className="text-primary font-semibold text-[15px]">{user.name}</span>
+                                textToHighlight={handleNameOfChat(user.users)}
+                            /> : <span className="text-primary font-semibold text-[15px] overflow-hidden whitespace-nowrap">{handleNameOfChat(user.users)}</span>
                             }
                             {mode !== "People" && (
                                 <>
-                                    {mode !== "conversations" && <span className="text-gray break-words">@{user.userName}</span>}
+                                    {mode !== "conversations" && !user.isGroup && <span className="text-gray whitespace-nowrap ">@{user.users[0].userName}</span>}
                                     <div className="bg-gray rounded-full w-[3px] h-[3px]"></div>
-                                    <span className="text-gray break-words">{user.lastMessageTime}</span>
+                                    <span className="text-gray whitespace-nowrap overflow-clip">{formatDate(user.lastMessage?.date || "")}</span>
 
                                 </>)}
 
                         </div>
                         {
                             mode == "conversations" ?
-                                <Highlighter searchWords={[matchedPart]} highlightClassName="text-black" ClassName={`overflow-hidden ${((user.userName == selectedUser?.userName)) ? 'text-primary' : 'text-gray'}`} autoEscape={true}
-                                    textToHighlight={user.name}
+                                <Highlighter searchWords={[matchedPart]} highlightClassName="text-black" ClassName={`overflow-hidden ${((user.id == currentConversation)) ? 'text-primary' : 'text-gray'}`} autoEscape={true}
+                                    textToHighlight={handleNameOfChat(user.users)}
                                 /> : /*Wrong condition fix it */
-                                <span className={`overflow-hidden ${((user.userName == selectedUser?.userName)) && mode != "People" ? 'text-primary' : 'text-gray'}`}>{mode != "People" ? `${user.lastMessage}` : `@${user.userName}`}</span>
+                                <span className={`overflow-hidden ${((user.id == currentConversation)) && mode != "People" ? 'text-primary' : 'text-gray'}`}>{mode != "People" ? `${user.lastMessage?.text}` : `@${user.users[0].userName}`}</span>
                         }
                     </div>
 
                 </div>
                 <div className="flex justify-end gap-3 self-start  flex-row items-first">
-                    { mode != "People" &&
+                    {mode != "People" && user.lastMessage && user.lastMessage!.status! &&
                         <div>
                             <div className="bg-secondary rounded-full w-[10px] h-[10px] mt-3.5 "></div>
                         </div>}
-                        {
-                                mode =="People"&&<Button variant={"default"} >Following</Button>
-                            }
+                    {
+                        mode == "People" && <Button variant={"default"} >Following</Button>
+                    }
 
                     <Popover>
                         {mode == "request" && <>
@@ -82,7 +104,7 @@ export function MessagesList({ users, selectedUser, setSelectedUser,showDeletePo
                                 </PopoverTrigger>
                             </div>
                             <PopoverContent className="min-w-[360px] max-w-[360px] max-h-[480px] min-h-[50px] p-0 pb-2 overflow-y-auto box-shadow bg-black   rounded-xl">
-                                <MessagesRequestPopUp conversationUsername={user.userName} handleBlock={() => { }} handleRemoveConversation={() => { }} />
+                                <MessagesRequestPopUp conversationUsername={user.users[0].userName} handleBlock={() => { }} handleRemoveConversation={() => { }} />
                             </PopoverContent>
                         </>
 
@@ -109,7 +131,7 @@ export function MessagesList({ users, selectedUser, setSelectedUser,showDeletePo
         ))}</>
     );
 }
-export function MessagesConversationListPopUp({showDeletePopUp}:{showDeletePopUp:()=>void}) {
+export function MessagesConversationListPopUp({ showDeletePopUp }: { showDeletePopUp: () => void }) {
 
     return (
         <>

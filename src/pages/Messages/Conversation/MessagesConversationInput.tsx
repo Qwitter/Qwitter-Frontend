@@ -6,10 +6,14 @@ import CreateTweetPopUp from "@/components/CreateTweet/CreateTweetPopUp";
 import { cn } from "@/lib";
 import TweetImagesViewer from "@/components/TweetImagesViewer/TweetImagesViewer";
 
-export function MessagesConversationInput({ text, setText }: { text: string; setText: React.Dispatch<React.SetStateAction<string>>; }) {
+
+export function MessagesConversationInput({ text, setText, handleSubmit, selectedImageFile, setSelectedImageFile }:
+    {
+        selectedImageFile: File | undefined; setSelectedImageFile: React.Dispatch<React.SetStateAction<File | undefined>>
+        handleSubmit: () => void; text: string; setText: React.Dispatch<React.SetStateAction<string>>;
+    }) {
     const [mentionsAndTags, SetMentionsAndTags] = useState<Mention[]>([]);
     const fileInput = useRef<HTMLInputElement>(null);
-    const [selectedImageFile, setSelectedImageFile] = useState<File>();
     const [selectedImage, setSelectedImage] = useState<Images[]>();
     const [popup, setPopup] = useState({
         visible: false,
@@ -17,6 +21,7 @@ export function MessagesConversationInput({ text, setText }: { text: string; set
         index: 0,
         position: { top: 0, left: 0 },
     });
+
     const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
 
         const inputText = e.target.value;
@@ -39,10 +44,8 @@ export function MessagesConversationInput({ text, setText }: { text: string; set
         setSelectedImageFile(undefined);
 
     };
-    const handleSubmit = ()=>{
-        console.log("Working")
-    }
-    const handleKeyDown =(e:React.KeyboardEvent)=>{
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter' && e.code === 'Enter' && !e.shiftKey && !e.ctrlKey && !e.altKey && !e.metaKey) {
             e.preventDefault()
             handleSubmit()

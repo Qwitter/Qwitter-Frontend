@@ -24,13 +24,19 @@ export const MessagesGroupEditPopup = () => {
     const { group } = useContext(MessagesContext)
     const navigate = useNavigate()
     const { conversationId } = useParams();
+    const [imageKey, setImageKey] = useState<number>(0);
+
     const { token } = useContext(UserContext);
     const form = useForm<z.infer<typeof GroupNameSchema>>({
         resolver: zodResolver(GroupNameSchema),
         mode: "onChange",
     });
+    const handleImageChange = () => {
+        setImageKey((prevKey) => prevKey + 1);
+    };
+
     useEffect(() => {
-        
+        handleImageChange()
         setInputFieldValue(group?.groupName || "")
         setImage(group?.groupImg || "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg")
     }, [group?.groupImg, group?.groupName]);
@@ -93,7 +99,7 @@ export const MessagesGroupEditPopup = () => {
             <div className="w-full items-center flex flex-col pb-6">
                 <ImagePicker
                     image={image}
-                    key={image && 0} //to rerender
+                    key={imageKey}
                     name="groupImage"
                     setImagePath={setImageFile}
                     alt="Group Image"

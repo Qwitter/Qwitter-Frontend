@@ -16,15 +16,21 @@ type MessageReply ={
 type MessagesContextType = {
     group: Group | null;
     messageReply:MessageReply |null;
+    currentConversation:string;
+    setCurrentConversation:(id:string)=>void;
     setMessageReply:(messageReply:MessageReply|null)=>void;
     setGroup: (group: Group | null) => void;
 
     saveGroup: (group: Group) => void;
+
 };
 
 const defaultMessagesContext: MessagesContextType = {
     group: null,
     messageReply:null,
+    currentConversation:"",
+    setCurrentConversation:()=>{},
+
     setMessageReply:()=>{},
     saveGroup: () => { },
     setGroup: () => {},
@@ -35,6 +41,7 @@ export const MessagesContext = createContext<MessagesContextType>(defaultMessage
 const MessagesContextProvider = ({ children }: MessagesContextProviderProps) => {
     const [group, setGroup] = useState<Group | null>(null);
     const [messageReply, setMessageReply] = useState<MessageReply | null>(null);
+    const [currentConversation ,setCurrentConversation] =useState("");
     // useEffect(() => {
     //     const storedUser = localStorage.getItem("user");
     //     const storedToken = localStorage.getItem("token");
@@ -53,7 +60,7 @@ const MessagesContextProvider = ({ children }: MessagesContextProviderProps) => 
 
     return (
         <MessagesContext.Provider
-            value={{ group, saveGroup,setGroup,messageReply,setMessageReply }}
+            value={{ group, saveGroup,setGroup,messageReply,setMessageReply,currentConversation,setCurrentConversation }}
         >
             {children}
         </MessagesContext.Provider>
