@@ -85,11 +85,21 @@ const settingsOptions = [
     id: "account",
     title: "Your account",
   },
-  // {
-  //   id: "privacy_and_safety",
-  //   title: "Privacy and safety",
-  // }
+  {
+    id: "privacy_and_safety",
+    title: "Privacy and safety",
+  }
 ]
+// const privacyOptions = [
+//   {
+//     id: "/muted_accounts",
+//     title: "Muted accounts",
+//   },
+//   {
+//     id: "/blocked_accounts",
+//     title: "Blocked accounts",
+//   },
+// ]
 const accountOptions = [
   {
     id: "/your_twitter_data/account",
