@@ -1083,8 +1083,9 @@ export const UnBlockService = async (username: string, token: string) => {
  * @param token
  * @returns  users array represents the response from the backend or null
  */
-export const GetBlockedService = async (token: string) => {
+export const GetBlockedService = async (username:string,token: string) => {
   try {
+    debugger;
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/block`, {
       headers: {
         Accept: "application/json",
@@ -1092,7 +1093,7 @@ export const GetBlockedService = async (token: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return res.data.data;
+    return res.data;
   } catch (err) {
     console.log(err);
     return null;

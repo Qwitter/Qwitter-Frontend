@@ -2,7 +2,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { useState } from "react";
 import "../../index.css";
 import { UsersList } from "../UsersList/UsersList";
-import { GetFollowersService, GetFollowingsService } from "@/lib/utils";
+import {
+  GetBlockedService,
+  GetFollowersService,
+  GetFollowingsService,
+} from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 export function FollowList({ type }: { type: string }) {
   const [Liststate, setListstate] = useState(type);
@@ -35,6 +39,18 @@ export function FollowList({ type }: { type: string }) {
               Followers
             </div>
           </TabsTrigger>
+          <TabsTrigger
+            className="flex justify-center tabhover"
+            value="Blocked"
+            onClick={() => {
+              setListstate("Blocked");
+              navigate("/Blocked");
+            }}
+          >
+            <div className={Liststate == "Blocked" ? "active-tab" : "tab"}>
+              Blocked
+            </div>
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="Following">
           <UsersList
@@ -49,6 +65,14 @@ export function FollowList({ type }: { type: string }) {
             listType={"FollowList"}
             showDesc={true}
             getusers={GetFollowersService}
+            isCard={false}
+          />
+        </TabsContent>
+        <TabsContent value="Blocked">
+          <UsersList
+            listType={"BlockList"}
+            showDesc={true}
+            getusers={GetBlockedService}
             isCard={false}
           />
         </TabsContent>
