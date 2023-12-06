@@ -9,6 +9,7 @@ import {
 import { SignUpDataSchema } from "@/models/SignUp";
 import { BirthDay, MONTHS } from "@/models/BirthDay";
 import { UserDataSchema } from "@/models/User";
+import { debug } from "console";
 
 const { VITE_BACKEND_URL } = import.meta.env;
 
@@ -1079,14 +1080,82 @@ export const UnBlockService = async (username: string, token: string) => {
 };
 
 /**
- * @description get Blocked list in Settings page (Block and mute section)
+ * @description get Blocked list in Settings page (Block section)
  * @param token
  * @returns  users array represents the response from the backend or null
  */
 export const GetBlockedService = async (username:string,token: string) => {
   try {
-    debugger;
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/block`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+/**
+ * @description mute specific user
+ * @param username of this specific use
+ * @param token
+ * @returns  success or throws error if there is an error
+ */
+export const MuteService = async (username: string, token: string) => {
+  try {
+    debugger;
+    const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/user/mute/${username}`,
+      {},
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+/**
+ * @description unmute specific user
+ * @param username of this specific user
+ * @param token
+ * @returns  success or throws error if there is an error
+ */
+export const UnMuteService = async (username: string, token: string) => {
+  try {
+    debugger;
+    const res = await axios.delete(`${VITE_BACKEND_URL}/api/v1/user/mute/${username}`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+/**
+ * @description get muted list in Settings page (mute section)
+ * @param token
+ * @returns  users array represents the response from the backend or null
+ */
+export const GetMutedService = async (username: string, token: string) => {
+  try {
+    debugger;
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/mute`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
