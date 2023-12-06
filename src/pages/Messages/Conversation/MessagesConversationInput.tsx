@@ -14,7 +14,6 @@ export function MessagesConversationInput({ text, setText, handleSubmit, selecte
     }) {
     const [mentionsAndTags, SetMentionsAndTags] = useState<Mention[]>([]);
     const fileInput = useRef<HTMLInputElement>(null);
-    const [selectedImage, setSelectedImage] = useState<Images[]>();
     const [popup, setPopup] = useState({
         visible: false,
         content: '',
@@ -32,7 +31,6 @@ export function MessagesConversationInput({ text, setText, handleSubmit, selecte
         selectedImageFile;
         if (file) {
             setSelectedImageFile(file[0]);
-            setSelectedImage([{ value: URL.createObjectURL(file[0]), type: "photo" }]);
             fileInput.current!.value = '';
         }
     };
@@ -40,7 +38,6 @@ export function MessagesConversationInput({ text, setText, handleSubmit, selecte
         fileInput.current?.click();
     };
     const handleRemoveImage = () => {
-        setSelectedImage(undefined);
         setSelectedImageFile(undefined);
 
     };
@@ -69,7 +66,7 @@ export function MessagesConversationInput({ text, setText, handleSubmit, selecte
             <div className="bg-[#202327] flex flex-col w-full  rounded-2xl ">
                 <div className="flex flex-row  max-w-[75vw] items-center relative ">
 
-                    {!selectedImage && <><div className="text-secondary group relative max-w-[40px] flex items-center w-full cursor-pointer" onClick={handleUploadImg}>
+                    {!selectedImageFile && <><div className="text-secondary group relative max-w-[40px] flex items-center w-full cursor-pointer" onClick={handleUploadImg}>
                         <Image className="w-10 h-10 p-2 rounded-3xl group-hover:bg-secondary group-hover:bg-opacity-25" />
                         <div className="absolute  bg-[#657b8b] rounded-sm text-primary text-xs px-2 py-1 opacity-0 bg-opacity-75 group-hover:opacity-100 transition-opacity bottom-full left-1/2 transform -translate-x-1/2 translate-y-[0]">
                             media
@@ -82,10 +79,10 @@ export function MessagesConversationInput({ text, setText, handleSubmit, selecte
                             </div>
                         </div></>}
                     <div className="flex flex-col w-full pl-2">
-                        {selectedImage && <div className="w-[20vw] max-h-[200px] overflow-y-hidden">
-                            <TweetImagesViewer images={selectedImage} mode="edit" removeAttachment={handleRemoveImage} />
+                        {selectedImageFile && <div className="w-[20vw] max-h-[200px] overflow-y-hidden">
+                            <TweetImagesViewer images={selectedImageFile?[{ value: URL.createObjectURL(selectedImageFile), type: "photo" }]:[]} mode="edit" removeAttachment={handleRemoveImage} />
                         </div>}
-                        <div className={cn("w-full max-w-[440px] max-h-[160px] overflow-y-auto relative", `${selectedImage ? 'max-w-[500px]' : ''}`)}>
+                        <div className={cn("w-full max-w-[440px] max-h-[160px] overflow-y-auto relative", `${selectedImageFile ? 'max-w-[500px]' : ''}`)}>
                             <Textarea
                                 text={text}
                                 SetMentionsAndTags={SetMentionsAndTags}
@@ -95,7 +92,7 @@ export function MessagesConversationInput({ text, setText, handleSubmit, selecte
                                 onKeyDown={handleKeyDown}
                                 onChange={handleInputChange}
                                 mode="Message"
-                                highlightClassName={cn("text-sm bg-transparent overflow-x-hidden  max-w-[440px] ", `${selectedImage ? 'max-w-[540px]' : ''}`)}
+                                highlightClassName={cn("text-sm bg-transparent overflow-x-hidden  max-w-[440px] ", `${selectedImageFile ? 'max-w-[540px]' : ''}`)}
                                 className="bg-transparent text-sm overflow-x-hidden  placeholder:text-gray  focus:ring-transparent focus:border-none focus:outline-none resize-none border-none" placeholder="Start a new message" />
                         </div>
                     </div>

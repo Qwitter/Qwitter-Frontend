@@ -77,6 +77,7 @@ export function MessagesConversation() {
             formData.append("media", selectedImageFile || "");
             mutate({ token: token!, formData: formData, conversationId: conversationId! })
             setText("");
+            setSelectedImageFile(undefined);
             setMessageReply(null)
         }
     }
