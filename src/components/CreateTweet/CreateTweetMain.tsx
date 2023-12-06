@@ -57,6 +57,7 @@ export default function CreateTweetMain({ selectedImages, setSelectedImages, han
                         mode={mode}
                         mentionsAndTags={mentionsAndTags}
                         placeholder='What is happing?!' text={tweet} className='bg-transparent  placeholder:text-gray  focus:ring-transparent focus:border-none focus:outline-none resize-none border-none'
+                        data-testid="tweetInput"
                     />
 
                     <TweetImagesViewer images={selectedImages} mode='edit' removeAttachment={handleRemoveFile} />

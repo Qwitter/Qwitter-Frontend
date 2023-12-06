@@ -117,6 +117,7 @@ export function ChangeUsername() {
             errorMessage={
               form.formState.errors.username?.message?.toString() || ""
             }
+            data-testid="username"
           />
         </div>
         <div className="border-y w-full p-4 border-primary border-opacity-20">

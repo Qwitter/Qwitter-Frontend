@@ -36,6 +36,7 @@ const TweetOptionsMenu = ({ tweet }: TweetOptionsMenuProps) => {
           <Button
             variant="outline"
             className="ml-auto ring-0 hover:bg-secondary hover:bg-opacity-20 p-1 outline-0 ease-in-out duration-200"
+            data-testid="MoreOptions"
           >
             <HiOutlineDotsHorizontal className="cursor-pointer text-xl rounded-full text-gray hover:text-secondary ease-in-out duration-200" />
           </Button>
@@ -46,6 +47,7 @@ const TweetOptionsMenu = ({ tweet }: TweetOptionsMenuProps) => {
               <DropdownMenuItem
                 className="text-danger gap-2 items-center font-bold"
                 onClick={() => setShowDeleteDialog(true)}
+                data-testid="DeleteTweet"
               >
                 <FiTrash2 className="text-lg" />
                 Delete
