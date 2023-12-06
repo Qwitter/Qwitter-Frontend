@@ -6,6 +6,11 @@ import { GoMute } from "react-icons/go";
 import { GoUnmute } from "react-icons/go";
 import { toast } from "../ui/use-toast";
 import { Button } from "../ui/button";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "../ui/hover-card";
 
 export type MuteButtonProp = {
   username: string;
@@ -38,13 +43,30 @@ export function MuteButton({ username }: MuteButtonProp) {
   return (
     <>
       {state == "Muted" ? (
-        <Button variant={"danger"} onClick={() => MuteServiceFn(username)}>
-          <GoUnmute className="rounded-full w-[20px] h-[20px]"></GoUnmute>
-        </Button>
+        <HoverCard>
+          <HoverCardTrigger>
+            <Button
+              variant={"danger"}
+              onClick={() => unMuteServiceFn(username)}
+            >
+              <GoMute className="rounded-full w-[20px] h-[20px]"></GoMute>
+            </Button>
+          </HoverCardTrigger>
+          <HoverCardContent className="w-[100px]">unmute</HoverCardContent>
+        </HoverCard>
       ) : (
-        <Button variant={"secondary"} onClick={() => unMuteServiceFn(username)}>
-          <GoMute className="rounded-full w-[20px] h-[20px]"></GoMute>
-        </Button>
+        <HoverCard>
+          <HoverCardTrigger>
+            <Button
+              className="cursor-pointer"
+              variant={"secondary"}
+              onClick={() => MuteServiceFn(username)}
+            >
+              <GoUnmute className="rounded-full w-[20px] h-[20px]"></GoUnmute>
+            </Button>
+          </HoverCardTrigger>
+          <HoverCardContent className="w-[100px]">mute</HoverCardContent>
+        </HoverCard>
       )}
     </>
   );

@@ -3,7 +3,6 @@ import { useState } from "react";
 import "../../index.css";
 import { UsersList } from "../UsersList/UsersList";
 import {
-  GetBlockedService,
   GetFollowersService,
   GetFollowingsService,
   GetMutedService,
