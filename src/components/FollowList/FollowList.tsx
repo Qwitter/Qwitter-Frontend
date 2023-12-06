@@ -6,6 +6,7 @@ import {
   GetBlockedService,
   GetFollowersService,
   GetFollowingsService,
+  GetMutedService,
 } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 export function FollowList({ type }: { type: string }) {
@@ -41,14 +42,14 @@ export function FollowList({ type }: { type: string }) {
           </TabsTrigger>
           <TabsTrigger
             className="flex justify-center tabhover"
-            value="Blocked"
+            value="Muted"
             onClick={() => {
-              setListstate("Blocked");
-              navigate("/Blocked");
+              setListstate("Muted");
+              navigate("/Muted");
             }}
           >
-            <div className={Liststate == "Blocked" ? "active-tab" : "tab"}>
-              Blocked
+            <div className={Liststate == "Muted" ? "active-tab" : "tab"}>
+              Muted
             </div>
           </TabsTrigger>
         </TabsList>
@@ -68,11 +69,11 @@ export function FollowList({ type }: { type: string }) {
             isCard={false}
           />
         </TabsContent>
-        <TabsContent value="Blocked">
+        <TabsContent value="Muted">
           <UsersList
-            listType={"BlockList"}
+            listType={"MuteList"}
             showDesc={true}
-            getusers={GetBlockedService}
+            getusers={GetMutedService}
             isCard={false}
           />
         </TabsContent>

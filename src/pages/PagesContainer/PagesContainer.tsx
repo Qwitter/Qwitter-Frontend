@@ -45,10 +45,7 @@ export function PagesContainer() {
                   path="/Following"
                   element={<FollowList type={"Following"} />}
                 />
-                <Route
-                  path="/Blocked"
-                  element={<FollowList type={"Blocked"} />}
-                />
+                <Route path="/Muted" element={<FollowList type={"Muted"} />} />
               </Routes>
             </div>
           </div>
