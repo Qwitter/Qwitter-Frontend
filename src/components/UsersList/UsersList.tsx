@@ -25,7 +25,7 @@ export function UsersList({
       if (isCard) setUsers(users.slice(0, 3));
       else setUsers(users);
     })();
-  }, [token, users]);
+  }, [token]);
 
   return (
     <>
