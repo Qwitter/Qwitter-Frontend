@@ -58,12 +58,12 @@ export function MessagesList({
 
         {conversations&& conversations.map((user, index) => (
             <li key={index} className={cn("py-3 px-4 flex flex-row justify-between group  hover:bg-[#16181c] w-full transition-all cursor-pointer items-start ",( user.id == currentConversation) ? "bg-[#16181c]  border-secondary border-r-4 " : "")} >
-                <div className="flex flex-row flex-grow" onClick={() => handleConversationClick(user)}>
+                <div className="flex flex-row flex-grow overflow-hidden max-w-[85%]" onClick={() => handleConversationClick(user)}>
                     <Avatar className="mr-4 min-w-max">
                         <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" src={user.photo || "https://i1.sndcdn.com/artworks-000647897398-mk0598-t240x240.jpg"} />
                     </Avatar>
-                    <div className="flex flex-col gap-0 ">
-                        <div className={cn("flex flex-row gap-1 items-center  flex-wrap", mode == "People" && 'justify-between w-full')}>
+                    <div className="flex flex-col gap-0  ">
+                        <div className={cn("flex flex-row gap-1 items-center max-w-full", mode == "People" && 'justify-between w-full')}>
                             {mode == "People" ? <Highlighter searchWords={[matchedPart]} highlightClassName="text-black" ClassName="text-primary font-semibold text-[15px]" autoEscape={true}
                                 textToHighlight={handleNameOfChat(user.users)}
                             /> : <span className="text-primary font-semibold text-[15px] overflow-hidden whitespace-nowrap">{handleNameOfChat(user.users)}</span>
@@ -72,7 +72,7 @@ export function MessagesList({
                                 <>
                                     {mode !== "conversations" && !user.isGroup && <span className="text-gray whitespace-nowrap ">@{user.users[0].userName}</span>}
                                     <div className="bg-gray rounded-full w-[3px] h-[3px]"></div>
-                                    <span className="text-gray whitespace-nowrap overflow-clip">{formatDate(user.lastMessage?.date || "")}</span>
+                                    <span className="text-gray whitespace-nowrap ">{formatDate(user.lastMessage?.date || "")}</span>
 
                                 </>)}
 
@@ -88,10 +88,10 @@ export function MessagesList({
 
                 </div>
                 <div className="flex justify-end gap-3 self-start  flex-row items-first">
-                    {mode != "People" && user.lastMessage && user.lastMessage!.status! &&
+                    {/* {mode != "People" && user.lastMessage && user.lastMessage!.s &&
                         <div>
                             <div className="bg-secondary rounded-full w-[10px] h-[10px] mt-3.5 "></div>
-                        </div>}
+                        </div>} */}
                     {
                         mode == "People" && <Button variant={"default"} >Following</Button>
                     }
@@ -121,7 +121,7 @@ export function MessagesList({
                                     </PopoverTrigger>
                                 </div>
                                 <PopoverContent className="min-w-fit max-w-[230px] max-h-[480px] min-h-[50px] p-0 pb-2 overflow-y-auto box-shadow bg-black   rounded-xl">
-                                    <MessagesConversationListPopUp showDeletePopUp={showDeletePopUp} />
+                                    <MessagesConversationListPopUp showDeletePopUp={()=>showDeletePopUp(user.id||"")} />
                                 </PopoverContent>
                             </>
                         }
@@ -132,6 +132,7 @@ export function MessagesList({
     );
 }
 export function MessagesConversationListPopUp({ showDeletePopUp }: { showDeletePopUp: () => void }) {
+
 
     return (
         <>

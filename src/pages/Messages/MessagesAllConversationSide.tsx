@@ -9,10 +9,13 @@ import { UserContext } from "@/contexts/UserContextProvider";
 import { useQuery } from "@tanstack/react-query";
 import { getUserConversations } from "@/lib/utils";
 import { Spinner } from "@/components/Spinner";
+import { MessagesContext } from "@/contexts/MessagesContextProvider";
 
 export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRequest = false }: { newMessageRequest?: boolean; messagesRequests?: number; }) {
     const navigate = useNavigate();
     const { token } = useContext(UserContext);
+    const {setUserAllConversation}= useContext(MessagesContext)
+    const [conversationToDelete,setConversationToDelete] = useState("")
     const {
         isPending, data, refetch
     } = useQuery<conversation[]>({
@@ -24,7 +27,8 @@ export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRe
 
     });
     useEffect(() => {
-        console.log(data)
+        
+        setUserAllConversation(data!)
         refetch();
     }, [token, refetch, data]);
 
@@ -32,6 +36,10 @@ export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRe
         navigate('/Messages/requests');
     };
     const [show, setShow] = useState<boolean>(false);
+    const deleteConversation = (conversationId:string)=>{
+        setConversationToDelete(conversationId)
+        setShow(true)
+    }
     if (isPending) {
         return (
             <div className="w-full h-[280px] p-8">
@@ -39,6 +47,7 @@ export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRe
             </div>
         );
     }
+    
     return (
         <div>
             {messagesRequests > 0 &&
@@ -73,9 +82,9 @@ export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRe
 
             <MessagesList conversations={data}
                 mode={"normal"}
-                showDeletePopUp={() => setShow(true)}
+                showDeletePopUp={deleteConversation}
             />
-            <ConversationLeavePopUp show={show} setShow={setShow} leaveFunction={() => { }} />
+            <ConversationLeavePopUp show={show} setShow={setShow}  conversationToDelete ={conversationToDelete} />
         </div>
     );
 }

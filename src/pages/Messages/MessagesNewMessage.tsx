@@ -9,43 +9,17 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { CreateConversation, cn, getUsersSuggestions } from "@/lib/utils";
 import { User } from "@/models/User";
 import { UserContext } from "@/contexts/UserContextProvider";
+import { MessagesContext } from "@/contexts/MessagesContextProvider";
+import { MessageUser } from "./types/MessagesTypes";
 
 function MessagesNewMessage() {
     const [isFocus, setFocus] = useState(false);
     const [peopleSearchText, setPeopleSearchText] = useState("");
     const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
     const { token } = useContext(UserContext)
+    const {userAllConversation } = useContext(MessagesContext)
     const navigate = useNavigate();
-    const userConversations = [{
-        name: "Charlie Davis",
-        email: "charlie.davis@example.com",
-        birthDate: "1983-09-12",
-        userName: "charlie_d",
-        createdAt: "2023-01-25T11:45:00Z",
-        location: "Suburbia",
-        bio: "Tech geek and gadget lover",
-        website: "http://www.charliedavis.com",
-        passwordChangedAt: "2023-01-27T18:15:00Z",
-        id: "6",
-        google_id: "google321",
-        profileImageUrl: "github.com/shadcn.png",
-        profileBannerUrl: "http://www.example.com/charliedavis-banner.jpg",
-    },
-    {
-        name: "Sophie Martin",
-        email: "sophie.martin@example.com",
-        birthDate: "1992-07-18",
-        userName: "sophie_m",
-        createdAt: "2023-01-30T09:15:00Z",
-        location: "Coastal City",
-        bio: "Foodie and travel enthusiast",
-        website: "http://www.sophiemartin.com",
-        passwordChangedAt: "2023-02-01T15:30:00Z",
-        id: "7",
-        google_id: "google876",
-        profileImageUrl: "github.com/shadcn.png",
-        profileBannerUrl: "http://www.example.com/sophiemartin-banner.jpg",
-    },]
+
     const handleXClick = () => { navigate(-1) }
 
     const handleNextClick = () => {
@@ -146,26 +120,26 @@ function MessagesNewMessage() {
                             </li>))}
                         </ul>}
                     <div className="overflow-y-auto w-full ">
-                        <ShowUsersSuggestions onUserClick={handlePickUser} selectedUsers={selectedUsers} users={peopleSearchText.length > 0 ? data! : userConversations} />
+                        <ShowUsersSuggestions onUserClick={handlePickUser} selectedUsers={selectedUsers} users={peopleSearchText.length > 0 ? data! : userAllConversation!} />
                     </div>
                 </div>
             }
         </PopUpContainer>
     )
 }
-function ShowUsersSuggestions({ onUserClick, users, selectedUsers }: { selectedUsers: User[], users: User[], onUserClick: (user: User) => void }) {
+function ShowUsersSuggestions({ onUserClick, users, selectedUsers }: { selectedUsers: MessageUser[], users: MessageUser[], onUserClick: (user: User) => void }) {
 
 
     return (
         <ul className="flex-shrink min-h-[60vh]" >
 
             {
-                users && users.slice(0, 10).map(user => (
-                    <li key={user.userName} className="py-3 px-4 flex flex-row justify-between hover:bg-[#16181c] w-full transition-all items-center cursor-pointer"
+                users && users.slice(0, 12).map((user,index) => (
+                    <li key={index} className="py-3 px-4 flex flex-row justify-between hover:bg-[#16181c] w-full transition-all items-center cursor-pointer"
                         onClick={() => onUserClick(user)}>
                         <div className=" flex flex-row">
                             <Avatar className="mr-4">
-                                <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" src={`${user?.profileImageUrl}`} />
+                                <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" src={user?.profileImageUrl} />
                             </Avatar><div className="flex flex-col h-full gap-0 ">
                                 <h3 className="text-primary text-[15px]">{user.name}</h3>
                                 <span className="text-gray">@{user.userName}</span>

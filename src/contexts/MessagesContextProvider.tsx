@@ -1,47 +1,46 @@
+import { conversation } from "@/pages/Messages/types/MessagesTypes";
 import { createContext, useState } from "react";
 
 type MessagesContextProviderProps = {
     children: React.ReactNode;
 };
-type Group = {
-    groupName: string;
-    groupImg: string;
-}
-type MessageReply ={
-    replyId:string;
-    message:string;
-    userName:string;
-    
-}
-type MessagesContextType = {
-    group: Group | null;
-    messageReply:MessageReply |null;
-    currentConversation:string;
-    setCurrentConversation:(id:string)=>void;
-    setMessageReply:(messageReply:MessageReply|null)=>void;
-    setGroup: (group: Group | null) => void;
 
-    saveGroup: (group: Group) => void;
+type MessageReply = {
+    replyId: string;
+    message: string;
+    userName: string;
+
+}
+
+type MessagesContextType = {
+    messageReply: MessageReply | null;
+    userAllConversation: conversation[] | null;
+    currentConversation: conversation | null
+    setUserAllConversation: (conversations: conversation[] | null) => void;
+    setCurrentConversation: (conversation: conversation) => void;
+    setMessageReply: (messageReply: MessageReply | null) => void;
 
 };
 
-const defaultMessagesContext: MessagesContextType = {
-    group: null,
-    messageReply:null,
-    currentConversation:"",
-    setCurrentConversation:()=>{},
 
-    setMessageReply:()=>{},
-    saveGroup: () => { },
-    setGroup: () => {},
+const defaultMessagesContext: MessagesContextType = {
+    messageReply: null,
+    currentConversation: null,
+    userAllConversation: [],
+    setUserAllConversation: () => { },
+    setCurrentConversation: () => { },
+
+    setMessageReply: () => { },
+
 
 };
 export const MessagesContext = createContext<MessagesContextType>(defaultMessagesContext);
 
 const MessagesContextProvider = ({ children }: MessagesContextProviderProps) => {
-    const [group, setGroup] = useState<Group | null>(null);
     const [messageReply, setMessageReply] = useState<MessageReply | null>(null);
-    const [currentConversation ,setCurrentConversation] =useState("");
+    const [userAllConversation, setUserAllConversation] = useState<conversation[] | null>(null);
+    const [currentConversation, setCurrentConversation] = useState<conversation | null>(null);
+
     // useEffect(() => {
     //     const storedUser = localStorage.getItem("user");
     //     const storedToken = localStorage.getItem("token");
@@ -52,15 +51,16 @@ const MessagesContextProvider = ({ children }: MessagesContextProviderProps) => 
     //     }
     // }, []);
 
-    const saveGroup = (newGroup: Group) => {
-        setGroup(newGroup);
-    };
 
 
 
     return (
         <MessagesContext.Provider
-            value={{ group, saveGroup,setGroup,messageReply,setMessageReply,currentConversation,setCurrentConversation }}
+            value={{
+                currentConversation, setCurrentConversation,
+                messageReply,
+                setMessageReply, userAllConversation, setUserAllConversation
+            }}
         >
             {children}
         </MessagesContext.Provider>

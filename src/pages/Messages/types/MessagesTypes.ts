@@ -35,11 +35,11 @@ export type MessagesListProp = {
     mode: "normal" | "request" | "People" | "conversations";
     matchedPart?: string;
     setSelectedUser?: React.Dispatch<React.SetStateAction<MessageUser>>
-    setSelectedConversation?: React.Dispatch<React.SetStateAction<conversation|undefined>>
+    setSelectedConversation?: React.Dispatch<React.SetStateAction<conversation | undefined>>
     followButton?: React.ComponentType<{
         className?: string;
     }>;
-    showDeletePopUp?: () => void
+    showDeletePopUp?: (conversationId:string) => void
 }
 export type MessagesSideProp = {
     p: string;
@@ -53,45 +53,38 @@ export type MessagesRequestPopUpProp = {
     handleRemoveConversation: () => void;
 }
 export type MessagesMessage = {
+    isMessage: boolean;
+    id: string;
+    text: string;
+    date: string;
+    userName: string;
+    profileImageUrl: string;
+    replyToMessage: MessagesMessage;
+    entities: {
+        hasthtags: { text: string; count: 15 }[];
+        media: { value: string; type: string; id: string }[];
+        mentions: string[];
+    };
+};
 
-    "status": string,
-    "id": string,
-    "text": string
-    "date": string,
-    "userName": string,
-    "profileImageUrl": string,
-    "replyToMessage": MessagesMessage,
-    "entities": {
-        "hasthtags": { "text": string; "count": 15 }[],
-        "media": { "value": string; "type": string; "id": string },
-        "mentions": string[]
-    }
-}
-export type MessagesConversationInfoProps = {
-    type: "group" | "direct" | string;
-    imageUrl: string;
-    id: number;
-    name: string;
-    groupName?: string;
-    users: { userName: string; userPhoto: string; isFollowing: boolean; }[]
-}
+
 export type ConversationPopUpProps = {
     show: boolean;
     setShow?: React.Dispatch<React.SetStateAction<boolean>>;
-    leaveFunction?: () => void;
+    conversationToDelete?: string;
 }
 
-export type conversation = {
-    "id"?: string;
-    "name": string;
-    "photo": string;
-    "type": string;
-    "isGroup"?: boolean;
-    "users": conversationWithUserUser[];
-    "lastMessage"?: MessagesMessage;
-    "messages": MessagesMessage[];
-
-}
+export type conversation =  {
+    seen: boolean;
+    id?: string;
+    name: string;
+    photo: string;
+    isGroup: boolean;
+    users: conversationWithUserUser[];
+    lastMessage?: MessagesMessage;
+    messages: MessagesMessage[];
+  };
+  
 export type conversationWithUserUser = {
     name: string;
     userName: string;

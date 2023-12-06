@@ -808,7 +808,6 @@ export const CreateMessage = async ({ formData, token,conversationId }: { conver
  */
 export const getConversation = async ({ token, conversationId }: { conversationId: string, token: string }) => {
   try {
-    console.log(conversationId, )
     const res = await axios.get(
       `${VITE_BACKEND_URL}/api/v1/conversation/` + conversationId,
       {
@@ -817,15 +816,7 @@ export const getConversation = async ({ token, conversationId }: { conversationI
         },
       }
     );
-    const modifiedData = {
-      ...res.data,
-      users: res.data.users.map((user: { Name: string; }) => ({
-        ...user,
-        name: user.Name,
-      })),
-    };
-    console.log(modifiedData)
-    return modifiedData;
+    return res.data;
   } catch (error) {
     console.log(error);
     return null
@@ -880,5 +871,29 @@ export const deleteTweet = async (tweetId: string, token: string) => {
   } catch (error) {
     console.log(error);
     throw new Error("Error deleting tweet");
+  }
+};
+/**
+ * @description Send a request to the backend to delete a conversation
+ * @param conversationId
+ * @param token - the token of the user
+ * @returns success or throws error if there is an error
+ */
+export const deleteConversation = async ({conversationId,token}:{conversationId: string, token: string}) => {
+  try {
+    const res = await axios.delete(
+      `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error deleting conversation");
   }
 };

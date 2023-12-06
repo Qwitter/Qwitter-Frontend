@@ -1,5 +1,5 @@
 import { Info, X } from "lucide-react";
-import { HTMLProps, Ref, forwardRef, useContext, useEffect, useState } from "react";
+import { HTMLProps, Ref, forwardRef, useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useInView } from "react-intersection-observer";
 import { MessagesConversationInput } from "./MessagesConversationInput";
@@ -8,7 +8,7 @@ import { MessagesContext } from "@/contexts/MessagesContextProvider";
 import { useMutation } from "@tanstack/react-query";
 import { CreateMessage } from "@/lib/utils";
 import { io } from 'socket.io-client'
-import { EVENTS,  conversation,  conversationWithUserUser } from "../types/MessagesTypes";
+import { EVENTS, conversation, conversationWithUserUser } from "../types/MessagesTypes";
 import { useQuery } from "@tanstack/react-query";
 import { getConversation } from "@/lib/utils";
 import { UserContext } from "@/contexts/UserContextProvider";
@@ -22,7 +22,10 @@ export function MessagesConversation() {
     const { token } = useContext(UserContext);
     const [selectedImageFile, setSelectedImageFile] = useState<File>();
 
-    const { messageReply, setMessageReply } = useContext(MessagesContext)
+    const { messageReply, setMessageReply,setCurrentConversation } = useContext(MessagesContext)
+    const messageContainerRef = useRef<HTMLDivElement>(null);
+
+
     // const SOCKET_URL:string = process.env.VITE_BACKEND_URL as string ;
     const SOCKET_URL = "http://qwitterback.cloudns.org:3000";
     const {
@@ -32,11 +35,15 @@ export function MessagesConversation() {
     } = useQuery<conversation>({
         queryKey: ["userConversation", token, conversationId],
         queryFn: () => getConversation({ token: token!, conversationId: conversationId! })
-        ,refetchOnReconnect:"always",
-        refetchIntervalInBackground:true,
-        refetchInterval: 500,
-        
+
     });
+
+    useEffect(() => {            
+        messageContainerRef.current&&messageContainerRef.current.scrollTo(0, messageContainerRef.current.offsetHeight);
+        data&&setCurrentConversation(data)
+        
+    }, [data,messageContainerRef,setCurrentConversation]);
+
     const { mutate, isPending: isSending } = useMutation({
         mutationFn: CreateMessage,
         onSuccess: (data) => {
@@ -86,9 +93,9 @@ export function MessagesConversation() {
         if (users.length === 0) {
             return '';
         }
-        console.log(users)
+
         // Exclude the last user and concatenate names
-        const concatenatedNames = users!.slice(0, -1).map((user) => user.name).join(', ');
+        const concatenatedNames = users.map((user) => user.name).join(', ');
 
         // Return the result
         return concatenatedNames;
@@ -109,13 +116,13 @@ export function MessagesConversation() {
                 </div>
             </div>
             <div className="w-full mx-auto flex flex-col max-h-[calc(100vh-55px)] ">
-                <div className="  overflow-y-auto">
-                    <div className=" w-full px-4 " onClick={data && (data.type == "direct") ? () => navigate('/' + data?.users[0]) : () => { }} > {/* change with real username */}
+                <div className="  overflow-y-auto" ref={messageContainerRef}>
+                   {data && (!data.isGroup) &&  <div className=" w-full px-4 " onClick={ () => navigate('/' + data?.users[0].userName)} > {/* change with real username */}
                         <MessagesConversationUserInfo chatPicture={data?.photo || "https://i.ibb.co/S7XN04r/01eab91ff04ea5832a33040f7ebdb3d0.jpg"} userName={data?.users[0].userName || ""} name={handleNameOfChat(data?.users || [])} ref={ref} />
-                    </div>
+                    </div>}
                     <div className='flex-shrink px-4 h-[calc(63vh-70px)]'>
-                        {data && data.messages.map((message) => (
-                            <MessagesConversationMessage {...message} />
+                        {data && data.messages.slice().reverse().map((message, index) => (
+                            <MessagesConversationMessage key={index} {...message} />
                         ))
                         }
                     </div>

@@ -1,5 +1,5 @@
 import { MoreHorizontal, ForwardIcon, Reply } from "lucide-react";
-import { useContext,  useState } from "react";
+import { useContext, useState } from "react";
 import { MessagesMessage } from "../types/MessagesTypes";
 import { cn } from "@/lib";
 import TweetImagesViewer from "@/components/TweetImagesViewer/TweetImagesViewer";
@@ -8,7 +8,7 @@ import { UserContext } from "@/contexts/UserContextProvider";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { MessagesConversationPopUp } from "./MessagesConversationPopUp";
 
-export function MessagesConversationMessage({ status, date, id, entities,replyToMessage, text, userName }: MessagesMessage) {
+export function MessagesConversationMessage({  date, id, entities, replyToMessage, text, userName }: MessagesMessage) {
     const { user } = useContext(UserContext);
     const [isOpen, setIsOpen] = useState(false);
     const formatDate = (dateString: string) => {
@@ -30,7 +30,7 @@ export function MessagesConversationMessage({ status, date, id, entities,replyTo
             <div className={cn("flex flex-row ", userName == user?.userName && "justify-end")}>
                 <div className={cn("w-[87.5%] group flex flex-row", userName == user?.userName && "flex-row-reverse")}>
                     <div className={cn("flex flex-col gap-1 flex-shrink-1", userName == user?.userName && " items-end")}>
-                        {replyToMessage&&<div className={cn("flex flex-col mt-3 w-full -mb-7", userName == user?.userName && "justify-end", entities.media.value && " -mb-10")}>
+                        {replyToMessage && <div className={cn("flex flex-col mt-3 w-full -mb-7", userName == user?.userName && "justify-end", entities.media.length > 0 && " -mb-10")}>
                             <div className={cn("pb-2 gap-1 min-w-max flex flex-row items-center", userName == user?.userName && "justify-end")}>
                                 {userName == user?.userName ? <Reply strokeWidth={5} className="w-[10px] h-[10px] text-[#71767B]" /> : <ForwardIcon strokeWidth={5} className="w-[10px] h-[10px] text-[#71767B]" />}
                                 <span className="text-gray text-[11px]">Replying to</span>
@@ -41,16 +41,16 @@ export function MessagesConversationMessage({ status, date, id, entities,replyTo
                         </div>}
                         <div className={cn("flex-shrink flex flex-col items-start ", userName == user?.userName && "items-end")}>
 
-                            { entities.media.value && <div className="max-w-[80%] ">
-                                <TweetImagesViewer images={[{ value:  entities.media.value, type:  entities.media.type }]} />
+                            {entities.media.length > 0 && <div className="max-w-[80%] ">
+                                <TweetImagesViewer images={[{ value: entities.media[0].value, type: entities.media[0].type }]} />
                             </div>}
 
-                            <div className={cn("bg-[#2f3336] text-[15px] px-4 py-3 mt-1 min-w-max rounded-3xl ", userName == user?.userName ? "bg-secondary rounded-br-sm" : "rounded-bl-sm")}>
+                            {text.length > 0 && <div className={cn("bg-[#2f3336] text-[15px] px-4 py-3 mt-1 min-w-max rounded-3xl ", userName == user?.userName ? "bg-secondary rounded-br-sm" : "rounded-bl-sm")}>
                                 <span className="text-primary text-[15px]">{text}</span>
-                            </div>
+                            </div>}
                         </div>
                     </div>
-                    <Popover  open={isOpen} onOpenChange={setIsOpen} >
+                    <Popover open={isOpen} onOpenChange={setIsOpen} >
                         <div className={cn("opacity-0   flex flex-row  group-hover:opacity-100 ", userName == user?.userName ? "pr-1" : "pl-1")}>
                             <div className="text-secondary h-full group relative max-w-[40px] flex items-center w-full cursor-pointer">
                                 <PopoverTrigger >
@@ -58,7 +58,7 @@ export function MessagesConversationMessage({ status, date, id, entities,replyTo
                                 </PopoverTrigger>
                             </div>
                         </div>
-                        <PopoverContent    className="min-w-fit max-w-[250px] max-h-[480px] min-h-[50px] p-0 py-1 overflow-y-auto box-shadow bg-black   rounded-xl">
+                        <PopoverContent className="min-w-fit max-w-[250px] max-h-[480px] min-h-[50px] p-0 py-1 overflow-y-auto box-shadow bg-black   rounded-xl">
                             <MessagesConversationPopUp userNameOFReplyMessage={userName} text={text} setIsOpen={setIsOpen} replyId={id} />
                         </PopoverContent>
                     </Popover>
