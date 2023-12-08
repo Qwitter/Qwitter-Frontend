@@ -9,7 +9,6 @@ import {
 import { SignUpDataSchema } from "@/models/SignUp";
 import { BirthDay, MONTHS } from "@/models/BirthDay";
 import { UserDataSchema } from "@/models/User";
-import { debug } from "console";
 
 const { VITE_BACKEND_URL } = import.meta.env;
 
@@ -915,7 +914,6 @@ export const GetFollowSuggestionsService = async (token:string) => {
  */
 export const FollowService = async (username: string,token: string) => {
   try {
-    debugger;
     const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
       {},
       {
@@ -940,7 +938,6 @@ export const FollowService = async (username: string,token: string) => {
  */
 export const UnFollowService = async (username: string, token: string) => {
   try {
-    // debugger;
     const res = await axios.delete(`${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
       {
         headers: {
@@ -963,7 +960,6 @@ export const UnFollowService = async (username: string, token: string) => {
  */
 export const GetTrendsService = async (token:string) => {
   try {
-    // debugger;
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/trends`,
       {
         headers: {
@@ -988,7 +984,6 @@ export const GetTrendsService = async (token:string) => {
  */
 export const GetFollowersService = async (username:string,token:string) => {
   try {
-    // debugger;
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/followers/${username}`,
       {
         headers: {
@@ -998,7 +993,6 @@ export const GetFollowersService = async (username:string,token:string) => {
         },
       }
       );
-      // debugger;
     return res.data;
   } catch (err) {
     console.log(err);
@@ -1013,7 +1007,6 @@ export const GetFollowersService = async (username:string,token:string) => {
  * @returns  users array represents the response from the backend or null
  */
 export const GetFollowingsService = async (username:string,token: string) => {
-  // debugger;
   try {
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/follow/${username}`, {
       headers: {
@@ -1022,7 +1015,6 @@ export const GetFollowingsService = async (username:string,token: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    // debugger;
     return res.data;
   } catch (err) {
     console.log(err);
@@ -1081,7 +1073,7 @@ export const UnBlockService = async (username: string, token: string) => {
  * @param token
  * @returns  users array represents the response from the backend or null
  */
-export const GetBlockedService = async (username:string,token: string) => {
+export const GetBlockedService = async (token: string) => {
   try {
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/block`, {
       headers: {
@@ -1105,7 +1097,6 @@ export const GetBlockedService = async (username:string,token: string) => {
  */
 export const MuteService = async (username: string, token: string) => {
   try {
-    debugger;
     const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/user/mute/${username}`,
       {},
       {
@@ -1129,7 +1120,6 @@ export const MuteService = async (username: string, token: string) => {
  */
 export const UnMuteService = async (username: string, token: string) => {
   try {
-    debugger;
     const res = await axios.delete(`${VITE_BACKEND_URL}/api/v1/user/mute/${username}`, {
       headers: {
         Accept: "application/json",
@@ -1149,9 +1139,8 @@ export const UnMuteService = async (username: string, token: string) => {
  * @param token
  * @returns  users array represents the response from the backend or null
  */
-export const GetMutedService = async (username: string, token: string) => {
+export const GetMutedService = async (token: string) => {
   try {
-    debugger;
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/mute`, {
       headers: {
         Accept: "application/json",

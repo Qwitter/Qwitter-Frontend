@@ -6,20 +6,15 @@ import { useContext, useEffect } from "react";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { User } from "@/models/User";
 
-const GetFollowSuggestions = async (token: string) => {
-  const res = await GetFollowSuggestionsService(token);
-  return res;
-};
 export function FollowCard() {
   const { token } = useContext(UserContext);
-  const { data, isSuccess, refetch } = useQuery<User[]>({
+  const { data: FollowSuggestions, isSuccess, refetch } = useQuery<User[]>({
     queryKey: ["followSuggestions"],
-    queryFn: () => GetFollowSuggestions(token!),
+    queryFn: () => GetFollowSuggestionsService(token!),
     select: (data) => data?.slice(0, 3),
   });
   useEffect(() => {
     refetch();
-    console.log(data);
   }, [token]);
   return (
     <Card className="w-full bg-[#16181c] border-none">
@@ -30,8 +25,8 @@ export function FollowCard() {
         <UsersList
           listType={"FollowList"}
           showDesc={false}
-          users={data}
-          isCard={true}
+          users={FollowSuggestions}
+          // isCard={true}
         />
       )}
       <CardFooter className="hover:cursor-pointer mt-3 pt-3 hover:bg-light-gray rounded-br-lg rounded-bl-lg">
