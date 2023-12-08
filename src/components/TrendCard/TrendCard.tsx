@@ -1,6 +1,7 @@
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendList } from "../TrendList/TrendList";
 import { useNavigate } from "react-router-dom";
+
 export function TrendCard() {
   const navigate = useNavigate();
   return (

@@ -1,16 +1,8 @@
-// import { useMutation } from "@tanstack/react-query";
-// import { useContext, useEffect, useState } from "react";
 import { UsersListItem } from "../UsersListItem/UsersListItem";
 import { User } from "@/models/User";
 import { UsersListProp } from "./UsersListProp";
-// import { UserContext } from "@/contexts/UserContextProvider";
 
-export function UsersList({
-  showDesc,
-  users,
-  listType,
-}: 
-UsersListProp) {
+export function UsersList({ showDesc, users, listType }: UsersListProp) {
   return (
     <>
       {users &&

@@ -1,32 +1,26 @@
 import { Trend } from "@/models/Trend";
 import { CardContent } from "../ui/card";
-import { useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { GetTrendsService } from "@/lib/utils";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { TrendsListProp } from "./TrendListProp";
 
 export function TrendList({ isCard }: TrendsListProp) {
-  const [trends, setTrends] = useState<Trend[]>([]);
   const { token } = useContext(UserContext);
-  const {
-    mutateAsync: gettrendsFn,
-    // isPending: FollowSuggestionsServicePending,
-  } = useMutation({
-    mutationFn: token ? () => GetTrendsService(token) : undefined,
-    // mutationFn: GetTrendsService,
+  const { data: Trends, refetch: refetchTrends } = useQuery<Trend[]>({
+    queryKey: ["Trends"],
+    queryFn: () => GetTrendsService(token!),
+    select: (data) => (isCard ? data.slice(0, 3) : data),
   });
   useEffect(() => {
-    (async () => {
-      const trends: Trend[] = await gettrendsFn();
-      if (isCard) setTrends(trends.slice(0, 3));
-      else setTrends(trends);
-    })();
+    refetchTrends();
+    console.log(Trends);
   }, [token]);
   return (
     <>
-      {trends &&
-        trends.map((trend: Trend, index) => (
+      {Trends &&
+        Trends.map((trend: Trend, index) => (
           <CardContent
             key={index}
             className="hover:cursor-pointer py-3 hover:bg-light-gray"
