@@ -1,21 +1,8 @@
 import { Link } from "react-router-dom";
 import { OptionsHeader } from "../OptionsHeader/OptionsHeader";
 import { ChevronRight } from "lucide-react";
-import { VolumeX, Ban } from "lucide-react";
-const privacyOptions = [
-  {
-    id: "/Muted",
-    title: "Muted accounts",
-    description: "Manage the accounts that you've muted.",
-    icon: VolumeX,
-  },
-  {
-    id: "/Blocked",
-    title: "Blocked accounts",
-    description: "Manage the accounts that you've blocked.",
-    icon: Ban,
-  },
-];
+import { privacyOptions } from "./privacyOptions";
+
 export function PrivacyInformation() {
   return (
     <>
