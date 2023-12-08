@@ -4,8 +4,6 @@ import { UpdateEmail } from "@/components/UpdateEmail/UpdateEmail";
 import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ChangePassword } from "@/components/ChangePassword/ChangePassword";
-import { UsersList } from "@/components/UsersList/UsersList";
-import { GetBlockedService, GetMutedService } from "@/lib/utils";
 import { PrivacyInformation } from "@/components/PrivacyInformation/PrivacyInformation";
 import { BlockMuteList } from "@/components/BlockMuteList/BlockMuteList";
 
