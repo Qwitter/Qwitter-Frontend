@@ -886,10 +886,9 @@ export const deleteTweet = async (tweetId: string, token: string) => {
 /**
  * @description to get the user followers suggestions list
  * @param token
- * @param {currentUser username} 
  * @returns  users array represents the response from the backend or null
  */
-export const GetFollowSuggestionsService = async (username:string,token:string) => {
+export const GetFollowSuggestionsService = async (token:string) => {
   try {
     // debugger; 
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/suggestions`,
