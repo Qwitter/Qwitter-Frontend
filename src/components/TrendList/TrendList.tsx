@@ -19,11 +19,10 @@ export function TrendList({ isCard }: TrendsListProp) {
   useEffect(() => {
     (async () => {
       const trends: Trend[] = await gettrendsFn();
-      console.log(trends);
       if (isCard) setTrends(trends.slice(0, 3));
       else setTrends(trends);
     })();
-  }, [token, trends]);
+  }, [token]);
   return (
     <>
       {trends &&

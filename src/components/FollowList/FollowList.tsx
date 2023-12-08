@@ -5,7 +5,6 @@ import { UsersList } from "../UsersList/UsersList";
 import {
   GetFollowersService,
   GetFollowingsService,
-  GetMutedService,
 } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 export function FollowList({ type }: { type: string }) {
@@ -39,18 +38,6 @@ export function FollowList({ type }: { type: string }) {
               Followers
             </div>
           </TabsTrigger>
-          <TabsTrigger
-            className="flex justify-center tabhover"
-            value="Muted"
-            onClick={() => {
-              setListstate("Muted");
-              navigate("/Muted");
-            }}
-          >
-            <div className={Liststate == "Muted" ? "active-tab" : "tab"}>
-              Muted
-            </div>
-          </TabsTrigger>
         </TabsList>
         <TabsContent value="Following">
           <UsersList
@@ -65,14 +52,6 @@ export function FollowList({ type }: { type: string }) {
             listType={"FollowList"}
             showDesc={true}
             getusers={GetFollowersService}
-            isCard={false}
-          />
-        </TabsContent>
-        <TabsContent value="Muted">
-          <UsersList
-            listType={"MuteList"}
-            showDesc={true}
-            getusers={GetMutedService}
             isCard={false}
           />
         </TabsContent>

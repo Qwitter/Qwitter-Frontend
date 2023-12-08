@@ -974,7 +974,6 @@ export const GetTrendsService = async (token:string) => {
           Authorization: `Bearer ${token}`,
         },
       });
-    console.log(res.data.trends);
     return res.data.trends;
   } catch (err) {
     console.log(err);

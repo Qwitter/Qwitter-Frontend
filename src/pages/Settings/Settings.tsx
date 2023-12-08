@@ -4,6 +4,9 @@ import { UpdateEmail } from "@/components/UpdateEmail/UpdateEmail";
 import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ChangePassword } from "@/components/ChangePassword/ChangePassword";
+import { UsersList } from "@/components/UsersList/UsersList";
+import { GetMutedService } from "@/lib/utils";
+import { PrivacyInformation } from "@/components/PrivacyInformation/PrivacyInformation";
 
 export function Settings() {
   const [active, setActive] = useState("Your account");
@@ -32,20 +35,23 @@ export function Settings() {
           <Route path="/account" element={<YourAccount />} />
           <Route
             path="/your_twitter_data/account"
+            element={<AccountInformation />}
+          />
+          <Route path="/password" element={<ChangePassword />} />
+          <Route path="/screen_name" element={<ChangeUsername />} />
+          <Route path="/email" element={<UpdateEmail />} />
+          <Route
+            path="/Muted"
             element={
-              <AccountInformation
+              <UsersList
+                listType={"MuteList"}
+                showDesc={true}
+                getusers={GetMutedService}
+                isCard={false}
               />
             }
           />
-          <Route path="/password" element={<ChangePassword />} />
-          <Route
-            path="/screen_name"
-            element={<ChangeUsername />}
-          />
-          <Route
-            path="/email"
-            element={<UpdateEmail />}
-          />
+          <Route path="/privacy_and_safety" element={<PrivacyInformation />} />
         </Routes>
       </div>
     </>

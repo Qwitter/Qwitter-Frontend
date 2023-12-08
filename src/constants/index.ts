@@ -90,16 +90,7 @@ const settingsOptions = [
     title: "Privacy and safety",
   }
 ]
-// const privacyOptions = [
-//   {
-//     id: "/muted_accounts",
-//     title: "Muted accounts",
-//   },
-//   {
-//     id: "/blocked_accounts",
-//     title: "Blocked accounts",
-//   },
-// ]
+
 const accountOptions = [
   {
     id: "/your_twitter_data/account",
@@ -113,7 +104,6 @@ const accountOptions = [
     description: "Change your password at any time.",
     icon: KeyRound
   },
-
 ]
 const tags = [
   'JoyfulmemoriesinDublin!',
