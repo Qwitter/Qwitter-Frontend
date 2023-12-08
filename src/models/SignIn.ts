@@ -8,6 +8,6 @@ export const SignInSchema = EmailSchema.extend({
         .min(8, { message: "Your password needs to be at least 8 characters. Please enter a longer one." })
         .refine((password) => {
             return /[A-Za-z]/.test(password) ;
-        }, { message: "Password must contain at least one letter and one number" })
+        }, { message: "Password must contain at least one letter" })
 })
 export type SignIn = z.infer<typeof SignInSchema>;
