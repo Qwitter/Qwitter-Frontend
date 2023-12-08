@@ -19,23 +19,6 @@ const privacyOptions = [
 export function PrivacyInformation() {
   return (
     <>
-      {/* <div className="w-full h-full border-r border-primary border-opacity-30 mb-20">
-        <OptionsHeader header="Privacy information" />
-        <ul className="flex flex-col w-full">
-          <Link to={`/Blocked`} className="group">
-            <div className="flex flex-row p-3 w-full justify-between items-center group-hover:bg-[#191919] transition-all ">
-              <div>Blocked Accounts</div>
-              <ChevronRight color="grey" />
-            </div>
-          </Link>
-          <Link to={`/Muted`} className="group">
-            <div className="flex flex-row p-3 w-full justify-between items-center group-hover:bg-[#191919] transition-all ">
-              <div>Muted Accounts</div>
-              <ChevronRight color="grey" />
-            </div>
-          </Link>
-        </ul>
-      </div> */}
       <OptionsHeader
         header="Privacy information"
         className="lg:hidden"

@@ -7,6 +7,7 @@ import { ChangePassword } from "@/components/ChangePassword/ChangePassword";
 import { UsersList } from "@/components/UsersList/UsersList";
 import { GetBlockedService, GetMutedService } from "@/lib/utils";
 import { PrivacyInformation } from "@/components/PrivacyInformation/PrivacyInformation";
+import { BlockMuteList } from "@/components/BlockMuteList/BlockMuteList";
 
 export function Settings() {
   const [active, setActive] = useState("Your account");
@@ -41,25 +42,18 @@ export function Settings() {
           <Route path="/screen_name" element={<ChangeUsername />} />
           <Route path="/email" element={<UpdateEmail />} />
           <Route
-            path="/Muted"
+            path="/Blocked"
             element={
-              <UsersList
-                listType={"MuteList"}
-                showDesc={true}
-                getusers={GetMutedService}
-                isCard={false}
+              <BlockMuteList
+                headername="Blocked Accounts"
+                service="BlockList"
               />
             }
           />
           <Route
-            path="/Blocked"
+            path="/Muted"
             element={
-              <UsersList
-                listType={"BlockList"}
-                showDesc={true}
-                getusers={GetBlockedService}
-                isCard={false}
-              />
+              <BlockMuteList headername="Muted Accounts" service="MuteList" />
             }
           />
           <Route path="/privacy_and_safety" element={<PrivacyInformation />} />
