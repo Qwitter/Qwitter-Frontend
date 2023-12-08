@@ -5,7 +5,7 @@ import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ChangePassword } from "@/components/ChangePassword/ChangePassword";
 import { UsersList } from "@/components/UsersList/UsersList";
-import { GetMutedService } from "@/lib/utils";
+import { GetBlockedService, GetMutedService } from "@/lib/utils";
 import { PrivacyInformation } from "@/components/PrivacyInformation/PrivacyInformation";
 
 export function Settings() {
@@ -47,6 +47,17 @@ export function Settings() {
                 listType={"MuteList"}
                 showDesc={true}
                 getusers={GetMutedService}
+                isCard={false}
+              />
+            }
+          />
+          <Route
+            path="/Blocked"
+            element={
+              <UsersList
+                listType={"BlockList"}
+                showDesc={true}
+                getusers={GetBlockedService}
                 isCard={false}
               />
             }
