@@ -18,6 +18,12 @@ export function Settings() {
       case "/settings/privacy_and_safety":
         setActive("Privacy and safety");
         break;
+      case "/settings/Muted":
+        setActive("Privacy and safety");
+        break;
+      case "/settings/Blocked":
+        setActive("Privacy and safety");
+        break;
       default:
         setActive("Your account");
     }

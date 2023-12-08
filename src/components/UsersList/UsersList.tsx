@@ -15,7 +15,6 @@ export function UsersList({
   const { token, user } = useContext(UserContext);
   const {
     mutateAsync: getusersFn,
-    // isPending: FollowSuggestionsServicePending,
   } = useMutation({
     mutationFn: token ? () => getusers(user?.userName!, token) : undefined,
   });
