@@ -1,4 +1,4 @@
-import { Home, Globe2, Search, UserCheck, Bell, Mail, AlignJustify, Bookmark, Users, User, Settings, KeyRound, BadgeCheck, AtSign,Bomb } from 'lucide-react';
+import { Home, Globe2, Search, UserCheck, Bell, Mail, AlignJustify, Bookmark, Users, User, Settings, KeyRound, BadgeCheck, AtSign } from 'lucide-react';
 
 const navLinks = [
   {
@@ -7,14 +7,6 @@ const navLinks = [
     icon: Home,
     clicked: { strokeWidth: 3 },
     notificationCount: 1
-
-  },
-  {
-    id: "search",
-    title: "Search",
-    icon: Search,
-    clicked: { strokeWidth: 3 },
-    notificationCount: 5
 
   },
   {
@@ -35,7 +27,7 @@ const navLinks = [
   {
     id: "explore",
     title: "Explore",
-    icon: Bomb,
+    icon: Search,
     clicked: { strokeWidth: 4 },
     notificationCount: 0
   },
