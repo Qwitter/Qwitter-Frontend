@@ -13,9 +13,7 @@ export function UsersList({
 }: UsersListProp) {
   const [users, setUsers] = useState<User[]>([]);
   const { token, user } = useContext(UserContext);
-  const {
-    mutateAsync: getusersFn,
-  } = useMutation({
+  const { mutateAsync: getusersFn } = useMutation({
     mutationFn: token ? () => getusers(user?.userName!, token) : undefined,
   });
   useEffect(() => {
