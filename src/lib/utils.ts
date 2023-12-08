@@ -890,7 +890,6 @@ export const deleteTweet = async (tweetId: string, token: string) => {
  */
 export const GetFollowSuggestionsService = async (token:string) => {
   try {
-    // debugger; 
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/suggestions`,
       {
         headers: {

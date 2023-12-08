@@ -7,22 +7,22 @@ import { UserContext } from "@/contexts/UserContextProvider";
 
 export function UsersList({
   showDesc,
-  getusers,
+  users,
   listType,
   isCard,
 }: UsersListProp) {
-  const [users, setUsers] = useState<User[]>([]);
-  const { token, user } = useContext(UserContext);
-  const { mutateAsync: getusersFn } = useMutation({
-    mutationFn: token ? () => getusers(user?.userName!, token) : undefined,
-  });
-  useEffect(() => {
-    (async () => {
-      const users: User[] = await getusersFn();
-      if (isCard) setUsers(users.slice(0, 3));
-      else setUsers(users);
-    })();
-  }, [token]);
+  // const [users, setUsers] = useState<User[]>(users);
+  // const { token, user } = useContext(UserContext);
+  // const { mutateAsync: getusersFn } = useMutation({
+  //   mutationFn: token ? () => getusers(user?.userName!, token) : undefined,
+  // });
+  // useEffect(() => {
+  //   (async () => {
+  //     const users: User[] = await getusersFn();
+  //     if (isCard) setUsers(users.slice(0, 3));
+  //     else setUsers(users);
+  //   })();
+  // }, [token]);
 
   return (
     <>
