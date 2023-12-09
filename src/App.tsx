@@ -21,6 +21,7 @@ import Authentication from "../src/pages/Authentication/Authentication";
 import MessagesNewMessage from "./pages/Messages/MessagesNewMessage";
 import { MessagesGroupEditPopup } from "./pages/Messages/MessagesGroupEditPopup";
 import MessagesContextProvider from "./contexts/MessagesContextProvider";
+import MessagesAddPeoplePopup from "./pages/Messages/MessagesAddPeoplePopup";
 
 const queryClient = new QueryClient();
 
@@ -59,7 +60,7 @@ function App() {
             <Route path="/i/flow/logout" element={<LogOut />} />
             <Route path="/Messages/compose" element={<MessagesNewMessage />} />
             <Route path="/Messages/:conversationId/group-info" element={<MessagesGroupEditPopup />} />
-            <Route path="/Messages/:conversationId/add" element={<MessagesNewMessage />} />
+            <Route path="/Messages/:conversationId/add" element={<MessagesAddPeoplePopup />} />
             {/* <Route path="settings/profile" element={<MessagesNewMessage />} /> */}
             <Route path="settings/profile" element={<MessagesNewMessage />} />
           </Routes>

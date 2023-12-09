@@ -2,7 +2,6 @@ import { OptionsHeader } from "@/components";
 import { Ban, Settings, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { MessageUser, MessagesRequestPopUpProp } from "./types/MessagesTypes";
-import { userArray } from "@/constants";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { MessagesMain } from "./MessagesMain";
 import { MessagesList } from "./MessagesList";
@@ -86,7 +85,7 @@ function MessagesRequests() {
                 </div>
 
             </div>
-            <MessagesList mode="request" users={userArray} selectedUser={selectedUser} setSelectedUser={SetSelectedUser} />
+            <MessagesList mode="request" users={[]} selectedUser={selectedUser} setSelectedUser={SetSelectedUser} />
         </>
     )
 }

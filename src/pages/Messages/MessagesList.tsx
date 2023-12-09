@@ -45,11 +45,8 @@ export function MessagesList({
         if (users.length === 0) {
             return '';
         }
-        
-
         // Exclude the last user and concatenate names
-        const concatenatedNames = users!.map((user) => user.name).join(', ');
-
+        const concatenatedNames = users.slice(0,3).map((user) => user.name).join(', ')+`${users.length-3>0?` and ${users.length-3} more`:""}`;
         // Return the result
         return concatenatedNames;
     };

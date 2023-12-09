@@ -7,6 +7,7 @@ import { cn } from "@/lib";
 import { ConversationLeavePopUp } from "./ConversationLeavePopUp";
 import { Spinner } from "@/components/Spinner";
 import { UsersListItem } from "@/components/UsersListItem/UsersListItem";
+import { ConversationBlockUserPopup } from "./ConversationBlockUserPopup";
 
 export function MessagesConversationInfo() {
 
@@ -15,8 +16,10 @@ export function MessagesConversationInfo() {
     const { conversationId } = useParams();
     const { currentConversation } = useContext(MessagesContext);
     const [show, setShow] = useState(false);
-    const handleBlock = () => {
-    };
+    const [showBlock, setShowBlock] = useState(false);
+    const handleBlock =()=>{
+        setShowBlock(true)
+    }
     if (!currentConversation) {
         <div className='w-full h-[300px] p-8'>
             <Spinner />
@@ -59,7 +62,7 @@ export function MessagesConversationInfo() {
                 >
                     Leave Conversation</div>
                 <ConversationLeavePopUp show={show} setShow={setShow} conversationToDelete={conversationId} />
-
+                <ConversationBlockUserPopup show={showBlock} setShow={setShowBlock} userName={currentConversation.users[0].userName} />
             </div>
         );
 }

@@ -583,6 +583,26 @@ export const getConversationsUsersSuggestions = async (token: string, username: 
     return null;
   }
 };
+/*
+ * @description get a list of users with userName contain the given string to add to the group
+ * @param {username,token,conversationId}
+ * @returns list of users  or null
+ */
+export const getUsersSuggestionsToAdd = async (token: string, username: string,conversationId:string) => {
+  try {
+    if (!username) return []
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/user?q=${username}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data.users;
+
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
 
 /**
  * @description get a list of Hashtags contain the given string
@@ -732,35 +752,6 @@ export const bookmarkTweet = async (tweetId: string, token: string) => {
   } catch (error) {
     console.log(error);
     throw new Error("Error bookmarking tweet");
-  }
-};
-/**
- * @description Change the groupName for a Conversation
- * @param name
- * @param token - the token of the user
- * @param conversationId - the conversationId of the conversation
- * @returns success or throws error if there is an error
- */
-export const changeGroupName = async ({ name, token, conversationId }: { name: string, token: string, conversationId: string }) => {
-  try {
-    const res = await axios.post(
-      `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/name`,
-      {
-        name: name
-      },
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    console.log(res.data)
-    return res.data;
-  } catch (error) {
-    console.log(error);
-    return null
   }
 };
 /**
@@ -918,7 +909,7 @@ export const deleteConversation = async ({conversationId,token}:{conversationId:
     throw new Error("Error deleting conversation");
   }
 };
-/**
+
 /**
  * @description Send a request to the backend to delete a message from conversation
  * @param {conversationId,messageId}
@@ -944,6 +935,34 @@ export const deleteMessage = async ({conversationId,token,messageId}:{messageId:
   } catch (error) {
     console.log(error);
     throw new Error("Error deleting conversation");
+  }
+};
+
+/**
+ * @description update the image and the group name
+ * @param FormData
+ * @param token - the token of the user
+ * @returns success or throws error if there is an error
+ */
+export const updateGroupImageAndName = async ({formData,conversationId,token}:{formData: FormData,conversationId:string,token: string}) => {
+  try {
+    const res = await axios.put(
+      `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}`,
+      formData
+      ,{
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      
+    },
+      
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error updating group");
   }
 };
 /**

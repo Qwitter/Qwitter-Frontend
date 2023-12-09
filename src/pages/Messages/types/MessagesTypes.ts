@@ -74,6 +74,7 @@ export type ConversationPopUpProps = {
     setShow?: React.Dispatch<React.SetStateAction<boolean>>;
     conversationToDelete?: string;
     messageId?:string;
+    userName?:string;
 }
 
 export type conversation =  {
