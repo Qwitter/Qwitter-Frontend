@@ -165,3 +165,14 @@ button-border-color {
 .tweet-image-remover-icon{
   @apply absolute top-2 right-2 bg-[#0f1419bf] hover:bg-[#272c30bf] cursor-pointer text-3xl p-1 rounded-full;
 }
+
+.tab {
+  @apply inline-block p-4 ;
+}
+.active-tab {
+  @apply inline-block p-4 border-b-4 border-blue-600 rounded-t-lg ;
+}
+.tabhover:hover
+{
+@apply bg-[#181818]
+}
