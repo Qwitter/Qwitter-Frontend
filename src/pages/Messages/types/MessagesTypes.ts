@@ -13,7 +13,7 @@ export type Images = {
 };
 export type MessageUser = {
     id?: number;
-    userPhoto: string;
+    profileImageUrl: string;
     userName: string;
     name: string;
     isVerified?: boolean;
@@ -54,6 +54,7 @@ export type MessagesRequestPopUpProp = {
 }
 export type MessagesMessage = {
     isMessage: boolean;
+    isGroup:boolean;
     id: string;
     text: string;
     date: string;
@@ -72,6 +73,7 @@ export type ConversationPopUpProps = {
     show: boolean;
     setShow?: React.Dispatch<React.SetStateAction<boolean>>;
     conversationToDelete?: string;
+    messageId?:string;
 }
 
 export type conversation =  {
@@ -80,17 +82,12 @@ export type conversation =  {
     name: string;
     photo: string;
     isGroup: boolean;
-    users: conversationWithUserUser[];
+    users: MessageUser[];
     lastMessage?: MessagesMessage;
     messages: MessagesMessage[];
   };
   
-export type conversationWithUserUser = {
-    name: string;
-    userName: string;
-    userPhoto: string;
 
-}
 export type conversations = {
     "unseen": 0;
     "conversations": conversation[];

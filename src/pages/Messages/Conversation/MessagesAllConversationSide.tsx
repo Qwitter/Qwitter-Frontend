@@ -1,9 +1,8 @@
 import { MailPlus } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
-import { conversation } from "./types/MessagesTypes";
-// import { pinnedConversations } from "@/constants";
+import { conversation } from "../types/MessagesTypes";
 import { useNavigate } from "react-router-dom";
-import { MessagesList } from "./MessagesList";
+import { MessagesList } from "../MessagesList";
 import { ConversationLeavePopUp } from "./ConversationLeavePopUp";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { useQuery } from "@tanstack/react-query";
@@ -16,26 +15,29 @@ export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRe
     const { token } = useContext(UserContext);
     const {setUserAllConversation}= useContext(MessagesContext)
     const [conversationToDelete,setConversationToDelete] = useState("")
+    const [show, setShow] = useState<boolean>(false);
+
     const {
         isPending, data, refetch
     } = useQuery<conversation[]>({
-        queryKey: ["getUserConversations", token],
+        queryKey: ["getUserConversations"],
         queryFn: () => getUserConversations(token!),
-        refetchOnReconnect: "always",
-        refetchIntervalInBackground: true,
-        refetchInterval: 2000,
+        // refetchOnReconnect: "always",
+        // refetchIntervalInBackground: true,
+        // refetchInterval: 10000,
+        // enabled: token !== null
+        
 
     });
     useEffect(() => {
         
         setUserAllConversation(data!)
         refetch();
-    }, [token, refetch, data]);
+    }, [token, refetch, data,setUserAllConversation]);
 
     const handleRequestClick = () => {
         navigate('/Messages/requests');
     };
-    const [show, setShow] = useState<boolean>(false);
     const deleteConversation = (conversationId:string)=>{
         setConversationToDelete(conversationId)
         setShow(true)

@@ -551,7 +551,27 @@ export const timelineTweets = async (
 export const getUsersSuggestions = async (token: string, username: string) => {
   try {
     if (!username) return []
-    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user?q=${username.slice(1)}`, {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/search?q=${username.slice(1)}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data.users;
+
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+/*
+ * @description get a list of users with userName contain the given string
+ * @param {username,token}
+ * @returns list of users  or null
+ */
+export const getConversationsUsersSuggestions = async (token: string, username: string) => {
+  try {
+    if (!username) return []
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/conversation/user?q=${username}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -776,7 +796,7 @@ export const CreateConversation = async ({ conversation_name, token, users }: { 
 };
 /**
  * @description Create a new message
- * @param formData 
+ * @param formData
  * @param token - the token of the user
  * @returns success or throws error if there is an error
  */
@@ -794,7 +814,7 @@ export const CreateMessage = async ({ formData, token,conversationId }: { conver
       }
     );
     console.log(res)
-    return res.status == 201;
+    return res.data.createdMessage;
   } catch (error) {
     console.log(error);
     return null
@@ -881,6 +901,7 @@ export const deleteTweet = async (tweetId: string, token: string) => {
  */
 export const deleteConversation = async ({conversationId,token}:{conversationId: string, token: string}) => {
   try {
+    console.log(conversationId,token)
     const res = await axios.delete(
       `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}`,
       {
@@ -898,14 +919,42 @@ export const deleteConversation = async ({conversationId,token}:{conversationId:
   }
 };
 /**
+/**
+ * @description Send a request to the backend to delete a message from conversation
+ * @param {conversationId,messageId}
+ * @param token - the token of the user
+ * @returns success or throws error if there is an error
+ */
+export const deleteMessage = async ({conversationId,token,messageId}:{messageId:string,conversationId: string, token: string}) => {
+  try {
+    const res = await axios.delete(
+      `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/message`,
+    {data:{messageId:messageId}
+      ,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      
+    },
+      
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error deleting conversation");
+  }
+};
+/**
  * @description to get the user followers suggestions list
  * @param token
- * @param {currentUser username} 
+ * @param {currentUser username}
  * @returns  users array represents the response from the backend or null
  */
 export const GetFollowSuggestionsService = async (username:string,token:string) => {
   try {
-    // debugger; 
+    // debugger;
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/suggestions`,
       {
         headers: {
@@ -931,7 +980,7 @@ export const GetFollowSuggestionsService = async (username:string,token:string) 
  */
 export const FollowService = async (username: string,token: string) => {
   try {
-    debugger;
+
     const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
       {},
       {
@@ -1000,12 +1049,11 @@ export const GetTrendsService = async (token:string) => {
 /**
  * @description get Followers in Profile page(Followers section)
  * @param token
- * @param {currentUser username} 
+ * @param {currentUser username}
  * @returns  users array represents the response from the backend or null
  */
 export const GetFollowersService = async (username:string,token:string) => {
   try {
-    // debugger;
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/followers/${username}`,
       {
         headers: {
@@ -1015,7 +1063,6 @@ export const GetFollowersService = async (username:string,token:string) => {
         },
       }
       );
-      // debugger;
     return res.data;
   } catch (err) {
     console.log(err);
@@ -1026,7 +1073,7 @@ export const GetFollowersService = async (username:string,token:string) => {
 /**
  * @description get Followings in Profile page(Following section)
  * @param token
- * @param {currentUser username} 
+ * @param {currentUser username}
  * @returns  users array represents the response from the backend or null
  */
 export const GetFollowingsService = async (username:string,token: string) => {

@@ -64,7 +64,7 @@ export function MessagesRequestPopUp({ conversationUsername, handleBlock, handle
 function MessagesRequests() {
     const navigate = useNavigate()
     const [selectedUser, SetSelectedUser] = useState<MessageUser>({
-        userPhoto: "",
+        profileImageUrl: "",
         userName: "",
         name: "",
         isVerified: false,

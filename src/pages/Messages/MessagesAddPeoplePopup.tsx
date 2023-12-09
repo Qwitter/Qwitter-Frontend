@@ -10,7 +10,7 @@ import { CreateConversation, cn, getConversationsUsersSuggestions } from "@/lib/
 import { UserContext } from "@/contexts/UserContextProvider";
 import { MessageUser } from "./types/MessagesTypes";
 import { MessagesContext } from "@/contexts/MessagesContextProvider";
-function MessagesNewMessage() {
+function MessagesAddPeoplePopup() {
     const [isFocus, setFocus] = useState(false);
     const [peopleSearchText, setPeopleSearchText] = useState("");
     const [selectedUsers, setSelectedUsers] = useState<{ profileImageUrl: string; name: string; userName: string }[]>([]);
@@ -189,6 +189,6 @@ function ShowAllUserConversations({ onUserClick, selectedUsers }: { selectedUser
 
     )
 }
-export default MessagesNewMessage
+export default MessagesAddPeoplePopup
 
 

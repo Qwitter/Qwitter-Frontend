@@ -5,7 +5,7 @@ import { MessagesList } from "./MessagesList";
 import { MessagesSearch } from "./MessagesSearch";
 import { MessagesHeader } from "./MessagesHeader";
 import { MessagesSide } from "./MessagesSide";
-import { MessagesAllConversationSide } from "./MessagesAllConversationSide";
+import { MessagesAllConversationSide } from "./Conversation/MessagesAllConversationSide";
 
 type MessagesMainProps = {
     showMessagesHeader?: boolean;

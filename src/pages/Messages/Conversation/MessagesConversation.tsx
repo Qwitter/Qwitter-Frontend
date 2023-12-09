@@ -5,10 +5,10 @@ import { useInView } from "react-intersection-observer";
 import { MessagesConversationInput } from "./MessagesConversationInput";
 import { MessagesConversationMessage } from "./MessagesConversationMessage";
 import { MessagesContext } from "@/contexts/MessagesContextProvider";
-import { useMutation } from "@tanstack/react-query";
-import { CreateMessage } from "@/lib/utils";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { CreateMessage, cn } from "@/lib/utils";
 import { io } from 'socket.io-client'
-import { EVENTS, conversation, conversationWithUserUser } from "../types/MessagesTypes";
+import { EVENTS, MessageUser, conversation } from "../types/MessagesTypes";
 import { useQuery } from "@tanstack/react-query";
 import { getConversation } from "@/lib/utils";
 import { UserContext } from "@/contexts/UserContextProvider";
@@ -16,39 +16,57 @@ import { Spinner } from "@/components/Spinner";
 
 export function MessagesConversation() {
     const [text, setText] = useState("")
+    const [selectedImageFile, setSelectedImageFile] = useState<File>();
+
+    const { token,user } = useContext(UserContext);
+    const { messageReply, setMessageReply, setCurrentConversation } = useContext(MessagesContext)
+    
     const { ref, inView } = useInView();
     const { conversationId } = useParams()
     const navigate = useNavigate()
-    const { token } = useContext(UserContext);
-    const [selectedImageFile, setSelectedImageFile] = useState<File>();
+    const SOCKET_URL = "http://qwitterback.cloudns.org:3000";
+    const socket = io(SOCKET_URL);
+    const queryClient = useQueryClient()
 
-    const { messageReply, setMessageReply,setCurrentConversation } = useContext(MessagesContext)
     const messageContainerRef = useRef<HTMLDivElement>(null);
 
 
     // const SOCKET_URL:string = process.env.VITE_BACKEND_URL as string ;
-    const SOCKET_URL = "http://qwitterback.cloudns.org:3000";
+
     const {
         isPending,
         data,
         refetch
     } = useQuery<conversation>({
-        queryKey: ["userConversation", token, conversationId],
+        queryKey: ["userConversation",conversationId],
         queryFn: () => getConversation({ token: token!, conversationId: conversationId! })
 
     });
 
-    useEffect(() => {            
-        messageContainerRef.current&&messageContainerRef.current.scrollTo(0, messageContainerRef.current.offsetHeight);
-        data&&setCurrentConversation(data)
-        
-    }, [data,messageContainerRef,setCurrentConversation]);
+    useEffect(() => {
+        messageContainerRef.current && messageContainerRef.current.scrollTo(0, messageContainerRef.current.scrollHeight);
+        data&&data.messages && setCurrentConversation(data)
+
+    }, [data, messageContainerRef, setCurrentConversation]);
 
     const { mutate, isPending: isSending } = useMutation({
         mutationFn: CreateMessage,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             if (data) {
-                console.log(data)
+                socket.emit(EVENTS.CLIENT.SEND_ROOM_MESSAGE, {
+                    conversationId,
+                    data,
+                });
+                await queryClient.cancelQueries({ queryKey: ['userConversation',conversationId] })
+                const previousMessages = queryClient.getQueryData(['userConversation',conversationId]);
+    
+                queryClient.setQueryData(['userConversation',conversationId], (oldConversation: conversation) => {
+                    oldConversation.messages = [data, ...oldConversation.messages]
+                    setCurrentConversation(oldConversation)
+                    return oldConversation;
+                })
+                return { previousMessages }
+    
             }
 
         },
@@ -58,17 +76,28 @@ export function MessagesConversation() {
         }
     })
     useEffect(() => {
-        console.log(data)
         refetch();
     }, [data, refetch]);
     useEffect(() => {
-        const socket = io(SOCKET_URL);
         socket.emit('JOIN_ROOM', conversationId);
-        console.log(SOCKET_URL)
-        socket.on(EVENTS.SERVER.ROOM_MESSAGE, (Message) => {
-            console.log(Message)
+        socket.on(EVENTS.SERVER.ROOM_MESSAGE, async (Message) => {
+
+            await queryClient.cancelQueries({ queryKey: ['userConversation',conversationId] })
+            const previousMessages = queryClient.getQueryData(['userConversation',conversationId]);
+
+            queryClient.setQueryData(['userConversation',conversationId], (oldConversation: conversation) => {
+                if(Message.message.userName == oldConversation.messages[0].userName) return oldConversation;
+                oldConversation.messages = [Message.message, ...oldConversation.messages]
+                setCurrentConversation(oldConversation)
+                return oldConversation;
+            })
+            return { previousMessages }
+
         });
-    }, [])
+        return () => {
+            socket.disconnect();
+        };
+    }, [user])
     if (isPending) {
         return (
             <div className="w-full h-[500px] p-8">
@@ -82,13 +111,14 @@ export function MessagesConversation() {
             formData.append("text", text);
             formData.append("replyId", messageReply?.replyId || "");
             formData.append("media", selectedImageFile || "");
+
             mutate({ token: token!, formData: formData, conversationId: conversationId! })
             setText("");
             setSelectedImageFile(undefined);
             setMessageReply(null)
         }
     }
-    const handleNameOfChat = (users: conversationWithUserUser[]): string => {
+    const handleNameOfChat = (users: MessageUser[]): string => {
 
         if (users.length === 0) {
             return '';
@@ -101,11 +131,11 @@ export function MessagesConversation() {
         return concatenatedNames;
     };
     return (
-        <div className="h-full">
+        data&&<div className="h-full">
             <div className="px-4 w-full h-[53px] basis-4 flex flex-row justify-center  sticky  top-[-1px] bg-black bg-opacity-60 backdrop-blur-xl z-50 items-center">
                 {!inView && <img src={data?.photo || "https://i.ibb.co/S7XN04r/01eab91ff04ea5832a33040f7ebdb3d0.jpg"} className="w-8 h-8 rounded-full mr-2" />}
                 <div className="w-full h-full flex  items-center">
-                    <h2 className="font-bold text-[17px]">{handleNameOfChat(data?.users || [])}</h2>
+                    <h2 className="font-bold text-[17px]">{data?.isGroup?handleNameOfChat(data?.users || []):data?.users[0].name||""}</h2>
                 </div>
                 <div className="flex justify-end items-center min-w-[56px] min-h-[32px]">
                     <div className='w-10 h-10 flex justify-end items-center '>
@@ -117,12 +147,12 @@ export function MessagesConversation() {
             </div>
             <div className="w-full mx-auto flex flex-col max-h-[calc(100vh-55px)] ">
                 <div className="  overflow-y-auto" ref={messageContainerRef}>
-                   {data && (!data.isGroup) &&  <div className=" w-full px-4 " onClick={ () => navigate('/' + data?.users[0].userName)} > {/* change with real username */}
-                        <MessagesConversationUserInfo chatPicture={data?.photo || "https://i.ibb.co/S7XN04r/01eab91ff04ea5832a33040f7ebdb3d0.jpg"} userName={data?.users[0].userName || ""} name={handleNameOfChat(data?.users || [])} ref={ref} />
+                    {data && (!data.isGroup) && <div className=" w-full px-4 " onClick={() => navigate('/' + data?.users[0].userName)} > {/* change with real username */}
+                        <MessagesConversationUserInfo chatPicture={data?.photo || "https://i.ibb.co/S7XN04r/01eab91ff04ea5832a33040f7ebdb3d0.jpg"} userName={data?.users[0].userName || ""} name={data?.users[0].name||""} ref={ref} />
                     </div>}
-                    <div className='flex-shrink px-4 h-[calc(63vh-70px)]'>
+                    <div className={cn('flex-shrink px-4 h-[calc(63vh-70px)]', data && data.isGroup && ' h-[85vh]')}>
                         {data && data.messages.slice().reverse().map((message, index) => (
-                            <MessagesConversationMessage key={index} {...message} />
+                            <MessagesConversationMessage key={index} {...message} isGroup={data.isGroup}/>
                         ))
                         }
                     </div>
@@ -139,6 +169,7 @@ export function MessagesConversation() {
                     <MessagesConversationInput selectedImageFile={selectedImageFile} setSelectedImageFile={setSelectedImageFile} handleSubmit={handleSubmit} text={text} setText={setText} />
                 </div>
             </div>
+
         </div>
     )
 }

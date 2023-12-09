@@ -1,5 +1,5 @@
 import { MoreHorizontal, Pin, Trash2, XCircle } from "lucide-react";
-import { conversation, conversationWithUserUser, MessagesListProp } from "./types/MessagesTypes";
+import { conversation, MessagesListProp, MessageUser } from "./types/MessagesTypes";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -18,9 +18,9 @@ export function MessagesList({
     const navigate = useNavigate()
     const  {currentConversation,setCurrentConversation}= useContext(MessagesContext)
 
-    const handleConversationClick = (user: conversation) => {
-        setCurrentConversation&&setCurrentConversation(user.id!);
-        navigate("/Messages/" + user.id)
+    const handleConversationClick = (conversation: conversation) => {
+        setCurrentConversation&&setCurrentConversation(conversation);
+        navigate("/Messages/" + conversation.id)
     }
     const formatDate = (dateString: string) => {
         try {
@@ -40,7 +40,7 @@ export function MessagesList({
         }
 
     };
-    const handleNameOfChat = (users: conversationWithUserUser[]): string => {
+    const handleNameOfChat = (users: MessageUser[]): string => {
 
         if (users.length === 0) {
             return '';
@@ -48,7 +48,7 @@ export function MessagesList({
         
 
         // Exclude the last user and concatenate names
-        const concatenatedNames = users!.slice(0, -1).map((user) => user.name).join(', ');
+        const concatenatedNames = users!.map((user) => user.name).join(', ');
 
         // Return the result
         return concatenatedNames;
@@ -57,8 +57,8 @@ export function MessagesList({
     return (<>
 
         {conversations&& conversations.map((user, index) => (
-            <li key={index} className={cn("py-3 px-4 flex flex-row justify-between group  hover:bg-[#16181c] w-full transition-all cursor-pointer items-start ",( user.id == currentConversation) ? "bg-[#16181c]  border-secondary border-r-4 " : "")} >
-                <div className="flex flex-row flex-grow overflow-hidden max-w-[85%]" onClick={() => handleConversationClick(user)}>
+            <li key={index} className={cn("py-3 px-4 flex flex-row justify-between group  hover:bg-[#16181c] w-full transition-all cursor-pointer items-start ",( user.id == currentConversation?.id) ? "bg-[#16181c]  border-secondary border-r-4 " : "")} >
+                <div className="flex flex-row flex-grow overflow-hidden truncate max-w-[86%]" onClick={() => handleConversationClick(user)}>
                     <Avatar className="mr-4 min-w-max">
                         <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" src={user.photo || "https://i1.sndcdn.com/artworks-000647897398-mk0598-t240x240.jpg"} />
                     </Avatar>
@@ -66,24 +66,26 @@ export function MessagesList({
                         <div className={cn("flex flex-row gap-1 items-center max-w-full", mode == "People" && 'justify-between w-full')}>
                             {mode == "People" ? <Highlighter searchWords={[matchedPart]} highlightClassName="text-black" ClassName="text-primary font-semibold text-[15px]" autoEscape={true}
                                 textToHighlight={handleNameOfChat(user.users)}
-                            /> : <span className="text-primary font-semibold text-[15px] overflow-hidden whitespace-nowrap">{handleNameOfChat(user.users)}</span>
+                            /> : <span className="text-primary font-semibold text-[15px] max-w-[60%] truncate ">{handleNameOfChat(user.users)}</span>
                             }
                             {mode !== "People" && (
                                 <>
-                                    {mode !== "conversations" && !user.isGroup && <span className="text-gray whitespace-nowrap ">@{user.users[0].userName}</span>}
+                                    {mode !== "conversations" && !user.isGroup && <span className="text-gray max-w-[60%] truncate  ">@{user.users[0].userName}</span>}
                                     <div className="bg-gray rounded-full w-[3px] h-[3px]"></div>
                                     <span className="text-gray whitespace-nowrap ">{formatDate(user.lastMessage?.date || "")}</span>
+
 
                                 </>)}
 
                         </div>
                         {
                             mode == "conversations" ?
-                                <Highlighter searchWords={[matchedPart]} highlightClassName="text-black" ClassName={`overflow-hidden ${((user.id == currentConversation)) ? 'text-primary' : 'text-gray'}`} autoEscape={true}
+                                <Highlighter searchWords={[matchedPart]} highlightClassName="text-black" ClassName={`overflow-hidden ${((user.id == currentConversation?.id)) ? 'text-primary' : 'text-gray'}`} autoEscape={true}
                                     textToHighlight={handleNameOfChat(user.users)}
                                 /> : /*Wrong condition fix it */
-                                <span className={`overflow-hidden ${((user.id == currentConversation)) && mode != "People" ? 'text-primary' : 'text-gray'}`}>{mode != "People" ? `${user.lastMessage?.text}` : `@${user.users[0].userName}`}</span>
+                                <span className={`overflow-hidden ${((user.id == currentConversation?.id)) && mode != "People" ? 'text-primary' : 'text-gray'}`}>{mode != "People" ? `${user.lastMessage?.text}` : `@${user.users[0].userName}`}</span>
                         }
+
                     </div>
 
                 </div>
