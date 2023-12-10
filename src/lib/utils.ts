@@ -1154,3 +1154,47 @@ export const GetMutedService = async (token: string) => {
     return null;
   }
 };
+
+/**
+ * @description get Tweet Likers list in Home page (Tweet section)
+ * @param token
+ * @param tweetId
+ * @returns  users array represents the response from the backend or null
+ */
+export const GetTweetLikersService = async (tweetId: string, token: string) => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}/like`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+/**
+ * @description get Tweet Retweeters list in Home page (Tweet section)
+ * @param token
+ * @param tweetId
+ * @returns  users array represents the response from the backend or null
+ */
+export const GetTweetRetweetersService = async (tweetId: string, token: string) => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}/retweets`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};

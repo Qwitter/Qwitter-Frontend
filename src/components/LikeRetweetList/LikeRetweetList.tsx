@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { User } from "@/models/User";
 import { Spinner } from "../Spinner";
 
-export function FollowList({ type }: { type: string }) {
+export function LikeRetweetList({ type }: { type: string }) {
   const [Liststate, setListstate] = useState(type);
   const navigate = useNavigate();
   const { token } = useContext(UserContext);
