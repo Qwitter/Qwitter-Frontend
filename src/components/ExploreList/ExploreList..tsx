@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { Spinner } from "../Spinner";
 import { FollowCard } from "../FollowCard/FollowCard";
+import SearchInput from "../SearchInput/SearchInput";
 
 export function ExploreList() {
   const { token } = useContext(UserContext);
@@ -16,6 +17,13 @@ export function ExploreList() {
   return (
     <>
       <div className="max-w-[600px] w-full h-full flex-grow border-r border-primary border-opacity-30 ">
+        <div className="sticky top-0 z-50 backdrop-blur-sm ">
+          <div className="w-[90%] mx-auto ">
+            <SearchInput />
+          </div>
+          <div className="border-b  border-primary border-opacity-30"></div>
+        </div>
+
         {Trends ? (
           <TrendList Trends={Trends!} />
         ) : (
