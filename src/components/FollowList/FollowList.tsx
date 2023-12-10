@@ -1,10 +1,28 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "../../index.css";
 import { UsersList } from "../UsersList/UsersList";
 import { GetFollowersService, GetFollowingsService } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "@/contexts/UserContextProvider";
+import { useQuery } from "@tanstack/react-query";
+import { User } from "@/models/User";
+import { Skeleton } from "../ui/skeleton";
+
 export function FollowList({ type }: { type: string }) {
+  const { token, user } = useContext(UserContext);
+  const { data: Followings, refetch: refetchFollowings } = useQuery<User[]>({
+    queryKey: ["followings"],
+    queryFn: () => GetFollowingsService(user?.userName!, token!),
+  });
+  const { data: Followers, refetch: refetchFollowers } = useQuery<User[]>({
+    queryKey: ["followers"],
+    queryFn: () => GetFollowersService(user?.userName!, token!),
+  });
+  useEffect(() => {
+    refetchFollowings();
+    refetchFollowers();
+  }, [token, refetchFollowers, refetchFollowings]);
   const [Liststate, setListstate] = useState(type);
   const navigate = useNavigate();
   return (
@@ -37,20 +55,26 @@ export function FollowList({ type }: { type: string }) {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="Following">
-          <UsersList
-            listType={"FollowList"}
-            showDesc={true}
-            getusers={GetFollowingsService}
-            isCard={false}
-          />
+          {Followings ? (
+            <UsersList
+              listType={"FollowList"}
+              showDesc={true}
+              users={Followings!}
+            />
+          ) : (
+            <Skeleton className="w-full  h-[800px]" />
+          )}
         </TabsContent>
         <TabsContent value="Followers">
-          <UsersList
-            listType={"FollowList"}
-            showDesc={true}
-            getusers={GetFollowersService}
-            isCard={false}
-          />
+          {Followers ? (
+            <UsersList
+              listType={"FollowList"}
+              showDesc={true}
+              users={Followers!}
+            />
+          ) : (
+            <Skeleton className="w-full h-[800px] " />
+          )}
         </TabsContent>
       </Tabs>
     </>

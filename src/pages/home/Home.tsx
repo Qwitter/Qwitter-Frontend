@@ -63,10 +63,11 @@ export function Home() {
         </div>
         <div>
           <CreateTweetContainer mode="home" />
+          <TweetsList pages={data?.pages || [[]]} fetcherRef={ref} />
         </div>
         
       </div>
-      {/* <div className="max-w-[600px]  pb-16 relative flex flex-col z-0 w-[36.5%] max-largeX:hidden  h-full">
+      <div className="max-w-[600px]  pb-16 relative flex flex-col z-0 w-[36.5%] max-largeX:hidden h-full">
         <div className="w-full sticky top-0 z-50 bg-black   ">
           <SearchInput />
         </div>

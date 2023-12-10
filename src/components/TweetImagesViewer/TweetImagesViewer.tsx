@@ -6,12 +6,14 @@ type TweetImagesViewerOnly = {
   mode?: "view-only";
   images: Tweet["entities"]["media"];
   removeAttachment?: (index: number) => void;
+  screen?: "tweet" | "message";
 };
 
 type TweetImagesEditor = {
   mode?: "edit";
   images: Tweet["entities"]["media"];
   removeAttachment: (index: number) => void;
+  screen: "tweet" | "message";
 };
 
 type TweetImagesViewerProps = TweetImagesEditor | TweetImagesViewerOnly;
@@ -19,6 +21,7 @@ type TweetImagesViewerProps = TweetImagesEditor | TweetImagesViewerOnly;
 const TweetImagesViewer = ({
   images,
   mode = "view-only",
+  screen = "tweet",
   removeAttachment,
 }: TweetImagesViewerProps) => {
   return (
@@ -27,6 +30,7 @@ const TweetImagesViewer = ({
         "max-h-[290px] pb-[290px] h-full": images.length > 1,
         "max-h-[298px]": mode === "edit" && images.length === 4,
         hidden: images.length === 0,
+        "h-[200px] max-w-[400px]": screen === "message",
       })}
     >
       {images.length === 3 ? (

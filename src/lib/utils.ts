@@ -1009,7 +1009,7 @@ export const updateGroupImageAndName = async ({formData,conversationId,token}:{f
  * @param {currentUser username}
  * @returns  users array represents the response from the backend or null
  */
-export const GetFollowSuggestionsService = async (username:string,token:string) => {
+export const GetFollowSuggestionsService = async (token:string) => {
   try {
     // debugger;
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/suggestions`,
@@ -1062,7 +1062,6 @@ export const FollowService = async (username: string,token: string) => {
  */
 export const UnFollowService = async (username: string, token: string) => {
   try {
-    // debugger;
     const res = await axios.delete(`${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
       {
         headers: {
@@ -1085,7 +1084,6 @@ export const UnFollowService = async (username: string, token: string) => {
  */
 export const GetTrendsService = async (token:string) => {
   try {
-    // debugger;
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/trends`,
       {
         headers: {
@@ -1094,7 +1092,6 @@ export const GetTrendsService = async (token:string) => {
           Authorization: `Bearer ${token}`,
         },
       });
-    console.log(res.data.trends);
     return res.data.trends;
   } catch (err) {
     console.log(err);
@@ -1134,7 +1131,6 @@ export const GetFollowersService = async (username:string,token:string) => {
  * @returns  users array represents the response from the backend or null
  */
 export const GetFollowingsService = async (username:string,token: string) => {
-  // debugger;
   try {
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/follow/${username}`, {
       headers: {
@@ -1143,7 +1139,6 @@ export const GetFollowingsService = async (username:string,token: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    // debugger;
     return res.data;
   } catch (err) {
     console.log(err);
@@ -1198,7 +1193,7 @@ export const UnBlockService = async (username: string, token: string) => {
 };
 
 /**
- * @description get Blocked list in Settings page (Block and mute section)
+ * @description get Blocked list in Settings page (Block section)
  * @param token
  * @returns  users array represents the response from the backend or null
  */
@@ -1211,7 +1206,73 @@ export const GetBlockedService = async (token: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return res.data.data;
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+/**
+ * @description mute specific user
+ * @param username of this specific use
+ * @param token
+ * @returns  success or throws error if there is an error
+ */
+export const MuteService = async (username: string, token: string) => {
+  try {
+    const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/user/mute/${username}`,
+      {},
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+/**
+ * @description unmute specific user
+ * @param username of this specific user
+ * @param token
+ * @returns  success or throws error if there is an error
+ */
+export const UnMuteService = async (username: string, token: string) => {
+  try {
+    const res = await axios.delete(`${VITE_BACKEND_URL}/api/v1/user/mute/${username}`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+/**
+ * @description get muted list in Settings page (mute section)
+ * @param token
+ * @returns  users array represents the response from the backend or null
+ */
+export const GetMutedService = async (token: string) => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/mute`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
   } catch (err) {
     console.log(err);
     return null;

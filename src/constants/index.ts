@@ -10,14 +10,6 @@ const navLinks = [
 
   },
   {
-    id: "search",
-    title: "Search",
-    icon: Search,
-    clicked: { strokeWidth: 3 },
-    notificationCount: 5
-
-  },
-  {
     id: "notification",
     title: "Notification",
     icon: Bell,
@@ -28,6 +20,14 @@ const navLinks = [
     id: "messages",
     title: "Messages",
     icon: Mail,
+    clicked: { strokeWidth: 4 },
+    notificationCount: 0
+  },
+
+  {
+    id: "explore",
+    title: "Explore",
+    icon: Search,
     clicked: { strokeWidth: 4 },
     notificationCount: 0
   },
@@ -77,11 +77,12 @@ const settingsOptions = [
     id: "account",
     title: "Your account",
   },
-  // {
-  //   id: "privacy_and_safety",
-  //   title: "Privacy and safety",
-  // }
+  {
+    id: "privacy_and_safety",
+    title: "Privacy and safety",
+  }
 ]
+
 const accountOptions = [
   {
     id: "/your_twitter_data/account",
@@ -95,7 +96,6 @@ const accountOptions = [
     description: "Change your password at any time.",
     icon: KeyRound
   },
-
 ]
 const tags = [
   'JoyfulmemoriesinDublin!',

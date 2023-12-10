@@ -18,6 +18,7 @@ export function LoginPassword({ incrementStep, form }: SignInProp) {
                     data-testid="pass"
                     role="passwordInput"
                     isPassword={true}
+                    type="password"
                     className="w-[440px]"
                     placeHolder="Password"
                     errorMessage={ form.formState.errors.password?.message?.toString()}

@@ -13,14 +13,19 @@ NEEDED:
 */
 
 const TweetsList = ({ pages, fetcherRef }: TweetsListProps) => {
-  if (!pages)
+  if (!pages || pages.length === 0) {
     return (
       <div className="mt-52">
         <Spinner />
       </div>
     );
+  }
+
   return (
-    <div className="max-w-[600px] mx-auto border-primary border-opacity-30 border-t" data-testid="Tweet">
+    <div
+      className="max-w-[600px] mx-auto border-primary border-opacity-30 border-t"
+      data-testid="Tweet"
+    >
       {pages.map((page, i) =>
         page.map((tweet: Tweet, j) => (
           <>
