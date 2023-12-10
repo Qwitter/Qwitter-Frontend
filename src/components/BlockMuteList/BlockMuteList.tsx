@@ -6,24 +6,15 @@ import { UserContext } from "@/contexts/UserContextProvider";
 import { useContext, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { User } from "@/models/User";
+import { Skeleton } from "../ui/skeleton";
 
 export function BlockMuteList({ headername, service }: BlockMuteListProps) {
   const { token } = useContext(UserContext);
-  const {
-    data: Blocked,
-    refetch: refetchBlocked,
-    isLoading: isBlockedLoading,
-    isSuccess: isBlockedSuccess,
-  } = useQuery<User[]>({
+  const { data: Blocked, refetch: refetchBlocked } = useQuery<User[]>({
     queryKey: ["Blocked"],
     queryFn: () => GetBlockedService(token!),
   });
-  const {
-    data: Muted,
-    refetch: refetchMuted,
-    isLoading: isMutedLoading,
-    isSuccess: isMutedSuccess,
-  } = useQuery<User[]>({
+  const { data: Muted, refetch: refetchMuted } = useQuery<User[]>({
     queryKey: ["Muted"],
     queryFn: () => GetMutedService(token!),
   });
@@ -35,14 +26,15 @@ export function BlockMuteList({ headername, service }: BlockMuteListProps) {
     <>
       <div className=" w-full h-full border-r border-primary border-opacity-30 mb-20">
         <OptionsHeader header={headername} />
-        {(isBlockedSuccess || isMutedSuccess) && (
+        {Blocked && Muted ? (
           <UsersList
             listType={service == "BlockList" ? "BlockList" : "MuteList"}
             showDesc={true}
             users={service == "BlockList" ? Blocked! : Muted!}
           />
+        ) : (
+          <Skeleton className="w-full  h-full " />
         )}
-        {(isBlockedLoading || isMutedLoading) && <div>loading...</div>}
       </div>
     </>
   );
