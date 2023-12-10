@@ -15,8 +15,7 @@ export function TrendList({ isCard }: TrendsListProp) {
   });
   useEffect(() => {
     refetchTrends();
-    console.log(Trends);
-  }, [token]);
+  }, [token, refetchTrends]);
   return (
     <>
       {Trends &&

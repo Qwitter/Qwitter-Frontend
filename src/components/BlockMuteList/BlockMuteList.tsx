@@ -11,16 +11,16 @@ export function BlockMuteList({ headername, service }: BlockMuteListProps) {
   const { token } = useContext(UserContext);
   const { data: Blocked, refetch: refetchBlocked } = useQuery<User[]>({
     queryKey: ["Blocked"],
-    queryFn: () => GetMutedService(token!),
+    queryFn: () => GetBlockedService(token!),
   });
   const { data: Muted, refetch: refetchMuted } = useQuery<User[]>({
     queryKey: ["Muted"],
-    queryFn: () => GetBlockedService(token!),
+    queryFn: () => GetMutedService(token!),
   });
   useEffect(() => {
     refetchBlocked();
     refetchMuted();
-  }, [token]);
+  }, [token, refetchBlocked, refetchMuted]);
   return (
     <>
       <div className=" w-full h-full border-r border-primary border-opacity-30 mb-20">

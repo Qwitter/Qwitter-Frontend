@@ -15,7 +15,7 @@ export function FollowCard() {
   });
   useEffect(() => {
     refetch();
-  }, [token]);
+  }, [token, refetch]);
   return (
     <Card className="w-full bg-[#16181c] border-none">
       <CardHeader className=" h-[50px] mb-1 flex justify-center items-start">

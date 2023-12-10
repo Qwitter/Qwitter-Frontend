@@ -21,7 +21,7 @@ export function FollowList({ type }: { type: string }) {
   useEffect(() => {
     refetchFollowings();
     refetchFollowers();
-  }, [token]);
+  }, [token, refetchFollowers, refetchFollowings]);
   const [Liststate, setListstate] = useState(type);
   const navigate = useNavigate();
   return (
