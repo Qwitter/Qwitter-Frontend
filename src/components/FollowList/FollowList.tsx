@@ -34,7 +34,7 @@ export function FollowList({ type }: { type: string }) {
             value="Following"
             onClick={() => {
               setListstate("Following");
-              navigate("/Following");
+              navigate(`/${username}/Following`);
             }}
           >
             <div className={Liststate == "Following" ? "active-tab" : "tab"}>
@@ -46,8 +46,7 @@ export function FollowList({ type }: { type: string }) {
             value="Followers"
             onClick={() => {
               setListstate("Followers");
-              navigate("/Followers");
-              console.log(username);
+              navigate(`/${username}/Followers`);
             }}
           >
             <div className={Liststate == "Followers" ? "active-tab" : "tab"}>
