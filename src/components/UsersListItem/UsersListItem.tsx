@@ -3,6 +3,7 @@ import { CardContent } from "../ui/card";
 import { FollowButton } from "../FollowButton/FollowButton";
 import { UsersListItemProp } from "./UsersListItemProp";
 import { BlockButton } from "../BlockButton/BlockButton";
+import { MuteButton } from "../MuteButton/MuteButton";
 
 export function UsersListItem({
   profileImageUrl,
@@ -35,9 +36,8 @@ export function UsersListItem({
             {listType == "FollowList" && (
               <FollowButton isFollowing={isFollowing} username={username} />
             )}
-            {listType == "BlockList" && (
-              <BlockButton username={username} />
-            )}
+            {listType == "BlockList" && <BlockButton username={username} />}
+            {listType == "MuteList" && <MuteButton username={username} />}
           </div>
           {showDesc && <div>{description}</div>}
         </div>
