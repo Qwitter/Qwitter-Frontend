@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { useQuery } from "@tanstack/react-query";
 import { User } from "@/models/User";
-import { Skeleton } from "../ui/skeleton";
+import { Spinner } from "../Spinner";
 
 export function FollowList({ type }: { type: string }) {
   const { token, user } = useContext(UserContext);
@@ -61,7 +61,9 @@ export function FollowList({ type }: { type: string }) {
               users={Followings!}
             />
           ) : (
-            <Skeleton className="w-full  h-[800px]" />
+            <div className="mx-auto">
+              <Spinner />
+            </div>
           )}
         </TabsContent>
         <TabsContent value="Followers">
@@ -72,7 +74,9 @@ export function FollowList({ type }: { type: string }) {
               users={Followers!}
             />
           ) : (
-            <Skeleton className="w-full h-[800px] " />
+            <div className="mx-auto">
+              <Spinner />
+            </div>
           )}
         </TabsContent>
       </Tabs>
