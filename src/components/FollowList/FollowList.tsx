@@ -10,21 +10,18 @@ import { User } from "@/models/User";
 import { Spinner } from "../Spinner";
 
 export function FollowList({ type }: { type: string }) {
-  const { token, user } = useContext(UserContext);
+  const { token } = useContext(UserContext);
+  const { username } = useParams();
   const { data: Followings } = useQuery<User[]>({
-    queryKey: ["followings", token, user?.userName],
-    queryFn: () => GetFollowingsService(user?.userName!, token!),
+    queryKey: ["followings", token, username],
+    queryFn: () => GetFollowingsService(username!, token!),
   });
   const { data: Followers } = useQuery<User[]>({
-    queryKey: ["followers", token, user?.userName],
-    queryFn:
-      token && user?.userName
-        ? () => GetFollowersService(user?.userName, token)
-        : undefined,
+    queryKey: ["followers", token, username],
+    queryFn: () => GetFollowersService(username!, token!),
   });
   const [Liststate, setListstate] = useState(type);
   const navigate = useNavigate();
-  const { username } = useParams();
   return (
     <>
       <Tabs defaultValue={Liststate} className="max-w-[600px] w-full">
