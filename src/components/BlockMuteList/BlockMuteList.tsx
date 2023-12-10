@@ -9,11 +9,21 @@ import { User } from "@/models/User";
 
 export function BlockMuteList({ headername, service }: BlockMuteListProps) {
   const { token } = useContext(UserContext);
-  const { data: Blocked, refetch: refetchBlocked } = useQuery<User[]>({
+  const {
+    data: Blocked,
+    refetch: refetchBlocked,
+    isLoading: isBlockedLoading,
+    isSuccess: isBlockedSuccess,
+  } = useQuery<User[]>({
     queryKey: ["Blocked"],
     queryFn: () => GetBlockedService(token!),
   });
-  const { data: Muted, refetch: refetchMuted } = useQuery<User[]>({
+  const {
+    data: Muted,
+    refetch: refetchMuted,
+    isLoading: isMutedLoading,
+    isSuccess: isMutedSuccess,
+  } = useQuery<User[]>({
     queryKey: ["Muted"],
     queryFn: () => GetMutedService(token!),
   });
@@ -25,11 +35,14 @@ export function BlockMuteList({ headername, service }: BlockMuteListProps) {
     <>
       <div className=" w-full h-full border-r border-primary border-opacity-30 mb-20">
         <OptionsHeader header={headername} />
-        <UsersList
-          listType={service == "BlockList" ? "BlockList" : "MuteList"}
-          showDesc={true}
-          users={service == "BlockList" ? Blocked! : Muted!}
-        />
+        {(isBlockedSuccess || isMutedSuccess) && (
+          <UsersList
+            listType={service == "BlockList" ? "BlockList" : "MuteList"}
+            showDesc={true}
+            users={service == "BlockList" ? Blocked! : Muted!}
+          />
+        )}
+        {(isBlockedLoading || isMutedLoading) && <div>loading...</div>}
       </div>
     </>
   );

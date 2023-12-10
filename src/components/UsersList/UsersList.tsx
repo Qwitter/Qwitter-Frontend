@@ -5,7 +5,7 @@ import { UsersListProp } from "./UsersListProp";
 export function UsersList({ showDesc, users, listType }: UsersListProp) {
   return (
     <>
-      {users &&
+      {users.length > 0 ? (
         users.map((user: User, index) => (
           <UsersListItem
             key={index}
@@ -18,7 +18,12 @@ export function UsersList({ showDesc, users, listType }: UsersListProp) {
             isFollowing={user.isFollowing}
             listType={listType}
           />
-        ))}
+        ))
+      ) : (
+        <div className="text-center text-2xl mt-5 text-primary">
+          No users to show
+        </div>
+      )}
     </>
   );
 }
