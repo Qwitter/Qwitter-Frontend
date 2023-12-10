@@ -2,7 +2,7 @@ import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendList } from "../TrendList/TrendList";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "@/contexts/UserContextProvider";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Trend } from "@/models/Trend";
 import { GetTrendsService } from "@/lib/utils";
@@ -11,14 +11,11 @@ import { Skeleton } from "../ui/skeleton";
 export function TrendCard() {
   const navigate = useNavigate();
   const { token } = useContext(UserContext);
-  const { data: Trends, refetch: refetchTrends } = useQuery<Trend[]>({
-    queryKey: ["Trends"],
+  const { data: Trends } = useQuery<Trend[]>({
+    queryKey: ["Trends", token],
     queryFn: () => GetTrendsService(token!),
     select: (data) => data.slice(0, 3),
   });
-  useEffect(() => {
-    refetchTrends();
-  }, [token, refetchTrends]);
   return (
     <>
       {Trends ? (
