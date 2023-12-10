@@ -8,7 +8,7 @@ import { UserContext } from "@/contexts/UserContextProvider";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { MessagesConversationPopUp } from "./MessagesConversationPopUp";
 
-export function MessagesConversationMessage({isMessage,isGroup, date, id, entities, replyToMessage, text, userName }: MessagesMessage) {
+export function MessagesConversationMessage({isMessage,isGroup, date, id, entities,profileImageUrl ,replyToMessage, text, userName }: MessagesMessage) {
     const { user } = useContext(UserContext);
     const [isOpen, setIsOpen] = useState(false);
     const formatDate = (dateString: string) => {
@@ -32,7 +32,7 @@ export function MessagesConversationMessage({isMessage,isGroup, date, id, entiti
                 {text}
             </p>: <>
             <div className={cn("flex flex-row items-center ", userName == user?.userName && "justify-end")}>
-                {isGroup&& userName != user?.userName&& <img src={"https://i.pinimg.com/736x/62/1d/bd/621dbd7d208d5c17498e0f73bf02aee8.jpg"} alt="" className="w-10 h-10 rounded-full mr-2" />}
+                {isGroup&& userName != user?.userName&& <img src={profileImageUrl||"https://i.pinimg.com/736x/62/1d/bd/621dbd7d208d5c17498e0f73bf02aee8.jpg"} alt="" className="w-10 h-10 rounded-full mr-2" />}
                 <div className={cn("w-[87.5%] group flex flex-row", userName == user?.userName && "flex-row-reverse")}>
 
                     <div className={cn("flex flex-col gap-1 flex-shrink-1", userName == user?.userName && " items-end")}>

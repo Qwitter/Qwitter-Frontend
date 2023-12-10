@@ -11,6 +11,7 @@ import { FollowList } from "@/components/FollowList/FollowList";
 import { ExploreList } from "@/components/ExploreList/ExploreList.";
 import { socket } from "@/lib/socketInit";
 import { useEffect } from "react";
+import { EVENTS } from "../Messages/types/MessagesTypes";
 // import { EVENTS } from "../Messages/types/MessagesTypes";
 
 export function PagesContainer() {
@@ -20,10 +21,13 @@ export function PagesContainer() {
   useEffect(()=>{
     console.log(user.userName)
     socket.connect()
-    socket.on('noitification',(d)=>{
-      console.log(d)
-      new Notification(d);
-    })
+    socket.emit(EVENTS.CLIENT.JOIN_ROOM,user.userName);
+    socket.on(EVENTS.SERVER.NOTIFICATION, async(notification) => {
+      console.log(notification);
+    
+    });
+    
+
   },[])
 
   return (

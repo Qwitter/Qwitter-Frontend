@@ -30,7 +30,7 @@ export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRe
 
     });
     useEffect(() => {
-        
+        console.log(data!)
         setUserAllConversation(data!)
         refetch();
     }, [token, refetch, data,setUserAllConversation]);

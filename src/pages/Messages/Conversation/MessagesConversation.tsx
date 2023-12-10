@@ -43,7 +43,13 @@ export function MessagesConversation() {
         queryFn: () => getConversation({ token: token, conversationId: conversationId! })
 
     });
-    useEffect(()=>{data&&setChatMessages(data.messages)},[data])
+    useEffect(()=>{
+        setTimeout(() => {
+            handleScrollDown()
+        }, 0);
+        console.log(data)
+        data&&setChatMessages(data.messages)
+    },[data])
 
     useEffect(() => {
         messageContainerRef.current && messageContainerRef.current.scrollTo(0, messageContainerRef.current.scrollHeight);

@@ -1,5 +1,5 @@
 import { OptionsHeader } from "@/components";
-import { useContext, useState } from "react";
+import { useContext,  useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { MessagesContext } from "@/contexts/MessagesContextProvider";
@@ -35,7 +35,7 @@ export function MessagesConversationInfo() {
                             <AvatarImage className="w-10 h-10 rounded-full border-primary border-[2px] border-solid border-opacity-30" src={currentConversation.photo} />
                         </Avatar>
                         <div className="flex flex-row justify-between w-full">
-                            <span className="text-primary text-[15px] font-bold">{currentConversation?.name}</span>
+                            <span className="text-primary text-[15px] font-bold">{currentConversation?.fullName}</span>
                             <Link className="text-secondary text-[15px] hover:underline" to={`/messages/${currentConversation?.id}/group-info`} state={{ previousLocation: location }}>Edit</Link>
                         </div>
                     </div>

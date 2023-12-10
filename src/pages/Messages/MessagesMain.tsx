@@ -106,7 +106,7 @@ function SearchMessagesResults({ active, text }: { active: string; text: string;
             )
         }
         return (
-            <div>
+            <div className="overflow-x-hidden">
                 {data.people.length > 0 && <><div className="pl-4 flex flex-row items-center border-b border-primary border-opacity-30">
                     <div className='w-10 h-10 flex justify-start items-center '>
                         <User fill="white" className=' w-5 h-5' />
@@ -124,7 +124,7 @@ function SearchMessagesResults({ active, text }: { active: string; text: string;
                         <h2 className="font-bold text-xl">Groups</h2>
                     </div>
                 </div>
-                    <MessagesList mode="conversations" matchedPart={text} conversations={data.groups} /></>}
+                    <MessagesList mode="Group" matchedPart={text} conversations={data.groups} /></>}
                 {data.messages.length > 0 && <><div className="pl-4 flex flex-row items-center border-b border-primary border-opacity-30">
                     <div className='w-10 h-10 flex justify-start items-center '>
                         <Mail fill="white" className='text-black w-6 h-6' />
@@ -144,9 +144,9 @@ function SearchMessagesResults({ active, text }: { active: string; text: string;
         </>
         )
     }
-    if (data && active == "Group" && data.groups.length > 0) {
+    if (data && active == "Groups" && data.groups.length > 0) {
         return (<>
-            <MessagesList mode="People" matchedPart={text} conversations={data.groups} />
+            <MessagesList mode="Group" matchedPart={text} conversations={data.groups} />
         </>
         )
     }

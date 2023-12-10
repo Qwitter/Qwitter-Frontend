@@ -32,7 +32,7 @@ export type MessagesListProp = {
     newMessageRequest?: boolean;
     selectedUser?: MessageUser;
     selectedConversation?: conversation;
-    mode: "normal" | "request" | "People" | "conversations";
+    mode: "normal" | "request" | "People" | "conversations"|"Group";
     matchedPart?: string;
     setSelectedUser?: React.Dispatch<React.SetStateAction<MessageUser>>
     setSelectedConversation?: React.Dispatch<React.SetStateAction<conversation | undefined>>
@@ -85,6 +85,7 @@ export type conversation = {
     isGroup: boolean;
     users: MessageUser[];
     lastMessage?: MessagesMessage;
+    fullName?:string;
     messages: MessagesMessage[];
 };
 
@@ -103,14 +104,14 @@ export type SearchConversations = {
 export const EVENTS = {
     connection: 'connection',
     CLIENT: {
-        CREATE_ROOM: 'CREATE_ROOM',
-        SEND_ROOM_MESSAGE: 'SEND_ROOM_MESSAGE',
-        JOIN_ROOM: 'JOIN_ROOM',
+        SEND_ROOM_MESSAGE: 'SEND_ROOM_MESSAGE', // Used for sending a message
+        JOIN_ROOM: 'JOIN_ROOM', // Joiniing a room. It can be used by joining  a conversation room or a userName room for notifications.
     },
     SERVER: {
         ROOMS: 'ROOMS',
-        JOINED_ROOM: 'JOINED_ROOM',
-        ROOM_MESSAGE: 'ROOM_MESSAGE',
+        JOINED_ROOM: 'JOINED_ROOM', // Sending a message that a user joined a room
+        ROOM_MESSAGE: 'ROOM_MESSAGE', // Sending a message to the conversation room socket only
+        NOTIFICATION: 'NOTIFICATION', // Sending a message to the room of the username
+        MESSAGE: 'MESSAGE', // Sending a general message to the user on the room of the username
     },
-    NOTIFICATION: 'NOTIFICATION-',
 };

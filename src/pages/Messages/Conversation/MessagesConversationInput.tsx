@@ -84,8 +84,8 @@ export function MessagesConversationInput({ text, setText, handleSubmit, selecte
                             </div>
                         </div></>}
                     <div className="flex flex-col w-full pl-2">
-                        {selectedImageFile && <div className="w-[20vw] max-h-[200px] overflow-y-hidden">
-                            <TweetImagesViewer images={selectedImage} mode="edit" removeAttachment={handleRemoveImage} />
+                        {selectedImageFile && <div className="w-[20vw] ">
+                            <TweetImagesViewer screen="message" images={selectedImage} mode="edit" removeAttachment={handleRemoveImage} />
                         </div>}
                         <div className={cn("w-full max-w-[440px] max-h-[160px] overflow-y-auto relative", `${selectedImageFile ? 'max-w-[500px]' : ''}`)}>
                             <Textarea

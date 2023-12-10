@@ -6,14 +6,14 @@ import { Search, X, Check } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { Spinner } from "@/components/Spinner";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { CreateConversation, cn, getUsersSuggestionsToAdd } from "@/lib/utils";
+import { addUserToGroup, cn, getUsersSuggestionsToAdd } from "@/lib/utils";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { MessageUser } from "./types/MessagesTypes";
 import { MessagesContext } from "@/contexts/MessagesContextProvider";
 function MessagesAddPeoplePopup() {
     const [isFocus, setFocus] = useState(false);
     const [peopleSearchText, setPeopleSearchText] = useState("");
-    const {conversationId} = useParams()
+    const { conversationId } = useParams()
     const [selectedUsers, setSelectedUsers] = useState<{ profileImageUrl: string; name: string; userName: string }[]>([]);
     const { token } = useContext(UserContext)
     const navigate = useNavigate();
@@ -22,18 +22,17 @@ function MessagesAddPeoplePopup() {
 
     const handleAddClick = () => {
         mutate({
-            conversation_name: selectedUsers.map(obj => obj.name).join(','), token: token!
-            , users: selectedUsers.map(user => user.userName)
+            token: token!, conversationId: conversationId!, users: selectedUsers.map(user => user.userName)
         })
 
     }
 
     const { mutate, isPending: isSubmitting } = useMutation({
-        mutationFn: CreateConversation,
+        mutationFn: addUserToGroup,
         onSuccess: (data) => {
             if (data) {
                 console.log(data)
-                navigate('/Messages/' + data.id)
+                navigate('/Messages/' + conversationId)
             }
 
         },
@@ -48,7 +47,7 @@ function MessagesAddPeoplePopup() {
         refetch
     } = useQuery<MessageUser[]>({
         queryKey: ["GroupUsers"],
-        queryFn: () => getUsersSuggestionsToAdd(token!, peopleSearchText,conversationId!)
+        queryFn: () => getUsersSuggestionsToAdd(token!, peopleSearchText, conversationId!)
         ,
     });
     useEffect(() => {
@@ -130,14 +129,14 @@ function MessagesAddPeoplePopup() {
 function ShowUsersSuggestions({ onUserClick, users, selectedUsers }: { selectedUsers: MessageUser[], users: MessageUser[], onUserClick: (user: MessageUser) => void }) {
 
     const { currentConversation } = useContext(MessagesContext)
-    
+
     return (
         <ul className="flex-shrink min-h-[60vh]" >
 
             {
                 users && users.slice(0, 12).map((user, index) => (
-                    <li key={index} className={cn("py-3 px-4 flex flex-row justify-between hover:bg-[#16181c] w-full transition-all items-center cursor-pointer",(currentConversation&&currentConversation.users.filter(obj => obj['userName'] === user.userName).length > 0)&&"opacity-60 cursor-default")}
-                        onClick={(currentConversation&&currentConversation.users.filter(obj => obj['userName'] === user.userName).length > 0)?()=>{}:() => onUserClick(user)}>
+                    <li key={index} className={cn("py-3 px-4 flex flex-row justify-between hover:bg-[#16181c] w-full transition-all items-center cursor-pointer", (currentConversation && currentConversation.users.filter(obj => obj['userName'] === user.userName).length > 0) && "opacity-60 cursor-default")}
+                        onClick={(currentConversation && currentConversation.users.filter(obj => obj['userName'] === user.userName).length > 0) ? () => { } : () => onUserClick(user)}>
                         <div className=" flex flex-row">
                             <Avatar className="mr-4">
                                 <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee46] border-[1px] border-solid" src={user.profileImageUrl || "https://i.pinimg.com/736x/62/1d/bd/621dbd7d208d5c17498e0f73bf02aee8.jpg"} />
@@ -147,7 +146,7 @@ function ShowUsersSuggestions({ onUserClick, users, selectedUsers }: { selectedU
                                 <span className="text-gray">@{user.userName}</span>
                             </div>
                         </div>
-                        {selectedUsers && (selectedUsers.filter(obj => obj['userName'] === user.userName).length > 0 ||(currentConversation&&currentConversation.users.filter(obj => obj['userName'] === user.userName).length > 0))&& <div>
+                        {selectedUsers && (selectedUsers.filter(obj => obj['userName'] === user.userName).length > 0 || (currentConversation && currentConversation.users.filter(obj => obj['userName'] === user.userName).length > 0)) && <div>
                             <Check className="w-4 h-4 text-secondary" />
                         </div>}
                     </li>

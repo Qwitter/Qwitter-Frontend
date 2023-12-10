@@ -77,7 +77,7 @@ export function Home() {
         <div className="mt-5 rounded-lg bg-dark-gray">
           <FollowCard />
         </div>
-      </div> */}
+      </div> 
     </>
   );
 }

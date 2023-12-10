@@ -604,9 +604,9 @@ export const getUsersSuggestionsToAdd = async (token: string, username: string,c
   }
 };
 /*
- * @description get a list of users with userName contain the given string to add to the group
- * @param {username,token,conversationId}
- * @returns list of users  or null
+ * @description get a list of conversations , people ,groups  contain the given string
+ * @param {query,token}
+ * @returns list of data  or null
  */
 export const conversationSearch = async (token: string, query:string) => {
   try {
@@ -615,7 +615,6 @@ export const conversationSearch = async (token: string, query:string) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(res)
     return res.data;
 
   } catch (err) {
@@ -623,26 +622,6 @@ export const conversationSearch = async (token: string, query:string) => {
     return null;
   }
 };
-/*
- * @description add a user to a group 
- * @param {username,token,conversationId}
- * @returns list of users  or null
- */
-// export const getUsersSuggestionsToAdd = async (token: string, username: string,conversationId:string) => {
-//   try {
-//     if (!username) return []
-//     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/user?q=${username}`, {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     });
-//     return res.data.users;
-
-//   } catch (err) {
-//     console.log(err);
-//     return null;
-//   }
-// };
 
 /**
  * @description get a list of Hashtags contain the given string
@@ -1236,6 +1215,34 @@ export const MuteService = async (username: string, token: string) => {
     return null;
   }
 };
+/**
+ * @description mute specific user
+ * @param username of this specific use
+ * @param token
+ * @returns  success or throws error if there is an error
+ */
+export const addUserToGroup = async  ({  token, users,conversationId }: {conversationId:string;  token: string, users: string[] }) => {
+    try {
+      const res = await axios.post(
+        `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/user/`,
+        {
+          users: users,
+        },
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(res.data)
+      return res.data;
+    } catch (error) {
+      console.log(error);
+      return null
+    }
+  };
 /**
  * @description unmute specific user
  * @param username of this specific user
