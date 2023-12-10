@@ -1,4 +1,4 @@
-import { Info, X } from "lucide-react";
+import { ArrowDown, Info, MoveLeft, X } from "lucide-react";
 import { HTMLProps, Ref, forwardRef, useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useInView } from "react-intersection-observer";
@@ -16,12 +16,15 @@ import { Spinner } from "@/components/Spinner";
 
 export function MessagesConversation() {
     const [text, setText] = useState("")
+    const [chatName, setChatName] = useState('');
+
     const [selectedImageFile, setSelectedImageFile] = useState<File>();
 
-    const { token,user } = useContext(UserContext);
+    const { token, user } = useContext(UserContext);
     const { messageReply, setMessageReply, setCurrentConversation } = useContext(MessagesContext)
-    
+
     const { ref, inView } = useInView();
+    const { ref: refLastMessage, inView: lastMessageInView } = useInView();
     const { conversationId } = useParams()
     const navigate = useNavigate()
     const SOCKET_URL = "http://qwitterback.cloudns.org:3000";
@@ -31,23 +34,28 @@ export function MessagesConversation() {
     const messageContainerRef = useRef<HTMLDivElement>(null);
 
 
-    // const SOCKET_URL:string = process.env.VITE_BACKEND_URL as string ;
 
     const {
         isPending,
         data,
-        refetch
     } = useQuery<conversation>({
-        queryKey: ["userConversation",conversationId],
+        queryKey: ["userConversation", conversationId],
         queryFn: () => getConversation({ token: token!, conversationId: conversationId! })
 
     });
 
     useEffect(() => {
         messageContainerRef.current && messageContainerRef.current.scrollTo(0, messageContainerRef.current.scrollHeight);
-        data&&data.messages && setCurrentConversation(data)
+        data && data.messages && setCurrentConversation(data)
 
     }, [data, messageContainerRef, setCurrentConversation]);
+    // useEffect(() => {
+    //     !lastMessageInView && messageContainerRef.current && messageContainerRef.current!.scrollTo(0, messageContainerRef.current!.scrollHeight);
+    //     console.log(lastMessageInView)
+    // }, [lastMessageInView])
+    const handleScrollDown = () => {
+        messageContainerRef.current && messageContainerRef.current!.scrollTo(0, messageContainerRef.current!.scrollHeight);
+    }
 
     const { mutate, isPending: isSending } = useMutation({
         mutationFn: CreateMessage,
@@ -57,16 +65,19 @@ export function MessagesConversation() {
                     conversationId,
                     data,
                 });
-                await queryClient.cancelQueries({ queryKey: ['userConversation',conversationId] })
-                const previousMessages = queryClient.getQueryData(['userConversation',conversationId]);
-    
-                queryClient.setQueryData(['userConversation',conversationId], (oldConversation: conversation) => {
+                await queryClient.cancelQueries({ queryKey: ['userConversation', conversationId] })
+                const previousMessages = queryClient.getQueryData(['userConversation', conversationId]);
+
+                queryClient.setQueryData(['userConversation', conversationId], (oldConversation: conversation) => {
                     oldConversation.messages = [data, ...oldConversation.messages]
+                    handleScrollDown()
                     setCurrentConversation(oldConversation)
                     return oldConversation;
                 })
+                handleScrollDown()
+
                 return { previousMessages }
-    
+
             }
 
         },
@@ -75,29 +86,42 @@ export function MessagesConversation() {
 
         }
     })
-    useEffect(() => {
-        refetch();
-    }, [data, refetch]);
+
     useEffect(() => {
         socket.emit('JOIN_ROOM', conversationId);
         socket.on(EVENTS.SERVER.ROOM_MESSAGE, async (Message) => {
 
-            await queryClient.cancelQueries({ queryKey: ['userConversation',conversationId] })
-            const previousMessages = queryClient.getQueryData(['userConversation',conversationId]);
+            await queryClient.cancelQueries({ queryKey: ['userConversation', conversationId] })
+            const previousMessages = queryClient.getQueryData(['userConversation', conversationId]);
 
-            queryClient.setQueryData(['userConversation',conversationId], (oldConversation: conversation) => {
-                if(Message.message.userName == oldConversation.messages[0].userName) return oldConversation;
+            queryClient.setQueryData(['userConversation', conversationId], (oldConversation: conversation) => {
+                if (Message.message.userName == oldConversation.messages[0].userName) return oldConversation;
                 oldConversation.messages = [Message.message, ...oldConversation.messages]
+                handleScrollDown()
                 setCurrentConversation(oldConversation)
                 return oldConversation;
             })
+            handleScrollDown()
+
             return { previousMessages }
 
         });
         return () => {
             socket.disconnect();
         };
-    }, [user])
+    }, [])
+    useEffect(() => {
+        // Assuming data.users is an array of MessageUser
+        if (data && user) {
+            if (data?.isGroup) {
+                // Update chatName when the component mounts or when data.users changes
+                setChatName(handleNameOfChat(data!.users.filter(u => u.userName != user!.userName) || []));
+            } else {
+                // Update chatName for one-on-one conversations
+                setChatName(data!.users[0].name || '');
+            }
+        }
+    }, [data, user]);
     if (isPending) {
         return (
             <div className="w-full h-[500px] p-8">
@@ -118,22 +142,31 @@ export function MessagesConversation() {
             setMessageReply(null)
         }
     }
+
     const handleNameOfChat = (users: MessageUser[]): string => {
 
         if (users.length === 0) {
             return '';
         }
-        // Exclude the last user and concatenate names
-        const concatenatedNames = users.slice(0,3).map((user) => user.name).join(', ')+`${users.length-3>0?` and ${users.length-3} more`:""}`;
+
+
+        const concatenatedNames = users.slice(0, 3).map((user) => user.name).join(', ') + `${users.length - 3 > 0 ? ` and ${users.length - 3} more` : ""}`;
         // Return the result
         return concatenatedNames;
     };
     return (
-        data&&<div className="h-full">
+        data && <div className="h-full">
             <div className="px-4 w-full h-[53px] basis-4 flex flex-row justify-center  sticky  top-[-1px] bg-black bg-opacity-60 backdrop-blur-xl z-50 items-center">
+                <div className="hover:bg-[#191919] h-10 flex mr-2 lg:hidden rounded-full transition-all p-2 cursor-pointer"
+                    data-testid="Back"
+                    onClick={() => {
+                        navigate(-1)
+                    }}>
+                    <MoveLeft className='max-w-[50px] ' />
+                </div>
                 {!inView && <img src={data?.photo || "https://i.ibb.co/S7XN04r/01eab91ff04ea5832a33040f7ebdb3d0.jpg"} className="w-8 h-8 rounded-full mr-2" />}
                 <div className="w-full h-full flex  items-center">
-                    <h2 className="font-bold text-[17px]">{data?.isGroup?handleNameOfChat(data?.users || []):data?.users[0].name||""}</h2>
+                    <h2 className="font-bold text-[17px]">{chatName}</h2>
                 </div>
                 <div className="flex justify-end items-center min-w-[56px] min-h-[32px]">
                     <div className='w-10 h-10 flex justify-end items-center '>
@@ -143,17 +176,23 @@ export function MessagesConversation() {
                     </div>
                 </div>
             </div>
-            <div className="w-full mx-auto flex flex-col max-h-[calc(100vh-55px)] ">
+            <div className="w-full relative mx-auto flex flex-col max-h-[calc(100vh-55px)] ">
                 <div className="  overflow-y-auto" ref={messageContainerRef}>
                     {data && (!data.isGroup) && <div className=" w-full px-4 " onClick={() => navigate('/' + data?.users[0].userName)} > {/* change with real username */}
-                        <MessagesConversationUserInfo chatPicture={data?.photo || "https://i.ibb.co/S7XN04r/01eab91ff04ea5832a33040f7ebdb3d0.jpg"} userName={data?.users[0].userName || ""} name={data?.users[0].name||""} ref={ref} />
+                        <MessagesConversationUserInfo chatPicture={data?.photo || "https://i.ibb.co/S7XN04r/01eab91ff04ea5832a33040f7ebdb3d0.jpg"} userName={data?.users[0].userName || ""} name={data?.users[0].name || ""} ref={ref} />
                     </div>}
                     <div className={cn('flex-shrink px-4 h-[calc(63vh-70px)]', data && data.isGroup && ' h-[85vh]')}>
-                        {data && data.messages.slice().reverse().map((message, index) => (
-                            <MessagesConversationMessage key={index} {...message} isGroup={data.isGroup}/>
+                        {data && data.messages.slice().reverse().map((message, index) => (<>
+                            {index == data.messages.length - 1 && <div ref={refLastMessage} className="w-full h-1"></div>}
+
+                            <MessagesConversationMessage key={index} {...message} isGroup={data.isGroup} />
+                        </>
                         ))
                         }
                     </div>
+                    {!lastMessageInView && <div onClick={handleScrollDown} className=" absolute py-2 px-3 cursor-pointer rounded-2xl bottom-20 right-12 box-shadow backdrop-blur-sm bg-black bg-opacity-90 flex items-center justify-center">
+                        <ArrowDown className="text-secondary w-6 h-6" />
+                    </div>}
                 </div>
                 <div className="flex-grow  border-t relative  border-primary border-opacity-30 px-2    flex-shrink-0">
                     {messageReply && <div className="border-l-4 items-center   py-2 px-3 w-full bg-[#16181c] flex flex-row justify-between border-primary border-opacity-90">

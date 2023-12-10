@@ -20,7 +20,6 @@ export function ConversationLeavePopUp({ show, setShow, conversationToDelete }: 
 
             // Snapshot the previous value
             const previousConversations = queryClient.getQueryData(['getUserConversations'])
-            console.log(previousConversations)
 
             // Optimistically update to the new value
             queryClient.setQueryData(['getUserConversations'], (old: conversation[]) =>old.filter(conversation=> conversation.id!=data.conversationId))

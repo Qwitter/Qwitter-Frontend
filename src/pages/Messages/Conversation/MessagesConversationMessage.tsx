@@ -13,7 +13,6 @@ export function MessagesConversationMessage({isMessage,isGroup, date, id, entiti
     const [isOpen, setIsOpen] = useState(false);
     const formatDate = (dateString: string) => {
         const date = moment(dateString);
-        console.log(replyToMessage)
         const now = moment();
         if (now.diff(date, 'days') === 0)
             return date.format('h:mm A');
