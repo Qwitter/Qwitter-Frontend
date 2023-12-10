@@ -38,11 +38,11 @@ export function PagesContainer() {
                 <Route path="/:username/*" element={<Profile />} />
                 <Route path="/Explore" element={<ExploreList />} />
                 <Route
-                  path="/Followers"
+                  path="/:username/Followers"
                   element={<FollowList type={"Followers"} />}
                 />
                 <Route
-                  path="/Following"
+                  path="/:username/Following"
                   element={<FollowList type={"Following"} />}
                 />
               </Routes>

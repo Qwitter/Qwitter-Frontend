@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import "../../index.css";
 import { UsersList } from "../UsersList/UsersList";
 import { GetFollowersService, GetFollowingsService } from "@/lib/utils";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { useQuery } from "@tanstack/react-query";
 import { User } from "@/models/User";
@@ -24,6 +24,7 @@ export function FollowList({ type }: { type: string }) {
   });
   const [Liststate, setListstate] = useState(type);
   const navigate = useNavigate();
+  const { username } = useParams();
   return (
     <>
       <Tabs defaultValue={Liststate} className="max-w-[600px] w-full">
@@ -46,6 +47,7 @@ export function FollowList({ type }: { type: string }) {
             onClick={() => {
               setListstate("Followers");
               navigate("/Followers");
+              console.log(username);
             }}
           >
             <div className={Liststate == "Followers" ? "active-tab" : "tab"}>
