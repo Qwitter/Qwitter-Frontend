@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { Spinner } from "../Spinner";
+import { FollowCard } from "../FollowCard/FollowCard";
 
 export function ExploreList() {
   const { token } = useContext(UserContext);
@@ -22,6 +23,11 @@ export function ExploreList() {
             <Spinner />
           </div>
         )}
+      </div>
+      <div className="max-w-[600px]  pb-16 relative flex flex-col z-0 w-[36.5%] max-largeX:hidden h-full">
+        <div className="mt-5 rounded-lg bg-dark-gray">
+          <FollowCard />
+        </div>
       </div>
     </>
   );
