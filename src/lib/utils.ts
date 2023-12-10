@@ -603,6 +603,46 @@ export const getUsersSuggestionsToAdd = async (token: string, username: string,c
     return null;
   }
 };
+/*
+ * @description get a list of users with userName contain the given string to add to the group
+ * @param {username,token,conversationId}
+ * @returns list of users  or null
+ */
+export const conversationSearch = async (token: string, query:string) => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/conversation/search?q=${query}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(res)
+    return res.data;
+
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+/*
+ * @description add a user to a group 
+ * @param {username,token,conversationId}
+ * @returns list of users  or null
+ */
+// export const getUsersSuggestionsToAdd = async (token: string, username: string,conversationId:string) => {
+//   try {
+//     if (!username) return []
+//     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/user?q=${username}`, {
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//       },
+//     });
+//     return res.data.users;
+
+//   } catch (err) {
+//     console.log(err);
+//     return null;
+//   }
+// };
 
 /**
  * @description get a list of Hashtags contain the given string
@@ -761,14 +801,12 @@ export const bookmarkTweet = async (tweetId: string, token: string) => {
  * @param users - array of userNames
  * @returns success or throws error if there is an error
  */
-export const CreateConversation = async ({ conversation_name, token, users }: { conversation_name: string, token: string, users: string[] }) => {
+export const CreateConversation = async ({  token, users }: {  token: string, users: string[] }) => {
   try {
-    console.log(conversation_name, token, users)
     const res = await axios.post(
       `${VITE_BACKEND_URL}/api/v1/conversation/`,
       {
         users: users,
-        conversation_name: conversation_name,
       },
       {
         headers: {

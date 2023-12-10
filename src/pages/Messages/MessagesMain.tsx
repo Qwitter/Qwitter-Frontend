@@ -1,11 +1,15 @@
 import { User, Mail } from "lucide-react";
-import { useState } from "react";
-import { searchHeaderOptions, tempMessagesSearch } from "@/constants";
+import { useEffect, useState } from "react";
+import { searchHeaderOptions } from "@/constants";
 import { MessagesList } from "./MessagesList";
 import { MessagesSearch } from "./MessagesSearch";
 import { MessagesHeader } from "./MessagesHeader";
 import { MessagesSide } from "./MessagesSide";
 import { MessagesAllConversationSide } from "./Conversation/MessagesAllConversationSide";
+import { SearchConversations } from "./types/MessagesTypes";
+import { useQuery } from "@tanstack/react-query";
+import { conversationSearch } from "@/lib/utils";
+import { Spinner } from "@/components/Spinner";
 
 type MessagesMainProps = {
     showMessagesHeader?: boolean;
@@ -37,6 +41,8 @@ export function MessagesMain({ showMessagesHeader = true }: MessagesMainProps) {
 function SearchResults({ text }: { text: string }) {
     const [active, setActive] = useState("ALL");
 
+
+
     return (<>
         {text.length === 0 ?
             <div className="mt-7 flex w-full justify-center">
@@ -67,9 +73,32 @@ function SearchResultsHeader({ active, setActive }: { active: string; setActive:
     )
 }
 function SearchMessagesResults({ active, text }: { active: string; text: string; }) {
+    const token = localStorage.getItem('token')
 
-    if (active == "ALL") {
-        if (tempMessagesSearch.users.length + tempMessagesSearch.conversations.length == 0) {
+    const {
+        isPending,
+        data,
+    } = useQuery<SearchConversations>({
+        queryKey: ["ConversationsSearch"+text],
+        queryFn: () => conversationSearch(token!, text)
+    });
+    useEffect(() => { console.log(data) }, [])
+
+    useEffect(() => {
+        !isPending && console.log(data)
+        console.log(data?.people)
+    }, [data])
+    if (isPending) {
+        return (
+            <div className="w-full h-[600px] p-8">
+                <Spinner />
+            </div>
+        );
+    }
+
+
+    if (data && active == "ALL") {
+        if (data.messages.length + data.people.length == 0) {
             return (
                 <>
                     <SearchNoResult text={text} />
@@ -78,7 +107,7 @@ function SearchMessagesResults({ active, text }: { active: string; text: string;
         }
         return (
             <div>
-                {tempMessagesSearch.users.length > 0 && <><div className="pl-4 flex flex-row items-center border-b border-primary border-opacity-30">
+                {data.people.length > 0 && <><div className="pl-4 flex flex-row items-center border-b border-primary border-opacity-30">
                     <div className='w-10 h-10 flex justify-start items-center '>
                         <User fill="white" className=' w-5 h-5' />
                     </div>
@@ -86,8 +115,17 @@ function SearchMessagesResults({ active, text }: { active: string; text: string;
                         <h2 className="font-bold text-xl">People</h2>
                     </div>
                 </div>
-                    <MessagesList mode="People" matchedPart={text} users={tempMessagesSearch.users} /></>}
-                {tempMessagesSearch.conversations.length > 0 && <><div className="pl-4 flex flex-row items-center border-b border-primary border-opacity-30">
+                    <MessagesList mode="People" matchedPart={text} conversations={data.people} /></>}
+                {data.groups.length > 0 && <><div className="pl-4 flex flex-row items-center border-b border-primary border-opacity-30">
+                    <div className='w-10 h-10 flex justify-start items-center '>
+                        <Mail fill="white" className='text-black w-6 h-6' />
+                    </div>
+                    <div className="w-full h-full flex  items-center">
+                        <h2 className="font-bold text-xl">Groups</h2>
+                    </div>
+                </div>
+                    <MessagesList mode="conversations" matchedPart={text} conversations={data.groups} /></>}
+                {data.messages.length > 0 && <><div className="pl-4 flex flex-row items-center border-b border-primary border-opacity-30">
                     <div className='w-10 h-10 flex justify-start items-center '>
                         <Mail fill="white" className='text-black w-6 h-6' />
                     </div>
@@ -95,25 +133,34 @@ function SearchMessagesResults({ active, text }: { active: string; text: string;
                         <h2 className="font-bold text-xl">Messages</h2>
                     </div>
                 </div>
-                    <MessagesList mode="conversations" matchedPart={text} users={tempMessagesSearch.conversations} /></>}
+                    <MessagesList mode="conversations" matchedPart={text} conversations={data.groups} /></>}
+
             </div>
         )
     }
-    if (active == "People") {
+    if (data && active == "People" && data.people.length > 0) {
         return (<>
-            <MessagesList mode="People" matchedPart={text} users={tempMessagesSearch.conversations} />
+            <MessagesList mode="People" matchedPart={text} conversations={data.people} />
         </>
         )
     }
-    if (active == "Messages") {
+    if (data && active == "Group" && data.groups.length > 0) {
         return (<>
-            <MessagesList mode="conversations" matchedPart={text} users={tempMessagesSearch.conversations} />
+            <MessagesList mode="People" matchedPart={text} conversations={data.groups} />
+        </>
+        )
+    }
+    if (data && active == "Messages" && data.messages.length > 0) {
+        return (<>
+            <MessagesList mode="conversations" matchedPart={text} conversations={data.messages} />
         </>
         )
     }
     return (
         <SearchNoResult text={text} />
     )
+
+
 }
 
 function SearchNoResult({ text }: { text: string; }) {

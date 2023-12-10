@@ -9,10 +9,23 @@ import { MessagesAccordion } from "../Messages/MessagesAccordion";
 import { Profile } from "../Profile/Profile";
 import { FollowList } from "@/components/FollowList/FollowList";
 import { ExploreList } from "@/components/ExploreList/ExploreList.";
+import { socket } from "@/lib/socketInit";
+import { useEffect } from "react";
+// import { EVENTS } from "../Messages/types/MessagesTypes";
 
 export function PagesContainer() {
   const location = useLocation();
   const previousLocation = location.state?.previousLocation;
+  const user = JSON.parse(localStorage.getItem("user")!)
+  useEffect(()=>{
+    console.log(user.userName)
+    socket.connect()
+    socket.on('noitification',(d)=>{
+      console.log(d)
+      new Notification(d);
+    })
+  },[])
+
   return (
     <>
       {" "}

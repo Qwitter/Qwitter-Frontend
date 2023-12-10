@@ -8,7 +8,7 @@ import Highlighter from 'react-highlight-words'
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components";
 import moment from "moment";
-import { useContext,  } from "react";
+import { useContext, useEffect,  } from "react";
 import { MessagesContext } from "@/contexts/MessagesContextProvider";
 // import { useEffect } from "react";
 
@@ -50,6 +50,9 @@ export function MessagesList({
         // Return the result
         return concatenatedNames;
     };
+    useEffect(()=>{
+        console.log(conversations)
+    },[conversations])
 
     return (<>
 
@@ -57,6 +60,7 @@ export function MessagesList({
             <li key={index} className={cn("py-3 px-4 flex flex-row justify-between group  hover:bg-[#16181c] w-full transition-all cursor-pointer items-start ",( user.id == currentConversation?.id) ? "bg-[#16181c]  border-secondary border-r-4 " : "")} >
                 <div className="flex flex-row flex-grow overflow-hidden truncate max-w-[86%]" onClick={() => handleConversationClick(user)}>
                     <Avatar className="mr-4 min-w-max">
+                        {/* <TweetImagesViewer mode="view-only" images={[{value:user.users[0].}]} /> */}
                         <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" src={user.photo || "https://i1.sndcdn.com/artworks-000647897398-mk0598-t240x240.jpg"} />
                     </Avatar>
                     <div className="flex flex-col gap-0  ">
@@ -78,7 +82,7 @@ export function MessagesList({
                         {
                             mode == "conversations" ?
                                 <Highlighter searchWords={[matchedPart]} highlightClassName="text-black" ClassName={`overflow-hidden ${((user.id == currentConversation?.id)) ? 'text-primary' : 'text-gray'}`} autoEscape={true}
-                                    textToHighlight={handleNameOfChat(user.users)}
+                                    textToHighlight={user.lastMessage!.text||""}
                                 /> : /*Wrong condition fix it */
                                 <span className={`overflow-hidden ${((user.id == currentConversation?.id)) && mode != "People" ? 'text-primary' : 'text-gray'}`}>{mode != "People" ? `${user.lastMessage?.text}` : `@${user.users[0].userName}`}</span>
                         }

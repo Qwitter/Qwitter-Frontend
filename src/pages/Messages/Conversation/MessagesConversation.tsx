@@ -7,28 +7,28 @@ import { MessagesConversationMessage } from "./MessagesConversationMessage";
 import { MessagesContext } from "@/contexts/MessagesContextProvider";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CreateMessage, cn } from "@/lib/utils";
-import { io } from 'socket.io-client'
-import { EVENTS, MessageUser, conversation } from "../types/MessagesTypes";
+import { EVENTS, MessageUser, MessagesMessage, conversation } from "../types/MessagesTypes";
 import { useQuery } from "@tanstack/react-query";
 import { getConversation } from "@/lib/utils";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { Spinner } from "@/components/Spinner";
+import { socket } from "@/lib/socketInit";
 
 export function MessagesConversation() {
     const [text, setText] = useState("")
     const [chatName, setChatName] = useState('');
-
+    const [chatMessages,setChatMessages] = useState<MessagesMessage[]>([]);
     const [selectedImageFile, setSelectedImageFile] = useState<File>();
 
-    const { token, user } = useContext(UserContext);
+    const { user } = useContext(UserContext);
+    const token = localStorage.getItem("token")!;
     const { messageReply, setMessageReply, setCurrentConversation } = useContext(MessagesContext)
 
     const { ref, inView } = useInView();
     const { ref: refLastMessage, inView: lastMessageInView } = useInView();
     const { conversationId } = useParams()
     const navigate = useNavigate()
-    const SOCKET_URL = "http://qwitterback.cloudns.org:3000";
-    const socket = io(SOCKET_URL);
+
     const queryClient = useQueryClient()
 
     const messageContainerRef = useRef<HTMLDivElement>(null);
@@ -40,19 +40,17 @@ export function MessagesConversation() {
         data,
     } = useQuery<conversation>({
         queryKey: ["userConversation", conversationId],
-        queryFn: () => getConversation({ token: token!, conversationId: conversationId! })
+        queryFn: () => getConversation({ token: token, conversationId: conversationId! })
 
     });
+    useEffect(()=>{data&&setChatMessages(data.messages)},[data])
 
     useEffect(() => {
         messageContainerRef.current && messageContainerRef.current.scrollTo(0, messageContainerRef.current.scrollHeight);
         data && data.messages && setCurrentConversation(data)
 
     }, [data, messageContainerRef, setCurrentConversation]);
-    // useEffect(() => {
-    //     !lastMessageInView && messageContainerRef.current && messageContainerRef.current!.scrollTo(0, messageContainerRef.current!.scrollHeight);
-    //     console.log(lastMessageInView)
-    // }, [lastMessageInView])
+
     const handleScrollDown = () => {
         messageContainerRef.current && messageContainerRef.current!.scrollTo(0, messageContainerRef.current!.scrollHeight);
     }
@@ -65,12 +63,21 @@ export function MessagesConversation() {
                     conversationId,
                     data,
                 });
+                console.log({
+                    conversationId,
+                    data,
+                })
                 await queryClient.cancelQueries({ queryKey: ['userConversation', conversationId] })
                 const previousMessages = queryClient.getQueryData(['userConversation', conversationId]);
 
                 queryClient.setQueryData(['userConversation', conversationId], (oldConversation: conversation) => {
                     oldConversation.messages = [data, ...oldConversation.messages]
-                    handleScrollDown()
+                    console.log(oldConversation.messages)
+                    setChatMessages([...oldConversation.messages])
+                    setTimeout(() => {
+                        
+                        handleScrollDown()
+                    }, 0);
                     setCurrentConversation(oldConversation)
                     return oldConversation;
                 })
@@ -86,29 +93,29 @@ export function MessagesConversation() {
 
         }
     })
-
     useEffect(() => {
         socket.emit('JOIN_ROOM', conversationId);
+
         socket.on(EVENTS.SERVER.ROOM_MESSAGE, async (Message) => {
-
-            await queryClient.cancelQueries({ queryKey: ['userConversation', conversationId] })
-            const previousMessages = queryClient.getQueryData(['userConversation', conversationId]);
-
+            console.log(Message)
+            //await queryClient.cancelQueries({ queryKey: ['userConversation', conversationId] })
             queryClient.setQueryData(['userConversation', conversationId], (oldConversation: conversation) => {
-                if (Message.message.userName == oldConversation.messages[0].userName) return oldConversation;
-                oldConversation.messages = [Message.message, ...oldConversation.messages]
-                handleScrollDown()
+                //if (Message.userName == userName) return oldConversation;
+                oldConversation.messages = [Message, ...oldConversation.messages]
+                console.log(oldConversation.messages)
+                setChatMessages([...oldConversation.messages])
+                setTimeout(() => {
+                        
+                    handleScrollDown()
+                }, 0);
                 setCurrentConversation(oldConversation)
                 return oldConversation;
             })
             handleScrollDown()
 
-            return { previousMessages }
 
         });
-        return () => {
-            socket.disconnect();
-        };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     useEffect(() => {
         // Assuming data.users is an array of MessageUser
@@ -182,8 +189,8 @@ export function MessagesConversation() {
                         <MessagesConversationUserInfo chatPicture={data?.photo || "https://i.ibb.co/S7XN04r/01eab91ff04ea5832a33040f7ebdb3d0.jpg"} userName={data?.users[0].userName || ""} name={data?.users[0].name || ""} ref={ref} />
                     </div>}
                     <div className={cn('flex-shrink px-4 h-[calc(63vh-70px)]', data && data.isGroup && ' h-[85vh]')}>
-                        {data && data.messages.slice().reverse().map((message, index) => (<>
-                            {index == data.messages.length - 1 && <div ref={refLastMessage} className="w-full h-1"></div>}
+                        {chatMessages && chatMessages.slice().reverse().map((message, index) => (<>
+                            {index == chatMessages.length - 1 && <div ref={refLastMessage} className="w-full h-1"></div>}
 
                             <MessagesConversationMessage key={index} {...message} isGroup={data.isGroup} />
                         </>

@@ -39,7 +39,7 @@ export type MessagesListProp = {
     followButton?: React.ComponentType<{
         className?: string;
     }>;
-    showDeletePopUp?: (conversationId:string) => void
+    showDeletePopUp?: (conversationId: string) => void
 }
 export type MessagesSideProp = {
     p: string;
@@ -54,7 +54,7 @@ export type MessagesRequestPopUpProp = {
 }
 export type MessagesMessage = {
     isMessage: boolean;
-    isGroup:boolean;
+    isGroup: boolean;
     id: string;
     text: string;
     date: string;
@@ -73,11 +73,11 @@ export type ConversationPopUpProps = {
     show: boolean;
     setShow?: React.Dispatch<React.SetStateAction<boolean>>;
     conversationToDelete?: string;
-    messageId?:string;
-    userName?:string;
+    messageId?: string;
+    userName?: string;
 }
 
-export type conversation =  {
+export type conversation = {
     seen: boolean;
     id?: string;
     name: string;
@@ -86,12 +86,18 @@ export type conversation =  {
     users: MessageUser[];
     lastMessage?: MessagesMessage;
     messages: MessagesMessage[];
-  };
-  
+};
+
 
 export type conversations = {
     "unseen": 0;
     "conversations": conversation[];
+}
+export type SearchConversations = {
+    status: string;
+    groups: conversation[];
+    people: conversation[];
+    messages: conversation[]
 }
 
 export const EVENTS = {
@@ -106,4 +112,5 @@ export const EVENTS = {
         JOINED_ROOM: 'JOINED_ROOM',
         ROOM_MESSAGE: 'ROOM_MESSAGE',
     },
+    NOTIFICATION: 'NOTIFICATION-',
 };

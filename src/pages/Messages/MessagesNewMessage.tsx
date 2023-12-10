@@ -21,7 +21,7 @@ function MessagesNewMessage() {
 
     const handleNextClick = () => {
         mutate({
-            conversation_name: selectedUsers.map(obj => obj.name).join(','), token: token!
+            token: token!
             , users: selectedUsers.map(user => user.userName)
         })
 

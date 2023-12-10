@@ -61,6 +61,7 @@ export function Login(pros?: loginprops) {
     const res = await loginServiceFn(data);
     if (res) {
       form.reset();
+    
       saveUser(res.user, res.token);
       navigate("/home");
     } else {

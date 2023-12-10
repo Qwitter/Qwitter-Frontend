@@ -32,7 +32,7 @@ export function MessagesConversationInfo() {
                 {currentConversation.isGroup && <>
                     <div className="px-4 py-3 flex flex-row items-center">
                         <Avatar className="mr-4">
-                            <AvatarImage className="w-10 h-10 rounded-full border-primary border-[2px] border-solid border-opacity-30" src={""} />
+                            <AvatarImage className="w-10 h-10 rounded-full border-primary border-[2px] border-solid border-opacity-30" src={currentConversation.photo} />
                         </Avatar>
                         <div className="flex flex-row justify-between w-full">
                             <span className="text-primary text-[15px] font-bold">{currentConversation?.name}</span>
