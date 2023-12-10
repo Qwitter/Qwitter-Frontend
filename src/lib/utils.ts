@@ -533,7 +533,8 @@ export const timelineTweets = async (
   limit: number = 10,
   token: string
 ) => {
-  if(!token) return [];
+  if (!token) return [];
+
   try {
     const response = await axios.get(
       `${VITE_BACKEND_URL}/api/v1/tweets?page=${pageParam}&limit=${limit}`,
@@ -547,7 +548,7 @@ export const timelineTweets = async (
     return response.data.tweets;
   } catch (error) {
     console.log(error);
-    return null;
+    return [];
   }
 };
 
@@ -584,11 +585,14 @@ export const getUsersSuggestions = async (token: string, username: string) => {
  */
 export const getHashtags = async (token: string, tag: string) => {
   try {
-    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/tweets/hashtags?q=${tag.slice(1)}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/tweets/hashtags?q=${tag.slice(1)}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return res.data;
   } catch (err) {
     console.log(err);
@@ -750,5 +754,29 @@ export const deleteTweet = async (tweetId: string, token: string) => {
   } catch (error) {
     console.log(error);
     throw new Error("Error deleting tweet");
+  }
+};
+
+/**
+ * @description Get the user profile data from the backend using the token
+ * @param token
+ * @return object represents the user profile data
+ */
+export const getUserProfile = async (token: string, username: string) => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/${username}`, {
+      withCredentials: true,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return null;
   }
 };

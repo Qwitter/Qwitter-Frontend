@@ -26,6 +26,7 @@ import {
   unLikeTweetWorker,
 } from "./TweetWorker/TweetWorker";
 import { UploadProfileImageWorker } from "./RegisterUserWorker/UploadProfileImageWorker";
+import { userProfileWorker } from "./UserWorker/UserProfileWorker";
 
 const { VITE_BACKEND_URL } = import.meta.env;
 
@@ -61,7 +62,7 @@ export const handlers = [
     `${VITE_BACKEND_URL}/api/v1/auth/forgot-password`,
     sendResetPasswordVerificationTokenWorker
   ),
-  http.get(`${VITE_BACKEND_URL}/api/user`, userWorker),
+  http.get(`${VITE_BACKEND_URL}/api/v1/user`, userWorker),
   http.post(
     `${VITE_BACKEND_URL}/api/v1/auth/signup/google`,
     OAuthRegisterUserWorker
@@ -97,4 +98,6 @@ export const handlers = [
     unBookmarkTweetWorker
   ),
   http.delete(`${VITE_BACKEND_URL}/api/v1/tweets/:tweetId`, deleteTweetWorker),
+  http.get(`${VITE_BACKEND_URL}/api/v1/user/johndoe123`, userProfileWorker),
+  http.get(`${VITE_BACKEND_URL}/api/v1/user/samy`, userProfileWorker),
 ];

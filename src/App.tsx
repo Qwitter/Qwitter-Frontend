@@ -20,6 +20,7 @@ import { PagesContainer } from "./pages/PagesContainer/PagesContainer";
 import Authentication from "../src/pages/Authentication/Authentication";
 import MessagesNewMessage from "./pages/Messages/MessagesNewMessage";
 import { EditProfilePopUp } from "@/components/EditProfilePopUp/EditProfilePopUp";
+import { ProfileImageViewer } from "./pages/Profile/ProfileImageViewer";
 
 const queryClient = new QueryClient();
 
@@ -59,6 +60,14 @@ function App() {
             <Route
               path="/:username/settings/profile"
               element={<EditProfilePopUp />}
+            />
+            <Route
+              path="/:username/photo"
+              element={<ProfileImageViewer isBanner={false} />}
+            />
+            <Route
+              path="/:username/header_photo"
+              element={<ProfileImageViewer isBanner={true} />}
             />
           </Routes>
           <Toaster />

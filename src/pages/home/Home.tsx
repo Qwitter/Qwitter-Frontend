@@ -17,13 +17,8 @@ export function Home() {
   );
 
   useEffect(() => {
-    console.log(data);
-  }, [data]);
-
-  useEffect(() => {
     if (!token) return;
     refetch();
-    console.log("refetch");
   }, [token, refetch]);
 
   return (

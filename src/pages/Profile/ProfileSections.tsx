@@ -14,10 +14,11 @@ export const ProfileSections = ({ initialIndex = 0 }: ProfileSectionsProps) => {
   const { username } = useParams();
 
   return (
-    <div className="flex flex-row min-h-[50px] w-full sticky  top-[-1px] bg-black bg-opacity-60 backdrop-blur-xl z-50 border-b border-primary border-opacity-30">
+    <div className="flex flex-row min-h-[50px] w-full sticky  top-[-1px] bg-black bg-opacity-60 backdrop-blur-xl z-00 border-b border-primary border-opacity-30">
       {profileSections.map((section) => {
         return (
           <Link
+            key={section.title}
             to={`/${username}${section.dataLink}`}
             className="w-full  flex justify-center items-center  px-4 py-0 min-w-[56px] hover:bg-[#181818] transition-all cursor-pointer"
             onClick={() => setActive(section.title)}

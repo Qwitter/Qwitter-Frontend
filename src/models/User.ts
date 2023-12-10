@@ -97,4 +97,11 @@ export const UserDataSchema = z.object({
   email: z.string().email(),
 });
 
+export const UserProfileSchema = z
+  .object({
+    location: z.string().nullish(),
+  })
+  .merge(UserDataSchema);
+
+export type UserProfileData = z.infer<typeof UserProfileSchema>;
 export type UserData = z.infer<typeof UserDataSchema>;

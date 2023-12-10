@@ -1,27 +1,30 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import SearchInput from "@/components/SearchInput/SearchInput";
-import {
-  useParams,
-  Navigate,
-  useLocation,
-  Link,
-  Routes,
-  Route,
-} from "react-router-dom";
-import { EditProfilePopUp } from "@/components/EditProfilePopUp/EditProfilePopUp";
+import { useParams, Navigate, Routes, Route } from "react-router-dom";
 import { ProfileMain } from "./ProfileMain";
 import { ArrowLeft } from "lucide-react";
 import { ProfileSections } from "./ProfileSections";
+import { ProfilePosts } from "./ProfilePosts";
+import { ProfileReplies } from "./ProfileReplies";
+import { ProfileMedia } from "./ProfileMedia";
+import { ProfileLikes } from "./ProfileLikes";
+import { useContext, useEffect, useState } from "react";
+import { getUserProfile } from "@/lib/utils";
+import { UserContext } from "@/contexts/UserContextProvider";
+import { UserProfileData } from "@/models/User";
+import { useQuery } from "@tanstack/react-query";
+import { Spinner } from "@/components/Spinner";
 
 /*
-NEEDED:
-  display tweets and data conditionally
+TODO: display tweets and data conditionally
 */
 
 export function Profile() {
-  //   const location = useLocation();
   const { username } = useParams();
-  if (username!.length > 20) {
+  const [user, setUser] = useState<UserProfileData | null>(); // NEEDED: decide wether it should take the defaultProfile or null (remove defaultProfile)
+  const { token } = useContext(UserContext);
+
+  if (!username || username!.length >= 15) {
     // Redirect or handle the case when the username is too long
     return (
       <>
@@ -30,9 +33,30 @@ export function Profile() {
     );
   }
 
+  const getUser = async () => {
+    const user = await getUserProfile(token!, username);
+    setUser(user.data);
+    return user.data;
+  };
+
+  const { refetch } = useQuery({
+    queryKey: ["profile", username],
+    queryFn: getUser,
+  });
+
+  useEffect(() => {
+    if (token) refetch();
+  }, [token, refetch]);
+
+  if (!user)
+    return (
+      <div className="w-full flex justify-center items-center p-3 text-center h-[134px]">
+        <Spinner />
+      </div>
+    );
+
   return (
     <>
-      {/* this is the first col */}
       <div className="max-w-[600px] w-full h-full flex-grow border-r border-primary border-opacity-30 ">
         <div className="flex flex-row min-h-[53px] w-full sticky  top-[-1px] px-4 bg-black bg-opacity-60 backdrop-blur-xl z-50 border-b border-primary border-opacity-30">
           <span className="h-full my-auto w-14">
@@ -41,25 +65,25 @@ export function Profile() {
             </div>
           </span>
           <span className="flex flex-col w-full ml-3">
-            <span className="text-xl font-bold pt-0.5">Mohamed</span>
-            <span className="text-[13px] text-gray">0 posts</span>
+            <span className="text-xl font-bold pt-0.5">{user?.name}</span>
+            <span
+              className="text-[13px] text-gray"
+              // NEEDED: i think this better be removed
+            >
+              0 posts
+            </span>
           </span>
         </div>
-        <ProfileMain
-          profile="https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
-          banner="https://images.unsplash.com/photo-1589656966895-2f33e7653819?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        />
+        <ProfileMain user={user!} />
 
         <ProfileSections />
 
-        {/* this will be the routs and the bottom nav do it tomorrow */}
         <div className="">
           <Routes>
-            {/* add components here to display them */}
-            <Route index path="/" element={<></>} />
-            <Route path="/with_replies" element={<></>} />
-            <Route path="/media" element={<></>} />
-            <Route path="/likes" element={<></>} />
+            <Route index path="/" element={<ProfilePosts />} />
+            <Route path="/with_replies" element={<ProfileReplies />} />
+            <Route path="/media" element={<ProfileMedia />} />
+            <Route path="/likes" element={<ProfileLikes />} />
           </Routes>
         </div>
       </div>

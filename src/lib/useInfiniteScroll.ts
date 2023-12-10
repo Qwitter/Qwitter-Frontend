@@ -21,7 +21,7 @@ export const useInfiniteScroll = (
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-    refetch
+    refetch,
   } = useInfiniteQuery({
     queryKey: queryKey,
     queryFn: fetchFunction,
@@ -37,6 +37,5 @@ export const useInfiniteScroll = (
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
-  
   return { data, ref, isFetchingNextPage, error, isError, refetch };
 };
