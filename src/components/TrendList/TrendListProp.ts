@@ -1,3 +1,4 @@
+import { Trend } from '@/models/Trend';
 export type TrendsListProp = {
-    isCard: boolean;
+    Trends: Trend[];
 };

@@ -1,21 +1,8 @@
 import { Trend } from "@/models/Trend";
 import { CardContent } from "../ui/card";
-import { useQuery } from "@tanstack/react-query";
-import { GetTrendsService } from "@/lib/utils";
-import { useContext, useEffect } from "react";
-import { UserContext } from "@/contexts/UserContextProvider";
 import { TrendsListProp } from "./TrendListProp";
 
-export function TrendList({ isCard }: TrendsListProp) {
-  const { token } = useContext(UserContext);
-  const { data: Trends, refetch: refetchTrends } = useQuery<Trend[]>({
-    queryKey: ["Trends"],
-    queryFn: () => GetTrendsService(token!),
-    select: (data) => (isCard ? data.slice(0, 3) : data),
-  });
-  useEffect(() => {
-    refetchTrends();
-  }, [token, refetchTrends]);
+export function TrendList({ Trends }: TrendsListProp) {
   return (
     <>
       {Trends &&

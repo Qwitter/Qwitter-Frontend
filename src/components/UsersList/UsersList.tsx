@@ -5,7 +5,7 @@ import { UsersListProp } from "./UsersListProp";
 export function UsersList({ showDesc, users, listType }: UsersListProp) {
   return (
     <>
-      {users.length > 0 ? (
+      {users?.length > 0 ? (
         users.map((user: User, index) => (
           <UsersListItem
             key={index}
