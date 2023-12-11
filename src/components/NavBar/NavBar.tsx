@@ -51,7 +51,7 @@ export function NavBar() {
 
                     </Link>
                     <NavElements active={active} setActive={setActive} />
-                    <Link to={'/compose/tweet'} state={{ previousLocation: location }} className='w-full'>
+                    <Link to={'/compose/tweet'} state={{ previousLocation: location }} className='w-full' data-testid="composeTweet">
                         <Button variant="secondary" className='w-11/12 py-4 font-bold mt-3'> {isShown ? <Feather /> : 'Post'}</Button>
                     </Link>
                 </div>
@@ -83,7 +83,7 @@ function NavElements({ active, setActive }: { active: string, setActive: React.D
         <ul className='flex flex-col w-full '>
             {navLinks.map((link) => (
                 <Link to={`/${link.title != "Profile" ? link.title : user?.userName}`} key={link.id} className='group' onClick={() => setActive(link.title)}>
-                    <div className='flex flex-row p-3 items-center max-xl:justify-center group-hover:bg-[#191919]  group-hover:rounded-full transition-all '>
+                <div className='flex flex-row p-[10px] items-center max-xl:justify-center group-hover:bg-[#191919]  group-hover:rounded-full transition-all 'data-testid={`${link.title}`}>
                         <div className='relative'>
                             <link.icon {...active == link.title ? link.clicked : {}} />
                             {link.notificationCount > 0 && (

@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import TweetsList from "@/components/TweetsList/TweetsList";
-import { Skeleton } from "@/components/ui/skeleton";
 import CreateTweetContainer from "@/components/CreateTweet/CreateTweetContainer";
 import SearchInput from "@/components/SearchInput/SearchInput";
 import { useInfiniteScroll } from "@/lib/useInfiniteScroll";
 import { timelineTweets } from "@/lib/utils";
 import { UserContext } from "@/contexts/UserContextProvider";
+import { FollowCard } from "@/components/FollowCard/FollowCard";
+import { TrendCard } from "@/components/TrendCard/TrendCard";
 export function Home() {
   const [active, setActive] = useState("For you");
   const { token } = useContext(UserContext);
@@ -19,7 +20,8 @@ export function Home() {
   useEffect(() => {
     if (!token) return;
     refetch();
-  }, [token, refetch]);
+    // console.log(data);
+  }, [data]);
 
   return (
     <>
@@ -57,25 +59,22 @@ export function Home() {
         </div>
         <div>
           <CreateTweetContainer mode="home" />
-        </div>
-        <TweetsList
+          <TweetsList
           fetcherRef={ref}
           pages={data?.pages || [[]]}
           hasMoreData={hasMoreData}
         />
+        </div>
       </div>
-      <div className="max-w-[600px]  pb-16 relative flex flex-col z-0 w-[36.5%] max-largeX:hidden  h-full">
+      <div className="max-w-[600px]  pb-16 relative flex flex-col z-0 w-[36.5%] max-largeX:hidden h-full">
         <div className="w-full sticky top-0 z-50 bg-black   ">
           <SearchInput />
         </div>
-        <div className="px-4 py-3 rounded-lg mt-5 bg-dark-gray">
-          <Skeleton className="w-full  h-[120px] " />
+        <div className="mt-5 rounded-lg bg-dark-gray">
+          <TrendCard />
         </div>
-        <div className="px-4 py-3 rounded-lg mt-5 bg-dark-gray">
-          <Skeleton className="w-full  h-[500px] " />
-        </div>
-        <div className="px-4 py-3 rounded-lg mt-5 bg-dark-gray">
-          <Skeleton className="w-full  h-[300px] " />
+        <div className="mt-5 rounded-lg bg-dark-gray">
+          <FollowCard />
         </div>
       </div>
     </>

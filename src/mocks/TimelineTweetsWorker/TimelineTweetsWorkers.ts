@@ -150,7 +150,7 @@ export const TimelineTweetsWorker: ResponseResolver = async () => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   return HttpResponse.json({
-    tweets: tweetsList.map((tweet: Tweet, index) => {
+    tweets: tweetsList.map((tweet: Tweet) => {
       tweet.id += Math.floor(Math.random() * 50000);
       return tweet;
     }),

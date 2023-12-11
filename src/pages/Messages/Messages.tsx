@@ -1,20 +1,25 @@
-import { Button, OptionsHeader, TextInput } from "@/components";
-import { Ban, Search, Settings, Trash2, X, XCircle } from "lucide-react";
-import { useState } from "react";
-import { MessageUser, MessagesListProp, MessagesRequestPopUpProp, MessagesSearchProp, MessagesSideProp } from "./types/MessagesTypes";
-import { AllowMessagesOptions, userArray } from "@/constants";
-import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
-import { cn } from "@/lib/utils";
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { RadioGroup, RadioGroupItem } from "../../components/ui/radio-group";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { OptionsHeader } from "@/components";
+import { Ban, Settings, Trash2 } from "lucide-react";
+import { useContext, useEffect, useState } from "react";
+import { MessageUser, MessagesConversationInfoProps, MessagesRequestPopUpProp } from "./types/MessagesTypes";
+import { userArray, tempInfo } from "@/constants";
+import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { MessagesMain } from "./MessagesMain";
+import { MessagesList } from "./MessagesList";
+import { MessagesSettings } from "./MessagesSettings";
+import { MessagesConversation } from "./Conversation/MessagesConversation";
+import { MessagesSide } from "./MessagesSide";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { MessagesContext } from "@/contexts/MessagesContextProvider";
+import { cn } from "@/lib";
+import { ConversationLeavePopUp } from "./ConversationLeavePopUp";
 export function Messages() {
     const location = useLocation();
     const previousLocation = location.state?.previousLocation;
+
     return (
         <>
-            <div className="max-w-[600px]  pb-16 relative flex flex-col z-0 flex-grow w-[72%] max-largeX:hidden  h-full">
+            <div className="max-w-[600px]  max-h-[100vh] scrollbar-thin overflow-y-auto pb-16 relative flex flex-col z-0 flex-grow w-[72%] max-largeX:hidden  h-full">
                 <Routes location={previousLocation || location} >
                     <Route path="/requests" element={<MessagesRequests />} />
                     <Route index path="/*" element={<MessagesMain />} />
@@ -23,6 +28,9 @@ export function Messages() {
             <div className="max-w-[600px] w-full h-full flex-grow border-x border-primary border-opacity-30 ">
                 <Routes location={previousLocation || location} >
                     <Route path="/settings" element={<MessagesSettings />} />
+                    <Route index path="/compose" element={<MessagesSide p={"Choose from your existing conversations, start a new one, or just keep swimming."} showButton />} />
+                    <Route path="/:conversationId" element={<MessagesConversation />} />
+                    <Route path="/:conversationId/info" element={<MessagesConversationInfo {...tempInfo[0]} type={tempInfo[0].mode} />} />
                     <Route index path="/" element={<MessagesSide p={"Choose from your existing conversations, start a new one, or just keep swimming."} showButton />} />
                     <Route path="/requests" element={<MessagesSide showButton={false} p={"Message requests from people you don't follow live here. To reply to their messages, you need to accept the request"} />} />
                 </Routes>
@@ -32,124 +40,60 @@ export function Messages() {
         </>
     );
 }
-
-function MessagesSettings() {
-    const [optionValue, setOptionValue] = useState('Everyone');
-    return (
-        <div className=" w-full h-full border-r border-primary border-opacity-30 mb-20">
-            <OptionsHeader header='Direct Messages' />
-            <div className="px-4 py-3">
-                <div className="flex flex-col">
-                    <span className="text-primary text-[15px] font-semibold"> Allow message requests from:</span>
-                    <span className="text-gray text-[13px]"> People you follow will always be able to message you</span>
-                </div>
-                <RadioGroup defaultValue="option-one"
-                    value={optionValue}
-                    onValueChange={setOptionValue}
-                >
-                    <ul className="mt-2">
-                        {
-                            AllowMessagesOptions.map((option, index) => (
-                                <li key={index} id={option} className="w-full flex flex-row items-center justify-between py-1 cursor-pointer" onClick={() => setOptionValue(option)}>
-                                    <label >{option}</label>
-                                    <RadioGroupItem className="w-5 h-5 border-gray border text-secondary" value={option} />
-                                </li>
-                            ))
-                        }
-                    </ul>
-                </RadioGroup>
-            </div>
-        </div>
-    )
-}
-function MessagesSide({ p, showButton }: MessagesSideProp) {
+export function MessagesConversationInfo({ type = "direct", imageUrl, users, groupName, id }: MessagesConversationInfoProps) {
     const navigate = useNavigate();
     const location = useLocation();
+    const { saveGroup } = useContext(MessagesContext);
+    const [show, setShow] = useState(false);
+    const handleBlock = () => {
+
+    }
+    useEffect(() => {
+        return saveGroup({ groupName: groupName!, groupImg: imageUrl });
+    }, []);
     return (
-        <div className="w-full h-full max-h-[100vh] flex justify-center items-center">
-            <div className="max-w-[400px] px-8 mx-8 ">
-                <h2 className="text-primary text-[31px] font-bold">Select a message</h2>
-                <p className="text-gray text-[15px] break-words mb-7">{p}
-                </p>
-                {showButton && <Button variant={"secondary"} className="py-3 w-[200px]" onClick={() => navigate('/Messages/compose', { state: { previousLocation: location } })} >New Messages</Button>
-                }</div>
-        </div>
-    )
-}
-export function MessagesSearch({ text, setText, }: MessagesSearchProp) {
-    const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value
-        setText(value)
-    }
-    const handleXClick = () => {
-        setText("")
-    }
-    return (<>
-        <div className="px-3 mb-2">
-            <TextInput
-                LeftIcon={Search}
-                iconSize="18px"
-                value={text}
-                onChange={handleTextChange}
-                type="messages"
-                rightIconFunction={handleXClick}
-                {...{ RightIcon: (text.length > 0) ? X : undefined }}
-                hasAnimation={false}
-                className="items-center w-full pt-[6px]"
-                inputClassName='px-8 pr-[15%] sm:pr-[15%] pl-[13.5%] sm:pl-[14%] rounded-full ' />
-        </div>
-    </>)
-}
-
-export function MessagesList({ users, selectedUser, setSelectedUser, mode = "normal" }: MessagesListProp) {
-
-    return (<>
-
-        {users.map(user => (
-            <li key={user.username} className={cn("py-3 px-4 flex flex-row justify-between  hover:bg-[#16181c] w-full transition-all cursor-pointer", user.username == selectedUser.username ? "bg-[#16181c]  border-secondary border-r-2 " : "")} onClick={() => setSelectedUser(user)} >
-                <div className="flex flex-row">
+        <div className=" w-full h-full border-r border-primary border-opacity-30 mb-20">
+            <OptionsHeader header={type == "direct" ? 'Conversation info' : "Group info"} />
+            {type == "group" && <>
+                <div className="px-4 py-3 flex flex-row items-center">
                     <Avatar className="mr-4">
-                        <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" src={user.imageUrl} />
+                        <AvatarImage className="w-10 h-10 rounded-full border-primary border-[2px] border-solid border-opacity-30" src={imageUrl} />
                     </Avatar>
-                    <div className="flex flex-col gap-0 overflow-hidden">
-                        <div className="flex flex-row gap-1 items-center ">
-                            <h3 className="text-primary text-[15px]">{user.name}</h3>
-                            <span className="text-gray break-words">@{user.username}</span>
-                            <div className="bg-gray rounded-full w-[3px] h-[3px]"></div>
-                            <span className="text-gray break-words">{user.lastMessageTime}</span>
-                        </div>
-                        <span className={`overflow-hidden ${(user.username == selectedUser.username) || (user.lastMessageTime.length > 5) ? 'text-primary' : 'text-gray'}`}>{user.lastMessage}</span>
+                    <div className="flex flex-row justify-between w-full">
+                        <span className="text-primary text-[15px] font-bold">{groupName}</span>
+                        <Link className="text-secondary text-[15px] hover:underline" to={`/messages/${id}/group-info`} state={{ previousLocation: location }}>Edit</Link>
                     </div>
                 </div>
-                <div className="w-[60px] flex justify-end gap-3  flex-row items-first">
-                    {user.lastMessageTime.length > 5 &&
-                        <div>
-                            <div className="bg-secondary rounded-full w-[10px] h-[10px] mt-2"></div>
-                        </div>
-                    }
-                    {mode == "request" &&
-                        <Popover  >
-                            <PopoverTrigger className="z-30 ">
-                                <div className="h-12 z-0 flex flex-row items-first     cursor-pointer">
-                                    <XCircle />
-                                </div>
-                            </PopoverTrigger>
-                            <PopoverContent className="min-w-[360px] max-w-[360px] max-h-[480px] min-h-[50px] p-0 pb-2 overflow-y-auto box-shadow bg-black   rounded-xl">
-                                <MessagesRequestPopUp conversationUsername={user.username} handleBlock={()=>{}} handleRemoveConversation={()=>{}} />
-                            </PopoverContent>
-                        </Popover>}
+                <div className="px-4 py-3 w-full border-t border-primary border-opacity-30">
+                    <h2 className="text-primary text-xl font-bold text-start ">People</h2>
+
                 </div>
-            </li>
-        ))
-        }</>
+            </>}
+            <div className="max-h-[40vh] overflow-y-auto">
+                <MessagesList mode="People" users={users} />
+
+            </div>
+            <div className={cn('block text-center cursor-pointer transition-all text-secondary hover:bg-[#031019] p-4 pb-5  border-primary border-opacity-30', type == "direct" ? 'border-t' : 'border-b')}
+                onClick={type == "direct" ? handleBlock :
+                    () => { navigate("/Messages/" + id + "/add", { state: { previousLocation: location } }); }}
+            >
+                {type == "direct" ? `Block @${users[0].userName}` : 'Add People'}</div>
+            <div className='block text-center cursor-pointer transition-all text-danger  hover:bg-danger hover:bg-opacity-10 p-4'
+                onClick={() => { setShow(true) }}
+            >
+                Leave Conversation</div>
+            <ConversationLeavePopUp show={show} setShow={setShow} leaveFunction={() => { }} />
+
+        </div>
     )
 }
-function MessagesRequestPopUp({conversationUsername,handleBlock,handleRemoveConversation}:MessagesRequestPopUpProp) {
+
+export function MessagesRequestPopUp({ conversationUsername, handleBlock, handleRemoveConversation }: MessagesRequestPopUpProp) {
     return (
         <>
             <div className="w-full px-4 py-3 flex-row flex hover:bg-[#16181c] cursor-pointer" onClick={handleRemoveConversation}>
                 <div className="pr-3 flex justify-center items-center ">
-                    <Trash2 className="h-5 w-5 text-danger"  />
+                    <Trash2 className="h-5 w-5 text-danger" />
                 </div>
                 <div className="flex flex-col">
                     <span className="text-danger text-[15px] font-bold">Delete conversation</span>
@@ -158,7 +102,7 @@ function MessagesRequestPopUp({conversationUsername,handleBlock,handleRemoveConv
             </div>
             <div className="w-full px-4 py-3 flex-row flex hover:bg-[#16181c] cursor-pointer" onClick={handleBlock}>
                 <div className="pr-3 flex justify-center items-center ">
-                    <Ban className="h-5 w-5 text-primary"  />
+                    <Ban className="h-5 w-5 text-primary" />
                 </div>
                 <div className="flex flex-col">
                     <span className="text-primary text-[15px] font-bold">Block @{conversationUsername}</span>
@@ -171,8 +115,8 @@ function MessagesRequestPopUp({conversationUsername,handleBlock,handleRemoveConv
 function MessagesRequests() {
     const navigate = useNavigate()
     const [selectedUser, SetSelectedUser] = useState<MessageUser>({
-        imageUrl: "",
-        username: "",
+        userPhoto: "",
+        userName: "",
         name: "",
         isVerified: false,
         lastMessage: "",
@@ -184,7 +128,7 @@ function MessagesRequests() {
 
     return (
         <>
-            <div className="px-4 w-full h-[53px] flex flex-row justify-between  sticky  top-[-1px] bg-black bg-opacity-60 backdrop-blur-xl z-50 items-center" onClick={handleSettingClick}>
+            <div className="px-4 w-full h-[53px] flex flex-row justify-between  sticky  top-0 bg-black bg-opacity-60 backdrop-blur-xl z-50 items-center" onClick={handleSettingClick}>
                 <OptionsHeader header={"Message requests"} />
                 <div className="flex justify-end items-center min-w-[56px] min-h-[32px]">
                     <div className='w-10 h-10 flex justify-center items-center cursor-pointer'>

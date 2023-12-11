@@ -19,6 +19,7 @@ export function UsernameSuggestion({ nextStep }: Props) {
         mode: 'onChange'
     });
     const { user, token } = useContext(UserContext)
+    const [skip,setSkip] = useState("Skip for now")
     const { mutate, isPending } = useMutation({
         mutationFn: updateUsername,
         onSuccess: (data) => {
@@ -64,6 +65,7 @@ export function UsernameSuggestion({ nextStep }: Props) {
                 <TextInput
                     required
                     placeHolder='Username'
+                    onClick={()=>setSkip("Next")}
                     className='w-full'
                     data-testid='username'
                     {...form.register("username", {
@@ -76,8 +78,10 @@ export function UsernameSuggestion({ nextStep }: Props) {
 
                 />
                 <ShowSuggestionsNames onSuggestionClick={setInputFieldValue} />
-            </div>
-            <Button variant={'default'} className='w-full py-3 cursor-pointer' type='submit' role='submitButton' disabled={!form.formState.isValid}>Next</Button>
+            </div>{skip=="Next"?
+            <Button variant={'default'} className='w-full py-3 cursor-pointer' type='submit' role='submitButton' disabled={!form.formState.isValid}>{skip}</Button>:
+            <Button variant={'outline'} className='w-full py-3 cursor-pointer' onClick={nextStep} >{skip}</Button>
+}
         </form>
     )
 }

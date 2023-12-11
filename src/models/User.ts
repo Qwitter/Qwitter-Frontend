@@ -17,6 +17,9 @@ export type User = {
   google_id: string;
   profileImageUrl: string;
   profileBannerUrl: string;
+  description: string;
+  verified: boolean,
+  isFollowing:boolean,
 };
 
 export const EditUserSchema = z

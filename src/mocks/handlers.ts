@@ -27,6 +27,13 @@ import {
 } from "./TweetWorker/TweetWorker";
 import { UploadProfileImageWorker } from "./RegisterUserWorker/UploadProfileImageWorker";
 import { userProfileWorker } from "./UserWorker/UserProfileWorker";
+import { FollowSuggestionsWorker } from "./FollowSuggestionsWorker/FollowSuggestionsWorker";
+import { FollowUserWorker, UnFollowUserWorker } from "./FollowUserWorker/FollowUserWorker";
+import { TrendsWorker } from "./TrendsWorker/TrendsWorker";
+import { FollowersWorker } from "./FollowersWorker/FollowersWorker";
+import { FollowingsWorker } from "./FollowingsWorker/FollowingsWorker";
+import { BlockUserWorker, UnBlockUserWorker } from "./BlockUserWorker/BlockUserWorker";
+import { BlockedWorker } from "./BlockedWorker/BlockedWorker";
 
 const { VITE_BACKEND_URL } = import.meta.env;
 
@@ -116,4 +123,13 @@ export const handlers = [
     `${VITE_BACKEND_URL}/api/v1/tweets/user/johndoe123?page=1&limit=10`,
     TimelineTweetsWorker
   ),
+  http.get(`${VITE_BACKEND_URL}/api/v1/user/suggestions`, FollowSuggestionsWorker),
+  http.post(`${VITE_BACKEND_URL}/api/v1/user/follow/:username`, FollowUserWorker),
+  http.delete(`${VITE_BACKEND_URL}/api/v1/user/follow/:username`, UnFollowUserWorker),
+  http.get(`${VITE_BACKEND_URL}/api/v1/trends`, TrendsWorker),
+  http.get(`${VITE_BACKEND_URL}/api/v1/user/followers`, FollowersWorker),
+  http.get(`${VITE_BACKEND_URL}/api/v1/user/follow`, FollowingsWorker),
+  http.post(`${VITE_BACKEND_URL}/api/v1/user/block/:username`, BlockUserWorker),
+  http.delete(`${VITE_BACKEND_URL}/api/v1/user/block/:username`, UnBlockUserWorker),
+  http.get(`${VITE_BACKEND_URL}/api/v1/user/block`, BlockedWorker),
 ];

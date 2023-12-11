@@ -123,7 +123,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           </label>
         </div>
         {(errorMessage && (
-          <h5 className="text-danger text-[15px] pb-3 px-2">{errorMessage}</h5>
+          <h5 className="text-danger text-[15px] pb-3 px-2" data-testid="ErrorMessage">{errorMessage}</h5>
         )) || <div className="w-full h-3"></div>}
       </>
     );

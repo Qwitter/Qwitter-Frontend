@@ -43,7 +43,6 @@ export {
   TextInput,
   UsernameSuggestion,
   NavBar,
-  SettingsMain,
   Select,
   SelectContent,
   SelectItem,

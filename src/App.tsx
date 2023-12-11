@@ -21,6 +21,8 @@ import Authentication from "../src/pages/Authentication/Authentication";
 import MessagesNewMessage from "./pages/Messages/MessagesNewMessage";
 import { EditProfilePopUp } from "@/components/EditProfilePopUp/EditProfilePopUp";
 import { ProfileImageViewer } from "./pages/Profile/ProfileImageViewer";
+import { MessagesGroupEditPopup } from "./pages/Messages/MessagesGroupEditPopup";
+import MessagesContextProvider from "./contexts/MessagesContextProvider";
 
 const queryClient = new QueryClient();
 
@@ -32,45 +34,60 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <UserContextProvider>
-          <Routes location={previousLocation || location}>
-            <Route path="/" element={<Authentication />} />
-          </Routes>
-          {location.pathname !== "/" &&
-            !location.pathname.includes("/i/flow") &&
-            previousLocation?.pathname !== "/" && <PagesContainer />}
-          <Routes>
-            this is the popup routs
-            <Route path="/i/flow/signup" element={<SignUpSteps />} />
-            <Route
-              path="/i/flow/signup/input_flow_data"
-              element={<LoginSignUp />}
-            />
-            <Route path="/i/flow/login" element={<Login />} />
-            <Route path="/i/flow/password_reset" element={<PasswordRest />} />
-            <Route
-              path="/i/flow/single-sign/callback"
-              element={<OAuthInterceptor />}
-            />
-            <Route path="/i/flow/single-sign" element={<OAuth />} />
-            <Route path="/i/flow/profile" element={<ProfileComplete />} />
-            <Route path="/i/flow/add_email" element={<UpdateEmailPopUp />} />
-            <Route path="/compose/tweet" element={<CreateTweetContainer />} />
-            <Route path="/i/flow/logout" element={<LogOut />} />
-            <Route path="Messages/compose" element={<MessagesNewMessage />} />
-            <Route
+          <MessagesContextProvider>
+            <Routes location={previousLocation || location}>
+              <Route path="/" element={<Authentication />} />
+            </Routes>
+            {location.pathname !== "/" &&
+              !location.pathname.includes("/i/flow") &&
+              previousLocation?.pathname !== "/" && <PagesContainer />}
+            <Routes>
+              this is the popup routs
+              <Route path="/i/flow/signup" element={<SignUpSteps />} />
+              <Route
+                path="/i/flow/signup/input_flow_data"
+                element={<LoginSignUp />}
+              />
+              <Route path="/i/flow/login" element={<Login />} />
+              <Route path="/i/flow/password_reset" element={<PasswordRest />} />
+              <Route
+                path="/i/flow/single-sign/callback"
+                element={<OAuthInterceptor />}
+              />
+              <Route path="/i/flow/single-sign" element={<OAuth />} />
+              <Route path="/i/flow/profile" element={<ProfileComplete />} />
+              <Route path="/i/flow/add_email" element={<UpdateEmailPopUp />} />
+              <Route path="/compose/tweet" element={<CreateTweetContainer />} />
+              <Route path="/i/flow/logout" element={<LogOut />} />
+              <Route
+                path="/Messages/compose"
+                element={<MessagesNewMessage />}
+              />
+              <Route
+                path="/Messages/:conversationId/group-info"
+                element={<MessagesGroupEditPopup />}
+              />
+              <Route
+                path="/Messages/:conversationId/add"
+                element={<MessagesNewMessage />}
+              />
+              {/* <Route path="settings/profile" element={<MessagesNewMessage />} /> */}
+              <Route path="settings/profile" element={<MessagesNewMessage />} />
+              <Route
               path="/:username/settings/profile"
               element={<EditProfilePopUp />}
-            />
-            <Route
-              path="/:username/photo"
-              element={<ProfileImageViewer isBanner={false} />}
-            />
-            <Route
-              path="/:username/header_photo"
-              element={<ProfileImageViewer isBanner={true} />}
-            />
-          </Routes>
-          <Toaster />
+              />
+              <Route
+                path="/:username/photo"
+                element={<ProfileImageViewer isBanner={false} />}
+              />
+              <Route
+                path="/:username/header_photo"
+                element={<ProfileImageViewer isBanner={true} />}
+              />
+            </Routes>
+            <Toaster />
+          </MessagesContextProvider>
         </UserContextProvider>
       </ThemeProvider>
     </QueryClientProvider>
