@@ -4,7 +4,7 @@ import { UserProfileData } from "@/models/User";
 import { Cake, CalendarDays, MapPin } from "lucide-react";
 import { useContext, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { UnfollowPopUp } from "./UnfollowPopUp";
+// import { UnfollowPopUp } from "./UnfollowPopUp";
 import { FollowButton } from "@/components/FollowButton/FollowButton";
 
 /*
@@ -30,7 +30,7 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
       ? "Following"
       : "Follow"
   );
-  const [showUnfollowUpop, setShowUnfollowUpop] = useState<boolean>(false);
+  // const [showUnfollowUpop, setShowUnfollowUpop] = useState<boolean>(false);
 
   const birthDate = user
     ? new Date(user.birthDate).toLocaleDateString("en-Us", {
@@ -48,11 +48,11 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
 
   return (
     <div>
-      <UnfollowPopUp
+      {/* <UnfollowPopUp
         show={showUnfollowUpop}
         username={username!}
         setShow={setShowUnfollowUpop}
-      />
+      /> */}
       <Link
         to={`/${username}/header_photo`}
         state={{ bannerImg: user.profileBannerUrl }}
