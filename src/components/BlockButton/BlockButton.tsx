@@ -3,10 +3,9 @@ import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { BlockService, UnBlockService } from "@/lib/utils";
 import { WarningPopUp } from "../WarningPopUp/WarningPopUp";
-import { BlockButtonProp } from "./BlockButtonProp";
 import { UserContext } from "@/contexts/UserContextProvider";
 
-export function BlockButton({ username }: BlockButtonProp) {
+export function BlockButton({ username }: { username: string }) {
   const [state, setstate] = useState(true);
   const [showDialog, setshowDialog] = useState(false);
   const { token } = useContext(UserContext);

@@ -12,10 +12,7 @@ import {
   HoverCardTrigger,
 } from "../ui/hover-card";
 
-export type MuteButtonProp = {
-  username: string;
-};
-export function MuteButton({ username }: MuteButtonProp) {
+export function MuteButton({ username }: { username: string }) {
   const [state, setState] = useState("Muted");
   const { token } = useContext(UserContext);
   const { mutateAsync: MuteServiceFn } = useMutation({
