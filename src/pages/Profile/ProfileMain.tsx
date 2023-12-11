@@ -1,14 +1,17 @@
 import { Button } from "@/components";
 import { UserContext } from "@/contexts/UserContextProvider";
+import { follow, unfollow } from "@/lib/utils";
 import { UserProfileData } from "@/models/User";
 import { Cake, CalendarDays, MapPin } from "lucide-react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
+import { UnfollowPopUp } from "./UnfollowPopUp";
+import { useMutation } from "@tanstack/react-query";
 
 /*
-TODO: change button if it's not the user's profile (need to find a way to know if he's a friend)
 TODO: following and followers go to another page (youssef)
 TODO: options menu and message menu
+TODO: may need to revalidate the cache after edit, follow and unfollow
 */
 
 type ProfileMainProps = {
@@ -18,7 +21,37 @@ type ProfileMainProps = {
 export const ProfileMain = ({ user }: ProfileMainProps) => {
   const location = useLocation();
   const { username } = useParams();
-  const { user: contextUser } = useContext(UserContext);
+  const { user: contextUser, token } = useContext(UserContext);
+
+  const [buttonContent, setButtonContent] = useState<string>(
+    contextUser?.userName == username
+      ? "Edit profile"
+      : user.isFollowing
+      ? "Following"
+      : "Follow"
+  );
+  const [showUnfollowUpop, setShowUnfollowUpop] = useState<boolean>(false);
+
+  const followingButton = () => {
+    setButtonContent("Following");
+  };
+
+  const unfollowButton = () => {
+    setButtonContent("Unfollow");
+  };
+
+  const handleUnfollow = () => {
+    setShowUnfollowUpop(true);
+  };
+
+  const callFollow = useMutation({
+    mutationFn: () => {
+      return follow(user.userName, token!);
+    },
+  });
+  const handleFollow = () => {
+    callFollow.mutate();
+  };
 
   const birthDate = user
     ? new Date(user.birthDate).toLocaleDateString("en-Us", {
@@ -36,6 +69,11 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
 
   return (
     <div>
+      <UnfollowPopUp
+        show={showUnfollowUpop}
+        username={username!}
+        setShow={setShowUnfollowUpop}
+      />
       <Link
         to={`/${username}/header_photo`}
         state={{ bannerImg: user.profileBannerUrl }}
@@ -63,19 +101,29 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
             </div>
           </Link>
           {contextUser?.userName == username ? (
-            <Button className="h-[35px]">
-              {"Follow" /*check if profile is followed be user*/}
-            </Button>
-          ) : (
             <Link
               to="settings/profile"
               state={{ previousLocation: location }}
               className="h-[35px]"
             >
               <Button variant="outline" className="h-full">
-                Edit profile
+                {buttonContent}
               </Button>
             </Link>
+          ) : user.isFollowing ? (
+            <Button
+              variant="danger"
+              className="w-[103px] h-[35px]"
+              onMouseEnter={unfollowButton}
+              onMouseLeave={followingButton}
+              onClick={handleUnfollow}
+            >
+              {buttonContent}
+            </Button>
+          ) : (
+            <Button className="h-[35px]" onClick={handleFollow}>
+              {buttonContent}
+            </Button>
           )}
         </div>
         <div>

@@ -20,10 +20,6 @@ type EditProfileProps = {
   onClose?: () => void;
 };
 
-/*
-TODO: use mutation with images and get the url
-*/
-
 export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
   const [showEditProfile, setShowEditProfile] = useState<boolean>(true);
   const [profileImage, setProfileImage] = useState<File>();

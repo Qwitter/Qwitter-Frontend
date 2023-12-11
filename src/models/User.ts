@@ -100,6 +100,7 @@ export const UserProfileSchema = z
   .object({
     location: z.string().nullish(),
     tweetCount: z.number().default(0).nullish(),
+    isFollowing: z.boolean().default(false).nullish(),
   })
   .merge(UserDataSchema);
 

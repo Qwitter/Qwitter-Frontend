@@ -9,7 +9,7 @@ export const ProfileLikes = () => {
   const { username } = useParams();
   const { token } = useContext(UserContext);
 
-  const { ref, data, refetch } = useInfiniteScroll(
+  const { ref, data, refetch, hasMoreData } = useInfiniteScroll(
     async ({ pageParam }) => {
       return await profileLikes(pageParam, 10, username!, token!);
     },
@@ -21,5 +21,11 @@ export const ProfileLikes = () => {
     refetch();
   }, [token, refetch]);
 
-  return <TweetsList pages={data?.pages || [[]]} fetcherRef={ref} />;
+  return (
+    <TweetsList
+      pages={data?.pages || [[]]}
+      fetcherRef={ref}
+      hasMoreData={hasMoreData}
+    />
+  );
 };

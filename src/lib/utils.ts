@@ -954,3 +954,55 @@ export const profileMedia = async (
     return [];
   }
 };
+
+/**
+ * @description unfollow a certain user
+ * @param username the username to unfollow
+ * @param token to authorize request
+ * @returns object with the status of the request
+ */
+export const unfollow = async (username: string, token: string) => {
+  if (!token) return null;
+
+  try {
+    const response = await axios.delete(
+      `${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+/**
+ * @description follow a certain user
+ * @param username the username to unfollow
+ * @param token to authorize request
+ * @returns object with the status of the request
+ */
+export const follow = async (username: string, token: string) => {
+  if (!token) return null;
+
+  try {
+    const response = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};

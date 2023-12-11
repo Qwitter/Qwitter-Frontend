@@ -100,4 +100,20 @@ export const handlers = [
   http.delete(`${VITE_BACKEND_URL}/api/v1/tweets/:tweetId`, deleteTweetWorker),
   http.get(`${VITE_BACKEND_URL}/api/v1/user/johndoe123`, userProfileWorker),
   http.get(`${VITE_BACKEND_URL}/api/v1/user/samy`, userProfileWorker),
+  http.get(
+    `${VITE_BACKEND_URL}/api/v1/tweets/user/johndoe123/media?page=1&limit=10`,
+    TimelineTweetsWorker
+  ),
+  http.get(
+    `${VITE_BACKEND_URL}/api/v1/tweets/user/johndoe123/like?page=1&limit=10`,
+    TimelineTweetsWorker
+  ),
+  http.get(
+    `${VITE_BACKEND_URL}/api/v1/tweets/user/johndoe123/replies?page=1&limit=10`,
+    TimelineTweetsWorker
+  ),
+  http.get(
+    `${VITE_BACKEND_URL}/api/v1/tweets/user/johndoe123?page=1&limit=10`,
+    TimelineTweetsWorker
+  ),
 ];

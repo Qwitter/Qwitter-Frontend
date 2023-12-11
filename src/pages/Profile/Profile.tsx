@@ -16,7 +16,6 @@ import { useQuery } from "@tanstack/react-query";
 import { Spinner } from "@/components/Spinner";
 
 /*
-TODO: profile endpoint not working
 TODO: handle invalid username
 */
 

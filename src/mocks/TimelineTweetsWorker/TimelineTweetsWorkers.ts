@@ -146,10 +146,8 @@ const tweetsList: Tweet[] = [
   tweet2,
 ];
 
-export const TimelineTweetsWorker: ResponseResolver = async ({ request }) => {
+export const TimelineTweetsWorker: ResponseResolver = async () => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  const url = request.url;
 
   return HttpResponse.json({
     tweets: tweetsList.map((tweet: Tweet, index) => {
