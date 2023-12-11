@@ -19,6 +19,8 @@ import { LogOut } from "./components/LogOut/LogOut";
 import { PagesContainer } from "./pages/PagesContainer/PagesContainer";
 import Authentication from "../src/pages/Authentication/Authentication";
 import MessagesNewMessage from "./pages/Messages/MessagesNewMessage";
+import { EditProfilePopUp } from "@/components/EditProfilePopUp/EditProfilePopUp";
+import { ProfileImageViewer } from "./pages/Profile/ProfileImageViewer";
 import { MessagesGroupEditPopup } from "./pages/Messages/MessagesGroupEditPopup";
 import MessagesContextProvider from "./contexts/MessagesContextProvider";
 import MessagesAddPeoplePopup from "./pages/Messages/MessagesAddPeoplePopup";
@@ -63,6 +65,18 @@ function App() {
             <Route path="/Messages/:conversationId/add" element={<MessagesAddPeoplePopup />} />
             {/* <Route path="settings/profile" element={<MessagesNewMessage />} /> */}
             <Route path="settings/profile" element={<MessagesNewMessage />} />
+              <Route
+              path="/:username/settings/profile"
+              element={<EditProfilePopUp />}
+              />
+              <Route
+                path="/:username/photo"
+                element={<ProfileImageViewer isBanner={false} />}
+              />
+              <Route
+                path="/:username/header_photo"
+                element={<ProfileImageViewer isBanner={true} />}
+              />
           </Routes>
           <Toaster />
           </MessagesContextProvider>

@@ -1,5 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import "../../index.css";
 import { UsersList } from "../UsersList/UsersList";
 import { GetFollowersService, GetFollowingsService } from "@/lib/utils";
@@ -11,18 +11,17 @@ import { Skeleton } from "../ui/skeleton";
 
 export function FollowList({ type }: { type: string }) {
   const { token, user } = useContext(UserContext);
-  const { data: Followings, refetch: refetchFollowings } = useQuery<User[]>({
-    queryKey: ["followings"],
+  const { data: Followings } = useQuery<User[]>({
+    queryKey: ["followings", token, user?.userName],
     queryFn: () => GetFollowingsService(user?.userName!, token!),
   });
-  const { data: Followers, refetch: refetchFollowers } = useQuery<User[]>({
-    queryKey: ["followers"],
-    queryFn: () => GetFollowersService(user?.userName!, token!),
+  const { data: Followers } = useQuery<User[]>({
+    queryKey: ["followers", token, user?.userName],
+    queryFn:
+      token && user?.userName
+        ? () => GetFollowersService(user?.userName, token)
+        : undefined,
   });
-  useEffect(() => {
-    refetchFollowings();
-    refetchFollowers();
-  }, [token, refetchFollowers, refetchFollowings]);
   const [Liststate, setListstate] = useState(type);
   const navigate = useNavigate();
   return (

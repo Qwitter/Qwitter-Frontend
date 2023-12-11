@@ -4,7 +4,6 @@ import { useContext, useState } from "react";
 import { Button } from "../ui/button";
 import { ImagePicker } from "../ImagePicker/ImagePicker";
 import { TextInput } from "../TextInput/TextInput";
-import axios from "axios";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { useForm } from "react-hook-form";
 import BirthDayInput from "../BirthDayInput/BirthDayInput";
@@ -12,27 +11,23 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { EditUserSchema } from "@/models/User";
 import { useToast } from "../ui/use-toast";
 import { DiscardProfileChanges } from "./DiscardProfileChanges";
-import { uploadProfileImage } from "@/lib/utils";
-const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+import { editUserProfile, uploadProfileImage } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 
 type EditProfileProps = {
   onSave?: () => void;
   onClose?: () => void;
 };
 
-/*
-NEEDED:
-  set values in the context
-  may move functionality to utils (ask seif)
-*/
-
 export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
   const [showEditProfile, setShowEditProfile] = useState<boolean>(true);
   const [profileImage, setProfileImage] = useState<File>();
   const [profileBanner, setProfileBanner] = useState<File>();
   const [showDiscardChanges, setShowDiscardChanges] = useState<boolean>(false);
-  const { user, token } = useContext(UserContext); // token will be used for authorization
+  const { user, token, setUser } = useContext(UserContext);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const contextBirthDate = new Date(user?.birthDate!);
   const birthDay = contextBirthDate.getDate();
@@ -45,22 +40,32 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
     resolver: zodResolver(EditUserSchema),
     defaultValues: {
       name: user?.name,
-      bio: user?.bio,
+      description: user?.description,
       location: user?.location,
-      website: user?.website,
-      day: birthDay,
-      month: birthMonth,
-      year: birthYear,
+      url: user?.url,
+      day: birthDay.toString(),
+      month: birthMonth.toString(),
+      year: birthYear.toString(),
     },
   });
 
+  const getFormDate = () => {
+    return new Date(
+      `${form.getValues().year.toString()}-${form.getValues().month}-${form
+        .getValues()
+        .day.toString()}`
+    );
+  };
+
   const isChanged = (): boolean => {
+    const contextBD = new Date(user?.birthDate ?? "").toISOString();
+
     return !(
       form.getValues().name == user?.name &&
-      form.getValues().bio == user?.bio &&
+      form.getValues().description == user?.description &&
       form.getValues().location == user?.location &&
-      form.getValues().website == user?.website &&
-      form.getValues().birthDate == user?.birthDate
+      form.getValues().url == user?.url &&
+      getFormDate().toISOString() == contextBD
     );
   };
 
@@ -75,31 +80,48 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
   const handleClose = (): void => {
     setShowEditProfile(false);
     if (onClose) onClose();
+    navigate(-1);
   };
 
-  // NEEDED: handle loading state
+  const callEditUserData = useMutation({
+    mutationFn: (editedUserData: object) => {
+      return editUserProfile(editedUserData, token!);
+    },
+  });
+
+  const callEditProfileImage = useMutation({
+    mutationFn: () => {
+      return uploadProfileImage(profileImage!, token!);
+    },
+  });
+
+  const callEditProfileBanner = useMutation({
+    mutationFn: () => {
+      return uploadProfileImage(profileBanner!, token!, true);
+    },
+  });
+
   const handleSave = async (): Promise<void> => {
     // check for errors first
     await form.trigger();
     if (Object.keys(form.formState.errors).length > 0) {
-      if (form.formState.errors.website) {
+      if (form.formState.errors.url) {
         toast({
+          variant: "secondary",
           title: "Account Update Failed",
-          description: form.formState.errors.website?.message?.toString(),
+          description: form.formState.errors.url?.message?.toString(),
         });
       }
       return;
     }
 
     if (profileImage) {
-      await uploadProfileImage(profileImage, token!);
+      callEditProfileImage.mutate();
     }
 
     if (profileBanner) {
-      await uploadProfileImage(profileBanner, token!, true);
+      callEditProfileBanner.mutate();
     }
-
-    // code here may go to utils <---------------------------------------------------------------------------
 
     if (!isChanged()) {
       if (onSave) onSave();
@@ -107,35 +129,36 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
       return;
     }
 
-    const birthDate = new Date(
-      `${form.getValues().year.toString()}-${form.getValues().month}-${form
-        .getValues()
-        .day.toString()}`
-    );
-    const birthDateISO = birthDate.toISOString();
+    const editedUserData = {
+      name: form.getValues().name,
+      description: form.getValues().description,
+      Location: form.getValues().location,
+      url: form.getValues().url,
+      day: form.getValues().day,
+      month: form.getValues().month.toString(),
+      year: form.getValues().year.toString(),
+      birthDate: getFormDate().toISOString(),
+    };
 
-    try {
-      await axios.put(
-        `${VITE_BACKEND_URL}/api/v1/user/profile`,
-        {
-          name: form.getValues().name,
-          description: form.getValues().bio,
-          Location: form.getValues().location,
-          url: form.getValues().website,
-          birth_date: birthDateISO,
-        },
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "object",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-    } catch (error) {
-      console.log(error);
-      return;
-    }
+    callEditUserData.mutate(editedUserData);
+
+    //TODO: proceed when request is fulfilled
+    //TODO: we can set the user with the response instead
+    setUser({
+      name: editedUserData.name,
+      email: user?.email ?? "",
+      birthDate: editedUserData.birthDate,
+      userName: user?.userName ?? "",
+      createdAt: user?.createdAt ?? "",
+      location: editedUserData.Location,
+      description: editedUserData.description,
+      url: editedUserData.url,
+      passwordChangedAt: user?.passwordChangedAt ?? "",
+      id: user?.id ?? "",
+      google_id: user?.google_id ?? "",
+      profileImageUrl: callEditProfileImage.data.profileImageUrl,
+      profileBannerUrl: callEditProfileBanner.data.profileBannerUrl,
+    });
 
     if (onSave) onSave();
     handleClose();
@@ -188,14 +211,16 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
           {...form.register("name", {})}
           placeHolder="Name"
           errorMessage={form.formState.errors.name?.message?.toString()}
+          maxLength={50}
         />
       </div>
       <div className="px-4 w-full">
         <TextInput
           // Bio
-          {...form.register("bio", {})}
+          {...form.register("description", {})}
           placeHolder="Bio"
-          errorMessage={form.formState.errors.bio?.message?.toString()}
+          errorMessage={form.formState.errors.description?.message?.toString()}
+          maxLength={160}
         />
       </div>
       <div className="px-4 w-full">
@@ -208,7 +233,7 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
       <div className="px-4 w-full">
         <TextInput
           // Website
-          {...form.register("website", {})}
+          {...form.register("url", {})}
           placeHolder="Website"
         />
       </div>

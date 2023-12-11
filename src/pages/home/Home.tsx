@@ -10,22 +10,18 @@ import { TrendCard } from "@/components/TrendCard/TrendCard";
 export function Home() {
   const [active, setActive] = useState("For you");
   const { token } = useContext(UserContext);
-  const { data, ref, refetch } = useInfiniteScroll(
+  const { data, ref, refetch, hasMoreData } = useInfiniteScroll(
     async ({ pageParam }) => {
-      return await timelineTweets(pageParam, 10, token!); // "123456" should be replaced with token
+      return await timelineTweets(pageParam, 10, token!);
     },
     ["tweets", "timeline"]
   );
 
   useEffect(() => {
-    // console.log(data);
-  }, [data]);
-
-  useEffect(() => {
     if (!token) return;
     refetch();
-    console.log("refetch");
-  }, [token, refetch]);
+    // console.log(data);
+  }, [data]);
 
   return (
     <>
@@ -63,7 +59,11 @@ export function Home() {
         </div>
         <div>
           <CreateTweetContainer mode="home" />
-          <TweetsList pages={data?.pages || [[]]} fetcherRef={ref} />
+          <TweetsList
+          fetcherRef={ref}
+          pages={data?.pages || [[]]}
+          hasMoreData={hasMoreData}
+        />
         </div>
         
       </div>
