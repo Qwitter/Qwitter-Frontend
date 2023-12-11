@@ -33,7 +33,7 @@ export function LikeRetweetList({ type }: { type: string }) {
             onClick={() => {
               setListstate("Likers");
               console.log(pathname);
-              //   navigate(`/${username}/Following`);
+              navigate(`/${pathname}/Following`);
             }}
           >
             <div className={Liststate == "Likers" ? "active-tab" : "tab"}>
@@ -46,15 +46,15 @@ export function LikeRetweetList({ type }: { type: string }) {
             onClick={() => {
               setListstate("Retweeters");
               console.log(pathname);
-              //   navigate(`/${username}/Retweeters`);
+              navigate(`/${pathname}/Retweeters`);
             }}
           >
-            <div className={Liststate == "Followers" ? "active-tab" : "tab"}>
-              Followers
+            <div className={Liststate == "Retweeters" ? "active-tab" : "tab"}>
+              Retweeters
             </div>
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="Following">
+        <TabsContent value="Likers">
           {Likers ? (
             <UsersList
               listType={"FollowList"}
@@ -67,7 +67,7 @@ export function LikeRetweetList({ type }: { type: string }) {
             </div>
           )}
         </TabsContent>
-        <TabsContent value="Followers">
+        <TabsContent value="Retweeters">
           {Retweeters ? (
             <UsersList
               listType={"FollowList"}
