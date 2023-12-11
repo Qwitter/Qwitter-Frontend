@@ -911,11 +911,11 @@ export const deleteTweet = async (tweetId: string, token: string) => {
 export const getUserProfile = async (token: string, username: string) => {
   try {
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/${username}`, {
-      withCredentials: true,
+      // withCredentials: true,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true,
+        // "Access-Control-Allow-Credentials": true,
         Authorization: `Bearer ${token}`,
       },
     });
@@ -1266,7 +1266,6 @@ export const FollowService = async (username: string,token: string) => {
  */
 export const UnFollowService = async (username: string, token: string) => {
   try {
-    debugger;
     const res = await axios.delete(`${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
       {
         headers: {
@@ -1313,7 +1312,6 @@ export const GetTrendsService = async (token:string) => {
  */
 export const GetFollowersService = async (username:string,token:string) => {
   try {
-    debugger;
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/followers/${username}`,
       {
         headers: {
@@ -1338,7 +1336,6 @@ export const GetFollowersService = async (username:string,token:string) => {
  */
 export const GetFollowingsService = async (username:string,token: string) => {
   try {
-    debugger;
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/follow/${username}`, {
       headers: {
         Accept: "application/json",

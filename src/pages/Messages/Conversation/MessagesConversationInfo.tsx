@@ -1,13 +1,13 @@
 import { OptionsHeader } from "@/components";
-import { useContext,  useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { MessagesContext } from "@/contexts/MessagesContextProvider";
 import { cn } from "@/lib";
-import { ConversationLeavePopUp } from "./ConversationLeavePopUp";
+import { ConversationLeavePopUp } from "../MessagesPopup/ConversationLeavePopUp";
 import { Spinner } from "@/components/Spinner";
 import { UsersListItem } from "@/components/UsersListItem/UsersListItem";
-import { ConversationBlockUserPopup } from "./ConversationBlockUserPopup";
+import { ConversationBlockUserPopup } from "../MessagesPopup/ConversationBlockUserPopup";
 
 export function MessagesConversationInfo() {
 
@@ -17,7 +17,7 @@ export function MessagesConversationInfo() {
     const { currentConversation } = useContext(MessagesContext);
     const [show, setShow] = useState(false);
     const [showBlock, setShowBlock] = useState(false);
-    const handleBlock =()=>{
+    const handleBlock = () => {
         setShowBlock(true)
     }
     if (!currentConversation) {
@@ -46,7 +46,7 @@ export function MessagesConversationInfo() {
                 </>}
                 <div className="max-h-[40vh] overflow-y-auto">
                     {currentConversation.users.map((user, index) => (
-                        index != currentConversation.users.length - 1 && <UsersListItem isFollowing verified={false} key={index} username={user.userName} profileImageUrl={user.profileImageUrl} name={user.name} description="" listType="FollowList" showDesc={false} />
+                        <UsersListItem isFollowing={user.isFollowing!} verified={user.isVerified! || false} key={index} username={user.userName} profileImageUrl={user.profileImageUrl} name={user.name} description="" listType="FollowList" showDesc={false} />
                     ))
 
                     }

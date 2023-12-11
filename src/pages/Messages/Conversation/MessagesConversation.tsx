@@ -7,20 +7,15 @@ import { MessagesConversationMessage } from "./MessagesConversationMessage";
 import { MessagesContext } from "@/contexts/MessagesContextProvider";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CreateMessage, cn } from "@/lib/utils";
-import { EVENTS, MessageUser, MessagesMessage, conversation } from "../types/MessagesTypes";
+import { EVENTS,  MessagesMessage, conversation } from "../types/MessagesTypes";
 import { useQuery } from "@tanstack/react-query";
 import { getConversation } from "@/lib/utils";
-import { UserContext } from "@/contexts/UserContextProvider";
 import { Spinner } from "@/components/Spinner";
 import { socket } from "@/lib/socketInit";
-
 export function MessagesConversation() {
     const [text, setText] = useState("")
-    const [chatName, setChatName] = useState('');
     const [chatMessages,setChatMessages] = useState<MessagesMessage[]>([]);
     const [selectedImageFile, setSelectedImageFile] = useState<File>();
-
-    const { user } = useContext(UserContext);
     const token = localStorage.getItem("token")!;
     const { messageReply, setMessageReply, setCurrentConversation } = useContext(MessagesContext)
 
@@ -46,8 +41,8 @@ export function MessagesConversation() {
     useEffect(()=>{
         setTimeout(() => {
             handleScrollDown()
+            console.log(data)
         }, 0);
-        console.log(data)
         data&&setChatMessages(data.messages)
     },[data])
 
@@ -69,16 +64,12 @@ export function MessagesConversation() {
                     conversationId,
                     data,
                 });
-                console.log({
-                    conversationId,
-                    data,
-                })
+
                 await queryClient.cancelQueries({ queryKey: ['userConversation', conversationId] })
                 const previousMessages = queryClient.getQueryData(['userConversation', conversationId]);
 
                 queryClient.setQueryData(['userConversation', conversationId], (oldConversation: conversation) => {
                     oldConversation.messages = [data, ...oldConversation.messages]
-                    console.log(oldConversation.messages)
                     setChatMessages([...oldConversation.messages])
                     setTimeout(() => {
                         
@@ -103,12 +94,8 @@ export function MessagesConversation() {
         socket.emit('JOIN_ROOM', conversationId);
 
         socket.on(EVENTS.SERVER.ROOM_MESSAGE, async (Message) => {
-            console.log(Message)
-            //await queryClient.cancelQueries({ queryKey: ['userConversation', conversationId] })
             queryClient.setQueryData(['userConversation', conversationId], (oldConversation: conversation) => {
-                //if (Message.userName == userName) return oldConversation;
                 oldConversation.messages = [Message, ...oldConversation.messages]
-                console.log(oldConversation.messages)
                 setChatMessages([...oldConversation.messages])
                 setTimeout(() => {
                         
@@ -123,18 +110,7 @@ export function MessagesConversation() {
         });
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-    useEffect(() => {
-        // Assuming data.users is an array of MessageUser
-        if (data && user) {
-            if (data?.isGroup) {
-                // Update chatName when the component mounts or when data.users changes
-                setChatName(handleNameOfChat(data!.users.filter(u => u.userName != user!.userName) || []));
-            } else {
-                // Update chatName for one-on-one conversations
-                setChatName(data!.users[0].name || '');
-            }
-        }
-    }, [data, user]);
+
     if (isPending) {
         return (
             <div className="w-full h-[500px] p-8">
@@ -156,17 +132,7 @@ export function MessagesConversation() {
         }
     }
 
-    const handleNameOfChat = (users: MessageUser[]): string => {
 
-        if (users.length === 0) {
-            return '';
-        }
-
-
-        const concatenatedNames = users.slice(0, 3).map((user) => user.name).join(', ') + `${users.length - 3 > 0 ? ` and ${users.length - 3} more` : ""}`;
-        // Return the result
-        return concatenatedNames;
-    };
     return (
         data && <div className="h-full">
             <div className="px-4 w-full h-[53px] basis-4 flex flex-row justify-center  sticky  top-[-1px] bg-black bg-opacity-60 backdrop-blur-xl z-50 items-center">
@@ -179,7 +145,7 @@ export function MessagesConversation() {
                 </div>
                 {!inView && <img src={data?.photo || "https://i.ibb.co/S7XN04r/01eab91ff04ea5832a33040f7ebdb3d0.jpg"} className="w-8 h-8 rounded-full mr-2" />}
                 <div className="w-full h-full flex  items-center">
-                    <h2 className="font-bold text-[17px]">{chatName}</h2>
+                    <h2 className="font-bold text-[17px]">{data.name}</h2>
                 </div>
                 <div className="flex justify-end items-center min-w-[56px] min-h-[32px]">
                     <div className='w-10 h-10 flex justify-end items-center '>
@@ -213,8 +179,13 @@ export function MessagesConversation() {
                             <span className="text-primary text-[13px]">{messageReply?.userName}</span>
                             <span className="text-primary text-[13px]">{messageReply?.message}</span>
                         </div>
+                        <div className="flex flex-row items-center max-h-[50px] justify-center ">
+                            <div className=" flex justify-center items-center w-14 h-11 mr-2">
+                                <img src={messageReply.image[0].value} alt="" />
+                                {/* <TweetImagesViewer images={messageReply.image||[]} mode="view-only" screen="message" /> */}
+                            </div>
                         <X className="h-5 w-5 text-gray cursor-pointer" onClick={() => setMessageReply(null)} />
-
+                        </div>
                     </div>}
                     <MessagesConversationInput selectedImageFile={selectedImageFile} setSelectedImageFile={setSelectedImageFile} handleSubmit={handleSubmit} text={text} setText={setText} />
                 </div>

@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { conversation } from "../types/MessagesTypes";
 import { useNavigate } from "react-router-dom";
 import { MessagesList } from "../MessagesList";
-import { ConversationLeavePopUp } from "./ConversationLeavePopUp";
+import { ConversationLeavePopUp } from "../MessagesPopup/ConversationLeavePopUp";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { useQuery } from "@tanstack/react-query";
 import { getUserConversations } from "@/lib/utils";
@@ -22,7 +22,7 @@ export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRe
     } = useQuery<conversation[]>({
         queryKey: ["getUserConversations"],
         queryFn: () => getUserConversations(token!),
-        // refetchOnReconnect: "always",
+        refetchOnReconnect: "always",
         // refetchIntervalInBackground: true,
         // refetchInterval: 10000,
         // enabled: token !== null
@@ -30,7 +30,6 @@ export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRe
 
     });
     useEffect(() => {
-        console.log(data!)
         setUserAllConversation(data!)
         refetch();
     }, [token, refetch, data,setUserAllConversation]);

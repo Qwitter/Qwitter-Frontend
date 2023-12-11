@@ -15,10 +15,14 @@ export type MessageUser = {
     id?: number;
     profileImageUrl: string;
     userName: string;
+    followersCount:number;
+    followingCount:number;
+    description?:string;
+    isFollowed?:boolean;
+    isFollowing?:boolean;
     name: string;
+
     isVerified?: boolean;
-    lastMessage?: string;
-    lastMessageTime?: string;
 }
 export type Mention = {
     position: number;
@@ -79,6 +83,7 @@ export type ConversationPopUpProps = {
 
 export type conversation = {
     seen: boolean;
+    blocked:boolean;
     id?: string;
     name: string;
     photo: string;

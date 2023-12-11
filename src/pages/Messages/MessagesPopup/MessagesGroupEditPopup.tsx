@@ -61,8 +61,7 @@ export const MessagesGroupEditPopup = () => {
                 });
             }
         },
-        onError: (data) => {
-            console.log(data);
+        onError: () => {
             toast({
                 title: "Change GroupName",
                 description: "Failed : ServerSide error",

@@ -1,37 +1,33 @@
 import { Button, PopUpContainer } from '@/components'
 import { ConversationPopUpProps, conversation } from '../types/MessagesTypes'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { deleteConversation } from '@/lib/utils'
+import { deleteMessage } from '@/lib/utils'
 import { useContext } from 'react'
 import { UserContext } from '@/contexts/UserContextProvider'
 import { Spinner } from '@/components/Spinner'
-import { useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
-export function ConversationLeavePopUp({ show, setShow, conversationToDelete }: ConversationPopUpProps) {
+export function ConversationRemoveMessagePopUp({ show, setShow,messageId }: ConversationPopUpProps) {
     const { token } = useContext(UserContext)
     const queryClient = useQueryClient()
-    const navigate =useNavigate()
+    const {conversationId} = useParams()
     const { mutate, isPending } = useMutation({
-        mutationFn: deleteConversation,
-        onMutate: async (data) => {
-            // Cancel any outgoing refetches
-            // (so they don't overwrite our optimistic update)
-            await queryClient.cancelQueries({ queryKey: ['getUserConversations'] })
+        mutationFn: deleteMessage,
+        onMutate: async () => {
+            await queryClient.cancelQueries({ queryKey: ["userConversation",conversationId] })
 
-            // Snapshot the previous value
-            const previousConversations = queryClient.getQueryData(['getUserConversations'])
-
+            const previousConversationMessages = queryClient.getQueryData(["userConversation",conversationId])
             // Optimistically update to the new value
-            queryClient.setQueryData(['getUserConversations'], (old: conversation[]) =>old.filter(conversation=> conversation.id!=data.conversationId))
+            queryClient.setQueryData(["userConversation",conversationId], (old: conversation) =>{
+                old.messages= old.messages.filter(message=> message.id!=messageId)
+                })
 
             // Return a context object with the snapshotted value
-            return { previousConversations }
+            return { previousConversationMessages }
         },
         onSuccess: (data) => {
             if (data) {
-                console.log(data)
                 setShow!(false)
-                navigate('/Messages/')
             }
 
         },
@@ -40,11 +36,11 @@ export function ConversationLeavePopUp({ show, setShow, conversationToDelete }: 
 
         },
         onSettled: () => {
-            queryClient.invalidateQueries({ queryKey: ['getUserConversations'] })
+            queryClient.invalidateQueries({ queryKey: ["userConversation",conversationId] })
         }
     })
     const onSubmit = () => {
-        mutate({ conversationId: conversationToDelete!, token: token! });
+        mutate({ conversationId: conversationId!, token: token!,messageId:messageId! });
     }
 
     return (
@@ -56,17 +52,17 @@ export function ConversationLeavePopUp({ show, setShow, conversationToDelete }: 
                 <Spinner />
             </div> : <><div>
                 <h3 className="text-primary text-xl font-bold">
-                    Leave conversation?
+                Delete message?
                 </h3>
                 <p className="text-gray">
-                    This conversation will be deleted from your inbox. Other people in the conversation will still be able to see it.
+                This message will be deleted for you. Other people in the conversation will still be able to see it. 
                 </p>
             </div>
                 <div className="w-full">
                     <Button
                         onClick={onSubmit}
                         variant="destructive" size="full" className="mb-3">
-                        Leave
+                        Delete
                     </Button>
                     <Button
                         onClick={() => { setShow!(false) }}

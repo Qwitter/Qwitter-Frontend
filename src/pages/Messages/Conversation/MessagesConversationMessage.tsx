@@ -6,7 +6,7 @@ import TweetImagesViewer from "@/components/TweetImagesViewer/TweetImagesViewer"
 import moment from "moment";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { MessagesConversationPopUp } from "./MessagesConversationPopUp";
+import { MessagesConversationPopUp } from "../MessagesPopup/MessagesConversationPopUp";
 
 export function MessagesConversationMessage({isMessage,isGroup, date, id, entities,profileImageUrl ,replyToMessage, text, userName }: MessagesMessage) {
     const { user } = useContext(UserContext);
@@ -65,7 +65,7 @@ export function MessagesConversationMessage({isMessage,isGroup, date, id, entiti
                             </div>
                         </div>
                         <PopoverContent className="min-w-fit max-w-[250px] max-h-[480px] min-h-[50px] p-0 py-1 overflow-y-auto box-shadow bg-black   rounded-xl">
-                            <MessagesConversationPopUp messageId={id} userNameOFReplyMessage={userName} text={text} setIsOpen={setIsOpen} replyId={id} />
+                            <MessagesConversationPopUp isUser={userName == user?.userName} messageId={id}  userNameOFReplyMessage={userName} image={entities.media.length>0?[{ value: entities.media[0].value, type: entities.media[0].type }]:[{value:"",type:""}]} text={text} setIsOpen={setIsOpen} replyId={id} />
                         </PopoverContent>
                     </Popover>
                 </div>

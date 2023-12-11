@@ -1,5 +1,5 @@
 import { MoreHorizontal, Pin, Trash2, XCircle } from "lucide-react";
-import { conversation, MessagesListProp, MessageUser } from "./types/MessagesTypes";
+import { conversation, MessagesListProp } from "./types/MessagesTypes";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -9,7 +9,8 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { useContext,   } from "react";
 import { MessagesContext } from "@/contexts/MessagesContextProvider";
-import { FollowButton } from "@/components/FollowButton/FollowButton";
+//import { FollowButton } from "@/components/FollowButton/FollowButton";
+import ImageGrid from "./ImageGrid";
 // import { useEffect } from "react";
 
 export function MessagesList({
@@ -40,16 +41,7 @@ export function MessagesList({
         }
 
     };
-    const handleNameOfChat = (users: MessageUser[]): string => {
 
-        if (users.length === 0) {
-            return '';
-        }
-        // Exclude the last user and concatenate names
-        const concatenatedNames = users.slice(0,3).map((user) => user.name).join(', ')+`${users.length-3>0?` and ${users.length-3} more`:""}`;
-        // Return the result
-        return concatenatedNames;
-    };
 
 
     return (<>
@@ -57,13 +49,13 @@ export function MessagesList({
         {conversations&& conversations.map((user, index) => (
             <li key={index} className={cn("py-3 px-4 flex overflow-x-hidden flex-row justify-between group  hover:bg-[#16181c] w-full transition-all cursor-pointer items-start ",( user.id == currentConversation?.id) ? "bg-[#16181c]  border-secondary border-r-4 " : "")} >
                 <div className={`flex flex-row flex-grow  ${mode!="Group"&&'truncate'} max-w-[86%]`} onClick={() => handleConversationClick(user)}>
-                    <Avatar className="mr-4 min-w-max">
+                    {user.isGroup&&user.photo !="https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"?<ImageGrid images={user.users.map(conversation=>conversation.profileImageUrl)} />:<Avatar className="mr-4 min-w-max">
                         <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" src={user.photo || "https://i1.sndcdn.com/artworks-000647897398-mk0598-t240x240.jpg"} />
-                    </Avatar>
+                    </Avatar>}
                     <div className="flex flex-col gap-0  ">
                         <div className={cn("flex flex-row gap-1 items-center max-w-full", mode == "People" && 'justify-between w-full',mode=="Group"&&'truncate max-w-[77%]')}>
                             {mode == "People" ? <Highlighter searchWords={[matchedPart]} highlightClassName="text-black" ClassName="text-primary font-semibold text-[15px]" autoEscape={true}
-                                textToHighlight={handleNameOfChat(user.users)}
+                                textToHighlight={user.name}
                             /> : <span className="text-primary font-semibold text-[15px] max-w-[60%] truncate ">{user.name}</span>
                             }
                             {mode !== "People" && (
@@ -90,13 +82,13 @@ export function MessagesList({
 
                 </div>
                 <div className="flex justify-end gap-3 self-start  flex-row items-first">
-                    {/* {mode != "People" && user.lastMessage && user.lastMessage!.s &&
+                    {mode != "People"  && user.seen &&
                         <div>
                             <div className="bg-secondary rounded-full w-[10px] h-[10px] mt-3.5 "></div>
-                        </div>} */}
-                    {
-                        mode == "People" && <FollowButton username={user.users[0].userName} isFollowing />
-                    }
+                        </div>}
+                    {/* {
+                        mode == "People" && <FollowButton  username={user.users[0].userName} isFollowing={user.users[0].isFollowing!} />
+                    } */}
 
                     <Popover>
                         {mode == "request" && <>

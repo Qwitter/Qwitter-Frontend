@@ -1,6 +1,6 @@
 import { OptionsHeader } from "@/components";
 import { Ban, Settings, Trash2 } from "lucide-react";
-import { useState } from "react";
+import {  useState } from "react";
 import { MessageUser, MessagesRequestPopUpProp } from "./types/MessagesTypes";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { MessagesMain } from "./MessagesMain";
@@ -12,16 +12,16 @@ import { MessagesConversationInfo } from "./Conversation/MessagesConversationInf
 export function Messages() {
     const location = useLocation();
     const previousLocation = location.state?.previousLocation;
-
+    const pathname = location.pathname.endsWith('/')?location.pathname.slice(0,-1):location.pathname
     return (
         <>
-            <div className="max-w-[600px]  max-h-[100vh] scrollbar-thin overflow-y-auto pb-16 relative flex flex-col z-0 flex-grow w-[72%] max-largeX:hidden  h-full">
+            <div className={`max-w-[600px]  max-h-[100vh] scrollbar-thin overflow-y-auto ${pathname!="/Messages"?'max-largeX:hidden':''}  pb-16 relative flex flex-col z-0 flex-grow w-[72%]   h-full`}>
                 <Routes location={previousLocation || location} >
                     <Route path="/requests" element={<MessagesRequests />} />
                     <Route index path="/*" element={<MessagesMain />} />
                 </Routes>
             </div>
-            <div className="max-w-[600px] w-full h-full flex-grow border-x border-primary border-opacity-30 ">
+            <div className={`max-w-[600px] w-full ${pathname=="/Messages"?'max-largeX:hidden':''}  h-full flex-grow border-x border-primary border-opacity-30 `}>
                 <Routes location={previousLocation || location} >
                     <Route path="/settings" element={<MessagesSettings />} />
                     <Route index path="/compose" element={<MessagesSide p={"Choose from your existing conversations, start a new one, or just keep swimming."} showButton />} />
@@ -67,8 +67,8 @@ function MessagesRequests() {
         userName: "",
         name: "",
         isVerified: false,
-        lastMessage: "",
-        lastMessageTime: "3h"
+        followersCount:0,
+        followingCount:0
     });
     const handleSettingClick = () => {
         navigate('/Messages/settings');

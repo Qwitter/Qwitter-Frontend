@@ -1,35 +1,36 @@
 import { Button, PopUpContainer } from '@/components'
 import { ConversationPopUpProps, conversation } from '../types/MessagesTypes'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { deleteMessage } from '@/lib/utils'
+import { deleteConversation } from '@/lib/utils'
 import { useContext } from 'react'
 import { UserContext } from '@/contexts/UserContextProvider'
 import { Spinner } from '@/components/Spinner'
-import { useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
-export function ConversationRemoveMessagePopUp({ show, setShow,messageId }: ConversationPopUpProps) {
+export function ConversationLeavePopUp({ show, setShow, conversationToDelete }: ConversationPopUpProps) {
     const { token } = useContext(UserContext)
     const queryClient = useQueryClient()
-    const {conversationId} = useParams()
+    const navigate =useNavigate()
     const { mutate, isPending } = useMutation({
-        mutationFn: deleteMessage,
-        onMutate: async () => {
-            await queryClient.cancelQueries({ queryKey: ["userConversation",conversationId] })
+        mutationFn: deleteConversation,
+        onMutate: async (data) => {
+            // Cancel any outgoing refetches
+            // (so they don't overwrite our optimistic update)
+            await queryClient.cancelQueries({ queryKey: ['getUserConversations'] })
 
-            const previousConversationMessages = queryClient.getQueryData(["userConversation",conversationId])
-            console.log(previousConversationMessages)
+            // Snapshot the previous value
+            const previousConversations = queryClient.getQueryData(['getUserConversations'])
+
             // Optimistically update to the new value
-            queryClient.setQueryData(["userConversation",conversationId], (old: conversation) =>{
-                old.messages= old.messages.filter(message=> message.id!=messageId)
-                })
+            queryClient.setQueryData(['getUserConversations'], (old: conversation[]) =>old.filter(conversation=> conversation.id!=data.conversationId))
 
             // Return a context object with the snapshotted value
-            return { previousConversationMessages }
+            return { previousConversations }
         },
         onSuccess: (data) => {
             if (data) {
-                console.log(data)
                 setShow!(false)
+                navigate('/Messages/')
             }
 
         },
@@ -38,11 +39,11 @@ export function ConversationRemoveMessagePopUp({ show, setShow,messageId }: Conv
 
         },
         onSettled: () => {
-            queryClient.invalidateQueries({ queryKey: ["userConversation",conversationId] })
+            queryClient.invalidateQueries({ queryKey: ['getUserConversations'] })
         }
     })
     const onSubmit = () => {
-        mutate({ conversationId: conversationId!, token: token!,messageId:messageId! });
+        mutate({ conversationId: conversationToDelete!, token: token! });
     }
 
     return (
@@ -54,17 +55,17 @@ export function ConversationRemoveMessagePopUp({ show, setShow,messageId }: Conv
                 <Spinner />
             </div> : <><div>
                 <h3 className="text-primary text-xl font-bold">
-                Delete message?
+                    Leave conversation?
                 </h3>
                 <p className="text-gray">
-                This message will be deleted for you. Other people in the conversation will still be able to see it. 
+                    This conversation will be deleted from your inbox. Other people in the conversation will still be able to see it.
                 </p>
             </div>
                 <div className="w-full">
                     <Button
                         onClick={onSubmit}
                         variant="destructive" size="full" className="mb-3">
-                        Delete
+                        Leave
                     </Button>
                     <Button
                         onClick={() => { setShow!(false) }}

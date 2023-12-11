@@ -18,12 +18,12 @@ import CreateTweetContainer from "./components/CreateTweet/CreateTweetContainer"
 import { LogOut } from "./components/LogOut/LogOut";
 import { PagesContainer } from "./pages/PagesContainer/PagesContainer";
 import Authentication from "../src/pages/Authentication/Authentication";
-import MessagesNewMessage from "./pages/Messages/MessagesNewMessage";
+import MessagesNewMessage from "./pages/Messages/MessagesPopup/MessagesNewMessage";
 import { EditProfilePopUp } from "@/components/EditProfilePopUp/EditProfilePopUp";
 import { ProfileImageViewer } from "./pages/Profile/ProfileImageViewer";
-import { MessagesGroupEditPopup } from "./pages/Messages/MessagesGroupEditPopup";
+import { MessagesGroupEditPopup } from "./pages/Messages/MessagesPopup/MessagesGroupEditPopup";
 import MessagesContextProvider from "./contexts/MessagesContextProvider";
-import MessagesAddPeoplePopup from "./pages/Messages/MessagesAddPeoplePopup";
+import MessagesAddPeoplePopup from "./pages/Messages/MessagesPopup/MessagesAddPeoplePopup";
 
 const queryClient = new QueryClient();
 

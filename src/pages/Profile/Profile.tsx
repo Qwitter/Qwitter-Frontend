@@ -8,9 +8,8 @@ import { ProfilePosts } from "./ProfilePosts";
 import { ProfileReplies } from "./ProfileReplies";
 import { ProfileMedia } from "./ProfileMedia";
 import { ProfileLikes } from "./ProfileLikes";
-import { useContext, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { getUserProfile } from "@/lib/utils";
-import { UserContext } from "@/contexts/UserContextProvider";
 import { UserProfileData } from "@/models/User";
 import { useQuery } from "@tanstack/react-query";
 import { Spinner } from "@/components/Spinner";
@@ -22,21 +21,12 @@ TODO: handle invalid username
 export function Profile() {
   const { username } = useParams();
   const [user, setUser] = useState<UserProfileData | null>();
-  const { token } = useContext(UserContext);
-
-  if (!username || username!.length >= 15) {
-    // Redirect or handle the case when the username is too long
-    return (
-      <>
-        <Navigate to="/home" />
-      </>
-    );
-  }
-
+  const token = localStorage.getItem('token')
   const getUser = async () => {
-    const user = await getUserProfile(token!, username);
-    setUser(user.data);
-    return user.data;
+    const user = await getUserProfile(token!, username!);
+    console.log(user)
+    setUser(user);
+    return user;
   };
 
   const { refetch } = useQuery({
@@ -47,6 +37,16 @@ export function Profile() {
   useEffect(() => {
     if (token) refetch();
   }, [token, refetch]);
+
+  if (!username || username!.length >= 15) {
+    // Redirect or handle the case when the username is too long
+    return (
+      <>
+        <Navigate to="/home" />
+      </>
+    );
+  }
+
 
   if (!user)
     return (

@@ -14,7 +14,6 @@ export function ConversationBlockUserPopup({ show, setShow, userName }: Conversa
         mutationFn: ()=>BlockService(userName!,token!),
         onSuccess: (data) => {
             if (data) {
-                console.log(data)
                 setShow!(false)
                 navigate('/Messages/')
             }

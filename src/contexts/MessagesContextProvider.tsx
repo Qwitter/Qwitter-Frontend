@@ -9,7 +9,7 @@ type MessageReply = {
     replyId: string;
     message: string;
     userName: string;
-
+    image:{value:string,type:string}[]
 }
 
 type MessagesContextType = {

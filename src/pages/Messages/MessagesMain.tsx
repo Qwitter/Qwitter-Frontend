@@ -1,5 +1,5 @@
 import { User, Mail } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { searchHeaderOptions } from "@/constants";
 import { MessagesList } from "./MessagesList";
 import { MessagesSearch } from "./MessagesSearch";
@@ -82,12 +82,7 @@ function SearchMessagesResults({ active, text }: { active: string; text: string;
         queryKey: ["ConversationsSearch"+text],
         queryFn: () => conversationSearch(token!, text)
     });
-    useEffect(() => { console.log(data) }, [])
 
-    useEffect(() => {
-        !isPending && console.log(data)
-        console.log(data?.people)
-    }, [data])
     if (isPending) {
         return (
             <div className="w-full h-[600px] p-8">
@@ -133,7 +128,7 @@ function SearchMessagesResults({ active, text }: { active: string; text: string;
                         <h2 className="font-bold text-xl">Messages</h2>
                     </div>
                 </div>
-                    <MessagesList mode="conversations" matchedPart={text} conversations={data.groups} /></>}
+                    <MessagesList mode="conversations" matchedPart={text} conversations={data.messages} /></>}
 
             </div>
         )

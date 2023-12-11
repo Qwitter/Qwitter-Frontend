@@ -19,7 +19,6 @@ export function PagesContainer() {
   const previousLocation = location.state?.previousLocation;
   const user = JSON.parse(localStorage.getItem("user")!)
   useEffect(()=>{
-    console.log(user.userName)
     socket.connect()
     socket.emit(EVENTS.CLIENT.JOIN_ROOM,user.userName);
     socket.on(EVENTS.SERVER.NOTIFICATION, async(notification) => {

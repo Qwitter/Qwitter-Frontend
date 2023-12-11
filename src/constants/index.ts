@@ -24,6 +24,13 @@ const navLinks = [
     notificationCount: 1,
   },
   {
+    id: "explore",
+    title: "Explore",
+    icon: Search,
+    clicked: { strokeWidth: 4 },
+    notificationCount: 0
+  },
+  {
     id: "notification",
     title: "Notification",
     icon: Bell,
@@ -38,13 +45,7 @@ const navLinks = [
     notificationCount: 0,
   },
 
-  {
-    id: "explore",
-    title: "Explore",
-    icon: Search,
-    clicked: { strokeWidth: 4 },
-    notificationCount: 0
-  },
+
   {
     id: "lists",
     title: "Lists",

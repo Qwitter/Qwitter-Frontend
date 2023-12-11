@@ -8,7 +8,7 @@ import { Spinner } from "@/components/Spinner";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { CreateConversation, cn, getConversationsUsersSuggestions } from "@/lib/utils";
 import { UserContext } from "@/contexts/UserContextProvider";
-import { MessageUser } from "./types/MessagesTypes";
+import { MessageUser } from "../types/MessagesTypes";
 import { MessagesContext } from "@/contexts/MessagesContextProvider";
 function MessagesNewMessage() {
     const [isFocus, setFocus] = useState(false);
@@ -31,7 +31,6 @@ function MessagesNewMessage() {
         mutationFn: CreateConversation,
         onSuccess: (data) => {
             if (data) {
-                console.log(data)
                 navigate('/Messages/' + data.id)
             }
 
@@ -160,9 +159,7 @@ function ShowUsersSuggestions({ onUserClick, users, selectedUsers }: { selectedU
 function ShowAllUserConversations({ onUserClick, selectedUsers }: { selectedUsers: MessageUser[], onUserClick: (user: MessageUser) => void }) {
     const { userAllConversation } = useContext(MessagesContext)
     const navigate = useNavigate()
-    useEffect(() => {
-        console.log(userAllConversation)
-    }, [])
+
     return (
         <ul className="flex-shrink min-h-[60vh]" >
 
