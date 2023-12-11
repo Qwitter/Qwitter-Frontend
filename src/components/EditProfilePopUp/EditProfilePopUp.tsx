@@ -93,6 +93,18 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
     },
   });
 
+  const callEditProfileImage = useMutation({
+    mutationFn: () => {
+      return uploadProfileImage(profileImage!, token!);
+    },
+  });
+
+  const callEditProfileBanner = useMutation({
+    mutationFn: () => {
+      return uploadProfileImage(profileBanner!, token!, true);
+    },
+  });
+
   const handleSave = async (): Promise<void> => {
     // check for errors first
     await form.trigger();
@@ -108,11 +120,11 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
     }
 
     if (profileImage) {
-      await uploadProfileImage(profileImage, token!);
+      callEditProfileImage.mutate();
     }
 
     if (profileBanner) {
-      await uploadProfileImage(profileBanner, token!, true);
+      callEditProfileBanner.mutate();
     }
 
     if (!isChanged()) {
@@ -135,6 +147,7 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
     callEditUserData.mutate(editedUserData);
 
     //TODO: proceed when request is fulfilled
+    //TODO: we can set the user with the response instead
     setUser({
       name: editedUserData.name,
       email: user?.email ?? "",
@@ -147,8 +160,8 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
       passwordChangedAt: user?.passwordChangedAt ?? "",
       id: user?.id ?? "",
       google_id: user?.google_id ?? "",
-      profileImageUrl: user?.profileImageUrl ?? "", // TODO: modify this
-      profileBannerUrl: user?.profileBannerUrl ?? "", //TODO: modify this
+      profileImageUrl: callEditProfileImage.data.profileImageUrl,
+      profileBannerUrl: callEditProfileBanner.data.profileBannerUrl,
     });
 
     if (onSave) onSave();

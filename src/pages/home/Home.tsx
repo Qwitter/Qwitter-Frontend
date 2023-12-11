@@ -9,7 +9,7 @@ import { UserContext } from "@/contexts/UserContextProvider";
 export function Home() {
   const [active, setActive] = useState("For you");
   const { token } = useContext(UserContext);
-  const { data, ref, refetch } = useInfiniteScroll(
+  const { data, ref, refetch, hasMoreData } = useInfiniteScroll(
     async ({ pageParam }) => {
       return await timelineTweets(pageParam, 10, token!);
     },
@@ -58,7 +58,11 @@ export function Home() {
         <div>
           <CreateTweetContainer mode="home" />
         </div>
-        <TweetsList fetcherRef={ref} pages={data?.pages || [[]]} />
+        <TweetsList
+          fetcherRef={ref}
+          pages={data?.pages || [[]]}
+          hasMoreData={hasMoreData}
+        />
       </div>
       <div className="max-w-[600px]  pb-16 relative flex flex-col z-0 w-[36.5%] max-largeX:hidden  h-full">
         <div className="w-full sticky top-0 z-50 bg-black   ">

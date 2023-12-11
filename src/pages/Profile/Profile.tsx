@@ -16,8 +16,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Spinner } from "@/components/Spinner";
 
 /*
-TODO: handle invalid username
 TODO: profile endpoint not working
+TODO: handle invalid username
 */
 
 export function Profile() {
@@ -67,12 +67,7 @@ export function Profile() {
           </span>
           <span className="flex flex-col w-full ml-3">
             <span className="text-xl font-bold pt-0.5">{user?.name}</span>
-            <span
-              className="text-[13px] text-gray"
-              // TODO: will be added by the backend
-            >
-              0 posts
-            </span>
+            <span className="text-[13px] text-gray">{user?.tweetCount}</span>
           </span>
         </div>
         <ProfileMain user={user!} />

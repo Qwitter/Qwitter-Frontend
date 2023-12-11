@@ -99,6 +99,7 @@ export const UserDataSchema = z.object({
 export const UserProfileSchema = z
   .object({
     location: z.string().nullish(),
+    tweetCount: z.number().default(0).nullish(),
   })
   .merge(UserDataSchema);
 

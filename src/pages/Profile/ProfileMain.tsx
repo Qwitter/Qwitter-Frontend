@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 
 /*
-TODO: change button if it's not the user's profile
+TODO: change button if it's not the user's profile (need to find a way to know if he's a friend)
 TODO: following and followers go to another page (youssef)
 TODO: options menu and message menu
 */

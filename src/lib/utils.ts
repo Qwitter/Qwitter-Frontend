@@ -804,7 +804,7 @@ export const editUserProfile = async (
       {
         name: parseResult.name,
         description: parseResult.description,
-        Location: parseResult.location,
+        location: parseResult.location,
         url: parseResult.url,
         birth_date: parseResult.birthDate,
       },

@@ -5,6 +5,8 @@ import { Spinner } from "../Spinner";
 type TweetsListProps = {
   pages: Tweet[][];
   fetcherRef?: (node?: Element | null | undefined) => void;
+  hasMoreData?: boolean;
+  childOnEnd?: React.ReactNode;
 };
 
 /*
@@ -12,7 +14,12 @@ NEEDED:
   loading state & error
 */
 
-const TweetsList = ({ pages, fetcherRef }: TweetsListProps) => {
+const TweetsList = ({
+  pages,
+  fetcherRef,
+  hasMoreData,
+  childOnEnd,
+}: TweetsListProps) => {
   if (!pages)
     return (
       <div className="mt-52">
@@ -26,14 +33,16 @@ const TweetsList = ({ pages, fetcherRef }: TweetsListProps) => {
           <>
             <TweetComponent
               tweet={tweet}
-              key={tweet.id + Math.floor(Math.random() * 50000)} // for mock server only
+              key={tweet.id}
+              // key={tweet.id + Math.floor(Math.random() * 50000)} // for mock server only
             />
-            {i === pages.length - 1 && j === page.length - 1 && (
+            {hasMoreData && i === pages.length - 1 && j === page.length - 1 && (
               <div className="py-10">
                 <div ref={fetcherRef}></div>
                 <Spinner />
               </div>
             )}
+            {!hasMoreData && childOnEnd}
           </>
         ))
       )}
