@@ -107,6 +107,7 @@ export const Step1 = ({ nextStep, userData, addStep1Data }: Step1Props) => {
               {...form.register("name", {
                 value: userData?.name,
               })}
+              maxLength={50}
               role="name"
               errorMessage={form.formState.errors.name?.message?.toString()}
             />
