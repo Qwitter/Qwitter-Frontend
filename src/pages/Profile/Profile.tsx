@@ -7,7 +7,7 @@ import { ProfilePosts } from "./ProfilePosts";
 import { ProfileReplies } from "./ProfileReplies";
 import { ProfileMedia } from "./ProfileMedia";
 import { ProfileLikes } from "./ProfileLikes";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { getUserProfile } from "@/lib/utils";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { UserProfileData } from "@/models/User";
@@ -24,7 +24,7 @@ TODO: handle invalid username
 export function Profile() {
   const { username } = useParams();
   const { token } = useContext(UserContext);
-
+  const [blocked, setBlocked] = useState(false);
   // if (!username || username!.length >= 15) {
   //   // Redirect or handle the case when the username is too long
   //   return (
@@ -40,6 +40,7 @@ export function Profile() {
   });
   useEffect(() => {
     window.scrollTo(0, 0);
+    setBlocked(user?.isBlocked!);
   }, []);
 
   if (!user)
@@ -66,18 +67,23 @@ export function Profile() {
           </span>
         </div>
         <ProfileMain user={user!} />
-        <BlockedProfile username={username!} />
-        {/* <div className="bg-red-800">
-          <ProfileSections />
-          <div>
+
+        {blocked ? (
+          <BlockedProfile
+            username={username!}
+            ViewPostsFunction={() => setBlocked(false)}
+          />
+        ) : (
+          <>
+            <ProfileSections />
             <Routes>
               <Route index path="/" element={<ProfilePosts />} />
               <Route path="/with_replies" element={<ProfileReplies />} />
               <Route path="/media" element={<ProfileMedia />} />
               <Route path="/likes" element={<ProfileLikes />} />
             </Routes>
-          </div>
-        </div> */}
+          </>
+        )}
       </div>
       <div className="max-w-[600px]  pb-16 relative flex flex-col z-0 w-[36.5%] max-largeX:hidden  h-full">
         <div className="w-full sticky top-0 z-50 bg-black   ">

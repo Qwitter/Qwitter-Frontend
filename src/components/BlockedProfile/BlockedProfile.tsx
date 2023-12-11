@@ -1,6 +1,13 @@
 import { Button } from "../ui/button";
 
-export function BlockedProfile({ username }: { username: string }) {
+export type BlockedProfileProps = {
+  username: string;
+  ViewPostsFunction: () => void;
+};
+export function BlockedProfile({
+  username,
+  ViewPostsFunction,
+}: BlockedProfileProps) {
   return (
     <>
       <div className="w-full mt-10">
@@ -10,7 +17,11 @@ export function BlockedProfile({ username }: { username: string }) {
             Are you sure you want to view these posts? Viewing posts won’t
             unblock @{username}.
           </div>
-          <Button className="w-[155px] h-[50px]" variant={"secondary"}>
+          <Button
+            onClick={ViewPostsFunction}
+            className="w-[155px] h-[50px]"
+            variant={"secondary"}
+          >
             View Posts
           </Button>
         </div>

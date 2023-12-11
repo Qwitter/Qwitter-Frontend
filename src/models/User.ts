@@ -17,7 +17,6 @@ export type User = {
   google_id: string;
   profileImageUrl: string;
   profileBannerUrl: string;
-  description: string;
   verified: boolean,
   isFollowing:boolean,
 };
@@ -104,6 +103,7 @@ export const UserProfileSchema = z
     location: z.string().nullish(),
     tweetCount: z.number().default(0).nullish(),
     isFollowing: z.boolean().default(false).nullish(),
+    isBlocked: z.boolean().default(false).nullish(),
   })
   .merge(UserDataSchema);
 
