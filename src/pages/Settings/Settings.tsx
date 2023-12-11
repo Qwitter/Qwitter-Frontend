@@ -4,6 +4,8 @@ import { UpdateEmail } from "@/components/UpdateEmail/UpdateEmail";
 import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ChangePassword } from "@/components/ChangePassword/ChangePassword";
+import { PrivacyInformation } from "@/components/PrivacyInformation/PrivacyInformation";
+import { BlockMuteList } from "@/components/BlockMuteList/BlockMuteList";
 
 export function Settings() {
   const [active, setActive] = useState("Your account");
@@ -14,6 +16,12 @@ export function Settings() {
         setActive("Your account");
         break;
       case "/settings/privacy_and_safety":
+        setActive("Privacy and safety");
+        break;
+      case "/settings/Muted":
+        setActive("Privacy and safety");
+        break;
+      case "/settings/Blocked":
         setActive("Privacy and safety");
         break;
       default:
@@ -32,20 +40,27 @@ export function Settings() {
           <Route path="/account" element={<YourAccount />} />
           <Route
             path="/your_twitter_data/account"
+            element={<AccountInformation />}
+          />
+          <Route path="/password" element={<ChangePassword />} />
+          <Route path="/screen_name" element={<ChangeUsername />} />
+          <Route path="/email" element={<UpdateEmail />} />
+          <Route
+            path="/Blocked"
             element={
-              <AccountInformation
+              <BlockMuteList
+                headername="Blocked Accounts"
+                service="BlockList"
               />
             }
           />
-          <Route path="/password" element={<ChangePassword />} />
           <Route
-            path="/screen_name"
-            element={<ChangeUsername />}
+            path="/Muted"
+            element={
+              <BlockMuteList headername="Muted Accounts" service="MuteList" />
+            }
           />
-          <Route
-            path="/email"
-            element={<UpdateEmail />}
-          />
+          <Route path="/privacy_and_safety" element={<PrivacyInformation />} />
         </Routes>
       </div>
     </>

@@ -11,18 +11,12 @@ export function FollowButton({ username, isFollowing }: FollowButtonProp) {
   const [state, setstate] = useState(isFollowing);
   const [showDialog, setshowDialog] = useState(false);
   const { token } = useContext(UserContext);
-  const {
-    mutateAsync: FollowServiceFn,
-    // isPending: FollowServicePending,
-  } = useMutation({
+  const { mutateAsync: FollowServiceFn } = useMutation({
     mutationFn: token
       ? (username: string) => FollowService(username, token)
       : undefined,
   });
-  const {
-    mutateAsync: unFollowServiceFn,
-    // isPending: FollowServicePending,
-  } = useMutation({
+  const { mutateAsync: unFollowServiceFn } = useMutation({
     mutationFn: token
       ? (username: string) => UnFollowService(username, token)
       : undefined,
