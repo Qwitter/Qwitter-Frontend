@@ -8,7 +8,7 @@ import {
 } from "@/models/EmailVerification";
 import { SignUpDataSchema } from "@/models/SignUp";
 import { BirthDay, MONTHS } from "@/models/BirthDay";
-import { UserDataSchema } from "@/models/User";
+import { EditUserSchema, UserDataSchema } from "@/models/User";
 
 const { VITE_BACKEND_URL } = import.meta.env;
 
@@ -526,20 +526,21 @@ export const timelineTweets = async (
   token: string
 ) => {
   if (!token) return [];
+
   try {
     const response = await axios.get(
       `${VITE_BACKEND_URL}/api/v1/tweets?page=${pageParam}&limit=${limit}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
-          Accept: "applicationjson",
+          Accept: "application/json",
         },
       }
     );
     return response.data.tweets;
   } catch (error) {
     console.log(error);
-    return null;
+    return [];
   }
 };
 
@@ -585,6 +586,7 @@ export const getHashtags = async (token: string, tag: string) => {
     return null;
   }
 };
+
 /**
  * @description get a list of user conversations
  * @param token
@@ -592,7 +594,6 @@ export const getHashtags = async (token: string, tag: string) => {
  */
 export const getUserConversations = async (token: string) => {
   try {
-
     const res = await axios.get(
       `${VITE_BACKEND_URL}/api/v1/conversation/`,
       {
@@ -882,6 +883,30 @@ export const deleteTweet = async (tweetId: string, token: string) => {
     throw new Error("Error deleting tweet");
   }
 };
+
+/**
+ * @description Get the user profile data from the backend using the token
+ * @param token
+ * @return object represents the user profile data
+ */
+export const getUserProfile = async (token: string, username: string) => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/${username}`, {
+      withCredentials: true,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
 /**
  * @description to get the user followers suggestions list
  * @param token
@@ -905,6 +930,206 @@ export const GetFollowSuggestionsService = async (token:string) => {
   }
 };
 
+
+/**
+ * @description edit user profile
+ * @param editedUserData holds the new data of the user
+ * @return success message or null in case of error
+ */
+export const editUserProfile = async (
+  editedUserData: object,
+  token: string
+) => {
+  let parseResult = null;
+  try {
+    parseResult = EditUserSchema.parse(editedUserData);
+  } catch (error) {
+    console.log("Error Parsing Data: ", error);
+    return null;
+  }
+
+  try {
+    const response = await axios.put(
+      `${VITE_BACKEND_URL}/api/v1/user/profile`,
+      {
+        name: parseResult.name,
+        description: parseResult.description,
+        location: parseResult.location,
+        url: parseResult.url,
+        birth_date: parseResult.birthDate,
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "object",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+/**
+ * @description Load profile tweets
+ * @param pageParam used for infinite queries
+ * @param limit used to specify the array length
+ * @param username username of the viewed profile
+ * @param token used to authorize the request
+ * @returns Array of tweets
+ */
+export const profileTweets = async (
+  pageParam: number = 1,
+  limit: number = 10,
+  username: string,
+  token: string
+) => {
+  if (!token) return [];
+
+  try {
+    const response = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/tweets/user/${username}?page=${pageParam}&limit=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      }
+    );
+    return response.data.tweets;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+
+/**
+ * @description Load profile replies
+ * @param pageParam used for infinite queries
+ * @param limit used to specify the array length
+ * @param username username of the viewed profile
+ * @param token used to authorize the request
+ * @returns Array of tweets
+ */
+export const profileReplies = async (
+  pageParam: number = 1,
+  limit: number = 10,
+  username: string,
+  token: string
+) => {
+  if (!token) return [];
+
+  try {
+    const response = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/tweets/user/${username}/replies?page=${pageParam}&limit=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      }
+    );
+    return response.data.tweets;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+
+/**
+ * @description Load profile liked posts
+ * @param pageParam used for infinite queries
+ * @param limit used to specify the array length
+ * @param username username of the viewed profile
+ * @param token used to authorize the request
+ * @returns Array of tweets
+ */
+export const profileLikes = async (
+  pageParam: number = 1,
+  limit: number = 10,
+  username: string,
+  token: string
+) => {
+  if (!token) return [];
+
+  try {
+    const response = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/tweets/user/${username}/like?page=${pageParam}&limit=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      }
+    );
+    return response.data.tweets;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+
+/**
+ * @description Load profile posts with media
+ * @param pageParam used for infinite queries
+ * @param limit used to specify the array length
+ * @param username username of the viewed profile
+ * @param token used to authorize the request
+ * @returns Array of tweets
+ */
+export const profileMedia = async (
+  pageParam: number = 1,
+  limit: number = 10,
+  username: string,
+  token: string
+) => {
+  if (!token) return [];
+
+  try {
+    const response = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/tweets/user/${username}/media?page=${pageParam}&limit=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      }
+    );
+    return response.data.tweets;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+
+/**
+ * @description unfollow a certain user
+ * @param username the username to unfollow
+ * @param token to authorize request
+ * @returns object with the status of the request
+ */
+export const unfollow = async (username: string, token: string) => {
+  if (!token) return null;
+
+  try {
+    const response = await axios.delete(
+      `${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
 
 /**
  * @description follow specific user
@@ -938,6 +1163,7 @@ export const FollowService = async (username: string,token: string) => {
  */
 export const UnFollowService = async (username: string, token: string) => {
   try {
+    debugger;
     const res = await axios.delete(`${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
       {
         headers: {
@@ -984,6 +1210,7 @@ export const GetTrendsService = async (token:string) => {
  */
 export const GetFollowersService = async (username:string,token:string) => {
   try {
+    debugger;
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/followers/${username}`,
       {
         headers: {
@@ -1008,6 +1235,7 @@ export const GetFollowersService = async (username:string,token:string) => {
  */
 export const GetFollowingsService = async (username:string,token: string) => {
   try {
+    debugger;
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/follow/${username}`, {
       headers: {
         Accept: "application/json",
@@ -1069,6 +1297,32 @@ export const UnBlockService = async (username: string, token: string) => {
 };
 
 /**
+ * @description follow a certain user
+ * @param username the username to unfollow
+ * @param token to authorize request
+ * @returns object with the status of the request
+ */
+export const follow = async (username: string, token: string) => {
+  if (!token) return null;
+
+  try {
+    const response = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+/**
  * @description get Blocked list in Settings page (Block section)
  * @param token
  * @returns  users array represents the response from the backend or null
@@ -1112,6 +1366,7 @@ export const MuteService = async (username: string, token: string) => {
     return null;
   }
 };
+    
 /**
  * @description unmute specific user
  * @param username of this specific user

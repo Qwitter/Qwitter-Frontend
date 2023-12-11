@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
 /*
@@ -12,6 +12,7 @@ export const useInfiniteScroll = (
   fetchFunction: ({ pageParam }: { pageParam: number }) => Promise<any>,
   queryKey: string[]
 ) => {
+  const [hasMoreData, setHasMoreData] = useState(false);
   const { ref, inView } = useInView();
 
   const {
@@ -21,7 +22,7 @@ export const useInfiniteScroll = (
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-    refetch
+    refetch,
   } = useInfiniteQuery({
     queryKey: queryKey,
     queryFn: fetchFunction,
@@ -37,6 +38,19 @@ export const useInfiniteScroll = (
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
-  
-  return { data, ref, isFetchingNextPage, error, isError, refetch };
+  useEffect(() => {
+    if (!isFetchingNextPage && !hasNextPage) setHasMoreData(false);
+    else setHasMoreData(true);
+  }, [isFetchingNextPage, hasNextPage, setHasMoreData]);
+
+  return {
+    data,
+    ref,
+    isFetchingNextPage,
+    error,
+    isError,
+    refetch,
+    hasMoreData,
+    hasNextPage,
+  };
 };

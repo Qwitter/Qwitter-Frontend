@@ -2,24 +2,18 @@ import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { GetFollowSuggestionsService } from "@/lib/utils";
 import { UsersList } from "../UsersList/UsersList";
 import { useQuery } from "@tanstack/react-query";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { User } from "@/models/User";
 import { Skeleton } from "../ui/skeleton";
 
 export function FollowCard() {
   const { token } = useContext(UserContext);
-  const {
-    data: FollowSuggestions,
-    refetch: refetchFollowSuggestions,
-  } = useQuery<User[]>({
-    queryKey: ["followSuggestions"],
+  const { data: FollowSuggestions } = useQuery<User[]>({
+    queryKey: ["followSuggestions", token],
     queryFn: () => GetFollowSuggestionsService(token!),
     select: (data) => data?.slice(0, 3),
   });
-  useEffect(() => {
-    refetchFollowSuggestions();
-  }, [token, refetchFollowSuggestions]);
   return (
     <>
       {FollowSuggestions ? (
