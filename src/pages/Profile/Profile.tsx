@@ -15,6 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Spinner } from "@/components/Spinner";
 import { FollowCard } from "@/components/FollowCard/FollowCard";
 import { TrendCard } from "@/components/TrendCard/TrendCard";
+import { BlockedProfile } from "@/components/BlockedProfile/BlockedProfile";
 
 /*
 TODO: handle invalid username
@@ -65,15 +66,18 @@ export function Profile() {
           </span>
         </div>
         <ProfileMain user={user!} />
-        <ProfileSections />
-        <div>
-          <Routes>
-            <Route index path="/" element={<ProfilePosts />} />
-            <Route path="/with_replies" element={<ProfileReplies />} />
-            <Route path="/media" element={<ProfileMedia />} />
-            <Route path="/likes" element={<ProfileLikes />} />
-          </Routes>
-        </div>
+        <BlockedProfile username={username!} />
+        {/* <div className="bg-red-800">
+          <ProfileSections />
+          <div>
+            <Routes>
+              <Route index path="/" element={<ProfilePosts />} />
+              <Route path="/with_replies" element={<ProfileReplies />} />
+              <Route path="/media" element={<ProfileMedia />} />
+              <Route path="/likes" element={<ProfileLikes />} />
+            </Routes>
+          </div>
+        </div> */}
       </div>
       <div className="max-w-[600px]  pb-16 relative flex flex-col z-0 w-[36.5%] max-largeX:hidden  h-full">
         <div className="w-full sticky top-0 z-50 bg-black   ">
