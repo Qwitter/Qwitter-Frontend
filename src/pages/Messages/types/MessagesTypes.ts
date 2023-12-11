@@ -13,12 +13,16 @@ export type Images = {
 };
 export type MessageUser = {
     id?: number;
-    userPhoto: string;
+    profileImageUrl: string;
     userName: string;
+    followersCount:number;
+    followingCount:number;
+    description?:string;
+    isFollowed?:boolean;
+    isFollowing?:boolean;
     name: string;
+
     isVerified?: boolean;
-    lastMessage?: string;
-    lastMessageTime?: string;
 }
 export type Mention = {
     position: number;
@@ -32,14 +36,14 @@ export type MessagesListProp = {
     newMessageRequest?: boolean;
     selectedUser?: MessageUser;
     selectedConversation?: conversation;
-    mode: "normal" | "request" | "People" | "conversations";
+    mode: "normal" | "request" | "People" | "conversations"|"Group";
     matchedPart?: string;
     setSelectedUser?: React.Dispatch<React.SetStateAction<MessageUser>>
-    setSelectedConversation?: React.Dispatch<React.SetStateAction<conversation|undefined>>
+    setSelectedConversation?: React.Dispatch<React.SetStateAction<conversation | undefined>>
     followButton?: React.ComponentType<{
         className?: string;
     }>;
-    showDeletePopUp?: () => void
+    showDeletePopUp?: (conversationId: string) => void
 }
 export type MessagesSideProp = {
     p: string;
@@ -53,66 +57,66 @@ export type MessagesRequestPopUpProp = {
     handleRemoveConversation: () => void;
 }
 export type MessagesMessage = {
+    isMessage: boolean;
+    isGroup: boolean;
+    id: string;
+    text: string;
+    date: string;
+    userName: string;
+    profileImageUrl: string;
+    replyToMessage: MessagesMessage;
+    entities: {
+        hasthtags: { text: string; count: 15 }[];
+        media: { value: string; type: string; id: string }[];
+        mentions: string[];
+    };
+};
 
-    "status": string,
-    "id": string,
-    "text": string
-    "date": string,
-    "userName": string,
-    "profileImageUrl": string,
-    "replyToMessage": MessagesMessage,
-    "entities": {
-        "hasthtags": { "text": string; "count": 15 }[],
-        "media": { "value": string; "type": string; "id": string },
-        "mentions": string[]
-    }
-}
-export type MessagesConversationInfoProps = {
-    type: "group" | "direct" | string;
-    imageUrl: string;
-    id: number;
-    name: string;
-    groupName?: string;
-    users: { userName: string; userPhoto: string; isFollowing: boolean; }[]
-}
+
 export type ConversationPopUpProps = {
     show: boolean;
     setShow?: React.Dispatch<React.SetStateAction<boolean>>;
-    leaveFunction?: () => void;
+    conversationToDelete?: string;
+    messageId?: string;
+    userName?: string;
 }
 
 export type conversation = {
-    "id"?: string;
-    "name": string;
-    "photo": string;
-    "type": string;
-    "isGroup"?: boolean;
-    "users": conversationWithUserUser[];
-    "lastMessage"?: MessagesMessage;
-    "messages": MessagesMessage[];
-
-}
-export type conversationWithUserUser = {
+    seen: boolean;
+    blocked:boolean;
+    id?: string;
     name: string;
-    userName: string;
-    userPhoto: string;
+    photo: string;
+    isGroup: boolean;
+    users: MessageUser[];
+    lastMessage?: MessagesMessage;
+    fullName?:string;
+    messages: MessagesMessage[];
+};
 
-}
+
 export type conversations = {
     "unseen": 0;
     "conversations": conversation[];
+}
+export type SearchConversations = {
+    status: string;
+    groups: conversation[];
+    people: conversation[];
+    messages: conversation[]
 }
 
 export const EVENTS = {
     connection: 'connection',
     CLIENT: {
-        CREATE_ROOM: 'CREATE_ROOM',
-        SEND_ROOM_MESSAGE: 'SEND_ROOM_MESSAGE',
-        JOIN_ROOM: 'JOIN_ROOM',
+        SEND_ROOM_MESSAGE: 'SEND_ROOM_MESSAGE', // Used for sending a message
+        JOIN_ROOM: 'JOIN_ROOM', // Joiniing a room. It can be used by joining  a conversation room or a userName room for notifications.
     },
     SERVER: {
         ROOMS: 'ROOMS',
-        JOINED_ROOM: 'JOINED_ROOM',
-        ROOM_MESSAGE: 'ROOM_MESSAGE',
+        JOINED_ROOM: 'JOINED_ROOM', // Sending a message that a user joined a room
+        ROOM_MESSAGE: 'ROOM_MESSAGE', // Sending a message to the conversation room socket only
+        NOTIFICATION: 'NOTIFICATION', // Sending a message to the room of the username
+        MESSAGE: 'MESSAGE', // Sending a general message to the user on the room of the username
     },
 };

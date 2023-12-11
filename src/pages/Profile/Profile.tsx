@@ -9,7 +9,6 @@ import { ProfileMedia } from "./ProfileMedia";
 import { ProfileLikes } from "./ProfileLikes";
 import { useContext, useEffect } from "react";
 import { getUserProfile } from "@/lib/utils";
-import { UserContext } from "@/contexts/UserContextProvider";
 import { UserProfileData } from "@/models/User";
 import { useQuery } from "@tanstack/react-query";
 import { Spinner } from "@/components/Spinner";
@@ -40,6 +39,16 @@ export function Profile() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  if (!username || username!.length >= 15) {
+    // Redirect or handle the case when the username is too long
+    return (
+      <>
+        <Navigate to="/home" />
+      </>
+    );
+  }
+
 
   if (!user)
     return (

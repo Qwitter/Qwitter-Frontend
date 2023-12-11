@@ -18,11 +18,12 @@ import CreateTweetContainer from "./components/CreateTweet/CreateTweetContainer"
 import { LogOut } from "./components/LogOut/LogOut";
 import { PagesContainer } from "./pages/PagesContainer/PagesContainer";
 import Authentication from "../src/pages/Authentication/Authentication";
-import MessagesNewMessage from "./pages/Messages/MessagesNewMessage";
+import MessagesNewMessage from "./pages/Messages/MessagesPopup/MessagesNewMessage";
 import { EditProfilePopUp } from "@/components/EditProfilePopUp/EditProfilePopUp";
 import { ProfileImageViewer } from "./pages/Profile/ProfileImageViewer";
-import { MessagesGroupEditPopup } from "./pages/Messages/MessagesGroupEditPopup";
+import { MessagesGroupEditPopup } from "./pages/Messages/MessagesPopup/MessagesGroupEditPopup";
 import MessagesContextProvider from "./contexts/MessagesContextProvider";
+import MessagesAddPeoplePopup from "./pages/Messages/MessagesPopup/MessagesAddPeoplePopup";
 
 const queryClient = new QueryClient();
 
@@ -35,44 +36,35 @@ function App() {
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <UserContextProvider>
           <MessagesContextProvider>
-            <Routes location={previousLocation || location}>
-              <Route path="/" element={<Authentication />} />
-            </Routes>
-            {location.pathname !== "/" &&
-              !location.pathname.includes("/i/flow") &&
-              previousLocation?.pathname !== "/" && <PagesContainer />}
-            <Routes>
-              this is the popup routs
-              <Route path="/i/flow/signup" element={<SignUpSteps />} />
-              <Route
-                path="/i/flow/signup/input_flow_data"
-                element={<LoginSignUp />}
-              />
-              <Route path="/i/flow/login" element={<Login />} />
-              <Route path="/i/flow/password_reset" element={<PasswordRest />} />
-              <Route
-                path="/i/flow/single-sign/callback"
-                element={<OAuthInterceptor />}
-              />
-              <Route path="/i/flow/single-sign" element={<OAuth />} />
-              <Route path="/i/flow/profile" element={<ProfileComplete />} />
-              <Route path="/i/flow/add_email" element={<UpdateEmailPopUp />} />
-              <Route path="/compose/tweet" element={<CreateTweetContainer />} />
-              <Route path="/i/flow/logout" element={<LogOut />} />
-              <Route
-                path="/Messages/compose"
-                element={<MessagesNewMessage />}
-              />
-              <Route
-                path="/Messages/:conversationId/group-info"
-                element={<MessagesGroupEditPopup />}
-              />
-              <Route
-                path="/Messages/:conversationId/add"
-                element={<MessagesNewMessage />}
-              />
-              {/* <Route path="settings/profile" element={<MessagesNewMessage />} /> */}
-              <Route path="settings/profile" element={<MessagesNewMessage />} />
+          <Routes location={previousLocation || location}>
+            <Route path="/" element={<Authentication />} />
+          </Routes>
+          {location.pathname !== "/" &&
+            !location.pathname.includes("/i/flow") &&
+            previousLocation?.pathname !== "/" && <PagesContainer />}
+          <Routes>
+            {/* this is the popup routs */}
+            <Route path="/i/flow/signup" element={<SignUpSteps />} />
+            <Route
+              path="/i/flow/signup/input_flow_data"
+              element={<LoginSignUp />}
+            />
+            <Route path="/i/flow/login" element={<Login />} />
+            <Route path="/i/flow/password_reset" element={<PasswordRest />} />
+            <Route
+              path="/i/flow/single-sign/callback"
+              element={<OAuthInterceptor />}
+            />
+            <Route path="/i/flow/single-sign" element={<OAuth />} />
+            <Route path="/i/flow/profile" element={<ProfileComplete />} />
+            <Route path="/i/flow/add_email" element={<UpdateEmailPopUp />} />
+            <Route path="/compose/tweet" element={<CreateTweetContainer />} />
+            <Route path="/i/flow/logout" element={<LogOut />} />
+            <Route path="/Messages/compose" element={<MessagesNewMessage />} />
+            <Route path="/Messages/:conversationId/group-info" element={<MessagesGroupEditPopup />} />
+            <Route path="/Messages/:conversationId/add" element={<MessagesAddPeoplePopup />} />
+            {/* <Route path="settings/profile" element={<MessagesNewMessage />} /> */}
+            <Route path="settings/profile" element={<MessagesNewMessage />} />
               <Route
               path="/:username/settings/profile"
               element={<EditProfilePopUp />}
@@ -85,8 +77,8 @@ function App() {
                 path="/:username/header_photo"
                 element={<ProfileImageViewer isBanner={true} />}
               />
-            </Routes>
-            <Toaster />
+          </Routes>
+          <Toaster />
           </MessagesContextProvider>
         </UserContextProvider>
       </ThemeProvider>

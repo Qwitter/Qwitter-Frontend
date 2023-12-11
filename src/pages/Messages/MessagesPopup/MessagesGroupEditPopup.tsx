@@ -12,16 +12,16 @@ import { z } from "zod";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { Spinner } from "@/components/Spinner";
-import { changeGroupName } from "@/lib/utils";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { toast } from "@/components/ui/use-toast";
+import { updateGroupImageAndName } from "@/lib/utils";
 
 
 
 export const MessagesGroupEditPopup = () => {
     const [imageFile, setImageFile] = useState<File>(); // here is where the file of the image will be set so we can send it to backend
     const [image, setImage] = useState(""); // here is where the file of the image will be set so we can send it to backend
-    const { group } = useContext(MessagesContext)
+    const { currentConversation } = useContext(MessagesContext)
     const navigate = useNavigate()
     const { conversationId } = useParams();
     const [imageKey, setImageKey] = useState<number>(0);
@@ -37,18 +37,19 @@ export const MessagesGroupEditPopup = () => {
 
     useEffect(() => {
         handleImageChange()
-        setInputFieldValue(group?.groupName || "")
-        setImage(group?.groupImg || "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg")
-    }, [group?.groupImg, group?.groupName]);
+        setInputFieldValue(currentConversation?.name || "")
+        setNewName(currentConversation?.name || "")
+        setImage(currentConversation?.photo  || "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg")
+    }, []);
     const [newName, setNewName] = useState<string>("");
 
     const { mutate, isPending } = useMutation({
-        mutationFn: changeGroupName,
+        mutationFn: updateGroupImageAndName,
         onSuccess: (data) => {
             if (data) {
                 toast({
-                    title: "Change GroupName",
-                    description: "GroupName changed successfully to " + newName,
+                    title: "Change Group",
+                    description: "Group changed successfully",
                 });
                 navigate(-1);
             }
@@ -60,8 +61,7 @@ export const MessagesGroupEditPopup = () => {
                 });
             }
         },
-        onError: (data) => {
-            console.log(data);
+        onError: () => {
             toast({
                 title: "Change GroupName",
                 description: "Failed : ServerSide error",
@@ -69,12 +69,14 @@ export const MessagesGroupEditPopup = () => {
             });
         }
     })
-    if (!group) {
+    if (!currentConversation) {
         return (<></>)
     }
     const handleSubmit = () => {
-        imageFile
-        mutate({ conversationId: conversationId!, token: token!, name: newName });
+        const formData = new FormData();
+        formData.append("name", newName);
+        formData.append("media", imageFile!);
+        mutate({ conversationId: conversationId!, token: token!, formData: formData });
     }
     const saveButton = <Button onClick={handleSubmit} disabled={!form.formState.isValid}>Save</Button>;
     const setInputFieldValue = (value: string) => {
