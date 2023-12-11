@@ -30,10 +30,10 @@ export function UsersListItem({
           alt="profilePic"
           className="w-[40px] h-[40px] rounded-full mr-3"
         ></img>
-        <div className="flex-col flex-1">
+        <div className="flex-col flex-1 ">
           <div className="flex justify-between ">
-            <div className="flex-col">
-              <div className="flex items-center">
+            <div className="flex-col ">
+              <div className="flex items-center ">
                 <span className="mr-1">{name}</span>
                 {verified && <MdOutlineVerified className="text-blue-600" />}
               </div>

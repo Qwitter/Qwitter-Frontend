@@ -7,7 +7,7 @@ import { ProfilePosts } from "./ProfilePosts";
 import { ProfileReplies } from "./ProfileReplies";
 import { ProfileMedia } from "./ProfileMedia";
 import { ProfileLikes } from "./ProfileLikes";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { getUserProfile } from "@/lib/utils";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { UserProfileData } from "@/models/User";
@@ -37,6 +37,9 @@ export function Profile() {
     queryKey: ["profile", token, username],
     queryFn: () => getUserProfile(token!, username!),
   });
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   if (!user)
     return (
@@ -56,7 +59,9 @@ export function Profile() {
           </span>
           <span className="flex flex-col w-full ml-3">
             <span className="text-xl font-bold pt-0.5">{user?.name}</span>
-            <span className="text-[13px] text-gray">{user?.tweetCount} Posts</span>
+            <span className="text-[13px] text-gray">
+              {user?.tweetCount} Posts
+            </span>
           </span>
         </div>
         <ProfileMain user={user!} />

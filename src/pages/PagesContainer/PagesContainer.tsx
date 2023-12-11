@@ -11,9 +11,11 @@ import { FollowList } from "@/components/FollowList/FollowList";
 import { ExploreList } from "@/components/ExploreList/ExploreList.";
 import { LikeRetweetList } from "@/components/LikeRetweetList/LikeRetweetList";
 
+
 export function PagesContainer() {
   const location = useLocation();
   const previousLocation = location.state?.previousLocation;
+
   return (
     <>
       {" "}
