@@ -17,6 +17,7 @@ type PopUpProps = {
   optionalHeader?: React.ReactNode;
   dialogClassName?: string;
   isCompact?: boolean;
+  overlayFunction?: () => void;
 };
 
 export const PopUpContainer = ({
@@ -28,6 +29,7 @@ export const PopUpContainer = ({
   headerClassName,
   dialogClassName,
   isCompact = false,
+  overlayFunction = () => {},
   ...props
 }: PopUpProps) => {
   const headerFunction =
@@ -110,5 +112,5 @@ export const PopUpContainer = ({
         </div>
       </DialogContent>
     </Dialog>
-    );
+  );
 };

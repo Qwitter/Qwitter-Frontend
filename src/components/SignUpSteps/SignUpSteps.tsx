@@ -60,7 +60,6 @@ export const SignUpSteps = () => {
       if (res) {
         saveUser(res.data.data, res.data.token);
         navigate("/i/flow/profile", { state: { previousLocation: location } });
-        console.log(res.data.data);
       }
     }
   };

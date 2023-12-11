@@ -49,12 +49,13 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
 
     return (
       <>
-        <div className={cn("relative w-full flex flex-row pt-3", className)} >
+        <div className={cn("relative w-full flex flex-row pt-3", className)}>
           {LeftIcon && (
             <LeftIcon
               size={iconSize}
-              className={`inline absolute  z-20 left-[5%] ${disabled ? "text-gray" : "text-secondary"
-                }`}
+              className={`inline absolute  z-20 left-[5%] ${
+                disabled ? "text-gray" : "text-secondary"
+              }`}
               onClick={leftIconFunction}
             />
           )}
@@ -65,15 +66,22 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             role={props.role}
             ref={ref}
             type={inputType}
+            maxLength={props.maxLength}
             className={cn(
               "block rounded-sm z-10 px-2 py-3 w-full text-sm bg-black border border-gray appearance-none dark:text-white  dark:disabled:border-[#202327] dark:disabled:bg-[#202327] dark:disabled:text-gray disabled:border-[#202327]/10 disabled:bg-[#202327]/10 disabled:text-gray dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer",
               hasAnimation && "pt-6",
               (isPassword || inputType === "password" || RightIcon) &&
-              "pr-[15%] sm:pr-[12%]",
+                "pr-[15%] sm:pr-[12%]",
               LeftIcon && "pl-[13.5%] sm:pl-[10%]",
               inputClassName
             )}
-            placeholder={type == "homeSearch" ? "Search" : type=="messages"?"Search Direct Messages":""}
+            placeholder={
+              type == "homeSearch"
+                ? "Search"
+                : type == "messages"
+                ? "Search Direct Messages"
+                : ""
+            }
           />
           {isPassword && (
             <>
@@ -106,9 +114,9 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             className={cn(
               "absolute text-[17px] font-normal text-gray dark:text-gray z-10 duration-300 transform -translate-y-4 scale-75 top-[40%] origin-[0] left-2 hover:cursor-text peer-focus:text-blue-600 peer-focus:dark:text-blue-500 hidden peer-placeholder-shown:inline peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0",
               hasAnimation &&
-              "inline top-7 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:pl-0 sm:peer-focus:pl-0",
+                "inline top-7 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:pl-0 sm:peer-focus:pl-0",
               LeftIcon &&
-              "peer-placeholder-shown:pl-[11%] sm:peer-placeholder-shown:pl-[8.5%]"
+                "peer-placeholder-shown:pl-[11%] sm:peer-placeholder-shown:pl-[8.5%]"
             )}
           >
             {placeHolder}
