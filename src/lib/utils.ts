@@ -892,11 +892,9 @@ export const deleteTweet = async (tweetId: string, token: string) => {
 export const getUserProfile = async (token: string, username: string) => {
   try {
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/${username}`, {
-      withCredentials: true,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true,
         Authorization: `Bearer ${token}`,
       },
     });
@@ -1105,31 +1103,7 @@ export const profileMedia = async (
   }
 };
 
-/**
- * @description unfollow a certain user
- * @param username the username to unfollow
- * @param token to authorize request
- * @returns object with the status of the request
- */
-export const unfollow = async (username: string, token: string) => {
-  if (!token) return null;
 
-  try {
-    const response = await axios.delete(
-      `${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/json",
-        },
-      }
-    );
-    return response.data;
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
-};
 
 /**
  * @description follow specific user
@@ -1163,7 +1137,6 @@ export const FollowService = async (username: string,token: string) => {
  */
 export const UnFollowService = async (username: string, token: string) => {
   try {
-    debugger;
     const res = await axios.delete(`${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
       {
         headers: {
@@ -1203,14 +1176,13 @@ export const GetTrendsService = async (token:string) => {
 
 
 /**
- * @description get Followers in Profile page(Followers section)
+ * @description get Followers of this specific user in Profile page(Followers section)
  * @param token
- * @param {currentUser username} 
+ * @param username of this specific user
  * @returns  users array represents the response from the backend or null
  */
 export const GetFollowersService = async (username:string,token:string) => {
   try {
-    debugger;
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/followers/${username}`,
       {
         headers: {
@@ -1228,14 +1200,13 @@ export const GetFollowersService = async (username:string,token:string) => {
 };
 
 /**
- * @description get Followings in Profile page(Following section)
+ * @description get Followings of this specific user in Profile page(Following section)
  * @param token
- * @param {currentUser username} 
+ * @param username of this specific user
  * @returns  users array represents the response from the backend or null
  */
 export const GetFollowingsService = async (username:string,token: string) => {
   try {
-    debugger;
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/follow/${username}`, {
       headers: {
         Accept: "application/json",
@@ -1292,32 +1263,6 @@ export const UnBlockService = async (username: string, token: string) => {
     return res.data;
   } catch (err) {
     console.log(err);
-    return null;
-  }
-};
-
-/**
- * @description follow a certain user
- * @param username the username to unfollow
- * @param token to authorize request
- * @returns object with the status of the request
- */
-export const follow = async (username: string, token: string) => {
-  if (!token) return null;
-
-  try {
-    const response = await axios.post(
-      `${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/json",
-        },
-      }
-    );
-    return response.data;
-  } catch (error) {
-    console.log(error);
     return null;
   }
 };
@@ -1397,6 +1342,50 @@ export const UnMuteService = async (username: string, token: string) => {
 export const GetMutedService = async (token: string) => {
   try {
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/mute`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+/**
+ * @description get Tweet Likers list in Home page (Tweet section)
+ * @param token
+ * @param tweetId
+ * @returns  users array represents the response from the backend or null
+ */
+export const GetTweetLikersService = async (tweetId: string, token: string) => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}/like`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+/**
+ * @description get Tweet Retweeters list in Home page (Tweet section)
+ * @param token
+ * @param tweetId
+ * @returns  users array represents the response from the backend or null
+ */
+export const GetTweetRetweetersService = async (tweetId: string, token: string) => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}/retweets`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
