@@ -977,9 +977,9 @@ export const GetTrendsService = async (token:string) => {
 
 
 /**
- * @description get Followers in Profile page(Followers section)
+ * @description get Followers of this specific user in Profile page(Followers section)
  * @param token
- * @param {currentUser username} 
+ * @param username of this specific user
  * @returns  users array represents the response from the backend or null
  */
 export const GetFollowersService = async (username:string,token:string) => {
@@ -1001,9 +1001,9 @@ export const GetFollowersService = async (username:string,token:string) => {
 };
 
 /**
- * @description get Followings in Profile page(Following section)
+ * @description get Followings of this specific user in Profile page(Following section)
  * @param token
- * @param {currentUser username} 
+ * @param username of this specific user
  * @returns  users array represents the response from the backend or null
  */
 export const GetFollowingsService = async (username:string,token: string) => {
