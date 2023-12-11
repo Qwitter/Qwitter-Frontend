@@ -9,6 +9,7 @@ import { MessagesAccordion } from "../Messages/MessagesAccordion";
 import { Profile } from "../Profile/Profile";
 import { FollowList } from "@/components/FollowList/FollowList";
 import { ExploreList } from "@/components/ExploreList/ExploreList.";
+import { LikeRetweetList } from "@/components/LikeRetweetList/LikeRetweetList";
 
 export function PagesContainer() {
   const location = useLocation();
@@ -44,6 +45,14 @@ export function PagesContainer() {
                 <Route
                   path="/:username/Following"
                   element={<FollowList type={"Following"} />}
+                />
+                <Route
+                  path="/:tweetId/Likers"
+                  element={<LikeRetweetList type={"Likers"} />}
+                />
+                <Route
+                  path="/:tweetId/Retweeters"
+                  element={<LikeRetweetList type={"Retweeters"} />}
                 />
               </Routes>
             </div>
