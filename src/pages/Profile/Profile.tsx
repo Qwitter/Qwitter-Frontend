@@ -16,12 +16,13 @@ import { useQuery } from "@tanstack/react-query";
 import { Spinner } from "@/components/Spinner";
 
 /*
-TODO: display tweets and data conditionally
+TODO: handle invalid username
+TODO: profile endpoint not working
 */
 
 export function Profile() {
   const { username } = useParams();
-  const [user, setUser] = useState<UserProfileData | null>(); // NEEDED: decide wether it should take the defaultProfile or null (remove defaultProfile)
+  const [user, setUser] = useState<UserProfileData | null>();
   const { token } = useContext(UserContext);
 
   if (!username || username!.length >= 15) {
@@ -68,7 +69,7 @@ export function Profile() {
             <span className="text-xl font-bold pt-0.5">{user?.name}</span>
             <span
               className="text-[13px] text-gray"
-              // NEEDED: i think this better be removed
+              // TODO: will be added by the backend
             >
               0 posts
             </span>

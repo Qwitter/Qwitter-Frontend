@@ -10,8 +10,8 @@ export type User = {
   userName: string;
   createdAt: string;
   location: string;
-  bio: string;
-  website: string;
+  description: string;
+  url: string;
   passwordChangedAt: string;
   id: string;
   google_id: string;
@@ -26,16 +26,14 @@ export const EditUserSchema = z
       .min(1, { message: "Name can't be blank" })
       .max(50, { message: "Name must be less than 50 letters" })
       .trim(),
-    bio: z
+    description: z
       .string()
       .max(160, { message: "Name must be less than 160 letters" })
       .trim()
       .nullish(),
     location: z.string().nullish(),
-    // website: z.string().url({ message: "Url is not valid." }).nullish(),
-    website: z
+    url: z
       .string()
-      .nullish()
       .refine(
         (val) => {
           if (val?.trim() === "") {
@@ -46,7 +44,8 @@ export const EditUserSchema = z
           );
         },
         { message: "Url is not valid." }
-      ),
+      )
+      .nullish(),
     day: Step1DataSchema.shape.day,
     month: Step1DataSchema.shape.month,
     year: Step1DataSchema.shape.year,

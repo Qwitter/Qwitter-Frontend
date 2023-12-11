@@ -7,8 +7,7 @@ import { Link, useLocation, useParams } from "react-router-dom";
 
 /*
 TODO: change button if it's not the user's profile
-TODO: following and followers go to another page
-TODO: location????????? backend (location is in edit profile api) (needed also in the schema)
+TODO: following and followers go to another page (youssef)
 TODO: options menu and message menu
 */
 

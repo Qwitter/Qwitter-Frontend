@@ -11,7 +11,7 @@ export function Home() {
   const { token } = useContext(UserContext);
   const { data, ref, refetch } = useInfiniteScroll(
     async ({ pageParam }) => {
-      return await timelineTweets(pageParam, 10, token!); // "123456" should be replaced with token
+      return await timelineTweets(pageParam, 10, token!);
     },
     ["tweets", "timeline"]
   );

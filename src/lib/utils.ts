@@ -8,7 +8,7 @@ import {
 } from "@/models/EmailVerification";
 import { SignUpDataSchema } from "@/models/SignUp";
 import { BirthDay, MONTHS } from "@/models/BirthDay";
-import { UserDataSchema } from "@/models/User";
+import { EditUserSchema, UserDataSchema } from "@/models/User";
 
 const { VITE_BACKEND_URL } = import.meta.env;
 
@@ -541,7 +541,7 @@ export const timelineTweets = async (
       {
         headers: {
           Authorization: `Bearer ${token}`,
-          Accept: "applicationjson",
+          Accept: "application/json",
         },
       }
     );
@@ -778,5 +778,179 @@ export const getUserProfile = async (token: string, username: string) => {
   } catch (err) {
     console.log(err);
     return null;
+  }
+};
+
+/**
+ * @description edit user profile
+ * @param editedUserData holds the new data of the user
+ * @return success message or null in case of error
+ */
+export const editUserProfile = async (
+  editedUserData: object,
+  token: string
+) => {
+  let parseResult = null;
+  try {
+    parseResult = EditUserSchema.parse(editedUserData);
+  } catch (error) {
+    console.log("Error Parsing Data: ", error);
+    return null;
+  }
+
+  try {
+    const response = await axios.put(
+      `${VITE_BACKEND_URL}/api/v1/user/profile`,
+      {
+        name: parseResult.name,
+        description: parseResult.description,
+        Location: parseResult.location,
+        url: parseResult.url,
+        birth_date: parseResult.birthDate,
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "object",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+/**
+ * @description Load profile tweets
+ * @param pageParam used for infinite queries
+ * @param limit used to specify the array length
+ * @param username username of the viewed profile
+ * @param token used to authorize the request
+ * @returns Array of tweets
+ */
+export const profileTweets = async (
+  pageParam: number = 1,
+  limit: number = 10,
+  username: string,
+  token: string
+) => {
+  if (!token) return [];
+
+  try {
+    const response = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/tweets/user/${username}?page=${pageParam}&limit=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      }
+    );
+    return response.data.tweets;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+
+/**
+ * @description Load profile replies
+ * @param pageParam used for infinite queries
+ * @param limit used to specify the array length
+ * @param username username of the viewed profile
+ * @param token used to authorize the request
+ * @returns Array of tweets
+ */
+export const profileReplies = async (
+  pageParam: number = 1,
+  limit: number = 10,
+  username: string,
+  token: string
+) => {
+  if (!token) return [];
+
+  try {
+    const response = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/tweets/user/${username}/replies?page=${pageParam}&limit=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      }
+    );
+    return response.data.tweets;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+
+/**
+ * @description Load profile liked posts
+ * @param pageParam used for infinite queries
+ * @param limit used to specify the array length
+ * @param username username of the viewed profile
+ * @param token used to authorize the request
+ * @returns Array of tweets
+ */
+export const profileLikes = async (
+  pageParam: number = 1,
+  limit: number = 10,
+  username: string,
+  token: string
+) => {
+  if (!token) return [];
+
+  try {
+    const response = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/tweets/user/${username}/like?page=${pageParam}&limit=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      }
+    );
+    return response.data.tweets;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+
+/**
+ * @description Load profile posts with media
+ * @param pageParam used for infinite queries
+ * @param limit used to specify the array length
+ * @param username username of the viewed profile
+ * @param token used to authorize the request
+ * @returns Array of tweets
+ */
+export const profileMedia = async (
+  pageParam: number = 1,
+  limit: number = 10,
+  username: string,
+  token: string
+) => {
+  if (!token) return [];
+
+  try {
+    const response = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/tweets/user/${username}/media?page=${pageParam}&limit=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      }
+    );
+    return response.data.tweets;
+  } catch (error) {
+    console.log(error);
+    return [];
   }
 };
