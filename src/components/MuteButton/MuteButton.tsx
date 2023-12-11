@@ -47,7 +47,10 @@ export function MuteButton({ username }: MuteButtonProp) {
           <HoverCardTrigger>
             <Button
               variant={"danger"}
-              onClick={() => unMuteServiceFn(username)}
+              onClick={(event) => {
+                event.stopPropagation();
+                unMuteServiceFn(username);
+              }}
             >
               <GoMute className="rounded-full w-[20px] h-[20px]"></GoMute>
             </Button>
@@ -60,7 +63,10 @@ export function MuteButton({ username }: MuteButtonProp) {
             <Button
               className="cursor-pointer"
               variant={"secondary"}
-              onClick={() => MuteServiceFn(username)}
+              onClick={(event) => {
+                event.stopPropagation();
+                MuteServiceFn(username);
+              }}
             >
               <GoUnmute className="rounded-full w-[20px] h-[20px]"></GoUnmute>
             </Button>
