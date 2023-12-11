@@ -47,31 +47,39 @@ type TweetProps = {
   tweet: Tweet;
 };
 
-const Tweet = ({ tweet }: TweetProps) => {
+const Tweet = ({ tweet }: TweetProps) => {  
+  console.log(tweet)
   return (
-    <div className="w-full flex px-4 py-3 gap-4 border-b border-primary border-opacity-30" data-testid="tweetDiv">
+    <div
+      className="w-full flex px-4 py-3 gap-4 border-b border-primary border-opacity-30"
+      data-testid="tweetDiv"
+    >
       <Avatar>
         <AvatarImage src={`${tweet.author.profileImageUrl}`} />
         <AvatarFallback>{tweet.author.userName.substring(0, 2)}</AvatarFallback>
       </Avatar>
-      <article className="w-full">
-        <h3 className="flex gap-1 font-semibold items-center">
-          {tweet.author.name}
-          {tweet.author.verified && (
-            <TbDiscountCheckFilled className="text-blue-400 text-xl" />
-          )}
-          <span className="flex text-gray font-normal">
-            @{tweet.author.userName} ·{" "}
-            {moment().diff(moment(tweet.createdAt), "days") >= 1
-              ? moment(tweet.createdAt).format("MMM D")
-              : moment(tweet.createdAt).fromNow(true)}
-          </span>
-          <TweetOptionsMenu tweet={tweet} />
-        </h3>
-        <>{tweetTextHighlighter(tweet.text)}</>
-        <TweetImagesViewer images={tweet.entities.media} />
-        <TweetInteractionsButtons tweet={tweet} />
-      </article>
+      <Link to={`/tweet/${tweet.id}`} className="w-full">
+        <article className="w-full">
+          <Link to={`/user/${tweet.author.userName}`}>
+            <h3 className="flex gap-1 font-semibold items-center">
+              {tweet.author.name}
+              {tweet.author.verified && (
+                <TbDiscountCheckFilled className="text-blue-400 text-xl" />
+              )}
+              <span className="flex text-gray font-normal">
+                @{tweet.author.userName} ·{" "}
+                {moment().diff(moment(tweet.createdAt), "days") >= 1
+                  ? moment(tweet.createdAt).format("MMM D")
+                  : moment(tweet.createdAt).fromNow(true)}
+              </span>
+              <TweetOptionsMenu tweet={tweet} />
+            </h3>
+          </Link>
+          <>{tweetTextHighlighter(tweet.text)}</>
+          <TweetImagesViewer images={tweet.entities.media} />
+          <TweetInteractionsButtons tweet={tweet} />
+        </article>
+      </Link>
     </div>
   );
 };
