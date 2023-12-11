@@ -1,4 +1,3 @@
-import { Skeleton } from "@/components/ui/skeleton";
 import SearchInput from "@/components/SearchInput/SearchInput";
 import { useParams, Navigate, Routes, Route } from "react-router-dom";
 import { ProfileMain } from "./ProfileMain";
@@ -8,11 +7,13 @@ import { ProfilePosts } from "./ProfilePosts";
 import { ProfileReplies } from "./ProfileReplies";
 import { ProfileMedia } from "./ProfileMedia";
 import { ProfileLikes } from "./ProfileLikes";
-import {  useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { getUserProfile } from "@/lib/utils";
 import { UserProfileData } from "@/models/User";
 import { useQuery } from "@tanstack/react-query";
 import { Spinner } from "@/components/Spinner";
+import { FollowCard } from "@/components/FollowCard/FollowCard";
+import { TrendCard } from "@/components/TrendCard/TrendCard";
 
 /*
 TODO: handle invalid username
@@ -20,23 +21,24 @@ TODO: handle invalid username
 
 export function Profile() {
   const { username } = useParams();
-  const [user, setUser] = useState<UserProfileData | null>();
-  const token = localStorage.getItem('token')
-  const getUser = async () => {
-    const user = await getUserProfile(token!, username!);
-    console.log(user)
-    setUser(user);
-    return user;
-  };
+  const { token } = useContext(UserContext);
 
-  const { refetch } = useQuery({
-    queryKey: ["profile", username],
-    queryFn: getUser,
+  // if (!username || username!.length >= 15) {
+  //   // Redirect or handle the case when the username is too long
+  //   return (
+  //     <>
+  //       <Navigate to="/home" />
+  //     </>
+  //   );
+  // }
+
+  const { data: user } = useQuery<UserProfileData>({
+    queryKey: ["profile", token, username],
+    queryFn: () => getUserProfile(token!, username!),
   });
-
   useEffect(() => {
-    if (token) refetch();
-  }, [token, refetch]);
+    window.scrollTo(0, 0);
+  }, []);
 
   if (!username || username!.length >= 15) {
     // Redirect or handle the case when the username is too long
@@ -66,14 +68,14 @@ export function Profile() {
           </span>
           <span className="flex flex-col w-full ml-3">
             <span className="text-xl font-bold pt-0.5">{user?.name}</span>
-            <span className="text-[13px] text-gray">{user?.tweetCount}</span>
+            <span className="text-[13px] text-gray">
+              {user?.tweetCount} Posts
+            </span>
           </span>
         </div>
         <ProfileMain user={user!} />
-
         <ProfileSections />
-
-        <div className="">
+        <div>
           <Routes>
             <Route index path="/" element={<ProfilePosts />} />
             <Route path="/with_replies" element={<ProfileReplies />} />
@@ -86,14 +88,11 @@ export function Profile() {
         <div className="w-full sticky top-0 z-50 bg-black   ">
           <SearchInput />
         </div>
-        <div className="px-4 py-3 rounded-lg mt-5 bg-dark-gray">
-          <Skeleton className="w-full  h-[120px] " />
+        <div className="mt-5 rounded-lg bg-dark-gray">
+          <FollowCard />
         </div>
-        <div className="px-4 py-3 rounded-lg mt-5 bg-dark-gray">
-          <Skeleton className="w-full  h-[500px] " />
-        </div>
-        <div className="px-4 py-3 rounded-lg mt-5 bg-dark-gray">
-          <Skeleton className="w-full  h-[300px] " />
+        <div className="mt-5 rounded-lg bg-dark-gray">
+          <TrendCard />
         </div>
       </div>
     </>
