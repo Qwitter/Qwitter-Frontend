@@ -5,6 +5,8 @@ import { UsersListItemProp } from "./UsersListItemProp";
 import { BlockButton } from "../BlockButton/BlockButton";
 import { MuteButton } from "../MuteButton/MuteButton";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "@/contexts/UserContextProvider";
 
 export function UsersListItem({
   profileImageUrl,
@@ -17,6 +19,7 @@ export function UsersListItem({
   listType,
 }: UsersListItemProp) {
   const navigate = useNavigate();
+  const { user } = useContext(UserContext);
   return (
     <CardContent
       onClick={() => {
@@ -40,11 +43,15 @@ export function UsersListItem({
               <div className="text-[#595d62]">@{username}</div>
             </div>
 
-            {listType == "FollowList" && (
+            {listType == "FollowList" && user?.userName! != username && (
               <FollowButton isFollowing={isFollowing} username={username} />
             )}
-            {listType == "BlockList" && <BlockButton username={username} />}
-            {listType == "MuteList" && <MuteButton username={username} />}
+            {listType == "BlockList" && user?.userName! != username && (
+              <BlockButton username={username} />
+            )}
+            {listType == "MuteList" && user?.userName! != username && (
+              <MuteButton username={username} />
+            )}
           </div>
           {showDesc && <div>{description}</div>}
         </div>
