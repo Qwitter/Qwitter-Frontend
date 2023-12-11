@@ -1,4 +1,19 @@
-import { Home, Globe2, Search, UserCheck, Bell, Mail, AlignJustify, Bookmark, Users, User, Settings, KeyRound, BadgeCheck, AtSign } from 'lucide-react';
+import {
+  Home,
+  Globe2,
+  Search,
+  UserCheck,
+  Bell,
+  Mail,
+  AlignJustify,
+  Bookmark,
+  Users,
+  User,
+  Settings,
+  KeyRound,
+  BadgeCheck,
+  AtSign,
+} from "lucide-react";
 
 const navLinks = [
   {
@@ -6,22 +21,21 @@ const navLinks = [
     title: "Home",
     icon: Home,
     clicked: { strokeWidth: 3 },
-    notificationCount: 1
-
+    notificationCount: 1,
   },
   {
     id: "notification",
     title: "Notification",
     icon: Bell,
-    clicked: { fill: 'white' },
-    notificationCount: 0
+    clicked: { fill: "white" },
+    notificationCount: 0,
   },
   {
     id: "messages",
     title: "Messages",
     icon: Mail,
     clicked: { strokeWidth: 4 },
-    notificationCount: 0
+    notificationCount: 0,
   },
 
   {
@@ -35,84 +49,78 @@ const navLinks = [
     id: "lists",
     title: "Lists",
     icon: AlignJustify,
-    clicked: { strokeWidth: 4 }
-    ,
-    notificationCount: 0
+    clicked: { strokeWidth: 4 },
+    notificationCount: 0,
   },
   {
     id: "bookmarks",
     title: "Bookmarks",
     icon: Bookmark,
-    clicked: { fill: 'white' }
-    ,
-    notificationCount: 0
-
+    clicked: { fill: "white" },
+    notificationCount: 0,
   },
   {
     id: "community",
     title: "Community",
     icon: Users,
-    clicked: { fill: 'white' },
-    notificationCount: 0
-
+    clicked: { fill: "white" },
+    notificationCount: 0,
   },
   {
     id: "profile",
     title: "Profile",
     icon: User,
-    clicked: { fill: 'white' },
-    notificationCount: 0
-
+    clicked: { fill: "white" },
+    notificationCount: 0,
   },
   {
     id: "settings",
     title: "Settings",
     icon: Settings,
     clicked: { strokeWidth: 3 },
-    notificationCount: 100
-  }
+    notificationCount: 100,
+  },
 ];
 const settingsOptions = [
   {
     id: "account",
     title: "Your account",
   },
-  {
-    id: "privacy_and_safety",
-    title: "Privacy and safety",
-  }
-]
+  // {
+  //   id: "privacy_and_safety",
+  //   title: "Privacy and safety",
+  // }
+];
 
 const accountOptions = [
   {
     id: "/your_twitter_data/account",
     title: "Account information",
-    description: "See your account information like your phone number and email address.",
-    icon: User
+    description:
+      "See your account information like your phone number and email address.",
+    icon: User,
   },
   {
     id: "/password",
     title: "Change your password",
     description: "Change your password at any time.",
-    icon: KeyRound
+    icon: KeyRound,
   },
-]
+];
+
 const tags = [
-  'JoyfulmemoriesinDublin!',
-  'UnityforabetterfutureinGaza',
-  'Thoughts on the current situation in Gaza.',
-  'Exploring the streets of Dublin.',
-  'Fun times in Dublin!',
-  'Discovering hidden gems in Dublin.',
-  'Memorable moments in Dublin.',
-  'A call for peace in Gaza.',
-
-
-]
+  "JoyfulmemoriesinDublin!",
+  "UnityforabetterfutureinGaza",
+  "Thoughts on the current situation in Gaza.",
+  "Exploring the streets of Dublin.",
+  "Fun times in Dublin!",
+  "Discovering hidden gems in Dublin.",
+  "Memorable moments in Dublin.",
+  "A call for peace in Gaza.",
+];
 const userArray = [
   {
     id: 48418786,
-
     imageUrl: 'https://github.com/shadcn.png',
     username: 'user1',
     name: 'John Doe',
@@ -239,6 +247,7 @@ const userArray = [
 
   },
 ];
+
 const pinnedConversations = [{
   userPhoto: 'https://github.com/shadcn.png',
   userName: 'user12',
@@ -258,28 +267,37 @@ const pinnedConversations = [{
 
 },
 ];
+
 const AllowMessagesOptions = [
   "No one", "Verified Users", "Everyone"
 ]
+
 const whoToReply = [
   {
     text: "Everyone",
-    icon: Globe2
+    icon: Globe2,
   },
   {
     text: "Accounts you follow",
-    icon: UserCheck
+    icon: UserCheck,
   },
   {
     text: "Verified accounts",
-    icon: BadgeCheck
+    icon: BadgeCheck,
   },
   {
     text: "Only accounts you mention",
-    icon: AtSign
-  }
+    icon: AtSign,
+  },
+];
 
-]
+const profileSections = [
+  { title: "Posts", dataLink: "" },
+  { title: "Replies", dataLink: "/with_replies" },
+  { title: "Media", dataLink: "/media" },
+  { title: "Likes", dataLink: "/likes" },
+];
+
 const searchHeaderOptions = [
   "ALL", "People", "Groups", "Messages"
 ]
@@ -410,4 +428,4 @@ const chat = [
     }
   }
 ]
-export { navLinks, tempInfo, tempMessagesSearch, chat, settingsOptions, accountOptions, searchHeaderOptions, userArray, pinnedConversations, whoToReply, tags, AllowMessagesOptions };
+export { navLinks, tempInfo, tempMessagesSearch, chat, settingsOptions, accountOptions, searchHeaderOptions, userArray, pinnedConversations, whoToReply, tags, AllowMessagesOptions, profileSections };

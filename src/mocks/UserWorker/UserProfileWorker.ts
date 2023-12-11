@@ -1,6 +1,6 @@
 import { HttpResponse, ResponseResolver } from "msw";
 
-export const userWorker: ResponseResolver = async ({ request }) => {
+export const userProfileWorker: ResponseResolver = async ({ request }) => {
   const token = request.headers.get("Authorization")?.split(" ")[1];
 
   if (!token)
@@ -11,7 +11,7 @@ export const userWorker: ResponseResolver = async ({ request }) => {
   return HttpResponse.json(
     {
       data: {
-        userName: "midoa231s",
+        userName: "johndoe123",
         name: "Mohamed Atef",
         birthDate: new Date().toISOString(),
         email: "sofa5060@gmail.com",
@@ -21,6 +21,7 @@ export const userWorker: ResponseResolver = async ({ request }) => {
         verified: true,
         followersCount: 0,
         followingCount: 5,
+        location: "Giza, Egypt",
         createdAt: new Date().toISOString(),
         profileBannerUrl:
           "https://cdnb.artstation.com/p/assets/images/images/069/047/351/large/daito_-img-1285-20231030-023232.jpg?1699242054",
