@@ -25,14 +25,14 @@ export function Profile() {
   const { username } = useParams();
   const { token } = useContext(UserContext);
   const [blocked, setBlocked] = useState(false);
-  // if (!username || username!.length >= 15) {
-  //   // Redirect or handle the case when the username is too long
-  //   return (
-  //     <>
-  //       <Navigate to="/home" />
-  //     </>
-  //   );
-  // }
+  if (!username || username!.length >= 16) {
+    // Redirect or handle the case when the username is too long
+    return (
+      <>
+        <Navigate to="/home" />
+      </>
+    );
+  }
 
   const { data: user } = useQuery<UserProfileData>({
     queryKey: ["profile", token, username],
