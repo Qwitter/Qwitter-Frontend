@@ -11,7 +11,6 @@ import { FollowList } from "@/components/FollowList/FollowList";
 import { ExploreList } from "@/components/ExploreList/ExploreList.";
 import { LikeRetweetList } from "@/components/LikeRetweetList/LikeRetweetList";
 
-
 export function PagesContainer() {
   const location = useLocation();
   const previousLocation = location.state?.previousLocation;
@@ -49,11 +48,11 @@ export function PagesContainer() {
                   element={<FollowList type={"Following"} />}
                 />
                 <Route
-                  path="/:tweetId/Likers"
+                  path="/:username/:tweetId/Likers"
                   element={<LikeRetweetList type={"Likers"} />}
                 />
                 <Route
-                  path="/:tweetId/Retweeters"
+                  path="/:username/:tweetId/Retweeters"
                   element={<LikeRetweetList type={"Retweeters"} />}
                 />
               </Routes>

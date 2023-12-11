@@ -1370,7 +1370,7 @@ export const GetTweetLikersService = async (tweetId: string, token: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return res.data;
+    return res.data.likers;
   } catch (err) {
     console.log(err);
     return null;
@@ -1392,7 +1392,7 @@ export const GetTweetRetweetersService = async (tweetId: string, token: string) 
         Authorization: `Bearer ${token}`,
       },
     });
-    return res.data;
+    return res.data.retweeters;
   } catch (err) {
     console.log(err);
     return null;
