@@ -64,6 +64,7 @@ export function VerifyEmailPassword({ nextStep }: prob) {
                     placeHolder='password'
                     className='w-full'
                     isPassword
+                    type='password'
                     role='text'
                     {...form.register("Password", {
                         required: "password is required",

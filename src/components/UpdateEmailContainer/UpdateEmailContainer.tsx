@@ -46,7 +46,7 @@ const UpdateEmailContainer = () => {
             else if (data!.status == 401) {
                 toast({
                     title: "Change Email",
-                    description: "Failed : You can't use the same username",
+                    description: "Failed : You can't use the same email",
                     variant: "destructive"
                 });
             }
@@ -61,7 +61,7 @@ const UpdateEmailContainer = () => {
         },
         onError: () => {
             toast({
-                title: "Change Username",
+                title: "Change email",
                 description: "Failed : try again later",
                 variant: "destructive"
             });

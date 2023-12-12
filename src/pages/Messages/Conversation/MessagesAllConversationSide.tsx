@@ -1,37 +1,46 @@
 import { MailPlus } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
-import { conversation } from "./types/MessagesTypes";
-// import { pinnedConversations } from "@/constants";
+import { conversation } from "../types/MessagesTypes";
 import { useNavigate } from "react-router-dom";
-import { MessagesList } from "./MessagesList";
-import { ConversationLeavePopUp } from "./ConversationLeavePopUp";
+import { MessagesList } from "../MessagesList";
+import { ConversationLeavePopUp } from "../MessagesPopup/ConversationLeavePopUp";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { useQuery } from "@tanstack/react-query";
 import { getUserConversations } from "@/lib/utils";
 import { Spinner } from "@/components/Spinner";
+import { MessagesContext } from "@/contexts/MessagesContextProvider";
 
 export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRequest = false }: { newMessageRequest?: boolean; messagesRequests?: number; }) {
     const navigate = useNavigate();
     const { token } = useContext(UserContext);
+    const {setUserAllConversation}= useContext(MessagesContext)
+    const [conversationToDelete,setConversationToDelete] = useState("")
+    const [show, setShow] = useState<boolean>(false);
+
     const {
         isPending, data, refetch
     } = useQuery<conversation[]>({
-        queryKey: ["getUserConversations", token],
+        queryKey: ["getUserConversations"],
         queryFn: () => getUserConversations(token!),
         refetchOnReconnect: "always",
-        refetchIntervalInBackground: true,
-        refetchInterval: 2000,
+        // refetchIntervalInBackground: true,
+        // refetchInterval: 10000,
+        // enabled: token !== null
+        
 
     });
     useEffect(() => {
-        console.log(data)
+        setUserAllConversation(data!)
         refetch();
-    }, [token, refetch, data]);
+    }, [token, refetch, data,setUserAllConversation]);
 
     const handleRequestClick = () => {
         navigate('/Messages/requests');
     };
-    const [show, setShow] = useState<boolean>(false);
+    const deleteConversation = (conversationId:string)=>{
+        setConversationToDelete(conversationId)
+        setShow(true)
+    }
     if (isPending) {
         return (
             <div className="w-full h-[280px] p-8">
@@ -39,6 +48,7 @@ export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRe
             </div>
         );
     }
+    
     return (
         <div>
             {messagesRequests > 0 &&
@@ -73,9 +83,9 @@ export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRe
 
             <MessagesList conversations={data}
                 mode={"normal"}
-                showDeletePopUp={() => setShow(true)}
+                showDeletePopUp={deleteConversation}
             />
-            <ConversationLeavePopUp show={show} setShow={setShow} leaveFunction={() => { }} />
+            <ConversationLeavePopUp show={show} setShow={setShow}  conversationToDelete ={conversationToDelete} />
         </div>
     );
 }

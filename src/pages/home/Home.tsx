@@ -65,6 +65,7 @@ export function Home() {
           hasMoreData={hasMoreData}
         />
         </div>
+        
       </div>
       <div className="max-w-[600px]  pb-16 relative flex flex-col z-0 w-[36.5%] max-largeX:hidden h-full">
         <div className="w-full sticky top-0 z-50 bg-black   ">
@@ -76,7 +77,7 @@ export function Home() {
         <div className="mt-5 rounded-lg bg-dark-gray">
           <FollowCard />
         </div>
-      </div>
+      </div> 
     </>
   );
 }

@@ -1,67 +1,37 @@
 import { Button, PopUpContainer } from "@/components"
 import { HeaderButton } from "@/models/PopUpModel"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Search, X, Check } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { Spinner } from "@/components/Spinner";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { CreateConversation, cn, getUsersSuggestions } from "@/lib/utils";
-import { User } from "@/models/User";
+import { addUserToGroup, cn, getUsersSuggestionsToAdd } from "@/lib/utils";
 import { UserContext } from "@/contexts/UserContextProvider";
-
-function MessagesNewMessage() {
+import { MessageUser } from "../types/MessagesTypes";
+import { MessagesContext } from "@/contexts/MessagesContextProvider";
+function MessagesAddPeoplePopup() {
     const [isFocus, setFocus] = useState(false);
     const [peopleSearchText, setPeopleSearchText] = useState("");
-    const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
+    const { conversationId } = useParams()
+    const [selectedUsers, setSelectedUsers] = useState<{ profileImageUrl: string; name: string; userName: string }[]>([]);
     const { token } = useContext(UserContext)
     const navigate = useNavigate();
-    const userConversations = [{
-        name: "Charlie Davis",
-        email: "charlie.davis@example.com",
-        birthDate: "1983-09-12",
-        userName: "charlie_d",
-        createdAt: "2023-01-25T11:45:00Z",
-        location: "Suburbia",
-        bio: "Tech geek and gadget lover",
-        website: "http://www.charliedavis.com",
-        passwordChangedAt: "2023-01-27T18:15:00Z",
-        id: "6",
-        google_id: "google321",
-        profileImageUrl: "github.com/shadcn.png",
-        profileBannerUrl: "http://www.example.com/charliedavis-banner.jpg",
-    },
-    {
-        name: "Sophie Martin",
-        email: "sophie.martin@example.com",
-        birthDate: "1992-07-18",
-        userName: "sophie_m",
-        createdAt: "2023-01-30T09:15:00Z",
-        location: "Coastal City",
-        bio: "Foodie and travel enthusiast",
-        website: "http://www.sophiemartin.com",
-        passwordChangedAt: "2023-02-01T15:30:00Z",
-        id: "7",
-        google_id: "google876",
-        profileImageUrl: "github.com/shadcn.png",
-        profileBannerUrl: "http://www.example.com/sophiemartin-banner.jpg",
-    },]
+
     const handleXClick = () => { navigate(-1) }
 
-    const handleNextClick = () => {
+    const handleAddClick = () => {
         mutate({
-            conversation_name: selectedUsers.map(obj => obj.name).join(','), token: token!
-            , users: selectedUsers.map(user => user.userName)
+            token: token!, conversationId: conversationId!, users: selectedUsers.map(user => user.userName)
         })
 
     }
 
     const { mutate, isPending: isSubmitting } = useMutation({
-        mutationFn: CreateConversation,
+        mutationFn: addUserToGroup,
         onSuccess: (data) => {
             if (data) {
-                console.log(data)
-                navigate('/Messages/' + data.id)
+                navigate('/Messages/' + conversationId)
             }
 
         },
@@ -74,16 +44,16 @@ function MessagesNewMessage() {
         isPending,
         data,
         refetch
-    } = useQuery<User[]>({
-        queryKey: ["MessagesUsers"],
-        queryFn: () => getUsersSuggestions(token!, " " + peopleSearchText)
+    } = useQuery<MessageUser[]>({
+        queryKey: ["GroupUsers"],
+        queryFn: () => getUsersSuggestionsToAdd(token!, peopleSearchText, conversationId!)
         ,
     });
     useEffect(() => {
         refetch();
     }, [peopleSearchText, refetch]);
 
-    const handlePickUser = (user: User) => {
+    const handlePickUser = (user: MessageUser) => {
         const isUserSelected = selectedUsers.some((selectedUser) => selectedUser.userName === user.userName);
 
         if (isUserSelected) {
@@ -99,10 +69,10 @@ function MessagesNewMessage() {
         setSelectedUsers(updatedUsers);
     }
     const nextButton = <Button
-        onClick={handleNextClick}
+        onClick={handleAddClick}
         className="py-0 h-8"
         disabled={selectedUsers.length == 0}
-    >Next</Button>
+    >Add</Button>
 
     return (
         <PopUpContainer show={true}
@@ -112,7 +82,7 @@ function MessagesNewMessage() {
             headerClassName="justify-between"
             isCompact
             className="  p-0"
-            title="New message">
+            title="Add people">
             {isPending || isSubmitting ? <div className='w-full h-[180px] p-8'>
                 <Spinner />
             </div> :
@@ -146,32 +116,36 @@ function MessagesNewMessage() {
                             </li>))}
                         </ul>}
                     <div className="overflow-y-auto w-full ">
-                        <ShowUsersSuggestions onUserClick={handlePickUser} selectedUsers={selectedUsers} users={peopleSearchText.length > 0 ? data! : userConversations} />
+                        {peopleSearchText.length > 0 ? <ShowUsersSuggestions onUserClick={handlePickUser} selectedUsers={selectedUsers} users={data!} /> :
+                            <ShowGroupPeople />
+                        }
                     </div>
                 </div>
             }
         </PopUpContainer>
     )
 }
-function ShowUsersSuggestions({ onUserClick, users, selectedUsers }: { selectedUsers: User[], users: User[], onUserClick: (user: User) => void }) {
+function ShowUsersSuggestions({ onUserClick, users, selectedUsers }: { selectedUsers: MessageUser[], users: MessageUser[], onUserClick: (user: MessageUser) => void }) {
 
+    const { currentConversation } = useContext(MessagesContext)
 
     return (
         <ul className="flex-shrink min-h-[60vh]" >
 
             {
-                users && users.slice(0, 10).map(user => (
-                    <li key={user.userName} className="py-3 px-4 flex flex-row justify-between hover:bg-[#16181c] w-full transition-all items-center cursor-pointer"
-                        onClick={() => onUserClick(user)}>
+                users && users.slice(0, 12).map((user, index) => (
+                    <li key={index} className={cn("py-3 px-4 flex flex-row justify-between hover:bg-[#16181c] w-full transition-all items-center cursor-pointer", (currentConversation && currentConversation.users.filter(obj => obj['userName'] === user.userName).length > 0) && "opacity-60 cursor-default")}
+                        onClick={(currentConversation && currentConversation.users.filter(obj => obj['userName'] === user.userName).length > 0) ? () => { } : () => onUserClick(user)}>
                         <div className=" flex flex-row">
                             <Avatar className="mr-4">
-                                <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" src={`${user?.profileImageUrl}`} />
-                            </Avatar><div className="flex flex-col h-full gap-0 ">
+                                <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee46] border-[1px] border-solid" src={user.profileImageUrl || "https://i.pinimg.com/736x/62/1d/bd/621dbd7d208d5c17498e0f73bf02aee8.jpg"} />
+                            </Avatar>
+                            <div className="flex flex-col h-full gap-0 ">
                                 <h3 className="text-primary text-[15px]">{user.name}</h3>
                                 <span className="text-gray">@{user.userName}</span>
                             </div>
                         </div>
-                        {selectedUsers && selectedUsers.filter(obj => obj['userName'] === user.userName).length > 0 && <div>
+                        {selectedUsers && (selectedUsers.filter(obj => obj['userName'] === user.userName).length > 0 || (currentConversation && currentConversation.users.filter(obj => obj['userName'] === user.userName).length > 0)) && <div>
                             <Check className="w-4 h-4 text-secondary" />
                         </div>}
                     </li>
@@ -182,6 +156,35 @@ function ShowUsersSuggestions({ onUserClick, users, selectedUsers }: { selectedU
 
     )
 }
-export default MessagesNewMessage
+function ShowGroupPeople() {
+    const { currentConversation } = useContext(MessagesContext)
+
+    return (
+        <ul className="flex-shrink min-h-[60vh]" >
+
+            {
+                currentConversation && currentConversation.users.slice(0, -1).map((user, index) => (
+                    <li key={index} className={cn("py-3 px-4 flex flex-row justify-between  w-full transition-all items-center cursor-default opacity-70")}>
+                        <div className=" flex flex-row">
+                            <Avatar className="mr-4">
+                                <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee46] border-[1px] border-solid" src={user.profileImageUrl || "https://i.pinimg.com/736x/62/1d/bd/621dbd7d208d5c17498e0f73bf02aee8.jpg"} />
+                            </Avatar><div className="flex flex-col h-full gap-0 ">
+                                <h3 className="text-primary text-[15px]">{user.name}</h3>
+                                <span className="text-gray">@{user.userName}</span>
+                            </div>
+                        </div>
+                        <div>
+                            <Check className="w-4 h-4 text-secondary" />
+
+                        </div>
+                    </li>
+                ))
+
+            }
+        </ul>
+
+    )
+}
+export default MessagesAddPeoplePopup
 
 
