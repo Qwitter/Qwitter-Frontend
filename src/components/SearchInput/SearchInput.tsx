@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { TextInput } from '../TextInput/TextInput'
 import { Search, X } from 'lucide-react'
 import {
@@ -8,17 +8,18 @@ import {
 } from "@/components/ui/popover"
 import ClickAwayListener from 'react-click-away-listener';
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar';
-import { userArray } from '../../constants'
-import { Link } from 'react-router-dom';
-// import { Spinner } from '../Spinner';
-type User = {
-    username: string;
-    imageUrl: string;
-    name: string;
-    isVerified: boolean;
-    data?: User;
-}
+import { Link, useNavigate } from 'react-router-dom';
+import { getHashtags, getUsersSuggestions } from '@/lib/utils';
+import { UserContext } from '@/contexts/UserContextProvider';
+import { useQuery } from '@tanstack/react-query';
+import { Spinner } from '../Spinner';
+import { User } from '@/models/User';
 
+type Tags = {
+    count:number;
+    entityId:string;
+    text:string;
+}
 
 function SearchInput() {
     const [disabled, setDisabled] = useState(true);
@@ -82,7 +83,7 @@ function SearchInput() {
                        
                         w-[360px]  box-shadow bg-black  text-primary text-xs rounded-xl'>
                         <div className=' max-h-[calc(80vh-53px)] overflow-y-auto'>
-                            <Results searchText={searchText} tags={["hello world", "#GazaNow", "killMe", "hello world", "#GazaNow", "killMe", "hello world", "#GazaNow", "killMe"]} />
+                            <Results searchText={searchText}  />
                         </div>
                     </PopoverContent>
                 </Popover>
@@ -90,7 +91,7 @@ function SearchInput() {
         </ClickAwayListener>
     )
 }
-function Results({ searchText, tags }: { searchText: string, tags: string[] }) {
+function Results({ searchText }: { searchText: string}) {
     return (
         <>
             {
@@ -99,18 +100,42 @@ function Results({ searchText, tags }: { searchText: string, tags: string[] }) {
                 </div>
 
                     : <div className='w-full'>
-                        < TagsResults tags={tags} text={searchText} />
-                        <UsersResults users={userArray} text={searchText} />
+                        < TagsResults  text={searchText} />
+                        <div className='w-full h-[2px] bg-primary bg-opacity-20 my-1'></div>
+                        <UsersResults  text={searchText} />
                     </div>
 
             }
         </>)
 }
-function TagsResults({ tags, text }: { tags: string[], text: string }) {
+function TagsResults({  text }: { text: string }) {
+    const { token } = useContext(UserContext)
+    const navigate = useNavigate()
+    const {
+        isPending,
+        data:tags,
+        refetch
+    } = useQuery<Tags[]>({
+        queryKey: ["getHashtagsSearch",text],
+        queryFn: () => getHashtags(token!,text)
+        ,
+    });
+    
+    useEffect(() => {
+        refetch();
+    }, [text, refetch,token]);
+
+    if (isPending) {
+        return (
+            <div className="w-full h-[180px] p-8">
+                <Spinner />
+            </div>
+        );
+    }
 
     return (
-        <ul className='w-full border-b-2  border-primary border-opacity-30 pb-1 mb-2'>
-            {tags.length == 0 ?
+        <ul className='w-full '>
+            {tags&&tags.length == 0 ?
                 <li className="py-3 flex-grow px-4 items-center flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer" >
                     <div className='w-10 h-10 flex justify-center items-center mr-3'>
                         <Search className=' w-5 h-5' strokeWidth='3px' />
@@ -119,12 +144,12 @@ function TagsResults({ tags, text }: { tags: string[], text: string }) {
 
                 </li>
 
-                : tags.slice(0, 4).map((tag, index) => (
-                    <li key={index} className="py-3 flex-grow px-4 items-center flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer" >
+                : tags&&tags.slice(0, 4).map((tag) => (
+                    <li key={tag.entityId} className="py-3 flex-grow px-4 items-center flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer" onClick={()=>{navigate(`/explore/${tag.text.slice(-1)}`)}} >
                         <div className='w-10 h-10 flex justify-center items-center mr-3'>
                             <Search className=' w-5 h-5' strokeWidth='3px' />
                         </div>
-                        <p className="text-base text-primary font-semibold">{tag}</p>
+                        <p className="text-base text-primary font-semibold">{tag.text}</p>
 
                     </li>
                 ))
@@ -133,20 +158,44 @@ function TagsResults({ tags, text }: { tags: string[], text: string }) {
         </ul>
     )
 }
-function UsersResults({ users, text }: { users: User[], text: string }) {
+function UsersResults({  text }: {  text: string }) {
+    const { token } = useContext(UserContext)
+    const navigate = useNavigate()
+    const {
+        isPending,
+        data,
+        refetch
+    } = useQuery<User[]>({
+        queryKey: ["UsersSuggestionsSearch",text],
+        queryFn: () => getUsersSuggestions(token!, text!)
+        ,
+    });
+    
+    useEffect(() => {
+        refetch();
+    }, [text, refetch,token]);
+
+    if (isPending) {
+        return (
+            <div className="w-full h-[180px] p-8">
+                <Spinner />
+            </div>
+        );
+    }
 
     return (
         <ul >
 
             {
-                users && users.map(user => (
-                    <li key={user.username} className="py-3 px-4 flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer" >
+                data && data.map(user => (
+                    <li key={user.userName} className="py-3 px-4 flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer" 
+                    onClick={()=>navigate('/'+user.userName)} >
 
                         <Avatar className="mr-4">
-                            <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" src={user.imageUrl} />
+                            <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" src={user.profileImageUrl} />
                         </Avatar><div className="flex flex-col h-full gap-1 ">
                             <h3 className="text-primary text-[15px]">{user.name}</h3>
-                            <span className="text-gray">@{user.username}</span>
+                            <span className="text-gray">@{user.userName}</span>
                         </div>
                     </li>
                 ))
