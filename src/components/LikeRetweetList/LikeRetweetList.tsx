@@ -32,8 +32,8 @@ export function LikeRetweetList({ type }: { type: string }) {
             value="Likers"
             onClick={() => {
               setListstate("Likers");
-              console.log(pathname);
-              navigate(`/${pathname}/Following`);
+              const path = pathname.replace("retweeters", "likers");
+              navigate(path);
             }}
           >
             <div className={Liststate == "Likers" ? "active-tab" : "tab"}>
@@ -45,8 +45,8 @@ export function LikeRetweetList({ type }: { type: string }) {
             value="Retweeters"
             onClick={() => {
               setListstate("Retweeters");
-              console.log(pathname);
-              navigate(`/${pathname}/Retweeters`);
+              const path = pathname.replace("likers", "retweeters");
+              navigate(path);
             }}
           >
             <div className={Liststate == "Retweeters" ? "active-tab" : "tab"}>

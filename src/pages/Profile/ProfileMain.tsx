@@ -6,6 +6,7 @@ import { useContext, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 // import { UnfollowPopUp } from "./UnfollowPopUp";
 import { FollowButton } from "@/components/FollowButton/FollowButton";
+import { BlockButton } from "@/components/BlockButton/BlockButton";
 
 /*
 TODO: options menu and message menu
@@ -48,11 +49,6 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
 
   return (
     <div>
-      {/* <UnfollowPopUp
-        show={showUnfollowUpop}
-        username={username!}
-        setShow={setShowUnfollowUpop}
-      /> */}
       <Link
         to={`/${username}/header_photo`}
         state={{ bannerImg: user.profileBannerUrl }}
@@ -79,21 +75,27 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
               />
             </div>
           </Link>
-          {contextUser?.userName == username ? (
-            <Link
-              to="settings/profile"
-              state={{ previousLocation: location }}
-              className="h-[35px]"
-            >
-              <Button variant="outline" className="h-full">
-                {buttonContent}
-              </Button>
-            </Link>
+          {user?.isBlocked ? (
+            <BlockButton username={user.userName} />
           ) : (
-            <FollowButton
-              isFollowing={user.isFollowing!}
-              username={user.userName}
-            />
+            <>
+              {contextUser?.userName == username ? (
+                <Link
+                  to="settings/profile"
+                  state={{ previousLocation: location }}
+                  className="h-[35px]"
+                >
+                  <Button variant="outline" className="h-full">
+                    {buttonContent}
+                  </Button>
+                </Link>
+              ) : (
+                <FollowButton
+                  isFollowing={user.isFollowing!}
+                  username={user.userName}
+                />
+              )}
+            </>
           )}
         </div>
         <div>
