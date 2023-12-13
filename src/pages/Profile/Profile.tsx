@@ -14,6 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Spinner } from "@/components/Spinner";
 import { FollowCard } from "@/components/FollowCard/FollowCard";
 import { TrendCard } from "@/components/TrendCard/TrendCard";
+import { UserContext } from "@/contexts/UserContextProvider";
 import { BlockedProfile } from "@/components/BlockedProfile/BlockedProfile";
 
 /*

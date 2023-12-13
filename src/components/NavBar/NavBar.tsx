@@ -56,10 +56,11 @@ export function NavBar() {
                     </Link>
                 </div>
 
-                <div className='my-3 p-3 w-full flex flex-row items-center hover:bg-[#191919] transition-all hover:rounded-full'>
+                <div className='my-3 p-3 w-full flex flex-row justify-between items-center hover:bg-[#191919] transition-all hover:rounded-full'>
+                    <div className='flex flex-row gap-0'>
                     <Popover>
                         <PopoverTrigger>
-                            <img src={`http://${user?.profileImageUrl}`} alt="profilePic" className='w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid' />
+                            <img src={`${user?.profileImageUrl}`} alt="profilePic" className='w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid' />
                         </PopoverTrigger>
                         <PopoverContent className='w-[240px] cursor-pointer hover:bg-[#16181c] p-3 text-primary' onClick={() => { navigation("/i/flow/logout") }}>
                             Log out {user?.userName}
@@ -69,7 +70,8 @@ export function NavBar() {
                         <h3 className='font-semibold tracking-[2px] text-[15px]'>{user?.name}</h3>
                         <span className='text-gray text-[15px]'>@{user?.userName}</span>
                     </div>
-                    <div className='w-2/4  row justify-end hidden xl:flex ' onClick={() => { navigation("/i/flow/logout") }}>
+                    </div>
+                    <div className='row justify-end hidden xl:flex ' onClick={() => { navigation("/i/flow/logout") }}>
                         <LogOut className='cursor-pointer' />
                     </div>
                 </div>

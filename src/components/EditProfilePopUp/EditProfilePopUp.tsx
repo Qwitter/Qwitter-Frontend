@@ -8,7 +8,7 @@ import { UserContext } from "@/contexts/UserContextProvider";
 import { useForm } from "react-hook-form";
 import BirthDayInput from "../BirthDayInput/BirthDayInput";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EditUserSchema } from "@/models/User";
+import { EditUserSchema, User } from "@/models/User";
 import { useToast } from "../ui/use-toast";
 import { DiscardProfileChanges } from "./DiscardProfileChanges";
 import { editUserProfile, uploadProfileImage } from "@/lib/utils";
@@ -25,17 +25,18 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
   const [profileImage, setProfileImage] = useState<File>();
   const [profileBanner, setProfileBanner] = useState<File>();
   const [showDiscardChanges, setShowDiscardChanges] = useState<boolean>(false);
-  const { user, token, setUser } = useContext(UserContext);
+  const { user, token,setUser } = useContext(UserContext);
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const contextBirthDate = new Date(user?.birthDate!);
+  const contextBirthDate = new Date(user?user.birthDate:"");
   const birthDay = contextBirthDate.getDate();
   const birthMonth = contextBirthDate.toLocaleString("default", {
     month: "long",
   });
   const birthYear = contextBirthDate.getFullYear();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const form = useForm<any>({
     resolver: zodResolver(EditUserSchema),
     defaultValues: {
@@ -83,23 +84,37 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
     navigate(-1);
   };
 
-  const callEditUserData = useMutation({
-    mutationFn: (editedUserData: object) => {
+  const callEditUserData = useMutation<User>({
+    mutationFn: (editedUserData:User) => {
+      profileImage&& uploadProfileImage(profileImage!, token!)
+      profileBanner&&uploadProfileImage(profileBanner!, token!, true)
       return editUserProfile(editedUserData, token!);
     },
+    onSuccess:(editedUserData)=>{
+      console.log(editedUserData)
+      setUser({
+        name: editedUserData.name,
+        email: user?.email ?? "",
+        birthDate: editedUserData.birthDate,
+        userName: user?.userName ?? "",
+        createdAt: user?.createdAt ?? "",
+        location: editedUserData.location,
+        description: editedUserData.description,
+        url: editedUserData.url,
+        passwordChangedAt: user?.passwordChangedAt ?? "",
+        id: user?.id ?? "",
+        google_id: user?.google_id ?? "",
+        profileImageUrl: editedUserData.profileImageUrl,
+        profileBannerUrl: `http://${editedUserData.profileBannerUrl}`,
+        verified:editedUserData.verified??false,
+        isFollowing:editedUserData.isFollowing??false,
+      });
+    },
+    onError:()=>{
+      console.log("error")
+    }
   });
 
-  const callEditProfileImage = useMutation({
-    mutationFn: () => {
-      return uploadProfileImage(profileImage!, token!);
-    },
-  });
-
-  const callEditProfileBanner = useMutation({
-    mutationFn: () => {
-      return uploadProfileImage(profileBanner!, token!, true);
-    },
-  });
 
   const handleSave = async (): Promise<void> => {
     // check for errors first
@@ -113,14 +128,6 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
         });
       }
       return;
-    }
-
-    if (profileImage) {
-      callEditProfileImage.mutate();
-    }
-
-    if (profileBanner) {
-      callEditProfileBanner.mutate();
     }
 
     if (!isChanged()) {
@@ -144,21 +151,7 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
 
     //TODO: proceed when request is fulfilled
     //TODO: we can set the user with the response instead
-    setUser({
-      name: editedUserData.name,
-      email: user?.email ?? "",
-      birthDate: editedUserData.birthDate,
-      userName: user?.userName ?? "",
-      createdAt: user?.createdAt ?? "",
-      location: editedUserData.Location,
-      description: editedUserData.description,
-      url: editedUserData.url,
-      passwordChangedAt: user?.passwordChangedAt ?? "",
-      id: user?.id ?? "",
-      google_id: user?.google_id ?? "",
-      profileImageUrl: callEditProfileImage.data.profileImageUrl,
-      profileBannerUrl: callEditProfileBanner.data.profileBannerUrl,
-    });
+  
 
     if (onSave) onSave();
     handleClose();
@@ -247,3 +240,4 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
     </PopUpContainer>
   );
 };
+

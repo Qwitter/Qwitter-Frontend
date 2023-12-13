@@ -1050,24 +1050,25 @@ export const editUserProfile = async (
   }
 
   try {
+    console.log(editedUserData,parseResult)
     const response = await axios.put(
       `${VITE_BACKEND_URL}/api/v1/user/profile`,
       {
         name: parseResult.name,
-        description: parseResult.description,
-        location: parseResult.location,
-        url: parseResult.url,
-        birth_date: parseResult.birthDate,
+        description: parseResult.description??"",
+        location: parseResult.location??"",
+        url: parseResult.url??"",
+        birth_date: parseResult.birthDate??"",
       },
       {
         headers: {
           Accept: "application/json",
-          "Content-Type": "object",
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       }
     );
-    return response;
+    return response.data;
   } catch (error) {
     console.log(error);
     return null;
