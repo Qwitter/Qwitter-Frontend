@@ -59,7 +59,7 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
         className="w-full"
       >
         <img
-          src={user?.profileBannerUrl}
+          src={`http://${user?.profileBannerUrl}`}
           alt="user banner image"
           className="w-full aspect-[3/1] max-h-[200px] cursor-pointer"
         />
