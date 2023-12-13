@@ -12,10 +12,7 @@ import {
   HoverCardTrigger,
 } from "../ui/hover-card";
 
-export type MuteButtonProp = {
-  username: string;
-};
-export function MuteButton({ username }: MuteButtonProp) {
+export function MuteButton({ username }: { username: string }) {
   const [state, setState] = useState("Muted");
   const { token } = useContext(UserContext);
   const { mutateAsync: MuteServiceFn } = useMutation({
@@ -47,7 +44,10 @@ export function MuteButton({ username }: MuteButtonProp) {
           <HoverCardTrigger>
             <Button
               variant={"danger"}
-              onClick={() => unMuteServiceFn(username)}
+              onClick={(event) => {
+                event.stopPropagation();
+                unMuteServiceFn(username);
+              }}
             >
               <GoMute className="rounded-full w-[20px] h-[20px]"></GoMute>
             </Button>
@@ -60,7 +60,10 @@ export function MuteButton({ username }: MuteButtonProp) {
             <Button
               className="cursor-pointer"
               variant={"secondary"}
-              onClick={() => MuteServiceFn(username)}
+              onClick={(event) => {
+                event.stopPropagation();
+                MuteServiceFn(username);
+              }}
             >
               <GoUnmute className="rounded-full w-[20px] h-[20px]"></GoUnmute>
             </Button>

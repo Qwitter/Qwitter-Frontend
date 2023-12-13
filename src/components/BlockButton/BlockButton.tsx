@@ -3,36 +3,33 @@ import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { BlockService, UnBlockService } from "@/lib/utils";
 import { WarningPopUp } from "../WarningPopUp/WarningPopUp";
-import { BlockButtonProp } from "./BlockButtonProp";
 import { UserContext } from "@/contexts/UserContextProvider";
 
-export function BlockButton({ username }: BlockButtonProp) {
+export function BlockButton({ username }: { username: string }) {
   const [state, setstate] = useState(true);
   const [showDialog, setshowDialog] = useState(false);
   const { token } = useContext(UserContext);
-  const {
-    mutateAsync: BlockServiceFn,
-    // isPending: FollowServicePending,
-  } = useMutation({
+  const { mutateAsync: BlockServiceFn } = useMutation({
     mutationFn: token
       ? (username: string) => BlockService(username, token)
       : undefined,
   });
-  const {
-    mutateAsync: unBlockServiceFn,
-  } = useMutation({
+  const { mutateAsync: unBlockServiceFn } = useMutation({
     mutationFn: token
       ? (username: string) => UnBlockService(username, token)
       : undefined,
   });
-  const handleBlockButton = () => {
+  const handleBlockButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     setshowDialog(true);
   };
-  const handleunBlockButton = () => {
+  const handleunBlockButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     unBlockServiceFn(username);
     setstate(false);
   };
-  const confirmBlockButton = () => {
+  const confirmBlockButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     BlockServiceFn(username);
     setstate(true);
     setshowDialog(false);

@@ -7,13 +7,14 @@ import { ProfilePosts } from "./ProfilePosts";
 import { ProfileReplies } from "./ProfileReplies";
 import { ProfileMedia } from "./ProfileMedia";
 import { ProfileLikes } from "./ProfileLikes";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { getUserProfile } from "@/lib/utils";
 import { UserProfileData } from "@/models/User";
 import { useQuery } from "@tanstack/react-query";
 import { Spinner } from "@/components/Spinner";
 import { FollowCard } from "@/components/FollowCard/FollowCard";
 import { TrendCard } from "@/components/TrendCard/TrendCard";
+import { BlockedProfile } from "@/components/BlockedProfile/BlockedProfile";
 
 /*
 TODO: handle invalid username
@@ -22,15 +23,15 @@ TODO: handle invalid username
 export function Profile() {
   const { username } = useParams();
   const { token } = useContext(UserContext);
-
-  // if (!username || username!.length >= 15) {
-  //   // Redirect or handle the case when the username is too long
-  //   return (
-  //     <>
-  //       <Navigate to="/home" />
-  //     </>
-  //   );
-  // }
+  const [blocked, setBlocked] = useState(false);
+  if (!username || username!.length >= 16) {
+    // Redirect or handle the case when the username is too long
+    return (
+      <>
+        <Navigate to="/home" />
+      </>
+    );
+  }
 
   const { data: user } = useQuery<UserProfileData>({
     queryKey: ["profile", token, username],
@@ -38,6 +39,7 @@ export function Profile() {
   });
   useEffect(() => {
     window.scrollTo(0, 0);
+    setBlocked(user?.isBlocked!);
   }, []);
 
   if (!username || username!.length >= 15) {
@@ -74,15 +76,23 @@ export function Profile() {
           </span>
         </div>
         <ProfileMain user={user!} />
-        <ProfileSections />
-        <div>
-          <Routes>
-            <Route index path="/" element={<ProfilePosts />} />
-            <Route path="/with_replies" element={<ProfileReplies />} />
-            <Route path="/media" element={<ProfileMedia />} />
-            <Route path="/likes" element={<ProfileLikes />} />
-          </Routes>
-        </div>
+
+        {blocked ? (
+          <BlockedProfile
+            username={username!}
+            ViewPostsFunction={() => setBlocked(false)}
+          />
+        ) : (
+          <>
+            <ProfileSections />
+            <Routes>
+              <Route index path="/" element={<ProfilePosts />} />
+              <Route path="/with_replies" element={<ProfileReplies />} />
+              <Route path="/media" element={<ProfileMedia />} />
+              <Route path="/likes" element={<ProfileLikes />} />
+            </Routes>
+          </>
+        )}
       </div>
       <div className="max-w-[600px]  pb-16 relative flex flex-col z-0 w-[36.5%] max-largeX:hidden  h-full">
         <div className="w-full sticky top-0 z-50 bg-black   ">
