@@ -1,11 +1,12 @@
-import img from '../../assets/temp.png'
-import { Textarea } from './Textarea'
+import { Textarea } from './textarea'
 import TweetImagesViewer from "../TweetImagesViewer/TweetImagesViewer";
 import CreateTweetFooter from './CreateTweetFooter';
 import { CreateTweetMainProp, Mention } from './types/CreateTweetProps';
 import CreateTweetPopUp from './CreateTweetPopUp';
 import { useContext, useState } from 'react';
 import { UserContext } from '@/contexts/UserContextProvider';
+import { Avatar } from '@radix-ui/react-avatar';
+import { AvatarFallback, AvatarImage } from '../ui/avatar';
 export default function CreateTweetMain({ selectedImages, setSelectedImages, handleSubmit, setFiles, tweet, files, mode, setTweet, handleRemoveFile, form }: CreateTweetMainProp) {
     const [mentionsAndTags, SetMentionsAndTags] = useState<Mention[]>([])
     const [popup, setPopup] = useState({
@@ -42,7 +43,10 @@ export default function CreateTweetMain({ selectedImages, setSelectedImages, han
     return (
         <div className="flex flex-row items-start h-full w-full ">
             <div className='mr-1 mt-3 min-w-fit'>
-                <img src={user?.profileImageUrl || img} alt="" className='w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid' />
+                <Avatar className='w-10 h-10 rounded-full border-[#ffffee62] border-[1px] border-solid block'>
+                    <AvatarImage src={`${user?.profileImageUrl}`} alt="profilePic" />
+                    <AvatarFallback >{user?.userName.substring(0, 2)}</AvatarFallback>
+                </Avatar>
             </div>
             <div className='w-[90%] relative'>
                 <div className=" overflow-y-auto max-h-[480px] relative">
@@ -60,7 +64,7 @@ export default function CreateTweetMain({ selectedImages, setSelectedImages, han
                         data-testid="tweetInput"
                     />
 
-                    <TweetImagesViewer images={selectedImages} mode='edit' removeAttachment={handleRemoveFile} />
+                    <TweetImagesViewer screen='tweet' images={selectedImages} mode='edit' removeAttachment={handleRemoveFile} />
                 </div>
                 {popup.visible &&
                     <CreateTweetPopUp popUp={popup} closePopup={() => setPopup({ visible: false, content: "", index: 0, position: { top: 0, left: 0 } })} handleUserClick={handleUserClick} />

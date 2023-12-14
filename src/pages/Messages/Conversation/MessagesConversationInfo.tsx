@@ -18,6 +18,7 @@ export function MessagesConversationInfo() {
     const [show, setShow] = useState(false);
     const [showBlock, setShowBlock] = useState(false);
     const handleBlock = () => {
+        console.log(currentConversation)
         setShowBlock(true)
     }
     if (!currentConversation) {
@@ -46,7 +47,7 @@ export function MessagesConversationInfo() {
                 </>}
                 <div className="max-h-[40vh] overflow-y-auto">
                     {currentConversation.users.map((user, index) => (
-                        <UsersListItem isFollowing={user.isFollowing!} verified={user.isVerified! || false} key={index} username={user.userName} profileImageUrl={user.profileImageUrl} name={user.name} description="" listType="FollowList" showDesc={false} />
+                        <UsersListItem isFollowing={user.isFollowed!} verified={user.isVerified! || false} key={index} username={user.userName} profileImageUrl={user.profileImageUrl} name={user.name} description="" listType="FollowList" showDesc={false} />
                     ))
 
                     }
