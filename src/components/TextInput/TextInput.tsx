@@ -107,6 +107,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
               size={iconSize}
               className="inline absolute hover:cursor-pointer z-20 left-[85%] sm:left-[88%] bg-secondary text-black p-[2px]  rounded-full "
               onClick={rightIconFunction}
+              data-testid="rightIcon"
             />
           )}
           <label
