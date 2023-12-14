@@ -835,10 +835,10 @@ export const CreateMessage = async ({ formData, token,conversationId }: { conver
  * @param token - the token of the user
  * @returns get the conversation data
  */
-export const getConversation = async ({ token, conversationId }: { conversationId: string, token: string }) => {
+export const getConversation = async ({ token, conversationId,pageParam,limit }: {pageParam:number;limit:number; conversationId: string, token: string }) => {
   try {
     const res = await axios.get(
-      `${VITE_BACKEND_URL}/api/v1/conversation/` + conversationId,
+      `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}?page=${pageParam}&limit=${limit}` ,
       {
         headers: {
           Authorization: `Bearer ${token}`,
