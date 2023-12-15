@@ -66,7 +66,7 @@ export function FollowButton({
           className={cn("text-sm w-[100px] h-[30px] font-bold", className)}
           variant={"danger"}
         >
-          <span className="text-white">
+          <span className={cn("text-white", isHovered && "text-danger")}>
             {isHovered ? "Unfollow" : "Following"}
           </span>
         </Button>

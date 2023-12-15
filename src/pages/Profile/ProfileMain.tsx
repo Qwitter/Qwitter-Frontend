@@ -1,16 +1,29 @@
 import { Button } from "@/components";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { UserProfileData } from "@/models/User";
-import { Cake, CalendarDays, MapPin } from "lucide-react";
-import { useContext, useState } from "react";
+import {
+  BellPlus,
+  Cake,
+  CalendarDays,
+  Mail,
+  MapPin,
+  MoreHorizontal,
+} from "lucide-react";
+import { useContext } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { FollowButton } from "@/components/FollowButton/FollowButton";
 import { BlockButton } from "@/components/BlockButton/BlockButton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@radix-ui/react-popover";
+import { cn } from "@/lib/utils";
 
 /*
-TODO: options menu and message menu
-TODO: may need to revalidate the cache after edit, follow and unfollow
+TODO: options menu , message, notification
+TODO: may need to revalidate the cache follow and unfollow
 */
 
 type ProfileMainProps = {
@@ -95,17 +108,49 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
                   </Button>
                 </Link>
               ) : (
-                <FollowButton
-                  isFollowing={user?.isFollowing!}
-                  username={user?.userName!}
-                  className="h-[35px]"
-                />
+                <div className="flex justify-start align-start">
+                  <Popover>
+                    <PopoverTrigger className="w-[35px] h-[35px] mb-3 mr-2 flex justify-center items-center rounded-full border border-[#536471] hover:bg-[#eff3f4]/10">
+                      <MoreHorizontal size={20} />
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[240px] cursor-pointer hover:bg-[#16181c] p-3 bg-black box-shadow text-primary text-xs rounded-xl">
+                      {
+                        //TODO: block, mute, unblock?
+                      }
+                      Oh hello there
+                    </PopoverContent>
+                  </Popover>
+
+                  <Link
+                    to=""
+                    className="w-[35px] h-[35px] mb-3 mr-2 flex justify-center items-center rounded-full border border-[#536471] hover:bg-[#eff3f4]/10"
+                  >
+                    <Mail size={20} />
+                  </Link>
+
+                  {user?.isFollowing && (
+                    //TODO: render conditionally (maybe use a state with initial value = isFollowing)
+                    <div className="w-[35px] h-[35px] mb-3 mr-2 cursor-pointer flex justify-center items-center rounded-full border border-[#536471] hover:bg-[#eff3f4]/10">
+                      <BellPlus size={20} />
+                    </div>
+                  )}
+
+                  <FollowButton
+                    isFollowing={user?.isFollowing!}
+                    username={user?.userName!}
+                    className={cn(
+                      "h-[35px] min-w-20",
+                      user?.isFollowing && "w-[100px]"
+                    )}
+                    //TODO:  size matters
+                  />
+                </div>
               )}
             </>
           )}
         </div>
 
-        {user == null ? ( //needs checking
+        {user == null ? (
           <div className="w-full mt-1 mb-3">
             <span className="text-xl leading-5 font-bold">@{username}</span>
           </div>
@@ -142,15 +187,27 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
             </div>
             <div className="leading-3">
               <span className="mr-5 text-sm">
-                <Link to={`/${username}/following`} className="hover:underline">
-                  <span className="font-bold">{user?.followingCount}</span>
+                <Link
+                  to={`/${username}/following`}
+                  className="hover:underline"
+                  data-testid="following"
+                >
+                  <span className="font-bold" data-testid="followingCount">
+                    {user?.followingCount}
+                  </span>
                   <span className="text-gray"> Following</span>
                 </Link>
               </span>
               <span className="mr-5 text-sm">
-                <Link to={`/${username}/followers`} className="hover:underline">
+                <Link
+                  to={`/${username}/followers`}
+                  className="hover:underline"
+                  data-testid="followingCount"
+                >
                   <span className="font-bold">{user?.followersCount}</span>
-                  <span className="text-gray"> Followers</span>
+                  <span className="text-gray" data-testid="followersCount">
+                    Followers
+                  </span>
                 </Link>
               </span>
             </div>
