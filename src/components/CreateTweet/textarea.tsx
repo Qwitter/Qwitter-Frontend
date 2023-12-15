@@ -6,7 +6,7 @@ import { Mention } from "./types/CreateTweetProps";
 export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   maxRows?: number;
   text: string;
-  mode: "popUp" | "home"|"Message",
+  mode: "popUp" | "home"|"Message"|"reply",
   SetMentionsAndTags: React.Dispatch<React.SetStateAction<Mention[]>>;
   mentionsAndTags: Mention[];
   highlightClassName?:string;
