@@ -9,6 +9,7 @@ import { MessagesAccordion } from "../Messages/MessagesAccordion";
 import { Profile } from "../Profile/Profile";
 import { FollowList } from "@/components/FollowList/FollowList";
 import { ExploreList } from "@/components/ExploreList/ExploreList.";
+import TweetDetails from "../TweetDetails/TweetDetails";
 import { socket } from "@/lib/socketInit";
 import { useEffect } from "react";
 import { EVENTS } from "../Messages/types/MessagesTypes";
@@ -58,6 +59,7 @@ export function PagesContainer() {
                   path="/:username/Following"
                   element={<FollowList type={"Following"} />}
                 />
+                <Route path="/tweet/:tweetId" element={<TweetDetails />} />
                 <Route
                   path="/:username/:tweetId/Likers"
                   element={<LikeRetweetList type={"Likers"} />}
