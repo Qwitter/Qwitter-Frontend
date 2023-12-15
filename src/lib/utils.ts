@@ -1608,3 +1608,84 @@ export const GetTweetRetweetersService = async (
     return null;
   }
 };
+
+/**
+ * @description get tweet by id
+ * @param tweetId 
+ * @param token 
+ * @returns tweet object represents the response from the backend or null
+ */
+export const getTweetById = async (tweetId: string, token: string) => {
+  try {
+    const res = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    throw new Error("Tweet not found");
+  }
+};
+
+/**
+ * @description get tweet replies
+ * @param tweetId
+ * @param token
+ * @param pageParam
+ * @param limit
+ * @returns replies array represents the response from the backend or null
+ */
+export const getTweetReplies = async (
+  tweetId: string,
+  token: string,
+  pageParam: number = 1,
+  limit: number = 10
+) => {
+  try {
+    const res = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}/replies?page=${pageParam}&limit=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data.tweets;
+  } catch (err) {
+    console.log(err);
+    throw new Error("Replies not found");
+  }
+};
+
+/**
+ * @description send a retweet request
+ * @param tweetId 
+ * @param token 
+ * @returns success or failure
+ */
+export const retweet = async (tweetId: string, token: string) => {
+  const formData = new FormData();
+  formData.append("retweetedId", tweetId);
+    try {
+      const res = await axios.post(
+        `${VITE_BACKEND_URL}/api/v1/tweets`,
+        formData,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return res.status == 201;
+    } catch (err) {
+      console.log(err);
+      throw new Error("Error retweeting");
+    }
+};

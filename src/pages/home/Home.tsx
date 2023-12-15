@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import TweetsList from "@/components/TweetsList/TweetsList";
 import CreateTweetContainer from "@/components/CreateTweet/CreateTweetContainer";
 import SearchInput from "@/components/SearchInput/SearchInput";
@@ -21,6 +21,11 @@ export function Home() {
     if (!token) return;
     refetch();
     // console.log(data);
+  }, [token]);
+
+  const dataArr = useMemo(() => {
+    console.log(data?.pages.flat());
+    return data?.pages.flat() || [];
   }, [data]);
 
   return (
@@ -60,15 +65,15 @@ export function Home() {
         <div>
           <CreateTweetContainer mode="home" />
           <TweetsList
-          fetcherRef={ref}
-          pages={data?.pages || [[]]}
-          hasMoreData={hasMoreData}
-        />
+            fetcherRef={ref}
+            data={dataArr}
+            hasMoreData={hasMoreData}
+          />
         </div>
         
       </div>
       <div className="max-w-[600px]  pb-16 relative flex flex-col z-0 w-[36.5%] max-largeX:hidden h-full">
-        <div className="w-full sticky top-0 z-50 bg-black   ">
+        <div className="w-full sticky top-0 z-50 bg-black">
           <SearchInput />
         </div>
         <div className="mt-5 rounded-lg bg-dark-gray">

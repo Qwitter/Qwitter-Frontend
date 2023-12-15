@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { MessagesAccordion } from "../Messages/MessagesAccordion";
 import { Profile } from "../Profile/Profile";
 import { ExploreList } from "@/components/ExploreList/ExploreList.";
+import TweetDetails from "../TweetDetails/TweetDetails";
 import { socket } from "@/lib/socketInit";
 import { useEffect } from "react";
 import { EVENTS } from "../Messages/types/MessagesTypes";
@@ -16,14 +17,21 @@ import { LikeRetweetList } from "@/components/LikeRetweetList/LikeRetweetList";
 export function PagesContainer() {
   const location = useLocation();
   const previousLocation = location.state?.previousLocation;
-  const user = JSON.parse(localStorage.getItem("user")!);
-  useEffect(() => {
-    socket.connect();
-    socket.emit(EVENTS.CLIENT.JOIN_ROOM, user.userName);
-    socket.on(EVENTS.SERVER.NOTIFICATION, async (notification) => {
+  const user = JSON.parse(localStorage.getItem("user")!)
+  useEffect(()=>{
+    socket.connect()
+    socket.on('connect',()=>{
+      console.log("connected -----------")
+    })
+    console.log(socket.connected)
+    socket.emit(EVENTS.CLIENT.JOIN_ROOM,user.userName);
+    socket.on(EVENTS.SERVER.NOTIFICATION, async(notification) => {
       console.log(notification);
     });
-  }, []);
+    return () => {
+      socket.disconnect(); 
+    };
+  },[])
 
   return (
     <>
@@ -49,6 +57,15 @@ export function PagesContainer() {
                 <Route path="/Messages/*" element={<Messages />} />
                 <Route path="/:username/*" element={<Profile />} />
                 <Route path="/Explore" element={<ExploreList />} />
+                <Route
+                  path="/:username/Followers"
+                  element={<FollowList type={"Followers"} />}
+                />
+                <Route
+                  path="/:username/Following"
+                  element={<FollowList type={"Following"} />}
+                />
+                <Route path="/tweet/:tweetId" element={<TweetDetails />} />
                 <Route
                   path="/:username/:tweetId/Likers"
                   element={<LikeRetweetList type={"Likers"} />}
