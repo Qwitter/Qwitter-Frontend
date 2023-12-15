@@ -7,7 +7,6 @@ import { Messages } from "../Messages/Messages";
 import { cn } from "@/lib/utils";
 import { MessagesAccordion } from "../Messages/MessagesAccordion";
 import { Profile } from "../Profile/Profile";
-import { FollowList } from "@/components/FollowList/FollowList";
 import { ExploreList } from "@/components/ExploreList/ExploreList.";
 import TweetDetails from "../TweetDetails/TweetDetails";
 import { socket } from "@/lib/socketInit";
