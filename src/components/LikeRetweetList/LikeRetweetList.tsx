@@ -2,25 +2,26 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { useContext, useState } from "react";
 import "../../index.css";
 import { UsersList } from "../UsersList/UsersList";
-import { GetFollowersService, GetFollowingsService } from "@/lib/utils";
-import { useNavigate, useParams } from "react-router-dom";
+import { GetTweetLikersService, GetTweetRetweetersService } from "@/lib/utils";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { useQuery } from "@tanstack/react-query";
 import { User } from "@/models/User";
 import { Spinner } from "../Spinner";
 
-export function FollowList({ type }: { type: string }) {
+export function LikeRetweetList({ type }: { type: string }) {
   const [Liststate, setListstate] = useState(type);
-  const navigate = useNavigate();
   const { token } = useContext(UserContext);
-  const { username } = useParams();
-  const { data: Followings } = useQuery<User[]>({
-    queryKey: ["followings", token, username],
-    queryFn: () => GetFollowingsService(username!, token!),
+  const { tweetId } = useParams();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const { data: Likers } = useQuery<User[]>({
+    queryKey: ["Likers", token, tweetId],
+    queryFn: () => GetTweetLikersService(tweetId!, token!),
   });
-  const { data: Followers } = useQuery<User[]>({
-    queryKey: ["followers", token, username],
-    queryFn: () => GetFollowersService(username!, token!),
+  const { data: Retweeters } = useQuery<User[]>({
+    queryKey: ["Retweeters", token, tweetId],
+    queryFn: () => GetTweetRetweetersService(tweetId!, token!),
   });
   return (
     <>
@@ -28,35 +29,37 @@ export function FollowList({ type }: { type: string }) {
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger
             className="flex justify-center tabhover"
-            value="Following"
+            value="Likers"
             onClick={() => {
-              setListstate("Following");
-              navigate(`/${username}/Following`);
+              setListstate("Likers");
+              const path = pathname.replace("retweeters", "likers");
+              navigate(path);
             }}
           >
-            <div className={Liststate == "Following" ? "active-tab" : "tab"}>
-              Following
+            <div className={Liststate == "Likers" ? "active-tab" : "tab"}>
+              Likers
             </div>
           </TabsTrigger>
           <TabsTrigger
             className="flex justify-center tabhover"
-            value="Followers"
+            value="Retweeters"
             onClick={() => {
-              setListstate("Followers");
-              navigate(`/${username}/Followers`);
+              setListstate("Retweeters");
+              const path = pathname.replace("likers", "retweeters");
+              navigate(path);
             }}
           >
-            <div className={Liststate == "Followers" ? "active-tab" : "tab"}>
-              Followers
+            <div className={Liststate == "Retweeters" ? "active-tab" : "tab"}>
+              Retweeters
             </div>
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="Following">
-          {Followings ? (
+        <TabsContent value="Likers">
+          {Likers ? (
             <UsersList
               listType={"FollowList"}
               showDesc={true}
-              users={Followings!}
+              users={Likers!}
             />
           ) : (
             <div className="mx-auto">
@@ -64,12 +67,12 @@ export function FollowList({ type }: { type: string }) {
             </div>
           )}
         </TabsContent>
-        <TabsContent value="Followers">
-          {Followers ? (
+        <TabsContent value="Retweeters">
+          {Retweeters ? (
             <UsersList
               listType={"FollowList"}
               showDesc={true}
-              users={Followers!}
+              users={Retweeters!}
             />
           ) : (
             <div className="mx-auto">

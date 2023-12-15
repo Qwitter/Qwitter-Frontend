@@ -1,7 +1,7 @@
 import { Textarea } from "@/components/CreateTweet/Textarea";
 import { Image, ScanSearch, SendHorizonal } from "lucide-react";
 import { useRef, useState } from "react";
-import { Images, Mention } from "../types/MessagesTypes";
+import {  Mention } from "../types/MessagesTypes";
 import CreateTweetPopUp from "@/components/CreateTweet/CreateTweetPopUp";
 import { cn } from "@/lib";
 import TweetImagesViewer from "@/components/TweetImagesViewer/TweetImagesViewer";
@@ -12,6 +12,8 @@ export function MessagesConversationInput({ text, setText, handleSubmit, selecte
         selectedImageFile: File | undefined; setSelectedImageFile: React.Dispatch<React.SetStateAction<File | undefined>>
         handleSubmit: () => void; text: string; setText: React.Dispatch<React.SetStateAction<string>>;
     }) {
+        const  [selectedImage,setSelectedImage] = useState<{value:string;type:string}[]>([])
+
     const [mentionsAndTags, SetMentionsAndTags] = useState<Mention[]>([]);
     const fileInput = useRef<HTMLInputElement>(null);
     const [popup, setPopup] = useState({
@@ -30,6 +32,7 @@ export function MessagesConversationInput({ text, setText, handleSubmit, selecte
         const file = fileInput.current!.files;
         selectedImageFile;
         if (file) {
+            setSelectedImage([{ value: URL.createObjectURL(file[0]), type: "photo" }])
             setSelectedImageFile(file[0]);
             fileInput.current!.value = '';
         }
@@ -39,12 +42,14 @@ export function MessagesConversationInput({ text, setText, handleSubmit, selecte
     };
     const handleRemoveImage = () => {
         setSelectedImageFile(undefined);
+        setSelectedImage([]);
 
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter' && e.code === 'Enter' && !e.shiftKey && !e.ctrlKey && !e.altKey && !e.metaKey) {
             e.preventDefault()
+            handleRemoveImage()
             handleSubmit()
         }
 
@@ -79,8 +84,8 @@ export function MessagesConversationInput({ text, setText, handleSubmit, selecte
                             </div>
                         </div></>}
                     <div className="flex flex-col w-full pl-2">
-                        {selectedImageFile && <div className="w-[20vw] max-h-[200px] overflow-y-hidden">
-                            <TweetImagesViewer images={selectedImageFile?[{ value: URL.createObjectURL(selectedImageFile), type: "photo" }]:[]} mode="edit" removeAttachment={handleRemoveImage} />
+                        {selectedImageFile && <div className="w-[20vw] ">
+                            <TweetImagesViewer screen="message" images={selectedImage} mode="edit" removeAttachment={handleRemoveImage} />
                         </div>}
                         <div className={cn("w-full max-w-[440px] max-h-[160px] overflow-y-auto relative", `${selectedImageFile ? 'max-w-[500px]' : ''}`)}>
                             <Textarea
@@ -96,12 +101,20 @@ export function MessagesConversationInput({ text, setText, handleSubmit, selecte
                                 className="bg-transparent text-sm overflow-x-hidden  placeholder:text-gray  focus:ring-transparent focus:border-none focus:outline-none resize-none border-none" placeholder="Start a new message" />
                         </div>
                     </div>
-                    <div className="text-secondary h-full group relative max-w-[40px] flex items-center w-full cursor-pointer" onClick={handleSubmit}>
+                   {text.length>0||selectedImage.length>0? <button className="text-secondary h-full group relative max-w-[40px] flex items-center w-full cursor-pointer" onClick={handleSubmit}>
                         <SendHorizonal className="w-10 h-10 p-2 rounded-3xl group-hover:bg-secondary group-hover:bg-opacity-25" />
                         <div className="absolute bg-[#657b8b] w-fit rounded-sm text-primary text-xs px-2 py-1 opacity-0 bg-opacity-75 group-hover:opacity-100 transition-opacity bottom-full left-1/2 transform -translate-x-1/2 translate-y-[0]">
                             Send
                         </div>
+                    </button>:
+                    <div className="text-secondary h-full  relative max-w-[40px] flex items-center w-full " onClick={handleSubmit}>
+                    <SendHorizonal className="w-10 h-10 p-2 rounded-3xl " />
+                    <div className="absolute bg-[#657b8b] w-fit rounded-sm text-primary text-xs px-2 py-1 opacity-0 bg-opacity-75 group-hover:opacity-100 transition-opacity bottom-full left-1/2 transform -translate-x-1/2 translate-y-[0]">
+                        Send
                     </div>
+                </div>
+                    
+                    }
                 </div>
 
             </div>

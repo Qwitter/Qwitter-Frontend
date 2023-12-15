@@ -11,6 +11,8 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
+import { Avatar, AvatarImage } from '@radix-ui/react-avatar';
+import { AvatarFallback } from '../ui/avatar';
 
 export function NavBar() {
     const { user } = useContext(UserContext)
@@ -56,20 +58,25 @@ export function NavBar() {
                     </Link>
                 </div>
 
-                <div className='my-3 p-3 w-full flex flex-row items-center hover:bg-[#191919] transition-all hover:rounded-full'>
-                    <Popover>
-                        <PopoverTrigger>
-                            <img src={`http://${user?.profileImageUrl}`} alt="profilePic" className='w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid' />
-                        </PopoverTrigger>
-                        <PopoverContent className='w-[240px] cursor-pointer hover:bg-[#16181c] p-3 text-primary' onClick={() => { navigation("/i/flow/logout") }}>
-                            Log out {user?.userName}
-                        </PopoverContent>
-                    </Popover>
-                    <div className=' flex-col mx-3 hidden xl:flex'>
-                        <h3 className='font-semibold tracking-[2px] text-[15px]'>{user?.name}</h3>
-                        <span className='text-gray text-[15px]'>@{user?.userName}</span>
+                <div className='my-3 p-3 w-full flex flex-row justify-between items-center hover:bg-[#191919] transition-all hover:rounded-full'>
+                    <div className='flex flex-row gap-0'>
+                        <Popover>
+                            <PopoverTrigger>
+                                <Avatar className='w-10 h-10 rounded-full border-[#ffffee62] border-[1px] border-solid block'>
+                                    <AvatarImage src={`${user?.profileImageUrl}`}  alt="profilePic"   />
+                                    <AvatarFallback >{user?.userName.substring(0, 2)}</AvatarFallback>
+                                </Avatar>
+                            </PopoverTrigger>
+                            <PopoverContent className='w-[240px] cursor-pointer hover:bg-[#16181c] p-3 text-primary' onClick={() => { navigation("/i/flow/logout") }}>
+                                Log out {user?.userName}
+                            </PopoverContent>
+                        </Popover>
+                        <div className=' flex-col mx-3 hidden xl:flex'>
+                            <h3 className='font-semibold tracking-[2px] text-[15px]'>{user?.name}</h3>
+                            <span className='text-gray text-[15px]'>@{user?.userName}</span>
+                        </div>
                     </div>
-                    <div className='w-2/4  row justify-end hidden xl:flex ' onClick={() => { navigation("/i/flow/logout") }}>
+                    <div className='row justify-end hidden xl:flex ' onClick={() => { navigation("/i/flow/logout") }}>
                         <LogOut className='cursor-pointer' />
                     </div>
                 </div>
@@ -78,12 +85,12 @@ export function NavBar() {
     )
 }
 function NavElements({ active, setActive }: { active: string, setActive: React.Dispatch<React.SetStateAction<string>> }) {
-    const {user } = useContext(UserContext)
+    const { user } = useContext(UserContext)
     return (
         <ul className='flex flex-col w-full '>
             {navLinks.map((link) => (
                 <Link to={`/${link.title != "Profile" ? link.title : user?.userName}`} key={link.id} className='group' onClick={() => setActive(link.title)}>
-                <div className='flex flex-row p-[10px] items-center max-xl:justify-center group-hover:bg-[#191919]  group-hover:rounded-full transition-all 'data-testid={`${link.title}`}>
+                    <div className='flex flex-row p-[10px] items-center max-xl:justify-center group-hover:bg-[#191919]  group-hover:rounded-full transition-all ' data-testid={`${link.title}`}>
                         <div className='relative'>
                             <link.icon {...active == link.title ? link.clicked : {}} />
                             {link.notificationCount > 0 && (

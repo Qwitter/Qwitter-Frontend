@@ -1,4 +1,3 @@
-import { Skeleton } from "@/components/ui/skeleton";
 import SearchInput from "@/components/SearchInput/SearchInput";
 import { useParams, Navigate, Routes, Route } from "react-router-dom";
 import { ProfileMain } from "./ProfileMain";
@@ -10,10 +9,13 @@ import { ProfileMedia } from "./ProfileMedia";
 import { ProfileLikes } from "./ProfileLikes";
 import { useContext, useEffect, useState } from "react";
 import { getUserProfile } from "@/lib/utils";
-import { UserContext } from "@/contexts/UserContextProvider";
 import { UserProfileData } from "@/models/User";
 import { useQuery } from "@tanstack/react-query";
 import { Spinner } from "@/components/Spinner";
+import { FollowCard } from "@/components/FollowCard/FollowCard";
+import { TrendCard } from "@/components/TrendCard/TrendCard";
+import { UserContext } from "@/contexts/UserContextProvider";
+import { BlockedProfile } from "@/components/BlockedProfile/BlockedProfile";
 
 /*
 TODO: handle invalid username
@@ -21,8 +23,25 @@ TODO: handle invalid username
 
 export function Profile() {
   const { username } = useParams();
-  const [user, setUser] = useState<UserProfileData | null>();
   const { token } = useContext(UserContext);
+  const [blocked, setBlocked] = useState(false);
+  if (!username || username!.length >= 16) {
+    // Redirect or handle the case when the username is too long
+    return (
+      <>
+        <Navigate to="/home" />
+      </>
+    );
+  }
+
+  const { data: user } = useQuery<UserProfileData>({
+    queryKey: ["profile", token, username],
+    queryFn: () => getUserProfile(token!, username!),
+  });
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    setBlocked(user?.isBlocked!);
+  }, []);
 
   if (!username || username!.length >= 15) {
     // Redirect or handle the case when the username is too long
@@ -33,20 +52,6 @@ export function Profile() {
     );
   }
 
-  const getUser = async () => {
-    const user = await getUserProfile(token!, username);
-    setUser(user.data);
-    return user.data;
-  };
-
-  const { refetch } = useQuery({
-    queryKey: ["profile", username],
-    queryFn: getUser,
-  });
-
-  useEffect(() => {
-    if (token) refetch();
-  }, [token, refetch]);
 
   if (!user)
     return (
@@ -66,34 +71,39 @@ export function Profile() {
           </span>
           <span className="flex flex-col w-full ml-3">
             <span className="text-xl font-bold pt-0.5">{user?.name}</span>
-            <span className="text-[13px] text-gray">{user?.tweetCount}</span>
+            <span className="text-[13px] text-gray">
+              {user?.tweetCount} Posts
+            </span>
           </span>
         </div>
         <ProfileMain user={user!} />
 
-        <ProfileSections />
-
-        <div className="">
-          <Routes>
-            <Route index path="/" element={<ProfilePosts />} />
-            <Route path="/with_replies" element={<ProfileReplies />} />
-            <Route path="/media" element={<ProfileMedia />} />
-            <Route path="/likes" element={<ProfileLikes />} />
-          </Routes>
-        </div>
+        {blocked ? (
+          <BlockedProfile
+            username={username!}
+            ViewPostsFunction={() => setBlocked(false)}
+          />
+        ) : (
+          <>
+            <ProfileSections />
+            <Routes>
+              <Route index path="/" element={<ProfilePosts />} />
+              <Route path="/with_replies" element={<ProfileReplies />} />
+              <Route path="/media" element={<ProfileMedia />} />
+              <Route path="/likes" element={<ProfileLikes />} />
+            </Routes>
+          </>
+        )}
       </div>
       <div className="max-w-[600px]  pb-16 relative flex flex-col z-0 w-[36.5%] max-largeX:hidden  h-full">
         <div className="w-full sticky top-0 z-50 bg-black   ">
           <SearchInput />
         </div>
-        <div className="px-4 py-3 rounded-lg mt-5 bg-dark-gray">
-          <Skeleton className="w-full  h-[120px] " />
+        <div className="mt-5 rounded-lg bg-dark-gray">
+          <FollowCard />
         </div>
-        <div className="px-4 py-3 rounded-lg mt-5 bg-dark-gray">
-          <Skeleton className="w-full  h-[500px] " />
-        </div>
-        <div className="px-4 py-3 rounded-lg mt-5 bg-dark-gray">
-          <Skeleton className="w-full  h-[300px] " />
+        <div className="mt-5 rounded-lg bg-dark-gray">
+          <TrendCard />
         </div>
       </div>
     </>

@@ -566,6 +566,85 @@ export const getUsersSuggestions = async (token: string, username: string) => {
     return null;
   }
 };
+/*
+ * @description get a list of users with userName contain the given string
+ * @param {username,token}
+ * @returns list of users  or null
+ */
+export const getConversationsUsersSuggestions = async (token: string, username: string) => {
+  try {
+    if (!username) return []
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/search?q=${username.slice(1)}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data.users;
+
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+/*
+ * @description get a list of users with userName contain the given string
+ * @param {username,token}
+ * @returns list of users  or null
+ */
+export const getConversationsUsersSuggestions = async (token: string, username: string) => {
+  try {
+    if (!username) return []
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/conversation/user?q=${username}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data.users;
+
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+/*
+ * @description get a list of users with userName contain the given string to add to the group
+ * @param {username,token,conversationId}
+ * @returns list of users  or null
+ */
+export const getUsersSuggestionsToAdd = async (token: string, username: string,conversationId:string) => {
+  try {
+    if (!username) return []
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/user?q=${username}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data.users;
+
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+/*
+ * @description get a list of conversations , people ,groups  contain the given string
+ * @param {query,token}
+ * @returns list of data  or null
+ */
+export const conversationSearch = async (token: string, query:string) => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/conversation/search?q=${query}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
 
 /**
  * @description get a list of Hashtags contain the given string
@@ -715,43 +794,6 @@ export const bookmarkTweet = async (tweetId: string, token: string) => {
   }
 };
 /**
- * @description Change the groupName for a Conversation
- * @param name
- * @param token - the token of the user
- * @param conversationId - the conversationId of the conversation
- * @returns success or throws error if there is an error
- */
-export const changeGroupName = async ({
-  name,
-  token,
-  conversationId,
-}: {
-  name: string;
-  token: string;
-  conversationId: string;
-}) => {
-  try {
-    const res = await axios.post(
-      `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/name`,
-      {
-        name: name,
-      },
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    console.log(res.data);
-    return res.data;
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
-};
-/**
  * @description Create a new conversation
  * @param conversation_name
  * @param token - the token of the user
@@ -767,13 +809,12 @@ export const CreateConversation = async ({
   token: string;
   users: string[];
 }) => {
+export const CreateConversation = async ({  token, users }: {  token: string, users: string[] }) => {
   try {
-    console.log(conversation_name, token, users);
     const res = await axios.post(
       `${VITE_BACKEND_URL}/api/v1/conversation/`,
       {
         users: users,
-        conversation_name: conversation_name,
       },
       {
         headers: {
@@ -817,8 +858,8 @@ export const CreateMessage = async ({
         },
       }
     );
-    console.log(res);
-    return res.status == 201;
+    console.log(res)
+    return res.data.createdMessage;
   } catch (error) {
     console.log(error);
     return null;
@@ -830,32 +871,17 @@ export const CreateMessage = async ({
  * @param token - the token of the user
  * @returns get the conversation data
  */
-export const getConversation = async ({
-  token,
-  conversationId,
-}: {
-  conversationId: string;
-  token: string;
-}) => {
+export const getConversation = async ({ token, conversationId,pageParam,limit }: {pageParam:number;limit:number; conversationId: string, token: string }) => {
   try {
-    console.log(conversationId);
     const res = await axios.get(
-      `${VITE_BACKEND_URL}/api/v1/conversation/` + conversationId,
+      `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}?page=${pageParam}&limit=${limit}` ,
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       }
     );
-    const modifiedData = {
-      ...res.data,
-      users: res.data.users.map((user: { Name: string }) => ({
-        ...user,
-        name: user.Name,
-      })),
-    };
-    console.log(modifiedData);
-    return modifiedData;
+    return res.data;
   } catch (error) {
     console.log(error);
     return null;
@@ -920,11 +946,10 @@ export const deleteTweet = async (tweetId: string, token: string) => {
 export const getUserProfile = async (token: string, username: string) => {
   try {
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/${username}`, {
-      withCredentials: true,
+      // withCredentials: true,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true,
         Authorization: `Bearer ${token}`,
       },
     });
@@ -936,19 +961,104 @@ export const getUserProfile = async (token: string, username: string) => {
 };
 
 /**
+ * @description Send a request to the backend to delete a conversation
+ * @param conversationId
+ * @param token - the token of the user
+ * @returns success or throws error if there is an error
+ */
+export const deleteConversation = async ({conversationId,token}:{conversationId: string, token: string}) => {
+  try {
+    console.log(conversationId,token)
+    const res = await axios.delete(
+      `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error deleting conversation");
+  }
+};
+
+/**
+ * @description Send a request to the backend to delete a message from conversation
+ * @param {conversationId,messageId}
+ * @param token - the token of the user
+ * @returns success or throws error if there is an error
+ */
+export const deleteMessage = async ({conversationId,token,messageId}:{messageId:string,conversationId: string, token: string}) => {
+  try {
+    const res = await axios.delete(
+      `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/message`,
+    {data:{messageId:messageId}
+      ,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      
+    },
+      
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error deleting conversation");
+  }
+};
+
+/**
+ * @description update the image and the group name
+ * @param FormData
+ * @param token - the token of the user
+ * @returns success or throws error if there is an error
+ */
+export const updateGroupImageAndName = async ({formData,conversationId,token}:{formData: FormData,conversationId:string,token: string}) => {
+  try {
+    const res = await axios.put(
+      `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}`,
+      formData
+      ,{
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      
+    },
+      
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error updating group");
+  }
+};
+/**
  * @description to get the user followers suggestions list
  * @param token
+ * @param {currentUser username}
  * @returns  users array represents the response from the backend or null
  */
 export const GetFollowSuggestionsService = async (token: string) => {
   try {
-    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/suggestions`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    // debugger;
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/suggestions`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return res.data;
   } catch (err) {
     console.log(err);
@@ -974,24 +1084,25 @@ export const editUserProfile = async (
   }
 
   try {
+    console.log(editedUserData,parseResult)
     const response = await axios.put(
       `${VITE_BACKEND_URL}/api/v1/user/profile`,
       {
         name: parseResult.name,
-        description: parseResult.description,
-        location: parseResult.location,
-        url: parseResult.url,
-        birth_date: parseResult.birthDate,
+        description: parseResult.description??"",
+        location: parseResult.location??"",
+        url: parseResult.url??"",
+        birth_date: parseResult.birthDate??"",
       },
       {
         headers: {
           Accept: "application/json",
-          "Content-Type": "object",
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       }
     );
-    return response;
+    return response.data;
   } catch (error) {
     console.log(error);
     return null;
@@ -1130,31 +1241,7 @@ export const profileMedia = async (
   }
 };
 
-/**
- * @description unfollow a certain user
- * @param username the username to unfollow
- * @param token to authorize request
- * @returns object with the status of the request
- */
-export const unfollow = async (username: string, token: string) => {
-  if (!token) return null;
 
-  try {
-    const response = await axios.delete(
-      `${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/json",
-        },
-      }
-    );
-    return response.data;
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
-};
 
 /**
  * @description follow specific user
@@ -1164,8 +1251,8 @@ export const unfollow = async (username: string, token: string) => {
  */
 export const FollowService = async (username: string, token: string) => {
   try {
-    const res = await axios.post(
-      `${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
+
+    const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
       {},
       {
         headers: {
@@ -1189,9 +1276,7 @@ export const FollowService = async (username: string, token: string) => {
  */
 export const UnFollowService = async (username: string, token: string) => {
   try {
-    debugger;
-    const res = await axios.delete(
-      `${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
+    const res = await axios.delete(`${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
       {
         headers: {
           Accept: "application/json",
@@ -1229,16 +1314,14 @@ export const GetTrendsService = async (token: string) => {
 };
 
 /**
- * @description get Followers in Profile page(Followers section)
+ * @description get Followers of this specific user in Profile page(Followers section)
  * @param token
  * @param {currentUser username}
  * @returns  users array represents the response from the backend or null
  */
 export const GetFollowersService = async (username: string, token: string) => {
   try {
-    debugger;
-    const res = await axios.get(
-      `${VITE_BACKEND_URL}/api/v1/user/followers/${username}`,
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/followers/${username}`,
       {
         headers: {
           Accept: "application/json",
@@ -1255,24 +1338,20 @@ export const GetFollowersService = async (username: string, token: string) => {
 };
 
 /**
- * @description get Followings in Profile page(Following section)
+ * @description get Followings of this specific user in Profile page(Following section)
  * @param token
  * @param {currentUser username}
  * @returns  users array represents the response from the backend or null
  */
 export const GetFollowingsService = async (username: string, token: string) => {
   try {
-    debugger;
-    const res = await axios.get(
-      `${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/follow/${username}`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return res.data;
   } catch (err) {
     console.log(err);
@@ -1331,32 +1410,6 @@ export const UnBlockService = async (username: string, token: string) => {
 };
 
 /**
- * @description follow a certain user
- * @param username the username to unfollow
- * @param token to authorize request
- * @returns object with the status of the request
- */
-export const follow = async (username: string, token: string) => {
-  if (!token) return null;
-
-  try {
-    const response = await axios.post(
-      `${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/json",
-        },
-      }
-    );
-    return response.data;
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
-};
-
-/**
  * @description get Blocked list in Settings page (Block section)
  * @param token
  * @returns  users array represents the response from the backend or null
@@ -1404,6 +1457,34 @@ export const MuteService = async (username: string, token: string) => {
 };
 
 /**
+ * @description mute specific user
+ * @param username of this specific use
+ * @param token
+ * @returns  success or throws error if there is an error
+ */
+export const addUserToGroup = async  ({  token, users,conversationId }: {conversationId:string;  token: string, users: string[] }) => {
+    try {
+      const res = await axios.post(
+        `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/user/`,
+        {
+          users: users,
+        },
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(res.data)
+      return res.data;
+    } catch (error) {
+      console.log(error);
+      return null
+    }
+  };
+/**
  * @description unmute specific user
  * @param username of this specific user
  * @param token
@@ -1443,6 +1524,50 @@ export const GetMutedService = async (token: string) => {
       },
     });
     return res.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+/**
+ * @description get Tweet Likers list in Home page (Tweet section)
+ * @param token
+ * @param tweetId
+ * @returns  users array represents the response from the backend or null
+ */
+export const GetTweetLikersService = async (tweetId: string, token: string) => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}/like`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data.likers;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+/**
+ * @description get Tweet Retweeters list in Home page (Tweet section)
+ * @param token
+ * @param tweetId
+ * @returns  users array represents the response from the backend or null
+ */
+export const GetTweetRetweetersService = async (tweetId: string, token: string) => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}/retweets`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data.retweeters;
   } catch (err) {
     console.log(err);
     return null;
@@ -1528,4 +1653,4 @@ export const retweet = async (tweetId: string, token: string) => {
       console.log(err);
       throw new Error("Error retweeting");
     }
-}
+};

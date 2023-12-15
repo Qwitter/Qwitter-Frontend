@@ -1,15 +1,14 @@
 import { Button } from "@/components";
 import { UserContext } from "@/contexts/UserContextProvider";
-import { follow, unfollow } from "@/lib/utils";
 import { UserProfileData } from "@/models/User";
 import { Cake, CalendarDays, MapPin } from "lucide-react";
 import { useContext, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { UnfollowPopUp } from "./UnfollowPopUp";
-import { useMutation } from "@tanstack/react-query";
+// import { UnfollowPopUp } from "./UnfollowPopUp";
+import { FollowButton } from "@/components/FollowButton/FollowButton";
+import { BlockButton } from "@/components/BlockButton/BlockButton";
 
 /*
-TODO: following and followers go to another page (youssef)
 TODO: options menu and message menu
 TODO: may need to revalidate the cache after edit, follow and unfollow
 */
@@ -19,39 +18,20 @@ type ProfileMainProps = {
 };
 
 export const ProfileMain = ({ user }: ProfileMainProps) => {
+  console.log(user.isFollowing);
+
   const location = useLocation();
   const { username } = useParams();
-  const { user: contextUser, token } = useContext(UserContext);
+  const { user: contextUser } = useContext(UserContext);
 
-  const [buttonContent, setButtonContent] = useState<string>(
+  const [buttonContent] = useState<string>(
     contextUser?.userName == username
       ? "Edit profile"
       : user.isFollowing
       ? "Following"
       : "Follow"
   );
-  const [showUnfollowUpop, setShowUnfollowUpop] = useState<boolean>(false);
-
-  const followingButton = () => {
-    setButtonContent("Following");
-  };
-
-  const unfollowButton = () => {
-    setButtonContent("Unfollow");
-  };
-
-  const handleUnfollow = () => {
-    setShowUnfollowUpop(true);
-  };
-
-  const callFollow = useMutation({
-    mutationFn: () => {
-      return follow(user.userName, token!);
-    },
-  });
-  const handleFollow = () => {
-    callFollow.mutate();
-  };
+  // const [showUnfollowUpop, setShowUnfollowUpop] = useState<boolean>(false);
 
   const birthDate = user
     ? new Date(user.birthDate).toLocaleDateString("en-Us", {
@@ -69,18 +49,13 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
 
   return (
     <div>
-      <UnfollowPopUp
-        show={showUnfollowUpop}
-        username={username!}
-        setShow={setShowUnfollowUpop}
-      />
       <Link
         to={`/${username}/header_photo`}
         state={{ bannerImg: user.profileBannerUrl }}
         className="w-full"
       >
         <img
-          src={user?.profileBannerUrl}
+          src={`http://${user?.profileBannerUrl}`}
           alt="user banner image"
           className="w-full aspect-[3/1] max-h-[200px] cursor-pointer"
         />
@@ -100,30 +75,27 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
               />
             </div>
           </Link>
-          {contextUser?.userName == username ? (
-            <Link
-              to="settings/profile"
-              state={{ previousLocation: location }}
-              className="h-[35px]"
-            >
-              <Button variant="outline" className="h-full">
-                {buttonContent}
-              </Button>
-            </Link>
-          ) : user.isFollowing ? (
-            <Button
-              variant="danger"
-              className="w-[103px] h-[35px]"
-              onMouseEnter={unfollowButton}
-              onMouseLeave={followingButton}
-              onClick={handleUnfollow}
-            >
-              {buttonContent}
-            </Button>
+          {user?.isBlocked ? (
+            <BlockButton username={user.userName} />
           ) : (
-            <Button className="h-[35px]" onClick={handleFollow}>
-              {buttonContent}
-            </Button>
+            <>
+              {contextUser?.userName == username ? (
+                <Link
+                  to="settings/profile"
+                  state={{ previousLocation: location }}
+                  className="h-[35px]"
+                >
+                  <Button variant="outline" className="h-full">
+                    {buttonContent}
+                  </Button>
+                </Link>
+              ) : (
+                <FollowButton
+                  isFollowing={user.isFollowing!}
+                  username={user.userName}
+                />
+              )}
+            </>
           )}
         </div>
         <div>
@@ -158,13 +130,13 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
           </div>
           <div className="leading-3">
             <span className="mr-5 text-sm">
-              <Link to="" className="hover:underline">
+              <Link to={`/${username}/following`} className="hover:underline">
                 <span className="font-bold">{user?.followingCount}</span>
                 <span className="text-gray"> Following</span>
               </Link>
             </span>
             <span className="mr-5 text-sm">
-              <Link to="" className="hover:underline">
+              <Link to={`/${username}/followers`} className="hover:underline">
                 <span className="font-bold">{user?.followersCount}</span>
                 <span className="text-gray"> Followers</span>
               </Link>

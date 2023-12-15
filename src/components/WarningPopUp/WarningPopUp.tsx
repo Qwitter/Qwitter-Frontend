@@ -38,7 +38,10 @@ export function WarningPopUp({
           </Button>
           <Button
             variant={"outline"}
-            onClick={headerFunction}
+            onClick={(event) => {
+              event.stopPropagation();
+              headerFunction();
+            }}
             className="mt-4 w-full h-[45px] font-bold"
           >
             <span className="text-white">cancel</span>

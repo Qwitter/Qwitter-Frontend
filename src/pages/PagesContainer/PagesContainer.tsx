@@ -10,10 +10,23 @@ import { Profile } from "../Profile/Profile";
 import { FollowList } from "@/components/FollowList/FollowList";
 import { ExploreList } from "@/components/ExploreList/ExploreList.";
 import TweetDetails from "../TweetDetails/TweetDetails";
+import { socket } from "@/lib/socketInit";
+import { useEffect } from "react";
+import { EVENTS } from "../Messages/types/MessagesTypes";
+import { LikeRetweetList } from "@/components/LikeRetweetList/LikeRetweetList";
 
 export function PagesContainer() {
   const location = useLocation();
   const previousLocation = location.state?.previousLocation;
+  const user = JSON.parse(localStorage.getItem("user")!)
+  useEffect(()=>{
+    socket.connect()
+    socket.emit(EVENTS.CLIENT.JOIN_ROOM,user.userName);
+    socket.on(EVENTS.SERVER.NOTIFICATION, async(notification) => {
+      console.log(notification);
+    });
+  },[])
+
   return (
     <>
       {" "}
@@ -39,14 +52,22 @@ export function PagesContainer() {
                 <Route path="/:username/*" element={<Profile />} />
                 <Route path="/Explore" element={<ExploreList />} />
                 <Route
-                  path="/Followers"
+                  path="/:username/Followers"
                   element={<FollowList type={"Followers"} />}
                 />
                 <Route
-                  path="/Following"
+                  path="/:username/Following"
                   element={<FollowList type={"Following"} />}
                 />
                 <Route path="/tweet/:tweetId" element={<TweetDetails />} />
+                <Route
+                  path="/:username/:tweetId/Likers"
+                  element={<LikeRetweetList type={"Likers"} />}
+                />
+                <Route
+                  path="/:username/:tweetId/Retweeters"
+                  element={<LikeRetweetList type={"Retweeters"} />}
+                />
               </Routes>
             </div>
           </div>

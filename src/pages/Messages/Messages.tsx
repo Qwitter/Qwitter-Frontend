@@ -1,36 +1,32 @@
 import { OptionsHeader } from "@/components";
 import { Ban, Settings, Trash2 } from "lucide-react";
-import { useContext, useEffect, useState } from "react";
-import { MessageUser, MessagesConversationInfoProps, MessagesRequestPopUpProp } from "./types/MessagesTypes";
-import { userArray, tempInfo } from "@/constants";
-import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import {  useState } from "react";
+import { MessageUser, MessagesRequestPopUpProp } from "./types/MessagesTypes";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { MessagesMain } from "./MessagesMain";
 import { MessagesList } from "./MessagesList";
 import { MessagesSettings } from "./MessagesSettings";
 import { MessagesConversation } from "./Conversation/MessagesConversation";
 import { MessagesSide } from "./MessagesSide";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { MessagesContext } from "@/contexts/MessagesContextProvider";
-import { cn } from "@/lib";
-import { ConversationLeavePopUp } from "./ConversationLeavePopUp";
+import { MessagesConversationInfo } from "./Conversation/MessagesConversationInfo";
 export function Messages() {
     const location = useLocation();
     const previousLocation = location.state?.previousLocation;
-
+    const pathname = location.pathname.endsWith('/')?location.pathname.slice(0,-1):location.pathname
     return (
         <>
-            <div className="max-w-[600px]  max-h-[100vh] scrollbar-thin overflow-y-auto pb-16 relative flex flex-col z-0 flex-grow w-[72%] max-largeX:hidden  h-full">
+            <div className={`max-w-[600px]  max-h-[100vh] scrollbar-thin overflow-y-auto ${pathname!="/Messages"?'max-largeX:hidden':''}  pb-16 relative flex flex-col z-0 flex-grow w-[72%]   h-full`}>
                 <Routes location={previousLocation || location} >
                     <Route path="/requests" element={<MessagesRequests />} />
                     <Route index path="/*" element={<MessagesMain />} />
                 </Routes>
             </div>
-            <div className="max-w-[600px] w-full h-full flex-grow border-x border-primary border-opacity-30 ">
+            <div className={`max-w-[600px] w-full ${pathname=="/Messages"?'max-largeX:hidden':''}  h-full flex-grow border-x border-primary border-opacity-30 `}>
                 <Routes location={previousLocation || location} >
                     <Route path="/settings" element={<MessagesSettings />} />
                     <Route index path="/compose" element={<MessagesSide p={"Choose from your existing conversations, start a new one, or just keep swimming."} showButton />} />
                     <Route path="/:conversationId" element={<MessagesConversation />} />
-                    <Route path="/:conversationId/info" element={<MessagesConversationInfo {...tempInfo[0]} type={tempInfo[0].mode} />} />
+                    <Route path="/:conversationId/info" element={<MessagesConversationInfo />} />
                     <Route index path="/" element={<MessagesSide p={"Choose from your existing conversations, start a new one, or just keep swimming."} showButton />} />
                     <Route path="/requests" element={<MessagesSide showButton={false} p={"Message requests from people you don't follow live here. To reply to their messages, you need to accept the request"} />} />
                 </Routes>
@@ -40,54 +36,6 @@ export function Messages() {
         </>
     );
 }
-export function MessagesConversationInfo({ type = "direct", imageUrl, users, groupName, id }: MessagesConversationInfoProps) {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const { saveGroup } = useContext(MessagesContext);
-    const [show, setShow] = useState(false);
-    const handleBlock = () => {
-
-    }
-    useEffect(() => {
-        return saveGroup({ groupName: groupName!, groupImg: imageUrl });
-    }, []);
-    return (
-        <div className=" w-full h-full border-r border-primary border-opacity-30 mb-20">
-            <OptionsHeader header={type == "direct" ? 'Conversation info' : "Group info"} />
-            {type == "group" && <>
-                <div className="px-4 py-3 flex flex-row items-center">
-                    <Avatar className="mr-4">
-                        <AvatarImage className="w-10 h-10 rounded-full border-primary border-[2px] border-solid border-opacity-30" src={imageUrl} />
-                    </Avatar>
-                    <div className="flex flex-row justify-between w-full">
-                        <span className="text-primary text-[15px] font-bold">{groupName}</span>
-                        <Link className="text-secondary text-[15px] hover:underline" to={`/messages/${id}/group-info`} state={{ previousLocation: location }}>Edit</Link>
-                    </div>
-                </div>
-                <div className="px-4 py-3 w-full border-t border-primary border-opacity-30">
-                    <h2 className="text-primary text-xl font-bold text-start ">People</h2>
-
-                </div>
-            </>}
-            <div className="max-h-[40vh] overflow-y-auto">
-                <MessagesList mode="People" users={users} />
-
-            </div>
-            <div className={cn('block text-center cursor-pointer transition-all text-secondary hover:bg-[#031019] p-4 pb-5  border-primary border-opacity-30', type == "direct" ? 'border-t' : 'border-b')}
-                onClick={type == "direct" ? handleBlock :
-                    () => { navigate("/Messages/" + id + "/add", { state: { previousLocation: location } }); }}
-            >
-                {type == "direct" ? `Block @${users[0].userName}` : 'Add People'}</div>
-            <div className='block text-center cursor-pointer transition-all text-danger  hover:bg-danger hover:bg-opacity-10 p-4'
-                onClick={() => { setShow(true) }}
-            >
-                Leave Conversation</div>
-            <ConversationLeavePopUp show={show} setShow={setShow} leaveFunction={() => { }} />
-
-        </div>
-    )
-}
-
 export function MessagesRequestPopUp({ conversationUsername, handleBlock, handleRemoveConversation }: MessagesRequestPopUpProp) {
     return (
         <>
@@ -115,12 +63,12 @@ export function MessagesRequestPopUp({ conversationUsername, handleBlock, handle
 function MessagesRequests() {
     const navigate = useNavigate()
     const [selectedUser, SetSelectedUser] = useState<MessageUser>({
-        userPhoto: "",
+        profileImageUrl: "",
         userName: "",
         name: "",
         isVerified: false,
-        lastMessage: "",
-        lastMessageTime: "3h"
+        followersCount:0,
+        followingCount:0
     });
     const handleSettingClick = () => {
         navigate('/Messages/settings');
@@ -137,7 +85,7 @@ function MessagesRequests() {
                 </div>
 
             </div>
-            <MessagesList mode="request" users={userArray} selectedUser={selectedUser} setSelectedUser={SetSelectedUser} />
+            <MessagesList mode="request" users={[]} selectedUser={selectedUser} setSelectedUser={SetSelectedUser} />
         </>
     )
 }

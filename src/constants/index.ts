@@ -24,6 +24,13 @@ const navLinks = [
     notificationCount: 1,
   },
   {
+    id: "explore",
+    title: "Explore",
+    icon: Search,
+    clicked: { strokeWidth: 4 },
+    notificationCount: 0
+  },
+  {
     id: "notification",
     title: "Notification",
     icon: Bell,
@@ -38,13 +45,7 @@ const navLinks = [
     notificationCount: 0,
   },
 
-  {
-    id: "explore",
-    title: "Explore",
-    icon: Search,
-    clicked: { strokeWidth: 4 },
-    notificationCount: 0
-  },
+
   {
     id: "lists",
     title: "Lists",
@@ -86,10 +87,10 @@ const settingsOptions = [
     id: "account",
     title: "Your account",
   },
-  // {
-  //   id: "privacy_and_safety",
-  //   title: "Privacy and safety",
-  // }
+  {
+    id: "privacy_and_safety",
+    title: "Privacy and safety",
+  }
 ];
 
 const accountOptions = [

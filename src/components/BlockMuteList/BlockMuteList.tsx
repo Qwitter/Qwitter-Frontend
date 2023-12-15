@@ -6,7 +6,7 @@ import { UserContext } from "@/contexts/UserContextProvider";
 import { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { User } from "@/models/User";
-import { Skeleton } from "../ui/skeleton";
+import { Spinner } from "../Spinner";
 
 export function BlockMuteList({ headername, service }: BlockMuteListProps) {
   const { token } = useContext(UserContext);
@@ -29,7 +29,9 @@ export function BlockMuteList({ headername, service }: BlockMuteListProps) {
             users={service == "BlockList" ? Blocked! : Muted!}
           />
         ) : (
-          <Skeleton className="w-full  h-full " />
+          <div className="mx-auto">
+            <Spinner />
+          </div>
         )}
       </div>
     </>
