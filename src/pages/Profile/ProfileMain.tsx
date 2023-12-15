@@ -22,13 +22,7 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
   const { username } = useParams();
   const { user: contextUser } = useContext(UserContext);
 
-  const [buttonContent] = useState<string>(
-    contextUser?.userName == username
-      ? "Edit profile"
-      : user?.isFollowing
-      ? "Following"
-      : "Follow"
-  );
+  console.log("main: ", user);
 
   const birthDate = user
     ? new Date(user.birthDate).toLocaleDateString("en-Us", {
@@ -64,11 +58,11 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
       <div className="pt-3 px-4 mb-4">
         <div className="h-[69px] flex flex-row justify-between">
           {
-            <Avatar className="rounded-full cursor-pointer mt-[-15%] mb-3 w-[20vw] h-auto aspect-square sm:w-[142px] bg-black p-0.5 sm:p-1 border-solid block">
+            <Avatar className="rounded-full mt-[-15%] mb-3 w-[20vw] h-auto aspect-square sm:w-[142px] bg-black p-0.5 sm:p-1 border-solid block">
               <Link
                 to={`/${username}/photo`}
                 state={{ profileImg: user?.profileImageUrl }}
-                className="w-full h-full"
+                className="w-full h-full cursor-pointer"
               >
                 <AvatarImage
                   className="rounded-full"
@@ -76,9 +70,13 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
                   alt="user profile image"
                 />
               </Link>
-              <AvatarFallback className="text-4xl">
-                {user?.userName.substring(0, 2)}
-              </AvatarFallback>
+              {user ? (
+                <AvatarFallback className="text-4xl">
+                  {user?.userName.substring(0, 2)}
+                </AvatarFallback>
+              ) : (
+                <div className="w-full h-full rounded-full bg-[#16181c]"></div>
+              )}
             </Avatar>
           }
 
@@ -93,13 +91,14 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
                   className="h-[35px]"
                 >
                   <Button variant="outline" className="h-full">
-                    {buttonContent}
+                    Edit profile
                   </Button>
                 </Link>
               ) : (
                 <FollowButton
                   isFollowing={user?.isFollowing!}
                   username={user?.userName!}
+                  className="h-[35px]"
                 />
               )}
             </>

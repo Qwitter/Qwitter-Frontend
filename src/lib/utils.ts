@@ -956,7 +956,7 @@ export const getUserProfile = async (token: string, username: string) => {
     return res.data;
   } catch (error) {
     console.log(error);
-    return error;
+    return null;
   }
 };
 
@@ -1100,7 +1100,6 @@ export const editUserProfile = async (
   }
 
   try {
-    console.log(editedUserData, parseResult);
     const response = await axios.put(
       `${VITE_BACKEND_URL}/api/v1/user/profile`,
       {

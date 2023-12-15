@@ -1,21 +1,11 @@
 import SearchInput from "@/components/SearchInput/SearchInput";
-import { Navigate, Route, Routes, useParams } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { FollowCard } from "@/components/FollowCard/FollowCard";
 import { TrendCard } from "@/components/TrendCard/TrendCard";
 import { FollowList } from "@/components/FollowList/FollowList";
 import { ProfileUser } from "./ProfileUser";
 
 export function Profile() {
-  const { username } = useParams();
-  if (!username || username!.length >= 16) {
-    // Redirect or handle the case when the username is too long
-    return (
-      <>
-        <Navigate to="/home" />
-      </>
-    );
-  }
-
   return (
     <>
       <div className="max-w-[600px] w-full h-full flex-grow border-r border-primary border-opacity-30 ">

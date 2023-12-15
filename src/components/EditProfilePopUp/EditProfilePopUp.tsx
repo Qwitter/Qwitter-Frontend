@@ -1,6 +1,6 @@
 import { PopUpContainer } from "../PopUpContainer/PopUpContainer";
 import { HeaderButton } from "@/models/PopUpModel";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { ImagePicker } from "../ImagePicker/ImagePicker";
 import { TextInput } from "../TextInput/TextInput";
@@ -12,8 +12,9 @@ import { EditUserSchema, User } from "@/models/User";
 import { useToast } from "../ui/use-toast";
 import { DiscardProfileChanges } from "./DiscardProfileChanges";
 import { editUserProfile, uploadProfileImage } from "@/lib/utils";
-import { useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useNavigate, useParams } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { LoadingOverlay } from "../LoadingOverlay/LoadingOverlay";
 
 type EditProfileProps = {
   onSave?: () => void;
@@ -26,8 +27,12 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
   const [profileBanner, setProfileBanner] = useState<File>();
   const [showDiscardChanges, setShowDiscardChanges] = useState<boolean>(false);
   const { user, token, setUser } = useContext(UserContext);
+  const { username } = useParams();
+  const queryClient = useQueryClient();
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  console.log("popup: ", user);
 
   const contextBirthDate = new Date(user ? user.birthDate : "");
   const birthDay = contextBirthDate.getDate();
@@ -86,12 +91,19 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
 
   const { mutate, isPending } = useMutation<User, Error, User, unknown>({
     mutationFn: async (editedUserData: User) => {
+      console.log("sending: ", isPending);
+
       profileImage && (await uploadProfileImage(profileImage!, token!));
       profileBanner && (await uploadProfileImage(profileBanner!, token!, true));
       return await editUserProfile(editedUserData, token!);
     },
     onSuccess: (editedUserData) => {
-      console.log(editedUserData);
+      console.log("done", isPending);
+
+      queryClient.invalidateQueries({
+        queryKey: ["profile", token, username],
+      });
+
       setUser({
         name: editedUserData.name,
         email: user?.email ?? "",
@@ -111,6 +123,7 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
       });
     },
     onError: () => {
+      // TODO: a toast here
       console.log("error");
     },
   });
@@ -172,6 +185,7 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
       optionalHeader={saveButton}
       headerFunction={handleDiscardChanges}
     >
+      {/* <LoadingOverlay show={true} /> */}
       <DiscardProfileChanges
         showDiscardChanges={showDiscardChanges}
         setShowDiscardChanges={setShowDiscardChanges}

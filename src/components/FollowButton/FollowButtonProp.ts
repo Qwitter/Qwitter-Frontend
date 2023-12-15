@@ -1,4 +1,5 @@
 export type FollowButtonProp = {
-    isFollowing: boolean;
-    username: string;
+  isFollowing: boolean;
+  username: string;
+  className?: string;
 };
