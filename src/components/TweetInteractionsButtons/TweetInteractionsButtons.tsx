@@ -9,20 +9,27 @@ import {
   bookmarkTweet,
   cn,
   convertNumberToShortForm,
+  deleteTweet,
   likeTweet,
+  retweet,
   unBookmarkTweet,
   unlikeTweet,
 } from "@/lib/utils";
-import { useContext, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useContext, useEffect, useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { toast } from "../ui/use-toast";
 
 type TweetInteractionsButtonsProps = {
   tweet: Tweet;
+  className?: string;
 };
 
-const TweetInteractionsButtons = ({ tweet }: TweetInteractionsButtonsProps) => {
+const TweetInteractionsButtons = ({
+  tweet,
+  className,
+}: TweetInteractionsButtonsProps) => {
+  const queryClient = useQueryClient();
   const [tweetClone, setTweetClone] = useState<Tweet>(tweet);
   const { token } = useContext(UserContext);
 
@@ -51,9 +58,13 @@ const TweetInteractionsButtons = ({ tweet }: TweetInteractionsButtonsProps) => {
     },
     onSettled(_, error) {
       if (error) {
-        unLikeLocalTweet();
         toast({ title: error.message });
+        if (tweetClone.liked) unLikeLocalTweet();
       }
+
+      queryClient.invalidateQueries({
+        queryKey: ["tweet", tweet.id],
+      });
     },
   });
 
@@ -66,9 +77,13 @@ const TweetInteractionsButtons = ({ tweet }: TweetInteractionsButtonsProps) => {
     },
     onSettled(_, error) {
       if (error) {
-        likeLocalTweet();
         toast({ title: error.message });
+        if (!tweetClone.liked) likeLocalTweet();
       }
+
+      queryClient.invalidateQueries({
+        queryKey: ["tweet", tweet.id],
+      });
     },
   });
 
@@ -98,6 +113,10 @@ const TweetInteractionsButtons = ({ tweet }: TweetInteractionsButtonsProps) => {
         unBookmarkLocalTweet();
         toast({ title: error.message });
       }
+
+      queryClient.invalidateQueries({
+        queryKey: ["tweet", tweet.id],
+      });
     },
   });
 
@@ -113,11 +132,69 @@ const TweetInteractionsButtons = ({ tweet }: TweetInteractionsButtonsProps) => {
         bookmarkLocalTweet();
         toast({ title: error.message });
       }
+
+      queryClient.invalidateQueries({
+        queryKey: ["tweet", tweet.id],
+      });
+    },
+  });
+
+  const retweetLocalTweet = () => {
+    setTweetClone((prev: Tweet) => ({
+      ...prev,
+      hasRetweeted: true,
+      retweetCount: prev.retweetCount + 1,
+    }));
+  };
+
+  const unRetweetLocalTweet = () => {
+    setTweetClone((prev: Tweet) => ({
+      ...prev,
+      hasRetweeted: false,
+      retweetCount: prev.retweetCount - 1,
+    }));
+  };
+
+  const { mutate: retweetTweetMutate } = useMutation({
+    mutationFn: token
+      ? (tweetId: string) => retweet(tweetId, token)
+      : undefined,
+    onMutate: () => {
+      retweetLocalTweet();
+    },
+    onSettled(_, error) {
+      if (error) {
+        toast({ title: error.message });
+        if (tweetClone.hasRetweeted) unRetweetLocalTweet();
+      }
+
+      queryClient.invalidateQueries({
+        queryKey: ["tweet", tweet.id],
+      });
+    },
+  });
+
+  const { mutate: unRetweetTweetMutate } = useMutation({
+    mutationFn: token
+      ? (tweetId: string) => deleteTweet(tweetId, token)
+      : undefined,
+    onMutate: () => {
+      unRetweetLocalTweet();
+    },
+    onSettled(_, error) {
+      if (error) {
+        toast({ title: error.message });
+        if (!tweetClone.hasRetweeted) retweetLocalTweet();
+      }
+
+      queryClient.invalidateQueries({
+        queryKey: ["tweet", tweet.id],
+      });
     },
   });
 
   return (
-    <div className="flex gap-4 mt-4 text-gray justify-between">
+    <div className={cn("flex gap-4 text-gray justify-between", className)}>
       <div className="tweet-icon-container group" data-testid="Comment">
         <div className="relative">
           <div className="tweet-icon-radius group-hover:bg-secondary"></div>
@@ -127,12 +204,36 @@ const TweetInteractionsButtons = ({ tweet }: TweetInteractionsButtonsProps) => {
           {convertNumberToShortForm(tweetClone.replyCount)}
         </span>
       </div>
-      <div className="tweet-icon-container group" data-testid="Retweet">
+
+      <div
+        className="tweet-icon-container group"
+        data-testid="Retweet"
+        onClick={
+          tweetClone.hasRetweeted
+            ? () => unRetweetTweetMutate(tweet.id)
+            : () => retweetTweetMutate(tweet.id)
+        }
+      >
         <div className="relative">
-          <div className="tweet-icon-radius group-hover:bg-[#00ba7c]"></div>
-          <BiRepost className="tweet-icon group-hover:text-[#00ba7c]" />
+          <div
+            className={cn("tweet-icon-radius group-hover:bg-[#00ba7c]", {
+              "bg-[#00ba7c]": tweetClone.hasRetweeted,
+            })}
+          ></div>
+          <BiRepost
+            className={cn("tweet-icon group-hover:text-[#00ba7c]", {
+              "text-[#00ba7c]": tweetClone.hasRetweeted,
+            })}
+          />
         </div>
-        <span className="text-gray transition-all group-hover:text-[#00ba7c] duration-200 ease-in-out">
+        <span
+          className={cn(
+            "text-gray transition-all group-hover:text-[#00ba7c] duration-200 ease-in-out",
+            {
+              "text-[#00ba7c]": tweetClone.hasRetweeted,
+            }
+          )}
+        >
           {convertNumberToShortForm(tweetClone.retweetCount)}
         </span>
       </div>
