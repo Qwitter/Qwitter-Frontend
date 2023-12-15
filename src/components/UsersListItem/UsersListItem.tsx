@@ -26,6 +26,7 @@ export function UsersListItem({
         navigate("/" + username);
       }}
       className="hover:cursor-pointer py-3 hover:bg-light-gray"
+      data-testid="userToFollow"
     >
       <div className="flex">
         <img

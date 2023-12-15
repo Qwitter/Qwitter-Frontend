@@ -57,14 +57,6 @@ export function PagesContainer() {
                 <Route path="/Messages/*" element={<Messages />} />
                 <Route path="/:username/*" element={<Profile />} />
                 <Route path="/Explore" element={<ExploreList />} />
-                <Route
-                  path="/:username/Followers"
-                  element={<FollowList type={"Followers"} />}
-                />
-                <Route
-                  path="/:username/Following"
-                  element={<FollowList type={"Following"} />}
-                />
                 <Route path="/tweet/:tweetId" element={<TweetDetails />} />
                 <Route
                   path="/:username/:tweetId/Likers"

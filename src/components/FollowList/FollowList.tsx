@@ -25,7 +25,7 @@ export function FollowList({ type }: { type: string }) {
   return (
     <>
       <Tabs defaultValue={Liststate} className="max-w-[600px] w-full">
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid w-full grid-cols-2" >
           <TabsTrigger
             className="flex justify-center tabhover"
             value="Following"
@@ -33,6 +33,7 @@ export function FollowList({ type }: { type: string }) {
               setListstate("Following");
               navigate(`/${username}/Following`);
             }}
+            data-testid="followingTab"
           >
             <div className={Liststate == "Following" ? "active-tab" : "tab"}>
               Following
@@ -45,13 +46,14 @@ export function FollowList({ type }: { type: string }) {
               setListstate("Followers");
               navigate(`/${username}/Followers`);
             }}
+            data-testid="followersTab"
           >
             <div className={Liststate == "Followers" ? "active-tab" : "tab"}>
               Followers
             </div>
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="Following">
+        <TabsContent value="Following" data-testid="followingList">
           {Followings ? (
             <UsersList
               listType={"FollowList"}
@@ -64,7 +66,7 @@ export function FollowList({ type }: { type: string }) {
             </div>
           )}
         </TabsContent>
-        <TabsContent value="Followers">
+        <TabsContent value="Followers" data-testid="followersList">
           {Followers ? (
             <UsersList
               listType={"FollowList"}
