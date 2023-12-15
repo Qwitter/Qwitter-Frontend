@@ -46,6 +46,7 @@ export function FollowButton({ username, isFollowing }: FollowButtonProp) {
     <>
       {state === false && (
         <Button
+          data-testid="followUnfollow"
           onClick={handleFollowButton}
           className="text-sm w-[100px] h-[30px] font-bold"
         >
@@ -59,6 +60,7 @@ export function FollowButton({ username, isFollowing }: FollowButtonProp) {
           onClick={handleunFollowButton}
           className="text-sm w-[100px] h-[30px] font-bold"
           variant={"danger"}
+          data-testid="followUnfollow"
         >
           <span className="text-white">
             {isHovered ? "Unfollow" : "Following"}
@@ -69,6 +71,7 @@ export function FollowButton({ username, isFollowing }: FollowButtonProp) {
         headerFunction={() => {
           setshowDialog(false);
         }}
+        data-testid="UnfollowPopUp"
         UserAction="Unfollow"
         username={username}
         PopUpshow={showDialog}

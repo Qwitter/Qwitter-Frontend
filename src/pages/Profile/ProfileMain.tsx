@@ -130,14 +130,14 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
           </div>
           <div className="leading-3">
             <span className="mr-5 text-sm">
-              <Link to={`/${username}/following`} className="hover:underline">
-                <span className="font-bold">{user?.followingCount}</span>
+              <Link to={`/${username}/following`} className="hover:underline" data-testid="following">
+                <span className="font-bold" data-testid="followingCount">{user?.followingCount}</span>
                 <span className="text-gray"> Following</span>
               </Link>
             </span>
             <span className="mr-5 text-sm">
-              <Link to={`/${username}/followers`} className="hover:underline">
-                <span className="font-bold">{user?.followersCount}</span>
+              <Link to={`/${username}/followers`} className="hover:underline" data-testid="followers">
+                <span className="font-bold" data-testid="followersCount">{user?.followersCount}</span>
                 <span className="text-gray"> Followers</span>
               </Link>
             </span>
