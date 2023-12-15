@@ -8,7 +8,7 @@ import { UserContext } from "@/contexts/UserContextProvider";
 import { useForm } from "react-hook-form";
 import BirthDayInput from "../BirthDayInput/BirthDayInput";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EditUserSchema } from "@/models/User";
+import { EditUserSchema, User } from "@/models/User";
 import { useToast } from "../ui/use-toast";
 import { DiscardProfileChanges } from "./DiscardProfileChanges";
 import { editUserProfile, uploadProfileImage } from "@/lib/utils";
@@ -29,13 +29,14 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const contextBirthDate = new Date(user?.birthDate!);
+  const contextBirthDate = new Date(user ? user.birthDate : "");
   const birthDay = contextBirthDate.getDate();
   const birthMonth = contextBirthDate.toLocaleString("default", {
     month: "long",
   });
   const birthYear = contextBirthDate.getFullYear();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const form = useForm<any>({
     resolver: zodResolver(EditUserSchema),
     defaultValues: {
@@ -83,21 +84,34 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
     navigate(-1);
   };
 
-  const callEditUserData = useMutation({
-    mutationFn: (editedUserData: object) => {
-      return editUserProfile(editedUserData, token!);
+  const { mutate, isPending } = useMutation<User, Error, User, unknown>({
+    mutationFn: async (editedUserData: User) => {
+      profileImage && (await uploadProfileImage(profileImage!, token!));
+      profileBanner && (await uploadProfileImage(profileBanner!, token!, true));
+      return await editUserProfile(editedUserData, token!);
     },
-  });
-
-  const callEditProfileImage = useMutation({
-    mutationFn: () => {
-      return uploadProfileImage(profileImage!, token!);
+    onSuccess: (editedUserData) => {
+      console.log(editedUserData);
+      setUser({
+        name: editedUserData.name,
+        email: user?.email ?? "",
+        birthDate: editedUserData.birthDate,
+        userName: user?.userName ?? "",
+        createdAt: user?.createdAt ?? "",
+        location: editedUserData.location,
+        description: editedUserData.description,
+        url: editedUserData.url,
+        passwordChangedAt: user?.passwordChangedAt ?? "",
+        id: user?.id ?? "",
+        google_id: user?.google_id ?? "",
+        profileImageUrl: editedUserData.profileImageUrl,
+        profileBannerUrl: `http://${editedUserData.profileBannerUrl}`,
+        verified: editedUserData.verified ?? false,
+        isFollowing: editedUserData.isFollowing ?? false,
+      });
     },
-  });
-
-  const callEditProfileBanner = useMutation({
-    mutationFn: () => {
-      return uploadProfileImage(profileBanner!, token!, true);
+    onError: () => {
+      console.log("error");
     },
   });
 
@@ -115,14 +129,6 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
       return;
     }
 
-    if (profileImage) {
-      callEditProfileImage.mutate();
-    }
-
-    if (profileBanner) {
-      callEditProfileBanner.mutate();
-    }
-
     if (!isChanged()) {
       if (onSave) onSave();
       handleClose();
@@ -130,35 +136,21 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
     }
 
     const editedUserData = {
+      ...user,
       name: form.getValues().name,
       description: form.getValues().description,
-      Location: form.getValues().location,
+      location: form.getValues().location,
       url: form.getValues().url,
       day: form.getValues().day,
       month: form.getValues().month.toString(),
       year: form.getValues().year.toString(),
       birthDate: getFormDate().toISOString(),
-    };
+    } as User;
 
-    callEditUserData.mutate(editedUserData);
+    mutate(editedUserData);
 
     //TODO: proceed when request is fulfilled
     //TODO: we can set the user with the response instead
-    setUser({
-      name: editedUserData.name,
-      email: user?.email ?? "",
-      birthDate: editedUserData.birthDate,
-      userName: user?.userName ?? "",
-      createdAt: user?.createdAt ?? "",
-      location: editedUserData.Location,
-      description: editedUserData.description,
-      url: editedUserData.url,
-      passwordChangedAt: user?.passwordChangedAt ?? "",
-      id: user?.id ?? "",
-      google_id: user?.google_id ?? "",
-      profileImageUrl: callEditProfileImage.data.profileImageUrl,
-      profileBannerUrl: callEditProfileBanner.data.profileBannerUrl,
-    });
 
     if (onSave) onSave();
     handleClose();
