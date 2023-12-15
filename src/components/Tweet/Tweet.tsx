@@ -1,11 +1,11 @@
-import { type Tweet } from "@/models/Tweet";
+import { TweetWithRetweet, type Tweet } from "@/models/Tweet";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import moment from "moment";
 import { Link } from "react-router-dom";
-import { TbDiscountCheckFilled } from "react-icons/tb";
 import TweetInteractionsButtons from "../TweetInteractionsButtons/TweetInteractionsButtons";
 import TweetImagesViewer from "../TweetImagesViewer/TweetImagesViewer";
-import TweetOptionsMenu from "../TweetOptionsMenu/TweetOptionsMenu";
+import { cn, convertNumberToShortForm } from "@/lib/utils";
+import TweetAuthorHeader from "../TweetAuthorHeader/TweetAuthorHeader";
+import moment from "moment";
 
 const convertWordToAnchor = (word: string): JSX.Element => {
   if (word.startsWith("@")) {
@@ -44,42 +44,74 @@ const tweetTextHighlighter = (text: string): JSX.Element => {
 };
 
 type TweetProps = {
-  tweet: Tweet;
+  tweet: TweetWithRetweet;
+  size?: "normal" | "compact";
+  mode?: "list" | "page";
 };
 
-const Tweet = ({ tweet }: TweetProps) => {  
-  console.log(tweet)
+const Tweet = ({ tweet, mode = "list", size = "normal" }: TweetProps) => {
+  if (tweet.retweetedTweet)
+    return <Tweet tweet={tweet.retweetedTweet} mode={mode} size={size} />;
+    
   return (
-    <div
-      className="w-full flex px-4 py-3 gap-4 border-b border-primary border-opacity-30"
-      data-testid="tweetDiv"
-    >
-      <Avatar>
-        <AvatarImage src={`${tweet.author.profileImageUrl}`} />
-        <AvatarFallback>{tweet.author.userName.substring(0, 2)}</AvatarFallback>
-      </Avatar>
-      <Link to={`/tweet/${tweet.id}`} className="w-full">
+    <div data-testid="tweetDiv">
+      <Link
+        to={mode === "list" ? `/tweet/${tweet.id}` : "#"}
+        className={cn(
+          "w-full flex px-4 py-3 gap-4 border-b border-primary border-opacity-30 transition-all cursor-default",
+          { "hover:bg-[#080808] cursor-pointer": mode === "list" }
+        )}
+      >
+        {mode === "list" && (
+          <Avatar>
+            <AvatarImage src={`${tweet.author.profileImageUrl}`} />
+            <AvatarFallback>
+              {tweet.author.userName.substring(0, 2)}
+            </AvatarFallback>
+          </Avatar>
+        )}
         <article className="w-full">
-          <Link to={`/user/${tweet.author.userName}`}>
-            <h3 className="flex gap-1 font-semibold items-center">
-              {tweet.author.name}
-              {tweet.author.verified && (
-                <TbDiscountCheckFilled className="text-blue-400 text-xl" />
-              )}
-              <span className="flex text-gray font-normal">
-                @{tweet.author.userName} ·{" "}
-                {moment().diff(moment(tweet.createdAt), "days") >= 1
-                  ? moment(tweet.createdAt).format("MMM D")
-                  : moment(tweet.createdAt).fromNow(true)}
-              </span>
-              <TweetOptionsMenu tweet={tweet} />
-            </h3>
-          </Link>
+          {mode === "page" ? (
+            <div className="flex items-center w-full gap-2 mb-2">
+              <Avatar>
+                <AvatarImage src={`${tweet.author.profileImageUrl}`} />
+                <AvatarFallback>
+                  {tweet.author.userName.substring(0, 2)}
+                </AvatarFallback>
+              </Avatar>
+              <TweetAuthorHeader tweet={tweet} mode={mode} />
+            </div>
+          ) : (
+            <TweetAuthorHeader tweet={tweet} mode={mode} />
+          )}
           <>{tweetTextHighlighter(tweet.text)}</>
-          <TweetImagesViewer images={tweet.entities.media} />
-          <TweetInteractionsButtons tweet={tweet} />
+          {size === "normal" && (
+            <TweetImagesViewer images={tweet.entities.media} />
+          )}
+          {mode === "page" ? (
+            <div className="my-4">
+              <h3 className="text-gray font-normal text-sm mb-4">
+                {moment(tweet.createdAt).format("h:mm A · MMM D, YYYY · ")}
+                <span className="text-primary text-base font-bold">
+                  {convertNumberToShortForm(377800)}
+                </span>
+                {" Views"}
+              </h3>
+              <div>
+                <hr className="border-primary border-opacity-30" />
+                <TweetInteractionsButtons
+                  tweet={tweet}
+                  className="my-2.5 px-4"
+                />
+                <hr className="border-primary border-opacity-30" />
+              </div>
+            </div>
+          ) : (
+            <TweetInteractionsButtons tweet={tweet} className="mt-4" />
+          )}
         </article>
       </Link>
+      {mode === "page" && <>{/* put the input here */}</>}
     </div>
   );
 };

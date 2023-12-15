@@ -145,7 +145,7 @@ export const updateUsername = async ({
     );
     return res.status;
   } catch (err) {
-    const error = err as { response: { status: string } }
+    const error = err as { response: { status: string } };
     return error.response.status || null;
   }
 };
@@ -203,7 +203,6 @@ export const verifyPassword = async ({
       { headers: { Authorization: `Bearer ${token}` } }
     );
     return res.data.correct;
-
   } catch (err) {
     console.log(err);
     throw new Error("not valid");
@@ -445,7 +444,8 @@ export const uploadProfileImage = async (
 
   try {
     const res = await axios.post(
-      `${VITE_BACKEND_URL}/api/v1/user/profile_${isBanner ? "banner" : "picture"
+      `${VITE_BACKEND_URL}/api/v1/user/profile_${
+        isBanner ? "banner" : "picture"
       }`,
       formData,
       {
@@ -551,14 +551,16 @@ export const timelineTweets = async (
  */
 export const getUsersSuggestions = async (token: string, username: string) => {
   try {
-    if (!username) return []
-    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user?q=${username.slice(1)}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    if (!username) return [];
+    const res = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/user?q=${username.slice(1)}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return res.data.users;
-
   } catch (err) {
     console.log(err);
     return null;
@@ -594,14 +596,11 @@ export const getHashtags = async (token: string, tag: string) => {
  */
 export const getUserConversations = async (token: string) => {
   try {
-    const res = await axios.get(
-      `${VITE_BACKEND_URL}/api/v1/conversation/`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/conversation/`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return res.data;
   } catch (err) {
     console.log(err);
@@ -722,12 +721,20 @@ export const bookmarkTweet = async (tweetId: string, token: string) => {
  * @param conversationId - the conversationId of the conversation
  * @returns success or throws error if there is an error
  */
-export const changeGroupName = async ({ name, token, conversationId }: { name: string, token: string, conversationId: string }) => {
+export const changeGroupName = async ({
+  name,
+  token,
+  conversationId,
+}: {
+  name: string;
+  token: string;
+  conversationId: string;
+}) => {
   try {
     const res = await axios.post(
       `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/name`,
       {
-        name: name
+        name: name,
       },
       {
         headers: {
@@ -737,11 +744,11 @@ export const changeGroupName = async ({ name, token, conversationId }: { name: s
         },
       }
     );
-    console.log(res.data)
+    console.log(res.data);
     return res.data;
   } catch (error) {
     console.log(error);
-    return null
+    return null;
   }
 };
 /**
@@ -751,9 +758,17 @@ export const changeGroupName = async ({ name, token, conversationId }: { name: s
  * @param users - array of userNames
  * @returns success or throws error if there is an error
  */
-export const CreateConversation = async ({ conversation_name, token, users }: { conversation_name: string, token: string, users: string[] }) => {
+export const CreateConversation = async ({
+  conversation_name,
+  token,
+  users,
+}: {
+  conversation_name: string;
+  token: string;
+  users: string[];
+}) => {
   try {
-    console.log(conversation_name, token, users)
+    console.log(conversation_name, token, users);
     const res = await axios.post(
       `${VITE_BACKEND_URL}/api/v1/conversation/`,
       {
@@ -768,20 +783,28 @@ export const CreateConversation = async ({ conversation_name, token, users }: { 
         },
       }
     );
-    console.log(res.data)
+    console.log(res.data);
     return res.data;
   } catch (error) {
     console.log(error);
-    return null
+    return null;
   }
 };
 /**
  * @description Create a new message
- * @param formData 
+ * @param formData
  * @param token - the token of the user
  * @returns success or throws error if there is an error
  */
-export const CreateMessage = async ({ formData, token,conversationId }: { conversationId:string,formData: FormData;token:string}) => {
+export const CreateMessage = async ({
+  formData,
+  token,
+  conversationId,
+}: {
+  conversationId: string;
+  formData: FormData;
+  token: string;
+}) => {
   try {
     const res = await axios.post(
       `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/message`,
@@ -794,11 +817,11 @@ export const CreateMessage = async ({ formData, token,conversationId }: { conver
         },
       }
     );
-    console.log(res)
+    console.log(res);
     return res.status == 201;
   } catch (error) {
     console.log(error);
-    return null
+    return null;
   }
 };
 /**
@@ -807,9 +830,15 @@ export const CreateMessage = async ({ formData, token,conversationId }: { conver
  * @param token - the token of the user
  * @returns get the conversation data
  */
-export const getConversation = async ({ token, conversationId }: { conversationId: string, token: string }) => {
+export const getConversation = async ({
+  token,
+  conversationId,
+}: {
+  conversationId: string;
+  token: string;
+}) => {
   try {
-    console.log(conversationId, )
+    console.log(conversationId);
     const res = await axios.get(
       `${VITE_BACKEND_URL}/api/v1/conversation/` + conversationId,
       {
@@ -820,19 +849,18 @@ export const getConversation = async ({ token, conversationId }: { conversationI
     );
     const modifiedData = {
       ...res.data,
-      users: res.data.users.map((user: { Name: string; }) => ({
+      users: res.data.users.map((user: { Name: string }) => ({
         ...user,
         name: user.Name,
       })),
     };
-    console.log(modifiedData)
+    console.log(modifiedData);
     return modifiedData;
   } catch (error) {
     console.log(error);
-    return null
+    return null;
   }
 };
-
 
 /**
  * @description Send a request to the backend to unBookmark a tweet
@@ -912,24 +940,21 @@ export const getUserProfile = async (token: string, username: string) => {
  * @param token
  * @returns  users array represents the response from the backend or null
  */
-export const GetFollowSuggestionsService = async (token:string) => {
+export const GetFollowSuggestionsService = async (token: string) => {
   try {
-    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/suggestions`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/suggestions`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return res.data;
   } catch (err) {
     console.log(err);
     return null;
   }
 };
-
 
 /**
  * @description edit user profile
@@ -1137,9 +1162,10 @@ export const unfollow = async (username: string, token: string) => {
  * @param token
  * @returns  success or throws error if there is an error
  */
-export const FollowService = async (username: string,token: string) => {
+export const FollowService = async (username: string, token: string) => {
   try {
-    const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
       {},
       {
         headers: {
@@ -1148,7 +1174,7 @@ export const FollowService = async (username: string,token: string) => {
           Authorization: `Bearer ${token}`,
         },
       }
-);
+    );
     return res.data;
   } catch (err) {
     console.log(err);
@@ -1164,14 +1190,16 @@ export const FollowService = async (username: string,token: string) => {
 export const UnFollowService = async (username: string, token: string) => {
   try {
     debugger;
-    const res = await axios.delete(`${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
+    const res = await axios.delete(
+      `${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
       {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-      });
+      }
+    );
     return res.data;
   } catch (err) {
     console.log(err);
@@ -1184,16 +1212,15 @@ export const UnFollowService = async (username: string, token: string) => {
  * @param token
  * @returns  users array represents the response from the backend or null
  */
-export const GetTrendsService = async (token:string) => {
+export const GetTrendsService = async (token: string) => {
   try {
-    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/trends`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/trends`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return res.data.trends;
   } catch (err) {
     console.log(err);
@@ -1201,17 +1228,17 @@ export const GetTrendsService = async (token:string) => {
   }
 };
 
-
 /**
  * @description get Followers in Profile page(Followers section)
  * @param token
- * @param {currentUser username} 
+ * @param {currentUser username}
  * @returns  users array represents the response from the backend or null
  */
-export const GetFollowersService = async (username:string,token:string) => {
+export const GetFollowersService = async (username: string, token: string) => {
   try {
     debugger;
-    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/followers/${username}`,
+    const res = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/user/followers/${username}`,
       {
         headers: {
           Accept: "application/json",
@@ -1219,7 +1246,7 @@ export const GetFollowersService = async (username:string,token:string) => {
           Authorization: `Bearer ${token}`,
         },
       }
-      );
+    );
     return res.data;
   } catch (err) {
     console.log(err);
@@ -1230,19 +1257,22 @@ export const GetFollowersService = async (username:string,token:string) => {
 /**
  * @description get Followings in Profile page(Following section)
  * @param token
- * @param {currentUser username} 
+ * @param {currentUser username}
  * @returns  users array represents the response from the backend or null
  */
-export const GetFollowingsService = async (username:string,token: string) => {
+export const GetFollowingsService = async (username: string, token: string) => {
   try {
     debugger;
-    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/follow/${username}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/user/follow/${username}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return res.data;
   } catch (err) {
     console.log(err);
@@ -1250,24 +1280,25 @@ export const GetFollowingsService = async (username:string,token: string) => {
   }
 };
 
-
 /**
  * @description Block specific user
  * @param username of this specific use
  * @param token
  * @returns  success or throws error if there is an error
  */
-export const BlockService = async (username: string,token:string) => {
+export const BlockService = async (username: string, token: string) => {
   try {
-    const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/user/block/${username}`,
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/user/block/${username}`,
       {},
       {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return res.data;
   } catch (err) {
     console.log(err);
@@ -1282,13 +1313,16 @@ export const BlockService = async (username: string,token:string) => {
  */
 export const UnBlockService = async (username: string, token: string) => {
   try {
-    const res = await axios.delete(`${VITE_BACKEND_URL}/api/v1/user/block/${username}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await axios.delete(
+      `${VITE_BACKEND_URL}/api/v1/user/block/${username}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return res.data;
   } catch (err) {
     console.log(err);
@@ -1351,7 +1385,8 @@ export const GetBlockedService = async (token: string) => {
  */
 export const MuteService = async (username: string, token: string) => {
   try {
-    const res = await axios.post(`${VITE_BACKEND_URL}/api/v1/user/mute/${username}`,
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/user/mute/${username}`,
       {},
       {
         headers: {
@@ -1359,14 +1394,15 @@ export const MuteService = async (username: string, token: string) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-      });
+      }
+    );
     return res.data;
   } catch (err) {
     console.log(err);
     return null;
   }
 };
-    
+
 /**
  * @description unmute specific user
  * @param username of this specific user
@@ -1375,13 +1411,16 @@ export const MuteService = async (username: string, token: string) => {
  */
 export const UnMuteService = async (username: string, token: string) => {
   try {
-    const res = await axios.delete(`${VITE_BACKEND_URL}/api/v1/user/mute/${username}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await axios.delete(
+      `${VITE_BACKEND_URL}/api/v1/user/mute/${username}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return res.data;
   } catch (err) {
     console.log(err);
@@ -1409,3 +1448,84 @@ export const GetMutedService = async (token: string) => {
     return null;
   }
 };
+
+/**
+ * @description get tweet by id
+ * @param tweetId 
+ * @param token 
+ * @returns tweet object represents the response from the backend or null
+ */
+export const getTweetById = async (tweetId: string, token: string) => {
+  try {
+    const res = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    throw new Error("Tweet not found");
+  }
+};
+
+/**
+ * @description get tweet replies
+ * @param tweetId
+ * @param token
+ * @param pageParam
+ * @param limit
+ * @returns replies array represents the response from the backend or null
+ */
+export const getTweetReplies = async (
+  tweetId: string,
+  token: string,
+  pageParam: number = 1,
+  limit: number = 10
+) => {
+  try {
+    const res = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}/replies?page=${pageParam}&limit=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data.tweets;
+  } catch (err) {
+    console.log(err);
+    throw new Error("Replies not found");
+  }
+};
+
+/**
+ * @description send a retweet request
+ * @param tweetId 
+ * @param token 
+ * @returns success or failure
+ */
+export const retweet = async (tweetId: string, token: string) => {
+  const formData = new FormData();
+  formData.append("retweetedId", tweetId);
+    try {
+      const res = await axios.post(
+        `${VITE_BACKEND_URL}/api/v1/tweets`,
+        formData,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return res.status == 201;
+    } catch (err) {
+      console.log(err);
+      throw new Error("Error retweeting");
+    }
+}
