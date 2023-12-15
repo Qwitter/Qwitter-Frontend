@@ -6,6 +6,7 @@ import TweetImagesViewer from "../TweetImagesViewer/TweetImagesViewer";
 import { cn, convertNumberToShortForm } from "@/lib/utils";
 import TweetAuthorHeader from "../TweetAuthorHeader/TweetAuthorHeader";
 import moment from "moment";
+import CreateTweetContainer from "../CreateTweet/CreateTweetContainer";
 
 const convertWordToAnchor = (word: string): JSX.Element => {
   if (word.startsWith("@")) {
@@ -52,14 +53,14 @@ type TweetProps = {
 const Tweet = ({ tweet, mode = "list", size = "normal" }: TweetProps) => {
   if (tweet.retweetedTweet)
     return <Tweet tweet={tweet.retweetedTweet} mode={mode} size={size} />;
-    
+
   return (
     <div data-testid="tweetDiv">
       <Link
         to={mode === "list" ? `/tweet/${tweet.id}` : "#"}
         className={cn(
-          "w-full flex px-4 py-3 gap-4 border-b border-primary border-opacity-30 transition-all cursor-default",
-          { "hover:bg-[#080808] cursor-pointer": mode === "list" }
+          "w-full flex px-4 py-3 gap-4 transition-all cursor-default",
+          { "hover:bg-[#080808] cursor-pointer  border-b border-primary border-opacity-30": mode === "list" }
         )}
       >
         {mode === "list" && (
@@ -89,7 +90,7 @@ const Tweet = ({ tweet, mode = "list", size = "normal" }: TweetProps) => {
             <TweetImagesViewer images={tweet.entities.media} />
           )}
           {mode === "page" ? (
-            <div className="my-4">
+            <div className="mt-4">
               <h3 className="text-gray font-normal text-sm mb-4">
                 {moment(tweet.createdAt).format("h:mm A · MMM D, YYYY · ")}
                 <span className="text-primary text-base font-bold">
@@ -111,7 +112,8 @@ const Tweet = ({ tweet, mode = "list", size = "normal" }: TweetProps) => {
           )}
         </article>
       </Link>
-      {mode === "page" && <>{/* put the input here */}</>}
+      {mode === "page" && <CreateTweetContainer mode="reply" replyToUser={tweet.author.userName} replyToTweetId={tweet.id}  />
+      }
     </div>
   );
 };

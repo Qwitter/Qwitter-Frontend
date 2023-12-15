@@ -35,7 +35,7 @@ export default function CreateTweetFooter({ mode, setFiles, files, text, selecte
 
     return (
         <div className="flex flex-col items-start w-full">
-            {(text.length != 0 || mode == "popUp" || selectedImages.length > 0) &&
+            {(text.length != 0 || mode == "popUp" || selectedImages.length > 0)&&mode!="reply" &&
                 <Popover open={isPopupOpen} onOpenChange={setPopupOpen} >
                     <PopoverTrigger className="z-30 w-full">
                         <div className="h-12 z-0 flex flex-row items-center pb-3 w-full border-b border-primary border-opacity-20 cursor-pointer">
