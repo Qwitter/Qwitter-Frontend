@@ -21,10 +21,17 @@ export function PagesContainer() {
   const user = JSON.parse(localStorage.getItem("user")!)
   useEffect(()=>{
     socket.connect()
+    socket.on('connect',()=>{
+      console.log("connected -----------")
+    })
+    console.log(socket.connected)
     socket.emit(EVENTS.CLIENT.JOIN_ROOM,user.userName);
     socket.on(EVENTS.SERVER.NOTIFICATION, async(notification) => {
       console.log(notification);
     });
+    return () => {
+      socket.disconnect(); 
+    };
   },[])
 
   return (
