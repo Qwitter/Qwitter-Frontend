@@ -8,7 +8,7 @@ type UserContextProviderProps = {
 type UserContextType = {
   user: User | null;
   token: string | null;
-  saveUser: (user: User, token: string) => void;
+  saveUser: (user: User, t?: string) => void;
   logout: () => void;
   setUser: (user: User | null) => void;
   setToken: (token: string | null) => void;
@@ -38,12 +38,12 @@ const UserContextProvider = ({ children }: UserContextProviderProps) => {
     }
   }, []);
 
-  const saveUser = (user: User, token: string) => {
+  const saveUser = (user: User, t: string = token!) => {
     setUser(user);
-    setToken(token);
-     // Save user and token to local storage
+    setToken(t);
+    // Save user and token to local storage
     localStorage.setItem("user", JSON.stringify(user));
-    localStorage.setItem("token", token);
+    localStorage.setItem("token", t);
   };
 
   const logout = () => {

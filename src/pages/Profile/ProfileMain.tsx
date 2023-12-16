@@ -1,17 +1,31 @@
 import { Button } from "@/components";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { UserProfileData } from "@/models/User";
-import { Cake, CalendarDays, MapPin } from "lucide-react";
-import { useContext, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import {
+  // BellPlus,
+  Cake,
+  CalendarDays,
+  Mail,
+  MapPin,
+  MoreHorizontal,
+} from "lucide-react";
+import {
+  useContext,
+  // useState
+} from "react";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { FollowButton } from "@/components/FollowButton/FollowButton";
 import { BlockButton } from "@/components/BlockButton/BlockButton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@radix-ui/react-popover";
+import { CreateConversation, cn, convertNumberToShortForm } from "@/lib/utils";
+import { useMutation } from "@tanstack/react-query";
 
-/*
-TODO: options menu and message menu
-TODO: may need to revalidate the cache after edit, follow and unfollow
-*/
+//TODO: options menu , message, notification
 
 type ProfileMainProps = {
   user: UserProfileData | null;
@@ -19,16 +33,11 @@ type ProfileMainProps = {
 
 export const ProfileMain = ({ user }: ProfileMainProps) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  // const [followState, setFollowState] = useState(user?.isFollowing);
   const { username } = useParams();
   const { user: contextUser } = useContext(UserContext);
-
-  const [buttonContent] = useState<string>(
-    contextUser?.userName == username
-      ? "Edit profile"
-      : user?.isFollowing
-      ? "Following"
-      : "Follow"
-  );
 
   const birthDate = user
     ? new Date(user.birthDate).toLocaleDateString("en-Us", {
@@ -43,6 +52,25 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
         year: "numeric",
       })
     : "";
+
+  const { mutate } = useMutation({
+    mutationFn: CreateConversation,
+    onSuccess: (data) => {
+      if (data) {
+        navigate("/Messages/" + data.id);
+      }
+    },
+    onError: (data) => {
+      console.log(data);
+    },
+  });
+
+  const handleMessageClick = () => {
+    mutate({
+      token: token!,
+      users: [username!],
+    });
+  };
 
   return (
     <div>
@@ -64,11 +92,11 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
       <div className="pt-3 px-4 mb-4">
         <div className="h-[69px] flex flex-row justify-between">
           {
-            <Avatar className="rounded-full cursor-pointer mt-[-15%] mb-3 w-[20vw] h-auto aspect-square sm:w-[142px] bg-black p-0.5 sm:p-1 border-solid block">
+            <Avatar className="rounded-full mt-[-15%] mb-3 w-[20vw] h-auto aspect-square sm:w-[142px] bg-black p-0.5 sm:p-1 border-solid block">
               <Link
                 to={`/${username}/photo`}
                 state={{ profileImg: user?.profileImageUrl }}
-                className="w-full h-full"
+                className="w-full h-full cursor-pointer"
               >
                 <AvatarImage
                   className="rounded-full"
@@ -76,13 +104,17 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
                   alt="user profile image"
                 />
               </Link>
-              <AvatarFallback className="text-4xl">
-                {user?.userName.substring(0, 2)}
-              </AvatarFallback>
+              {user ? (
+                <AvatarFallback className="text-4xl">
+                  {user?.userName.substring(0, 2)}
+                </AvatarFallback>
+              ) : (
+                <div className="w-full h-full rounded-full bg-[#16181c]"></div>
+              )}
             </Avatar>
           }
 
-          {user != null && user.isBlocked ? (
+          {user && user.isBlocked ? (
             <BlockButton username={user.userName} />
           ) : (
             <>
@@ -93,20 +125,58 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
                   className="h-[35px]"
                 >
                   <Button variant="outline" className="h-full">
-                    {buttonContent}
+                    Edit profile
                   </Button>
                 </Link>
               ) : (
-                <FollowButton
-                  isFollowing={user?.isFollowing!}
-                  username={user?.userName!}
-                />
+                user && (
+                  <div className="flex justify-start align-start">
+                    <Popover>
+                      <PopoverTrigger className="w-[35px] h-[35px] mb-3 mr-2 flex justify-center items-center rounded-full border border-[#536471] hover:bg-[#eff3f4]/10">
+                        <MoreHorizontal size={20} />
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[240px] cursor-pointer hover:bg-[#16181c] p-3 bg-black box-shadow text-primary text-xs rounded-xl">
+                        {
+                          //TODO: block, mute, unblock?
+                        }
+                        Oh hello there
+                      </PopoverContent>
+                    </Popover>
+
+                    <div
+                      onClick={handleMessageClick}
+                      className="w-[35px] h-[35px] mb-3 mr-2 cursor-pointer flex justify-center items-center rounded-full border border-[#536471] hover:bg-[#eff3f4]/10"
+                    >
+                      <Mail size={20} />
+                    </div>
+
+                    {/* {followState && (
+                    <div 
+                    
+                    className="w-[35px] h-[35px] mb-3 mr-2 cursor-pointer flex justify-center items-center rounded-full border border-[#536471] hover:bg-[#eff3f4]/10">
+                      <BellPlus size={20} />
+                    </div>
+                  )} */}
+
+                    <FollowButton
+                      isFollowing={user?.isFollowing!}
+                      username={user?.userName!}
+                      className={cn(
+                        "h-[35px] min-w-20",
+                        user?.isFollowing && "w-[100px]"
+                      )}
+                      // onClick={() => {
+                      //   setFollowState(!followState);
+                      // }}
+                    />
+                  </div>
+                )
               )}
             </>
           )}
         </div>
 
-        {user == null ? ( //needs checking
+        {!user ? (
           <div className="w-full mt-1 mb-3">
             <span className="text-xl leading-5 font-bold">@{username}</span>
           </div>
@@ -143,15 +213,30 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
             </div>
             <div className="leading-3">
               <span className="mr-5 text-sm">
-                <Link to={`/${username}/following`} className="hover:underline" data-testid="following">
-                  <span className="font-bold" data-testid="followingCount">{user?.followingCount}</span>
+                <Link
+                  to={`/${username}/following`}
+                  className="hover:underline"
+                  data-testid="following"
+                >
+                  <span className="font-bold" data-testid="followingCount">
+                    {convertNumberToShortForm(user?.followingCount)}
+                  </span>
                   <span className="text-gray"> Following</span>
                 </Link>
               </span>
               <span className="mr-5 text-sm">
-                <Link to={`/${username}/followers`} className="hover:underline" data-testid="followers">
-                  <span className="font-bold" data-testid="followersCount">{user?.followersCount}</span>
-                  <span className="text-gray"> Followers</span>
+                <Link
+                  to={`/${username}/followers`}
+                  className="hover:underline"
+                  data-testid="followingCount"
+                >
+                  <span className="font-bold">
+                    {convertNumberToShortForm(user?.followersCount)}
+                  </span>
+                  <span className="text-gray" data-testid="followersCount">
+                    {" "}
+                    Followers
+                  </span>
                 </Link>
               </span>
             </div>

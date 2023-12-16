@@ -38,6 +38,7 @@ export function PagesContainer() {
       socket.disconnect();
     };
   }, [])
+  
   const getPageFromUrl = (pathname: string) => {
     if (pathname.includes("home")) {
       return "home";
@@ -57,6 +58,7 @@ export function PagesContainer() {
       return "unknown";
     }
   };
+  
   return (
     <>
       {location.pathname !== "/" && (

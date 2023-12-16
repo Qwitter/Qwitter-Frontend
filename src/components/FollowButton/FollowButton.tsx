@@ -1,12 +1,17 @@
 import { useContext, useState } from "react";
 import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
-import { FollowService, UnFollowService } from "@/lib/utils";
+import { FollowService, UnFollowService, cn } from "@/lib/utils";
 import { WarningPopUp } from "../WarningPopUp/WarningPopUp";
 import { FollowButtonProp } from "./FollowButtonProp";
 import { UserContext } from "@/contexts/UserContextProvider";
 
-export function FollowButton({ username, isFollowing }: FollowButtonProp) {
+export function FollowButton({
+  username,
+  isFollowing,
+  className,
+  onClick,
+}: FollowButtonProp) {
   const [isHovered, setIsHovered] = useState(false);
   const [state, setstate] = useState(isFollowing);
   const [showDialog, setshowDialog] = useState(false);
@@ -31,16 +36,20 @@ export function FollowButton({ username, isFollowing }: FollowButtonProp) {
     event.stopPropagation();
     FollowServiceFn(username);
     setstate(true);
+    onClick && onClick();
   };
   const handleunFollowButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     setshowDialog(true);
   };
-  const confirmUnFollowButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const confirmUnFollowButton = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     event.stopPropagation();
     unFollowServiceFn(username);
     setstate(false);
     setshowDialog(false);
+    onClick && onClick();
   };
   return (
     <>
@@ -48,7 +57,7 @@ export function FollowButton({ username, isFollowing }: FollowButtonProp) {
         <Button
           data-testid="followUnfollow"
           onClick={handleFollowButton}
-          className="text-sm w-[100px] h-[30px] font-bold"
+          className={cn("text-sm w-[100px] h-[30px] font-bold", className)}
         >
           <span className="text-black">Follow</span>
         </Button>
@@ -58,11 +67,11 @@ export function FollowButton({ username, isFollowing }: FollowButtonProp) {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           onClick={handleunFollowButton}
-          className="text-sm w-[100px] h-[30px] font-bold"
+          className={cn("text-sm w-[100px] h-[30px] font-bold", className)}
           variant={"danger"}
           data-testid="followUnfollow"
         >
-          <span className="text-white">
+          <span className={cn("text-white", isHovered && "text-danger")}>
             {isHovered ? "Unfollow" : "Following"}
           </span>
         </Button>

@@ -1,10 +1,4 @@
-import {
-  useParams,
-  Navigate,
-  Routes,
-  Route,
-  useNavigate,
-} from "react-router-dom";
+import { useParams, Routes, Route, useNavigate } from "react-router-dom";
 import { ProfileMain } from "./ProfileMain";
 import { ArrowLeft } from "lucide-react";
 import { ProfileSections } from "./ProfileSections";
@@ -21,46 +15,21 @@ import { UserContext } from "@/contexts/UserContextProvider";
 import { BlockedProfile } from "@/components/BlockedProfile/BlockedProfile";
 import { ProfileInvalid } from "./ProfileInvalid";
 
-/*
-TODO: test  invalid username
-*/
-
 export function ProfileUser() {
   const { username } = useParams();
   const navigate = useNavigate();
   const { token } = useContext(UserContext);
   const [blocked, setBlocked] = useState(false);
 
-  if (!username || username!.length >= 16) {
-    // Redirect or handle the case when the username is too long
-    return (
-      <>
-        <Navigate to="/home" />
-      </>
-    );
-  }
-
-  const {
-    data: user,
-    isError,
-    isPending,
-  } = useQuery<UserProfileData>({
+  const { data: user, isPending } = useQuery<UserProfileData>({
     queryKey: ["profile", token, username],
     queryFn: () => getUserProfile(token!, username!),
   });
+
   useEffect(() => {
     window.scrollTo(0, 0);
     setBlocked(user?.isBlocked!);
   }, []);
-
-  if (!username || username!.length >= 15) {
-    // Redirect or handle the case when the username is too long
-    return (
-      <>
-        <Navigate to="/home" />
-      </>
-    );
-  }
 
   if (isPending)
     return (
@@ -82,13 +51,13 @@ export function ProfileUser() {
           </div>
         </span>
         <span
-          className="flex flex-col justify-center w-full h-full ml-3"
+          className="flex flex-col justify-center w-full h-[52px] ml-3"
           // height here may change later
         >
-          <span className="text-xl font-bold pt-0.5">
-            {isError ? "Profile" : user?.name}
+          <span className="text-xl font-bold">
+            {user == null ? "Profile" : user?.name}
           </span>
-          {!isError && (
+          {!(user == null) && (
             <span className="text-[13px] text-gray">
               {user?.tweetCount} Posts
             </span>
@@ -97,12 +66,12 @@ export function ProfileUser() {
       </div>
       <ProfileMain user={user || null} />
 
-      {!isError && blocked ? (
+      {!(user == null) && blocked ? (
         <BlockedProfile
           username={username!}
           ViewPostsFunction={() => setBlocked(false)}
         />
-      ) : isError ? (
+      ) : user == null ? (
         <ProfileInvalid />
       ) : (
         <>

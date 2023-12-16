@@ -467,6 +467,38 @@ export const uploadProfileImage = async (
   }
 };
 
+/**
+ *
+ * @param token The token of the user for authentication
+ * @param isBanner Used to upload the profile banner
+ * @returns New user data after the image has changed
+ */
+export const deleteProfileImage = async (
+  isBanner: boolean = false,
+  token: string
+) => {
+  try {
+    const res = await axios.delete(
+      `${VITE_BACKEND_URL}/api/v1/user/profile_${
+        isBanner ? "banner" : "picture"
+      }`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log("delete", res.data);
+
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error deleting image");
+  }
+};
+
 export const oAuthSignUp = async (token: string, birthday: BirthDay) => {
   const parseResult = z.string().safeParse(token);
   if (!parseResult.success) return null;
@@ -884,7 +916,7 @@ export const getConversation = async ({
     return res.data;
   } catch (error) {
     console.log(error);
-    return null;
+    throw new Error("Error getting conversation");
   }
 };
 
@@ -956,7 +988,7 @@ export const getUserProfile = async (token: string, username: string) => {
     return res.data;
   } catch (error) {
     console.log(error);
-    return error;
+    return null;
   }
 };
 
@@ -1075,6 +1107,7 @@ export const GetFollowSuggestionsService = async (token: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
+
     return res.data;
   } catch (err) {
     console.log(err);
@@ -1100,7 +1133,6 @@ export const editUserProfile = async (
   }
 
   try {
-    console.log(editedUserData, parseResult);
     const response = await axios.put(
       `${VITE_BACKEND_URL}/api/v1/user/profile`,
       {
@@ -1612,8 +1644,8 @@ export const GetTweetRetweetersService = async (
 
 /**
  * @description get tweet by id
- * @param tweetId 
- * @param token 
+ * @param tweetId
+ * @param token
  * @returns tweet object represents the response from the backend or null
  */
 export const getTweetById = async (tweetId: string, token: string) => {
@@ -1665,28 +1697,28 @@ export const getTweetReplies = async (
 
 /**
  * @description send a retweet request
- * @param tweetId 
- * @param token 
+ * @param tweetId
+ * @param token
  * @returns success or failure
  */
 export const retweet = async (tweetId: string, token: string) => {
   const formData = new FormData();
   formData.append("retweetedId", tweetId);
-    try {
-      const res = await axios.post(
-        `${VITE_BACKEND_URL}/api/v1/tweets`,
-        formData,
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      return res.status == 201;
-    } catch (err) {
-      console.log(err);
-      throw new Error("Error retweeting");
-    }
+  try {
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/tweets`,
+      formData,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.status == 201;
+  } catch (err) {
+    console.log(err);
+    throw new Error("Error retweeting");
+  }
 };

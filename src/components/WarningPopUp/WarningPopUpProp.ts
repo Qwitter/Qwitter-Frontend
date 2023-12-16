@@ -1,10 +1,10 @@
 export type WarningPopUpProp = {
-    UserAction: string;
-    username: string;
-    desc: string;
-    ButtonFunc: (event: React.MouseEvent<HTMLButtonElement>) => void;
-    headerFunction: () => void;
-    ButtonVariant:
+  UserAction: string;
+  username: string;
+  desc: string;
+  ButtonFunc: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  headerFunction: () => void;
+  ButtonVariant:
     | "link"
     | "default"
     | "destructive"
@@ -12,5 +12,5 @@ export type WarningPopUpProp = {
     | "outline"
     | "secondary"
     | "ghost";
-    PopUpshow: boolean;
+  PopUpshow: boolean;
 };

@@ -1,5 +1,4 @@
 import {  Navigate, Route, Routes, useParams } from "react-router-dom";
-
 import { FollowList } from "@/components/FollowList/FollowList";
 import { ProfileUser } from "./ProfileUser";
 
