@@ -23,7 +23,7 @@ const tweet1: Tweet = {
   retweetCount: 0,
   qouteCount: 0,
   likesCount: 1,
-  text: "this is a tweet string @ahmedoshelmy #Palestine",
+  text: "this is a tweet string @ahmedoshelmy\n@hello\nhello #Palestine",
   source: "Iphone",
   liked: true,
   bookmarked: false,
@@ -31,6 +31,7 @@ const tweet1: Tweet = {
   replyToTweetId: "1718938551163691300",
   retweetedId: "1718938551163691300",
   qouteTweetedId: "1718938551163691300",
+  hasRetweeted: false,
   sensitive: false,
   entities: {
     hasthtags: [
@@ -42,7 +43,7 @@ const tweet1: Tweet = {
       {
         value:
           "https://pbs.twimg.com/media/F_u8-DtXkAA7pKd?format=jpg&name=large",
-        type: "photo",
+        type: "video",
       },
       {
         value:

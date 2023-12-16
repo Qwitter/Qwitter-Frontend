@@ -127,7 +127,7 @@ function NavElements({
     <ul className="flex flex-col w-full ">
       {navLinks.map((link) => (
         <Link
-          to={`/${link.title != "Profile" ? link.title : user?.userName}`}
+          to={`/${link.title != "Profile" ? link.title : "Profile/"+user?.userName}`}
           key={link.id}
           className="group"
           onClick={() => setActive(link.title)}

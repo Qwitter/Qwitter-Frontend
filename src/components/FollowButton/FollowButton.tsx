@@ -55,6 +55,7 @@ export function FollowButton({
     <>
       {state === false && (
         <Button
+          data-testid="followUnfollow"
           onClick={handleFollowButton}
           className={cn("text-sm w-[100px] h-[30px] font-bold", className)}
         >
@@ -68,6 +69,7 @@ export function FollowButton({
           onClick={handleunFollowButton}
           className={cn("text-sm w-[100px] h-[30px] font-bold", className)}
           variant={"danger"}
+          data-testid="followUnfollow"
         >
           <span className={cn("text-white", isHovered && "text-danger")}>
             {isHovered ? "Unfollow" : "Following"}
@@ -78,6 +80,7 @@ export function FollowButton({
         headerFunction={() => {
           setshowDialog(false);
         }}
+        data-testid="UnfollowPopUp"
         UserAction="Unfollow"
         username={username}
         PopUpshow={showDialog}
