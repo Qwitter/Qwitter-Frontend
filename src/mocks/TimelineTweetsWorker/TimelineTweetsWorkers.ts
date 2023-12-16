@@ -84,6 +84,7 @@ const tweet1: Tweet = {
   },
 };
 const tweet2: Tweet = {
+  hasRetweeted:false,
   createdAt: "2023-11-23 5:02:00",
   id: "1718938551163691301",
   author: {

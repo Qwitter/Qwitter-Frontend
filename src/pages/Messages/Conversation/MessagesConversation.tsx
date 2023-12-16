@@ -89,7 +89,7 @@ export function MessagesConversation() {
       setMessageReply(null);
     }
   };
-  const { isPending, data, fetchNextPage, hasNextPage, isError } =
+  const { isPending, data, fetchNextPage, hasNextPage } =
     useInfiniteQuery({
       queryKey: ["userConversation", conversationId],
       initialPageParam: 1,

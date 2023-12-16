@@ -14,7 +14,7 @@ function MessagesAddPeoplePopup() {
     const [isFocus, setFocus] = useState(false);
     const [peopleSearchText, setPeopleSearchText] = useState("");
     const { conversationId } = useParams()
-    const [selectedUsers, setSelectedUsers] = useState<{ profileImageUrl: string; name: string; userName: string }[]>([]);
+    const [selectedUsers, setSelectedUsers] = useState<MessageUser[]>([]);
     const { token } = useContext(UserContext)
     const navigate = useNavigate();
 

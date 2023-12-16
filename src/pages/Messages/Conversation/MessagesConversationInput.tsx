@@ -1,4 +1,4 @@
-import { Textarea } from "@/components/CreateTweet/Textarea";
+import { Textarea } from "@/components/CreateTweet/textarea";
 import { Image, ScanSearch, SendHorizonal } from "lucide-react";
 import { useRef, useState } from "react";
 import {  Mention } from "../types/MessagesTypes";
