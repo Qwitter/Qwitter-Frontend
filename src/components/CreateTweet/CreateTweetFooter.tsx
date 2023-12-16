@@ -35,12 +35,12 @@ export default function CreateTweetFooter({ mode, setFiles, files, text, selecte
 
     return (
         <div className="flex flex-col items-start w-full">
-            {(text.length != 0 || mode == "popUp" || selectedImages.length > 0) &&
+            {(text.length != 0 || mode == "popUp" || selectedImages.length > 0)&&mode!="reply" &&
                 <Popover open={isPopupOpen} onOpenChange={setPopupOpen} >
                     <PopoverTrigger className="z-30 w-full">
                         <div className="h-12 z-0 flex flex-row items-center pb-3 w-full border-b border-primary border-opacity-20 cursor-pointer">
                             <currentWhoToReply.icon color="rgb(29,155,240)" className="mr-1 w-4 h-4" strokeWidth="2.5" />
-                            <span className="text-secondary text-sm font-bold">{currentWhoToReply.text} can reply</span>
+                            <span data-testid="whoCanReply" className="text-secondary text-sm font-bold">{currentWhoToReply.text} can reply</span>
                         </div>
                     </PopoverTrigger>
                     <PopoverContent className="w-[320px] h-[380px] min-h-[100px]  overflow-y-auto box-shadow bg-black  text-primary text-xs rounded-xl">
@@ -118,7 +118,7 @@ function ReplyPopup({ currentWhoToReply, setCurrentWhoToReply, closePopup }: {
     return (
         <>
             <div className="w-full px-4 py-3 flex flex-col gap-1" data-testid="whoCanReplyPopup" >
-                <span className="text-primary font-bold text-[15px]" data-testid="whoCanReply">who can reply?</span>
+                <span className="text-primary font-bold text-[15px]">who can reply?</span>
                 <p className="text-gray text-[15px] ">Choose who can reply to this post. Anyone mentioned can always reply</p>
             </div>
             <ul >

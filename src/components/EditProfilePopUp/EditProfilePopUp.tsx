@@ -25,11 +25,11 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
   const [profileImage, setProfileImage] = useState<File>();
   const [profileBanner, setProfileBanner] = useState<File>();
   const [showDiscardChanges, setShowDiscardChanges] = useState<boolean>(false);
-  const { user, token,setUser } = useContext(UserContext);
+  const { user, token, setUser } = useContext(UserContext);
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const contextBirthDate = new Date(user?user.birthDate:"");
+  const contextBirthDate = new Date(user ? user.birthDate : "");
   const birthDay = contextBirthDate.getDate();
   const birthMonth = contextBirthDate.toLocaleString("default", {
     month: "long",
@@ -84,14 +84,14 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
     navigate(-1);
   };
 
-  const callEditUserData = useMutation<User>({
-    mutationFn: (editedUserData:User) => {
-      profileImage&& uploadProfileImage(profileImage!, token!)
-      profileBanner&&uploadProfileImage(profileBanner!, token!, true)
-      return editUserProfile(editedUserData, token!);
+  const { mutate, isPending } = useMutation<User, Error, User, unknown>({
+    mutationFn: async (editedUserData: User) => {
+      profileImage && (await uploadProfileImage(profileImage!, token!));
+      profileBanner && (await uploadProfileImage(profileBanner!, token!, true));
+      return await editUserProfile(editedUserData, token!);
     },
-    onSuccess:(editedUserData)=>{
-      console.log(editedUserData)
+    onSuccess: (editedUserData) => {
+      console.log(editedUserData);
       setUser({
         name: editedUserData.name,
         email: user?.email ?? "",
@@ -106,15 +106,14 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
         google_id: user?.google_id ?? "",
         profileImageUrl: editedUserData.profileImageUrl,
         profileBannerUrl: `http://${editedUserData.profileBannerUrl}`,
-        verified:editedUserData.verified??false,
-        isFollowing:editedUserData.isFollowing??false,
+        verified: editedUserData.verified ?? false,
+        isFollowing: editedUserData.isFollowing ?? false,
       });
     },
-    onError:()=>{
-      console.log("error")
-    }
+    onError: () => {
+      console.log("error");
+    },
   });
-
 
   const handleSave = async (): Promise<void> => {
     // check for errors first
@@ -137,21 +136,21 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
     }
 
     const editedUserData = {
+      ...user,
       name: form.getValues().name,
       description: form.getValues().description,
-      Location: form.getValues().location,
+      location: form.getValues().location,
       url: form.getValues().url,
       day: form.getValues().day,
       month: form.getValues().month.toString(),
       year: form.getValues().year.toString(),
       birthDate: getFormDate().toISOString(),
-    };
+    } as User;
 
-    callEditUserData.mutate(editedUserData);
+    mutate(editedUserData);
 
     //TODO: proceed when request is fulfilled
     //TODO: we can set the user with the response instead
-  
 
     if (onSave) onSave();
     handleClose();
@@ -240,4 +239,3 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
     </PopUpContainer>
   );
 };
-

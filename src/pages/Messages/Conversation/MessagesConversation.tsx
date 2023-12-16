@@ -121,12 +121,12 @@ export function MessagesConversation() {
 
         socket.on(EVENTS.SERVER.ROOM_MESSAGE, async (Message) => {
             queryClient.setQueryData(['userConversation', conversationId], (oldConversation: InfiniteData<conversation, unknown>) => {
-
+                console.log(Message ,socket)
                 oldConversation.pages[0].messages = [Message, ...oldConversation.pages[0].messages]
                 setChatMessages([...handlePagingMessages(oldConversation)])
                 setTimeout(() => {
 
-                    handleScrollDown()
+                    handleScrollDown() 
                 }, 0);
                 return oldConversation;
             })
