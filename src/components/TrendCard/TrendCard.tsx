@@ -32,6 +32,7 @@ export function TrendCard() {
               onClick={() => {
                 navigate("/Explore");
               }}
+              data-testid="showMoreTrends"
             >
               show more
             </span>

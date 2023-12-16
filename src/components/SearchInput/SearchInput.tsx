@@ -62,7 +62,7 @@ function SearchInput({isSearchPage=false}:{isSearchPage?:boolean}) {
             >
                 <Popover open={isPopupOpen}  >
 
-                    <PopoverTrigger className='w-full' onClick={() => { console.log("work"); setPopupOpen(true) }}>
+                    <PopoverTrigger className='w-full' onClick={() => { console.log("work"); setPopupOpen(true) }} data-testid="searchBar">
                         <div className={`absolute top-0 left-0 z-[${disabled ? 100 : -100}] cursor-text w-full h-full opacity-0 bg-white`} onClick={handleFocusIn}
                         ></div>
                         <TextInput LeftIcon={Search}
@@ -95,7 +95,7 @@ function Results({ searchText }: { searchText: string }) {
         <>
             {
                 searchText.length == 0 ? <div className='p-3 pt-5 flex items-center justify-center '>
-                    <span className='text-gray text-base'>Try searching for people, lists, or keywords</span>
+                    <span className='text-gray text-base' data-testid="searchMessage">Try searching for people, lists, or keywords</span>
                 </div>
 
                     : <div className='w-full'>
@@ -133,8 +133,8 @@ function TagsResults({ text }: { text: string }) {
     }
 
     return (
-        <ul className='w-full '>
-            {tags && tags.length == 0 ?
+        <ul className='w-full ' data-testid="trends">
+            {tags&&tags.length == 0 ?
                 <li className="py-3 flex-grow px-4 items-center flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer" >
                     <div className='w-10 h-10 flex justify-center items-center mr-3'>
                         <Search className=' w-5 h-5' strokeWidth='3px' />
@@ -143,8 +143,8 @@ function TagsResults({ text }: { text: string }) {
 
                 </li>
 
-                : tags && tags.slice(0, 4).map((tag) => (
-                    <li key={tag.entityId} className="py-3 flex-grow px-4 items-center flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer" onClick={() => { navigate(`/explore/${tag.text.slice(-1)}`) }} >
+                : tags&&tags.slice(0, 4).map((tag) => (
+                    <li data-testid="trend-item" key={tag.entityId} className="py-3 flex-grow px-4 items-center flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer" onClick={()=>{navigate(`/explore/${tag.text.slice(-1)}`)}} >
                         <div className='w-10 h-10 flex justify-center items-center mr-3'>
                             <Search className=' w-5 h-5' strokeWidth='3px' />
                         </div>
@@ -183,13 +183,12 @@ function UsersResults({ text }: { text: string }) {
     }
 
     return (
-        <ul >
+        <ul data-testid="users">
 
             {
                 data && data.map(user => (
-                    <li key={user.userName} className="py-3 px-4 flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer"
-                        onClick={() => navigate('/' + user.userName)} >
-
+                    <li data-testid="user-item" key={user.userName} className="py-3 px-4 flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer" 
+                    onClick={()=>navigate('/'+user.userName)} >
                         <Avatar className="mr-4">
                             <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" src={user.profileImageUrl} />
                         </Avatar><div className="flex flex-col h-full gap-1 ">
@@ -200,7 +199,7 @@ function UsersResults({ text }: { text: string }) {
                 ))
 
             }
-            <li className="p-4 flex flex-row rounded-md hover:bg-[#16181c] w-full transition-all cursor-pointer" >
+            <li className="p-4 flex flex-row rounded-md hover:bg-[#16181c] w-full transition-all cursor-pointer" data-testid="targetUser">
                 <Link to={`/${text}`} className="text-primary text-[15px]">Go to @{text}</Link>
             </li>
         </ul>

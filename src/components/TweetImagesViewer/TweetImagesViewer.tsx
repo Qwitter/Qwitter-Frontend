@@ -29,8 +29,8 @@ const TweetImagesViewer = ({
       className={cn("mt-4 rounded-xl overflow-hidden w-full", {
         "max-h-[290px] pb-[290px] h-full": images.length > 1,
         "max-h-[298px]": mode === "edit" && images.length === 4,
-        hidden: images.length === 0,
         "h-[200px] max-w-[400px]": screen === "message",
+        "hidden mt-0": !images || images.length === 0,
       })}
     >
       {images.length === 3 ? (

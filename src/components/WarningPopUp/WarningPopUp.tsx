@@ -27,6 +27,7 @@ export function WarningPopUp({
             variant={ButtonVariant}
             onClick={ButtonFunc}
             className="mt-4 w-full h-[45px] font-bold"
+            data-testid="Unfollow"
           >
             <span
               className={

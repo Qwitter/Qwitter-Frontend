@@ -76,7 +76,7 @@ const TweetDetails = () => {
           <h2 className="text-xl font-bold">Post</h2>
         </div>
       </div>
-      <TweetComponent tweet={tweetData.tweet} mode="page" />
+      <TweetComponent tweet={tweetData.tweet} mode="page"/>
       <TweetsList fetcherRef={ref} data={dataArr} hasMoreData={hasMoreData} />
     </div>
   );
