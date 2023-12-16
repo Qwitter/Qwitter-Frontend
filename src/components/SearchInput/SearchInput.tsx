@@ -9,19 +9,19 @@ import {
 import ClickAwayListener from 'react-click-away-listener';
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar';
 import { Link, useNavigate } from 'react-router-dom';
-import { getHashtags, getUsersSuggestions } from '@/lib/utils';
+import { cn, getHashtags, getUsersSuggestions } from '@/lib/utils';
 import { UserContext } from '@/contexts/UserContextProvider';
 import { useQuery } from '@tanstack/react-query';
 import { Spinner } from '../Spinner';
 import { User } from '@/models/User';
 
 type Tags = {
-    count:number;
-    entityId:string;
-    text:string;
+    count: number;
+    entityId: string;
+    text: string;
 }
 
-function SearchInput() {
+function SearchInput({isSearchPage=false}:{isSearchPage?:boolean}) {
     const [disabled, setDisabled] = useState(true);
     const [searchText, setSearchText] = useState("");
     const TextInputRef = useRef<HTMLInputElement>(null);
@@ -79,11 +79,10 @@ function SearchInput() {
                             className="items-center w-full pt-[6px]"
                             inputClassName={`px-8 pr-[15%] sm:pr-[15%] pl-[13.5%] sm:pl-[14%] rounded-full ${!disabled ? 'border-blue-500' : ''}`} />
                     </PopoverTrigger>
-                    <PopoverContent className='min-h-[100px] -translate-y-4 p-0
-                       
-                        w-[360px]  box-shadow bg-black  text-primary text-xs rounded-xl'>
+                    <PopoverContent className={cn(`min-h-[100px] -translate-y-4 p-0
+                        box-shadow bg-black  text-primary text-xs rounded-xl`,isSearchPage?" w-[550px] max-lg:w-[70vw]  max-w-[534px] ":" w-[360px] ")}>
                         <div className=' max-h-[calc(80vh-53px)] overflow-y-auto'>
-                            <Results searchText={searchText}  />
+                            <Results searchText={searchText} />
                         </div>
                     </PopoverContent>
                 </Popover>
@@ -91,7 +90,7 @@ function SearchInput() {
         </ClickAwayListener>
     )
 }
-function Results({ searchText }: { searchText: string}) {
+function Results({ searchText }: { searchText: string }) {
     return (
         <>
             {
@@ -100,30 +99,30 @@ function Results({ searchText }: { searchText: string}) {
                 </div>
 
                     : <div className='w-full'>
-                        < TagsResults  text={searchText} />
+                        < TagsResults text={searchText} />
                         <div className='w-full h-[2px] bg-primary bg-opacity-20 my-1'></div>
-                        <UsersResults  text={searchText} />
+                        <UsersResults text={searchText} />
                     </div>
 
             }
         </>)
 }
-function TagsResults({  text }: { text: string }) {
+function TagsResults({ text }: { text: string }) {
     const { token } = useContext(UserContext)
     const navigate = useNavigate()
     const {
         isPending,
-        data:tags,
+        data: tags,
         refetch
     } = useQuery<Tags[]>({
-        queryKey: ["getHashtagsSearch",text],
-        queryFn: () => getHashtags(token!,text)
+        queryKey: ["getHashtagsSearch", text],
+        queryFn: () => getHashtags(token!, text)
         ,
     });
-    
+
     useEffect(() => {
         refetch();
-    }, [text, refetch,token]);
+    }, [text, refetch, token]);
 
     if (isPending) {
         return (
@@ -158,7 +157,7 @@ function TagsResults({  text }: { text: string }) {
         </ul>
     )
 }
-function UsersResults({  text }: {  text: string }) {
+function UsersResults({ text }: { text: string }) {
     const { token } = useContext(UserContext)
     const navigate = useNavigate()
     const {
@@ -166,14 +165,14 @@ function UsersResults({  text }: {  text: string }) {
         data,
         refetch
     } = useQuery<User[]>({
-        queryKey: ["UsersSuggestionsSearch",text],
+        queryKey: ["UsersSuggestionsSearch", text],
         queryFn: () => getUsersSuggestions(token!, text!)
         ,
     });
-    
+
     useEffect(() => {
         refetch();
-    }, [text, refetch,token]);
+    }, [text, refetch, token]);
 
     if (isPending) {
         return (
@@ -190,7 +189,6 @@ function UsersResults({  text }: {  text: string }) {
                 data && data.map(user => (
                     <li data-testid="user-item" key={user.userName} className="py-3 px-4 flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer" 
                     onClick={()=>navigate('/'+user.userName)} >
-
                         <Avatar className="mr-4">
                             <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" src={user.profileImageUrl} />
                         </Avatar><div className="flex flex-col h-full gap-1 ">

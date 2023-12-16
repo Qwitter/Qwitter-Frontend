@@ -65,13 +65,16 @@ const TweetDetails = () => {
   }
 
   return (
-    <div className="max-w-[600px] border-primary border-opacity-30 w-full mr-auto">
-      <div className="flex p-2 gap-8 items-center mb-4">
-        <ArrowLeft
-          className="cursor-pointer bg-transparent p-1 rounded-full transition-all hover:bg-primary hover:bg-opacity-20 w-8 h-8"
-          onClick={() => navigate(-1)}
-        />
-        <h2 className="text-xl font-bold">Post</h2>
+    <div className="max-w-[600px] w-full h-full flex-grow border-r border-primary border-opacity-30 ">
+      <div className="flex flex-col  w-full sticky bg-opacity-60 backdrop-blur-xl top-0 bg-black  z-50 ">
+
+        <div className="flex p-2 gap-8 items-center mb-4">
+          <ArrowLeft
+            className="cursor-pointer bg-transparent p-1 rounded-full transition-all hover:bg-primary hover:bg-opacity-20 w-8 h-8"
+            onClick={() => navigate(-1)}
+          />
+          <h2 className="text-xl font-bold">Post</h2>
+        </div>
       </div>
       <TweetComponent tweet={tweetData.tweet} mode="page"/>
       <TweetsList fetcherRef={ref} data={dataArr} hasMoreData={hasMoreData} />
