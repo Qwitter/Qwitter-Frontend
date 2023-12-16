@@ -15,7 +15,7 @@ import {
   unBookmarkTweet,
   unlikeTweet,
 } from "@/lib/utils";
-import { useContext, useEffect, useState } from "react";
+import { useContext,  useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { toast } from "../ui/use-toast";

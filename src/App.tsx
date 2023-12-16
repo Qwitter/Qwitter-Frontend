@@ -66,7 +66,7 @@ function App() {
             {/* <Route path="settings/profile" element={<MessagesNewMessage />} /> */}
             <Route path="settings/profile" element={<MessagesNewMessage />} />
               <Route
-              path="/:username/settings/profile"
+              path="/profile/:username/settings/profile"
               element={<EditProfilePopUp />}
               />
               <Route

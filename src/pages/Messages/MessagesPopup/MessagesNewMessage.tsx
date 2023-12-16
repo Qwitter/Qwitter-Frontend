@@ -132,7 +132,7 @@ function MessagesNewMessage() {
                     onClick={() => removeSelected(index)}
                   >
                     <img
-                      src={`http://${selectedUser.profileImageUrl}`}
+                      src={selectedUser.profileImageUrl||"https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"}
                       alt=""
                       className="w-6 h-6 rounded-full"
                     />
@@ -173,6 +173,9 @@ function ShowUsersSuggestions({
   users: MessageUser[];
   onUserClick: (user: MessageUser) => void;
 }) {
+  useEffect(() => {
+    console.log(users)
+  })
   return (
     <ul className="flex-shrink min-h-[60vh]">
       {users &&
@@ -188,7 +191,7 @@ function ShowUsersSuggestions({
                   className="w-10 h-10 rounded-full border-[#ffffee46] border-[1px] border-solid"
                   src={
                     user.profileImageUrl ||
-                    "https://i.pinimg.com/736x/62/1d/bd/621dbd7d208d5c17498e0f73bf02aee8.jpg"
+                    "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
                   }
                 />
               </Avatar>
@@ -244,8 +247,8 @@ function ShowAllUserConversations({
                 <AvatarImage
                   className="w-10 h-10 rounded-full border-[#ffffee46] border-[1px] border-solid"
                   src={
-                    user.photo ||
-                    "https://i.pinimg.com/736x/62/1d/bd/621dbd7d208d5c17498e0f73bf02aee8.jpg"
+                    user.isGroup? user.photo : user.users[0].profileImageUrl ||
+                    "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
                   }
                 />
               </Avatar>

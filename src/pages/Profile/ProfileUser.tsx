@@ -77,7 +77,7 @@ export function ProfileUser() {
         <>
           <ProfileSections />
           <Routes>
-            <Route index path="/" element={<ProfilePosts />} />
+            <Route path="/" element={<ProfilePosts />} />
             <Route path="/with_replies" element={<ProfileReplies />} />
             <Route path="/media" element={<ProfileMedia />} />
             <Route path="/likes" element={<ProfileLikes />} />
