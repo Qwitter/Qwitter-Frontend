@@ -2,15 +2,18 @@ import { Button } from "@/components";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { UserProfileData } from "@/models/User";
 import {
-  BellPlus,
+  // BellPlus,
   Cake,
   CalendarDays,
   Mail,
   MapPin,
   MoreHorizontal,
 } from "lucide-react";
-import { useContext } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import {
+  useContext,
+  // useState
+} from "react";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { FollowButton } from "@/components/FollowButton/FollowButton";
 import { BlockButton } from "@/components/BlockButton/BlockButton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -19,12 +22,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@radix-ui/react-popover";
-import { cn } from "@/lib/utils";
+import { CreateConversation, cn, convertNumberToShortForm } from "@/lib/utils";
+import { useMutation } from "@tanstack/react-query";
 
-/*
-TODO: options menu , message, notification
-TODO: may need to revalidate the cache follow and unfollow
-*/
+//TODO: options menu , message, notification
 
 type ProfileMainProps = {
   user: UserProfileData | null;
@@ -32,10 +33,11 @@ type ProfileMainProps = {
 
 export const ProfileMain = ({ user }: ProfileMainProps) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  // const [followState, setFollowState] = useState(user?.isFollowing);
   const { username } = useParams();
   const { user: contextUser } = useContext(UserContext);
-
-  console.log("main: ", user);
 
   const birthDate = user
     ? new Date(user.birthDate).toLocaleDateString("en-Us", {
@@ -50,6 +52,25 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
         year: "numeric",
       })
     : "";
+
+  const { mutate } = useMutation({
+    mutationFn: CreateConversation,
+    onSuccess: (data) => {
+      if (data) {
+        navigate("/Messages/" + data.id);
+      }
+    },
+    onError: (data) => {
+      console.log(data);
+    },
+  });
+
+  const handleMessageClick = () => {
+    mutate({
+      token: token!,
+      users: [username!],
+    });
+  };
 
   return (
     <div>
@@ -93,7 +114,7 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
             </Avatar>
           }
 
-          {user != null && user.isBlocked ? (
+          {user && user.isBlocked ? (
             <BlockButton username={user.userName} />
           ) : (
             <>
@@ -108,49 +129,54 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
                   </Button>
                 </Link>
               ) : (
-                <div className="flex justify-start align-start">
-                  <Popover>
-                    <PopoverTrigger className="w-[35px] h-[35px] mb-3 mr-2 flex justify-center items-center rounded-full border border-[#536471] hover:bg-[#eff3f4]/10">
-                      <MoreHorizontal size={20} />
-                    </PopoverTrigger>
-                    <PopoverContent className="w-[240px] cursor-pointer hover:bg-[#16181c] p-3 bg-black box-shadow text-primary text-xs rounded-xl">
-                      {
-                        //TODO: block, mute, unblock?
-                      }
-                      Oh hello there
-                    </PopoverContent>
-                  </Popover>
+                user && (
+                  <div className="flex justify-start align-start">
+                    <Popover>
+                      <PopoverTrigger className="w-[35px] h-[35px] mb-3 mr-2 flex justify-center items-center rounded-full border border-[#536471] hover:bg-[#eff3f4]/10">
+                        <MoreHorizontal size={20} />
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[240px] cursor-pointer hover:bg-[#16181c] p-3 bg-black box-shadow text-primary text-xs rounded-xl">
+                        {
+                          //TODO: block, mute, unblock?
+                        }
+                        Oh hello there
+                      </PopoverContent>
+                    </Popover>
 
-                  <Link
-                    to=""
-                    className="w-[35px] h-[35px] mb-3 mr-2 flex justify-center items-center rounded-full border border-[#536471] hover:bg-[#eff3f4]/10"
-                  >
-                    <Mail size={20} />
-                  </Link>
+                    <div
+                      onClick={handleMessageClick}
+                      className="w-[35px] h-[35px] mb-3 mr-2 cursor-pointer flex justify-center items-center rounded-full border border-[#536471] hover:bg-[#eff3f4]/10"
+                    >
+                      <Mail size={20} />
+                    </div>
 
-                  {user?.isFollowing && (
-                    //TODO: render conditionally (maybe use a state with initial value = isFollowing)
-                    <div className="w-[35px] h-[35px] mb-3 mr-2 cursor-pointer flex justify-center items-center rounded-full border border-[#536471] hover:bg-[#eff3f4]/10">
+                    {/* {followState && (
+                    <div 
+                    
+                    className="w-[35px] h-[35px] mb-3 mr-2 cursor-pointer flex justify-center items-center rounded-full border border-[#536471] hover:bg-[#eff3f4]/10">
                       <BellPlus size={20} />
                     </div>
-                  )}
+                  )} */}
 
-                  <FollowButton
-                    isFollowing={user?.isFollowing!}
-                    username={user?.userName!}
-                    className={cn(
-                      "h-[35px] min-w-20",
-                      user?.isFollowing && "w-[100px]"
-                    )}
-                    //TODO:  size matters
-                  />
-                </div>
+                    <FollowButton
+                      isFollowing={user?.isFollowing!}
+                      username={user?.userName!}
+                      className={cn(
+                        "h-[35px] min-w-20",
+                        user?.isFollowing && "w-[100px]"
+                      )}
+                      // onClick={() => {
+                      //   setFollowState(!followState);
+                      // }}
+                    />
+                  </div>
+                )
               )}
             </>
           )}
         </div>
 
-        {user == null ? (
+        {!user ? (
           <div className="w-full mt-1 mb-3">
             <span className="text-xl leading-5 font-bold">@{username}</span>
           </div>
@@ -193,7 +219,7 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
                   data-testid="following"
                 >
                   <span className="font-bold" data-testid="followingCount">
-                    {user?.followingCount}
+                    {convertNumberToShortForm(user?.followingCount)}
                   </span>
                   <span className="text-gray"> Following</span>
                 </Link>
@@ -204,8 +230,11 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
                   className="hover:underline"
                   data-testid="followingCount"
                 >
-                  <span className="font-bold">{user?.followersCount}</span>
+                  <span className="font-bold">
+                    {convertNumberToShortForm(user?.followersCount)}
+                  </span>
                   <span className="text-gray" data-testid="followersCount">
+                    {" "}
                     Followers
                   </span>
                 </Link>

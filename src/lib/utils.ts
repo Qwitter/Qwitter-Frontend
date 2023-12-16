@@ -1075,6 +1075,7 @@ export const GetFollowSuggestionsService = async (token: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
+
     return res.data;
   } catch (err) {
     console.log(err);
@@ -1611,8 +1612,8 @@ export const GetTweetRetweetersService = async (
 
 /**
  * @description get tweet by id
- * @param tweetId 
- * @param token 
+ * @param tweetId
+ * @param token
  * @returns tweet object represents the response from the backend or null
  */
 export const getTweetById = async (tweetId: string, token: string) => {
@@ -1664,28 +1665,28 @@ export const getTweetReplies = async (
 
 /**
  * @description send a retweet request
- * @param tweetId 
- * @param token 
+ * @param tweetId
+ * @param token
  * @returns success or failure
  */
 export const retweet = async (tweetId: string, token: string) => {
   const formData = new FormData();
   formData.append("retweetedId", tweetId);
-    try {
-      const res = await axios.post(
-        `${VITE_BACKEND_URL}/api/v1/tweets`,
-        formData,
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      return res.status == 201;
-    } catch (err) {
-      console.log(err);
-      throw new Error("Error retweeting");
-    }
+  try {
+    const res = await axios.post(
+      `${VITE_BACKEND_URL}/api/v1/tweets`,
+      formData,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.status == 201;
+  } catch (err) {
+    console.log(err);
+    throw new Error("Error retweeting");
+  }
 };

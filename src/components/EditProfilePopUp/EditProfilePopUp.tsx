@@ -26,13 +26,11 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
   const [profileImage, setProfileImage] = useState<File>();
   const [profileBanner, setProfileBanner] = useState<File>();
   const [showDiscardChanges, setShowDiscardChanges] = useState<boolean>(false);
-  const { user, token, setUser } = useContext(UserContext);
+  const { user, token, saveUser } = useContext(UserContext);
   const { username } = useParams();
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const navigate = useNavigate();
-
-  console.log("popup: ", user);
 
   const contextBirthDate = new Date(user ? user.birthDate : "");
   const birthDay = contextBirthDate.getDate();
@@ -91,20 +89,16 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
 
   const { mutate, isPending } = useMutation<User, Error, User, unknown>({
     mutationFn: async (editedUserData: User) => {
-      console.log("sending: ", isPending);
-
       profileImage && (await uploadProfileImage(profileImage!, token!));
       profileBanner && (await uploadProfileImage(profileBanner!, token!, true));
       return await editUserProfile(editedUserData, token!);
     },
     onSuccess: (editedUserData) => {
-      console.log("done", isPending);
-
       queryClient.invalidateQueries({
         queryKey: ["profile", token, username],
       });
 
-      setUser({
+      saveUser({
         name: editedUserData.name,
         email: user?.email ?? "",
         birthDate: editedUserData.birthDate,
@@ -123,8 +117,11 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
       });
     },
     onError: () => {
-      // TODO: a toast here
-      console.log("error");
+      toast({
+        variant: "secondary",
+        title: "Request error",
+        description: "Error editing profile",
+      });
     },
   });
 
@@ -163,7 +160,6 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
     mutate(editedUserData);
 
     //TODO: proceed when request is fulfilled
-    //TODO: we can set the user with the response instead
 
     if (onSave) onSave();
     handleClose();

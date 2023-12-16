@@ -10,6 +10,7 @@ export function FollowButton({
   username,
   isFollowing,
   className,
+  onClick,
 }: FollowButtonProp) {
   const [isHovered, setIsHovered] = useState(false);
   const [state, setstate] = useState(isFollowing);
@@ -35,6 +36,7 @@ export function FollowButton({
     event.stopPropagation();
     FollowServiceFn(username);
     setstate(true);
+    onClick && onClick();
   };
   const handleunFollowButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -47,6 +49,7 @@ export function FollowButton({
     unFollowServiceFn(username);
     setstate(false);
     setshowDialog(false);
+    onClick && onClick();
   };
   return (
     <>
