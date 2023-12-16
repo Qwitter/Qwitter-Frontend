@@ -467,6 +467,38 @@ export const uploadProfileImage = async (
   }
 };
 
+/**
+ *
+ * @param token The token of the user for authentication
+ * @param isBanner Used to upload the profile banner
+ * @returns New user data after the image has changed
+ */
+export const deleteProfileImage = async (
+  isBanner: boolean = false,
+  token: string
+) => {
+  try {
+    const res = await axios.delete(
+      `${VITE_BACKEND_URL}/api/v1/user/profile_${
+        isBanner ? "banner" : "picture"
+      }`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log("delete", res.data);
+
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error deleting image");
+  }
+};
+
 export const oAuthSignUp = async (token: string, birthday: BirthDay) => {
   const parseResult = z.string().safeParse(token);
   if (!parseResult.success) return null;

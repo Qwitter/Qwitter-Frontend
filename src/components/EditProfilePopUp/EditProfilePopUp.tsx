@@ -193,6 +193,7 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
             image={user?.profileBannerUrl}
             className="w-full h-[193px] rounded-none border-none p-0"
             imageClassName="rounded-none "
+            isRemovable={true}
           />
         </div>
         <ImagePicker

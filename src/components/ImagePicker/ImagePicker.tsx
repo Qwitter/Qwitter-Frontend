@@ -1,6 +1,9 @@
 import { cn } from "@/lib";
-import { Camera } from "lucide-react";
+import { deleteProfileImage } from "@/lib/utils";
+import { useMutation } from "@tanstack/react-query";
+import { Camera, X } from "lucide-react";
 import { useRef, useState } from "react";
+import { useToast } from "../ui/use-toast";
 
 interface ImagePickerProps extends React.InputHTMLAttributes<HTMLInputElement> {
   alt?: string;
@@ -11,8 +14,8 @@ interface ImagePickerProps extends React.InputHTMLAttributes<HTMLInputElement> {
   image?: string;
   setImagePath: React.Dispatch<React.SetStateAction<File | undefined>>;
   isRemovable?: boolean;
+  isBanner?: boolean;
 }
-//NEEDED: add x button and it's functionality (will need a state)
 
 export const ImagePicker = ({
   optionalOnChange,
@@ -21,11 +24,14 @@ export const ImagePicker = ({
   imageClassName,
   className,
   image,
-  alt = "Upladed Image",
+  isRemovable,
+  isBanner = false,
+  alt = "Uploaded Image",
 }: ImagePickerProps) => {
-  const [, setIsloading] = useState<boolean>(false);
+  const token = localStorage.getItem("token");
   const [displayImage, setDisplayImage] = useState<string | undefined>(image);
   const inputFileRef = useRef<HTMLInputElement | null>(null);
+  const { toast } = useToast();
 
   const handleIconClick = () => {
     if (inputFileRef.current) inputFileRef.current.click();
@@ -36,7 +42,6 @@ export const ImagePicker = ({
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const newPicPath = event.target.files?.[0];
-    setIsloading(true);
 
     if (newPicPath) {
       setImagePath(newPicPath);
@@ -44,13 +49,32 @@ export const ImagePicker = ({
 
       reader.onload = (e) => {
         setDisplayImage(e.target?.result?.toString()!);
-        setIsloading(false);
       };
 
       reader.readAsDataURL(newPicPath);
 
       if (optionalOnChange) optionalOnChange();
     }
+  };
+
+  const { mutate } = useMutation({
+    mutationKey: ["deleteImage", isBanner],
+    mutationFn: () => deleteProfileImage(isBanner, token!),
+    onSuccess: () => {
+      setDisplayImage(undefined);
+    },
+    onError: () => {
+      toast({
+        variant: "secondary",
+        title: "Request error",
+        description: "Error deleting image",
+      });
+    },
+  });
+
+  // deletes the image from the database
+  const handleImageDelete = async () => {
+    mutate();
   };
 
   return (
@@ -75,19 +99,27 @@ export const ImagePicker = ({
           />
         )}
       </div>
-      <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full p-2 bg-gray/80 hover:bg-gray/70 cursor-pointer">
-        <Camera onClick={handleIconClick} size={iconSize} />
-        {/*Needed: {isRemovable && </>} */}
-        <input
-          ref={inputFileRef}
-          onChange={handleImageChange}
-          className="hidden"
-          type="file"
-          accept="images/*"
-          name="photo"
-          alt="Upload Image"
-          data-testid="imageBtn"
-        />
+      <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <div className="flex">
+          <div className="rounded-full p-2 bg-gray/80 hover:bg-gray/70 cursor-pointer">
+            <Camera onClick={handleIconClick} size={iconSize} />
+            <input
+              ref={inputFileRef}
+              onChange={handleImageChange}
+              className="hidden"
+              type="file"
+              accept="images/*"
+              name="photo"
+              alt="Upload Image"
+              data-testid="imageBtn"
+            />
+          </div>
+          {isRemovable && (
+            <div className="ml-5 rounded-full p-2 bg-gray/80 hover:bg-gray/70 cursor-pointer">
+              <X onClick={handleImageDelete} />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
