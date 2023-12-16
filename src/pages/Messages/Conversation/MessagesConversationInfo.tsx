@@ -68,7 +68,7 @@ export function MessagesConversationInfo() {
               verified={user.isVerified! || false}
               key={index}
               username={user.userName}
-              profileImageUrl={user.profileImageUrl}
+              profileImageUrl={user.profileImageUrl||"https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"}
               name={user.name}
               description=""
               listType={

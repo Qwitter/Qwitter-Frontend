@@ -1,9 +1,11 @@
-import {  Navigate, Route, Routes, useParams } from "react-router-dom";
+import {  Navigate, Route, Routes, useLocation, useParams } from "react-router-dom";
 import { FollowList } from "@/components/FollowList/FollowList";
 import { ProfileUser } from "./ProfileUser";
 
 export function Profile() {
   const { username } = useParams();
+  const location = useLocation();
+  const previousLocation = location.state?.previousLocation;
   if (!username || username!.length >= 16) {
     return (
       <Navigate to={"/NotFound"} replace />
@@ -13,8 +15,7 @@ export function Profile() {
   return (
     <>
       <div className="max-w-[600px] w-full h-full flex-grow border-r border-primary border-opacity-30 ">
-        <Routes>
-          <Route path="/" index element={<ProfileUser />} />
+        <Routes  location={previousLocation || location}>
           <Route
             path="/Followers"
             element={<FollowList type={"Followers"} />}
@@ -23,6 +24,7 @@ export function Profile() {
             path="/Following"
             element={<FollowList type={"Following"} />}
           />
+          <Route path="/*" index element={<ProfileUser />} />
         </Routes>
       </div>
     </>

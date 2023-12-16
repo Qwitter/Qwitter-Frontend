@@ -16,7 +16,7 @@ const ProfileComplete = () => {
 
 
     const closePopUp = () => {
-        navigate('/settings');
+        navigate('/home');
         setShowPopUp(false);
     };
     const doneSignUp=()=>{

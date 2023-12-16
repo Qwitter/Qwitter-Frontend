@@ -23,7 +23,7 @@ export function UsersListItem({
   return (
     <CardContent
       onClick={() => {
-        navigate("/" + username);
+        navigate("/Profile/" + username);
       }}
       className="hover:cursor-pointer py-3 hover:bg-light-gray"
       data-testid="userToFollow"

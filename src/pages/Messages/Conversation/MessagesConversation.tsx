@@ -17,6 +17,7 @@ import { getConversation } from "@/lib/utils";
 import { Spinner } from "@/components/Spinner";
 import { socket } from "@/lib/socketInit";
 import { MessagesConversationUserInfo } from "./MessagesConversationUserInfo";
+import ImageGrid from "../ImageGrid";
 export function MessagesConversation() {
   const [text, setText] = useState("");
 
@@ -214,15 +215,21 @@ export function MessagesConversation() {
           >
             <MoveLeft className="max-w-[50px] " />
           </div>
-          {!inView && (
+ 
+            {
+              !inView&&data.pages[0].isGroup?  
+              <ImageGrid 
+              className="w-10 h-8 rounded-full mr-2"
+              images={data.pages[0].users.map(conversation => conversation.profileImageUrl||"https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg")} />:
             <img
               src={
-                data.pages[0].photo ||
-                "https://i.ibb.co/S7XN04r/01eab91ff04ea5832a33040f7ebdb3d0.jpg"
+                data.pages[0].users[0].profileImageUrl||
+                "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
               }
               className="w-8 h-8 rounded-full mr-2"
             />
-          )}
+            }
+        
           <div className="w-full h-full flex  items-center">
             <h2 className="font-bold text-[17px]">{data.pages[0].name}</h2>
           </div>
@@ -239,14 +246,14 @@ export function MessagesConversation() {
             {!data.pages[0].isGroup && !hasNextPage && (
               <div
                 className=" w-full px-4 "
-                onClick={() => navigate("/" + data?.pages[0].users[0].userName)}
+                onClick={() => navigate("/Profile/" + data?.pages[0].users[0].userName)}
               >
                 {" "}
                 {/* change with real username */}
                 <MessagesConversationUserInfo
                   chatPicture={
-                    data.pages[0].photo ||
-                    "https://i.ibb.co/S7XN04r/01eab91ff04ea5832a33040f7ebdb3d0.jpg"
+                    data.pages[0].isGroup? data.pages[0].photo : data.pages[0].users[0].profileImageUrl ||
+                    "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
                   }
                   userName={data?.pages[0].users[0].userName || ""}
                   name={data?.pages[0].users[0].name || ""}

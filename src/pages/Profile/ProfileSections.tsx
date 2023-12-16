@@ -19,7 +19,7 @@ export const ProfileSections = ({ initialIndex = 0 }: ProfileSectionsProps) => {
         return (
           <Link
             key={section.title}
-            to={`/${username}${section.dataLink}`}
+            to={`/Profile/${username}${section.dataLink}`}
             className="w-full  flex justify-center items-center  px-4 py-0 min-w-[56px] hover:bg-[#181818] transition-all cursor-pointer"
             onClick={() => setActive(section.title)}
           >

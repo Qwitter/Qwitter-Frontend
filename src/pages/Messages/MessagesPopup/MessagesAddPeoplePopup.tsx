@@ -107,7 +107,7 @@ function MessagesAddPeoplePopup() {
                         <ul className="flex flex-row w-full flex-wrap max-h-fit  flex-shrink-0 border-b border-primary border-opacity-30   p-3 gap-2">
                             {selectedUsers.map((selectedUser, index) => (<li key={index} className="h-fit">
                                 <div className="flex flex-row items-center pr-3 pl-1 cursor-pointer hover:bg-[#031019] transition-all py-1 gap-2 max-w-fit rounded-2xl border border-primary border-opacity-40" onClick={() => removeSelected(index)}>
-                                    <img src={`http://${selectedUser.profileImageUrl}`} alt="" className="w-6 h-6 rounded-full" />
+                                    <img src={selectedUser.profileImageUrl||"https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"} alt="" className="w-6 h-6 rounded-full" />
                                     <span>{selectedUser.name}</span>
                                     <div>
                                         <X className="w-5 h-5 text-secondary" />
@@ -138,7 +138,7 @@ function ShowUsersSuggestions({ onUserClick, users, selectedUsers }: { selectedU
                         onClick={(currentConversation && currentConversation.users.filter(obj => obj['userName'] === user.userName).length > 0) ? () => { } : () => onUserClick(user)}>
                         <div className=" flex flex-row">
                             <Avatar className="mr-4">
-                                <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee46] border-[1px] border-solid" src={user.profileImageUrl || "https://i.pinimg.com/736x/62/1d/bd/621dbd7d208d5c17498e0f73bf02aee8.jpg"} />
+                                <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee46] border-[1px] border-solid" src={user.profileImageUrl || "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"} />
                             </Avatar>
                             <div className="flex flex-col h-full gap-0 ">
                                 <h3 className="text-primary text-[15px]">{user.name}</h3>
@@ -167,7 +167,7 @@ function ShowGroupPeople() {
                     <li key={index} className={cn("py-3 px-4 flex flex-row justify-between  w-full transition-all items-center cursor-default opacity-70")}>
                         <div className=" flex flex-row">
                             <Avatar className="mr-4">
-                                <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee46] border-[1px] border-solid" src={user.profileImageUrl || "https://i.pinimg.com/736x/62/1d/bd/621dbd7d208d5c17498e0f73bf02aee8.jpg"} />
+                                <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee46] border-[1px] border-solid" src={user.profileImageUrl || "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"} />
                             </Avatar><div className="flex flex-col h-full gap-0 ">
                                 <h3 className="text-primary text-[15px]">{user.name}</h3>
                                 <span className="text-gray">@{user.userName}</span>
