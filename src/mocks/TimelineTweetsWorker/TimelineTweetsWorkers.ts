@@ -23,7 +23,7 @@ const tweet1: Tweet = {
   retweetCount: 0,
   qouteCount: 0,
   likesCount: 1,
-  text: "this is a tweet string @ahmedoshelmy #Palestine",
+  text: "this is a tweet string @ahmedoshelmy\n@hello\nhello #Palestine",
   source: "Iphone",
   liked: true,
   bookmarked: false,

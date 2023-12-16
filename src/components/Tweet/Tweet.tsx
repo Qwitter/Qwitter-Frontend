@@ -10,7 +10,7 @@ import { BigPlayButton, Player } from "video-react";
 import "video-react/dist/video-react.css";
 import { BiRepost } from "react-icons/bi";
 import { UserContext } from "@/contexts/UserContextProvider";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import CreateTweetContainer from "../CreateTweet/CreateTweetContainer";
 
 const convertWordToAnchor = (word: string): JSX.Element => {
@@ -37,12 +37,31 @@ const tweetTextHighlighter = (text: string): JSX.Element => {
   const matches = text.match(regex);
   if (!matches) return <p className="text-gray-700">{text}</p>;
   const temp = text;
-  const words = temp.split(" ");
+  const words: string[] = temp.split(" ");
+  console.log(words);
+
   return (
     <p className="text-gray-700">
       {words.map((word, i) => {
-        if (word.match(regex))
+        if (word.match(regex)) {
+          if (word.includes("\n")) {
+            // maybe more than one \n
+            const temp = word.split("\n");
+            return (
+              <span key={i}>
+                {temp.map((w, i) => {
+                  if (w.match(regex)) {
+                    return (
+                      <span key={i}>{convertWordToAnchor(w)} </span>
+                    );
+                  }
+                  return w + " ";
+                })}
+              </span>
+            );
+          }
           return <span key={i}>{convertWordToAnchor(word)} </span>;
+        }
         return word + " ";
       })}
     </p>
@@ -64,6 +83,10 @@ const Tweet = ({
 }: TweetProps) => {
   const { user } = useContext(UserContext);
 
+  const highlightedTweet = useMemo(() => {
+    return tweetTextHighlighter(tweet.text);
+  }, [tweet.text]);
+
   if (tweet.retweetedTweet)
     return (
       <Tweet
@@ -80,7 +103,10 @@ const Tweet = ({
         to={mode === "list" ? `/tweet/${tweet.id}` : "#"}
         className={cn(
           "w-full flex px-4 py-3 gap-4 transition-all cursor-default",
-          { "hover:bg-[#080808] cursor-pointer  border-b border-primary border-opacity-30": mode === "list" }
+          {
+            "hover:bg-[#080808] cursor-pointer  border-b border-primary border-opacity-30":
+              mode === "list",
+          }
         )}
       >
         {mode === "list" && (
@@ -131,7 +157,7 @@ const Tweet = ({
               <TweetAuthorHeader tweet={tweet} mode={mode} />
             </>
           )}
-          <>{tweetTextHighlighter(tweet.text)}</>
+          <>{highlightedTweet}</>
           {size === "normal" &&
             (tweet.entities.media?.[0]?.type === "video" ? (
               <div
@@ -176,7 +202,13 @@ const Tweet = ({
           )}
         </article>
       </Link>
-      {mode === "page" && <CreateTweetContainer mode="reply" replyToUser={tweet.author.userName} replyToTweetId={tweet.id}  />}
+      {mode === "page" && (
+        <CreateTweetContainer
+          mode="reply"
+          replyToUser={tweet.author.userName}
+          replyToTweetId={tweet.id}
+        />
+      )}
     </div>
   );
 };
