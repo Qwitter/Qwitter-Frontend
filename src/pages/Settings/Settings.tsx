@@ -36,8 +36,8 @@ export function Settings() {
       </div>
       <div className="max-w-[600px] w-full mx-auto h-full">
         <Routes>
-          <Route path="/" element={<Navigate to="/settings/account" />} />
-          <Route path="/account" element={<YourAccount />} />
+          <Route  path="/" element={<Navigate to="/settings/account" />} />
+          <Route  path="/account" element={<YourAccount />} />
           <Route
             path="/your_twitter_data/account"
             element={<AccountInformation />}

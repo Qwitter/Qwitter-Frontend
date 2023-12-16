@@ -5,7 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useContext, useEffect } from "react";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { Spinner } from "../Spinner";
-import { FollowCard } from "../FollowCard/FollowCard";
 import SearchInput from "../SearchInput/SearchInput";
 
 export function ExploreList() {
@@ -18,11 +17,11 @@ export function ExploreList() {
     window.scrollTo(0, 0);
   }, []);
   return (
-    <>
+    
       <div className="max-w-[600px] w-full h-full flex-grow border-r border-primary border-opacity-30 ">
         <div className="sticky top-0 z-50 backdrop-blur-sm ">
           <div className="w-[90%] mx-auto ">
-            <SearchInput />
+            <SearchInput isSearchPage />
           </div>
           <div className="border-b  border-primary border-opacity-30"></div>
         </div>
@@ -35,11 +34,6 @@ export function ExploreList() {
           </div>
         )}
       </div>
-      <div className="max-w-[600px]  pb-16 relative flex flex-col z-0 w-[36.5%] max-largeX:hidden h-full">
-        <div className="mt-5 rounded-lg bg-dark-gray">
-          <FollowCard />
-        </div>
-      </div>
-    </>
+    
   );
 }
