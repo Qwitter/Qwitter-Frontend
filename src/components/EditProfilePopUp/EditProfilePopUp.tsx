@@ -1,6 +1,6 @@
 import { PopUpContainer } from "../PopUpContainer/PopUpContainer";
 import { HeaderButton } from "@/models/PopUpModel";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Button } from "../ui/button";
 import { ImagePicker } from "../ImagePicker/ImagePicker";
 import { TextInput } from "../TextInput/TextInput";
@@ -115,6 +115,9 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
         verified: editedUserData.verified ?? false,
         isFollowing: editedUserData.isFollowing ?? false,
       });
+
+      if (onSave) onSave();
+      handleClose();
     },
     onError: () => {
       toast({
@@ -139,7 +142,7 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
       return;
     }
 
-    if (!isChanged()) {
+    if (!isChanged() && !profileImage && !profileBanner) {
       if (onSave) onSave();
       handleClose();
       return;
@@ -158,11 +161,6 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
     } as User;
 
     mutate(editedUserData);
-
-    //TODO: proceed when request is fulfilled
-
-    if (onSave) onSave();
-    handleClose();
   };
 
   const saveButton = (
@@ -170,82 +168,83 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
       Save
     </Button>
   );
-
   return (
-    <PopUpContainer
-      show={showEditProfile}
-      headerButton={HeaderButton.close}
-      className="p-0 max-h-[full] h-full sm:h-[600px] w-full items-start justify-start overflow-auto"
-      headerClassName="justify-between"
-      title="Edit profile"
-      optionalHeader={saveButton}
-      headerFunction={handleDiscardChanges}
-    >
-      {/* <LoadingOverlay show={true} /> */}
-      <DiscardProfileChanges
-        showDiscardChanges={showDiscardChanges}
-        setShowDiscardChanges={setShowDiscardChanges}
-        handleClose={handleClose}
-      />
+    <>
+      <PopUpContainer
+        show={showEditProfile}
+        headerButton={HeaderButton.close}
+        className="p-0 max-h-[full] h-full sm:h-[600px] w-full items-start justify-start overflow-auto"
+        headerClassName="justify-between"
+        title="Edit profile"
+        optionalHeader={saveButton}
+        headerFunction={handleDiscardChanges}
+      >
+        <DiscardProfileChanges
+          showDiscardChanges={showDiscardChanges}
+          setShowDiscardChanges={setShowDiscardChanges}
+          handleClose={handleClose}
+        />
 
-      <div className="w-full h-[150px]">
-        <ImagePicker
-          // Banner
-          name="photo"
-          setImagePath={setProfileBanner}
-          image={user?.profileBannerUrl}
-          className="w-full h-[193px] rounded-none border-none"
-          imageClassName="rounded-none"
-        />
-      </div>
-      <ImagePicker
-        // Profile
-        name="photo"
-        setImagePath={setProfileImage}
-        image={user?.profileImageUrl}
-        className="w-[115px] h-[115px] z-20  ml-[15px] border-black bg-black p-[1px]"
-        imageClassName="w-[110px] h-[110px]"
-      />
-
-      <div className="px-4 w-full">
-        <TextInput
-          // Name
-          {...form.register("name", {})}
-          placeHolder="Name"
-          errorMessage={form.formState.errors.name?.message?.toString()}
-          maxLength={50}
-        />
-      </div>
-      <div className="px-4 w-full">
-        <TextInput
-          // Bio
-          {...form.register("description", {})}
-          placeHolder="Bio"
-          errorMessage={form.formState.errors.description?.message?.toString()}
-          maxLength={160}
-        />
-      </div>
-      <div className="px-4 w-full">
-        <TextInput
-          // Location
-          {...form.register("location", {})}
-          placeHolder="Location"
-        />
-      </div>
-      <div className="px-4 w-full">
-        <TextInput
-          // Website
-          {...form.register("url", {})}
-          placeHolder="Website"
-        />
-      </div>
-      <div className="p-4 w-full">
-        <span className="text-gray text-[17px]">Birth date</span>
-        <div className="text-[20px]">
-          {`${birthMonth} ${birthDay}, ${birthYear}`}
-          <BirthDayInput form={form} className="py-3" />
+        <div className="w-full h-[150px]">
+          <ImagePicker
+            // Banner
+            name="photo"
+            setImagePath={setProfileBanner}
+            image={user?.profileBannerUrl}
+            className="w-full h-[193px] rounded-none border-none p-0"
+            imageClassName="rounded-none "
+          />
         </div>
-      </div>
-    </PopUpContainer>
+        <ImagePicker
+          // Profile
+          name="photo"
+          setImagePath={setProfileImage}
+          image={user?.profileImageUrl}
+          className="w-[115px] h-[115px] z-20  ml-[15px] border-black bg-black p-[1px]"
+          imageClassName="w-[110px] h-[110px]"
+        />
+
+        <div className="px-4 w-full">
+          <TextInput
+            // Name
+            {...form.register("name", {})}
+            placeHolder="Name"
+            errorMessage={form.formState.errors.name?.message?.toString()}
+            maxLength={50}
+          />
+        </div>
+        <div className="px-4 w-full">
+          <TextInput
+            // Bio
+            {...form.register("description", {})}
+            placeHolder="Bio"
+            errorMessage={form.formState.errors.description?.message?.toString()}
+            maxLength={160}
+          />
+        </div>
+        <div className="px-4 w-full">
+          <TextInput
+            // Location
+            {...form.register("location", {})}
+            placeHolder="Location"
+          />
+        </div>
+        <div className="px-4 w-full">
+          <TextInput
+            // Website
+            {...form.register("url", {})}
+            placeHolder="Website"
+          />
+        </div>
+        <div className="p-4 w-full">
+          <span className="text-gray text-[17px]">Birth date</span>
+          <div className="text-[20px]">
+            {`${birthMonth} ${birthDay}, ${birthYear}`}
+            <BirthDayInput form={form} className="py-3" />
+          </div>
+        </div>
+      </PopUpContainer>
+      <LoadingOverlay show={isPending} />
+    </>
   );
 };

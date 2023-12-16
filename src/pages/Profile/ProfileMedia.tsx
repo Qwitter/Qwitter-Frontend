@@ -22,7 +22,6 @@ export const ProfileMedia = () => {
   }, [token, refetch]);
 
   const dataArr = useMemo(() => {
-    // console.log(data?.pages.flat());
     return data?.pages.flat() || [];
   }, [data]);
 

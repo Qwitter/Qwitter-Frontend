@@ -42,7 +42,7 @@ export function BlockButton({ username }: { username: string }) {
           variant="destructive"
           className="text-sm w-[100px] h-[30px] font-bold"
         >
-          <span className="text-white">Blocked</span>
+          <span className="text-white before:content-['Blocked'] hover:before:content-['Unblock']"></span>
         </Button>
       )}
       {state === false && (

@@ -58,14 +58,15 @@ export function PagesContainer() {
                 <Route path="/:username/*" element={<Profile />} />
                 <Route path="/Explore" element={<ExploreList />} />
                 <Route path="/tweet/:tweetId" element={<TweetDetails />} />
-                <Route
+                {/* <Route
+                //TODO: Seif 
                   path="/:username/:tweetId/Likers"
                   element={<LikeRetweetList type={"Likers"} />}
                 />
                 <Route
                   path="/:username/:tweetId/Retweeters"
                   element={<LikeRetweetList type={"Retweeters"} />}
-                />
+                /> */}
               </Routes>
             </div>
           </div>

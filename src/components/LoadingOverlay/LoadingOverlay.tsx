@@ -15,18 +15,15 @@ export const LoadingOverlay = React.forwardRef<
   return (
     <Dialog open={show}>
       <DialogPortal>
-        <DialogOverlay
-          className="bg-black sm:bg-black/90 -z-50"
-          onClick={() => {
-            console.log("wow");
-          }}
-        />
+        <DialogOverlay className="bg-black sm:bg-black/90" />
         <DialogPrimitive.Content
           ref={ref}
           className="duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95"
           {...props}
         >
-          <Spinner />
+          <div className="fixed left-[50%] top-[50%] z-50 translate-x-[-50%] translate-y-[-50%] aspect-square">
+            <Spinner />
+          </div>
         </DialogPrimitive.Content>
       </DialogPortal>
     </Dialog>

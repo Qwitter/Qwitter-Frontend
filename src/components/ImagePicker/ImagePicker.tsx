@@ -20,11 +20,11 @@ export const ImagePicker = ({
   iconSize = "24",
   imageClassName,
   className,
-  image = "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg",
+  image,
   alt = "Upladed Image",
 }: ImagePickerProps) => {
   const [, setIsloading] = useState<boolean>(false);
-  const [displayImage, setDisplayImage] = useState<string>(image);
+  const [displayImage, setDisplayImage] = useState<string | undefined>(image);
   const inputFileRef = useRef<HTMLInputElement | null>(null);
 
   const handleIconClick = () => {
@@ -43,7 +43,7 @@ export const ImagePicker = ({
       const reader = new FileReader();
 
       reader.onload = (e) => {
-        setDisplayImage(e.target?.result?.toString() || image);
+        setDisplayImage(e.target?.result?.toString()!);
         setIsloading(false);
       };
 
@@ -57,14 +57,24 @@ export const ImagePicker = ({
     <div
       className={cn(
         "relative rounded-full border-primary border-2 w-[192.2px] h-[192.2px] p-[2px]",
+        displayImage && "bg-[#333639]",
         className
       )}
     >
-      <img
-        className={cn("rounded-full w-full h-full", imageClassName)}
-        src={displayImage}
-        alt={alt}
-      />
+      <div
+        className={cn(
+          "rounded-full w-full h-full bg-[#333639]",
+          imageClassName
+        )}
+      >
+        {displayImage && (
+          <img
+            className={cn("rounded-full w-full h-full", imageClassName)}
+            src={displayImage}
+            alt={alt}
+          />
+        )}
+      </div>
       <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full p-2 bg-gray/80 hover:bg-gray/70 cursor-pointer">
         <Camera onClick={handleIconClick} size={iconSize} />
         {/*Needed: {isRemovable && </>} */}

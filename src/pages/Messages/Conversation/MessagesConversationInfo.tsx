@@ -10,60 +10,111 @@ import { UsersListItem } from "@/components/UsersListItem/UsersListItem";
 import { ConversationBlockUserPopup } from "../MessagesPopup/ConversationBlockUserPopup";
 
 export function MessagesConversationInfo() {
-
-    const navigate = useNavigate();
-    const location = useLocation();
-    const { conversationId } = useParams();
-    const { currentConversation } = useContext(MessagesContext);
-    const [show, setShow] = useState(false);
-    const [showBlock, setShowBlock] = useState(false);
-    const handleBlock = () => {
-        console.log(currentConversation)
-        setShowBlock(true)
-    }
-    if (!currentConversation) {
-        <div className='w-full h-[300px] p-8'>
-            <Spinner />
-        </div>
-    }
-    else
-        return (
-            <div className=" w-full h-full border-r border-primary border-opacity-30 mb-20">
-                <OptionsHeader header={!currentConversation.isGroup ? 'Conversation info' : "Group info"} />
-                {currentConversation.isGroup && <>
-                    <div className="px-4 py-3 flex flex-row items-center">
-                        <Avatar className="mr-4">
-                            <AvatarImage className="w-10 h-10 rounded-full border-primary border-[2px] border-solid border-opacity-30" src={currentConversation.photo} />
-                        </Avatar>
-                        <div className="flex flex-row justify-between w-full">
-                            <span className="text-primary text-[15px] font-bold">{currentConversation?.fullName}</span>
-                            <Link className="text-secondary text-[15px] hover:underline" to={`/messages/${currentConversation?.id}/group-info`} state={{ previousLocation: location }}>Edit</Link>
-                        </div>
-                    </div>
-                    <div className="px-4 py-3 w-full border-t border-primary border-opacity-30">
-                        <h2 className="text-primary text-xl font-bold text-start ">People</h2>
-
-                    </div>
-                </>}
-                <div className="max-h-[40vh] overflow-y-auto">
-                    {currentConversation.users.map((user, index) => (
-                        <UsersListItem isFollowing={user.isFollowed!} verified={user.isVerified! || false} key={index} username={user.userName} profileImageUrl={user.profileImageUrl} name={user.name} description="" listType="FollowList" showDesc={false} />
-                    ))
-
-                    }
-
-                </div>
-                <div className={cn('block text-center cursor-pointer transition-all text-secondary hover:bg-[#031019] p-4 pb-5  border-primary border-opacity-30', !currentConversation.isGroup ? 'border-t' : 'border-b')}
-                    onClick={!currentConversation.isGroup ? handleBlock :
-                        () => { navigate("/Messages/" + currentConversation.id + "/add", { state: { previousLocation: location } }); }}
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { conversationId } = useParams();
+  const { currentConversation } = useContext(MessagesContext);
+  const [show, setShow] = useState(false);
+  const [showBlock, setShowBlock] = useState(false);
+  const handleBlock = () => {
+    console.log(currentConversation);
+    setShowBlock(true);
+  };
+  if (!currentConversation) {
+    <div className="w-full h-[300px] p-8">
+      <Spinner />
+    </div>;
+  } else
+    return (
+      <div className=" w-full h-full border-r border-primary border-opacity-30 mb-20">
+        <OptionsHeader
+          header={
+            !currentConversation.isGroup ? "Conversation info" : "Group info"
+          }
+        />
+        {currentConversation.isGroup && (
+          <>
+            <div className="px-4 py-3 flex flex-row items-center">
+              <Avatar className="mr-4">
+                <AvatarImage
+                  className="w-10 h-10 rounded-full border-primary border-[2px] border-solid border-opacity-30"
+                  src={currentConversation.photo}
+                />
+              </Avatar>
+              <div className="flex flex-row justify-between w-full">
+                <span className="text-primary text-[15px] font-bold">
+                  {currentConversation?.fullName}
+                </span>
+                <Link
+                  className="text-secondary text-[15px] hover:underline"
+                  to={`/messages/${currentConversation?.id}/group-info`}
+                  state={{ previousLocation: location }}
                 >
-                    {!currentConversation.isGroup ? `Block @${currentConversation.users[0].userName}` : 'Add People'}</div>
-                <div className='block text-center cursor-pointer transition-all text-danger  hover:bg-danger hover:bg-opacity-10 p-4'
-                    onClick={() => { setShow(true); }}
-                >
-                    Leave Conversation</div>
-                <ConversationLeavePopUp show={show} setShow={setShow} conversationToDelete={conversationId} />
-                <ConversationBlockUserPopup show={showBlock} setShow={setShowBlock} userName={currentConversation.users[0].userName} />
+                  Edit
+                </Link>
+              </div>
             </div>
-        );
+            <div className="px-4 py-3 w-full border-t border-primary border-opacity-30">
+              <h2 className="text-primary text-xl font-bold text-start ">
+                People
+              </h2>
+            </div>
+          </>
+        )}
+        <div className="max-h-[40vh] overflow-y-auto">
+          {currentConversation.users.map((user, index) => (
+            <UsersListItem
+              isFollowing={user.isFollowed!}
+              verified={user.isVerified! || false}
+              key={index}
+              username={user.userName}
+              profileImageUrl={user.profileImageUrl}
+              name={user.name}
+              description=""
+              listType={
+                currentConversation.blocked ? "BlockList" : "FollowList"
+              }
+              showDesc={false}
+            />
+          ))}
+        </div>
+        <div
+          className={cn(
+            "block text-center cursor-pointer transition-all text-secondary hover:bg-[#031019] p-4 pb-5  border-primary border-opacity-30",
+            !currentConversation.isGroup ? "border-t" : "border-b"
+          )}
+          onClick={
+            !currentConversation.isGroup
+              ? handleBlock
+              : () => {
+                  navigate("/Messages/" + currentConversation.id + "/add", {
+                    state: { previousLocation: location },
+                  });
+                }
+          }
+        >
+          {!currentConversation.isGroup
+            ? `Block @${currentConversation.users[0].userName}`
+            : "Add People"}
+        </div>
+        <div
+          className="block text-center cursor-pointer transition-all text-danger  hover:bg-danger hover:bg-opacity-10 p-4"
+          onClick={() => {
+            setShow(true);
+          }}
+        >
+          Leave Conversation
+        </div>
+        <ConversationLeavePopUp
+          show={show}
+          setShow={setShow}
+          conversationToDelete={conversationId}
+        />
+        <ConversationBlockUserPopup
+          show={showBlock}
+          setShow={setShowBlock}
+          userName={currentConversation.users[0].userName}
+        />
+      </div>
+    );
 }
