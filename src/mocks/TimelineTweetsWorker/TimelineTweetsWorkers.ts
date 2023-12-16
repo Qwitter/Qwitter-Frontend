@@ -31,6 +31,7 @@ const tweet1: Tweet = {
   replyToTweetId: "1718938551163691300",
   retweetedId: "1718938551163691300",
   qouteTweetedId: "1718938551163691300",
+  hasRetweeted: false,
   sensitive: false,
   entities: {
     hasthtags: [
@@ -42,7 +43,7 @@ const tweet1: Tweet = {
       {
         value:
           "https://pbs.twimg.com/media/F_u8-DtXkAA7pKd?format=jpg&name=large",
-        type: "photo",
+        type: "video",
       },
       {
         value:
