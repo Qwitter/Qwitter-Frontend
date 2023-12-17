@@ -21,12 +21,12 @@ type Tags = {
     text: string;
 }
 
-function SearchInput({isSearchPage=false}:{isSearchPage?:boolean}) {
+function SearchInput({isSearchPage=false, value}:{isSearchPage?:boolean,value?:string}) {
     const [disabled, setDisabled] = useState(true);
     const [searchText, setSearchText] = useState("");
     const TextInputRef = useRef<HTMLInputElement>(null);
     const [isPopupOpen, setPopupOpen] = useState(false);
-
+    const navigate = useNavigate();
 
     const handleFocusIn = () => {
         setDisabled(false);
@@ -36,10 +36,24 @@ function SearchInput({isSearchPage=false}:{isSearchPage?:boolean}) {
             TextInputRef.current!.focus()
         })
     };
+    useEffect(() => {
+        if (value) {
+            setSearchText(value)
+        }
+    }, [value])
 
     const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value
         setSearchText(value)
+    }
+    const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key == "Enter") {
+            if (searchText.length > 0) {
+                setDisabled(true)
+                setPopupOpen(false)
+                navigate(`/Explore/search/${searchText}`)
+            }
+        }
     }
     const handleXClick = () => {
         setPopupOpen(true)
@@ -69,6 +83,7 @@ function SearchInput({isSearchPage=false}:{isSearchPage?:boolean}) {
                             ref={TextInputRef}
                             iconSize="18px"
                             disabled={disabled}
+                            onKeyDown={handleEnter}
                             value={searchText}
                             leftIconFunction={handleLeftIcon}
                             onChange={handleTextChange}
@@ -143,8 +158,8 @@ function TagsResults({ text }: { text: string }) {
 
                 </li>
 
-                : tags&&tags.slice(0, 4).map((tag) => (
-                    <li data-testid="trend-item" key={tag.entityId} className="py-3 flex-grow px-4 items-center flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer" onClick={()=>{navigate(`/explore/${tag.text.slice(-1)}`)}} >
+                : tags&&tags.length>0&&tags.slice(0, 4).map((tag) => (
+                    <li data-testid="trend-item" key={tag.entityId} className="py-3 flex-grow px-4 items-center flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer" onClick={()=>{navigate(`/explore/${tag.text}`)}} >
                         <div className='w-10 h-10 flex justify-center items-center mr-3'>
                             <Search className=' w-5 h-5' strokeWidth='3px' />
                         </div>
@@ -200,7 +215,7 @@ function UsersResults({ text }: { text: string }) {
 
             }
             <li className="p-4 flex flex-row rounded-md hover:bg-[#16181c] w-full transition-all cursor-pointer" data-testid="targetUser">
-                <Link to={`/${text}`} className="text-primary text-[15px]">Go to @{text}</Link>
+                <Link to={`/profile/${text}`} className="text-primary text-[15px]">Go to @{text}</Link>
             </li>
         </ul>
     )

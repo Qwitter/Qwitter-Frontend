@@ -7,7 +7,6 @@ import { Messages } from "../Messages/Messages";
 import { cn } from "@/lib/utils";
 import { MessagesAccordion } from "../Messages/MessagesAccordion";
 import { Profile } from "../Profile/Profile";
-import { ExploreList } from "@/components/ExploreList/ExploreList.";
 import TweetDetails from "../TweetDetails/TweetDetails";
 import { socket } from "@/lib/socketInit";
 import { useEffect } from "react";
@@ -16,6 +15,7 @@ import { LikeRetweetList } from "@/components/LikeRetweetList/LikeRetweetList";
 import SideBar from "../SideBar/SideBar";
 import NotFound from "../NotFound/NotFound";
 import ProtectedRoute from "./ProtectedRoute";
+import { Explore } from "@/components/ExploreList/Explore";
 
 export function PagesContainer() {
   const location = useLocation();
@@ -79,7 +79,7 @@ export function PagesContainer() {
                 <Route index path="/Home" element={<ProtectedRoute token={token}> <Home /></ProtectedRoute>} />
                 <Route path="/Notification" element={<ProtectedRoute token={token}> <Notifications /> </ProtectedRoute>} />
                 <Route path="/Profile/:username/*" element={<Profile />} />
-                <Route path="/Explore" element={<ProtectedRoute token={token}> <ExploreList /> </ProtectedRoute>} />
+                <Route path="/Explore/*" element={<ProtectedRoute token={token}> <Explore /> </ProtectedRoute>} />
                 <Route path="/Tweet/:tweetId" element={<TweetDetails />} />
                 <Route
                   path="/:username/:tweetId/Likers"
