@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 export function TrendList({ Trends }: TrendsListProp) {
   const navigate = useNavigate();
-  console.log(Trends);
   return (
     <>
       {Trends &&
@@ -14,7 +13,9 @@ export function TrendList({ Trends }: TrendsListProp) {
             key={index}
             className="hover:cursor-pointer py-3 hover:bg-light-gray"
             data-testid="trend"
-            onClick={() => navigate(`/Explore/search/Top/?q=${trend.trend.slice(1)}`)}
+            onClick={() =>
+              navigate(`/Explore/search/Top/?q=${trend.trend.slice(1)}`)
+            }
           >
             <div className="text-[#595d62] my-1 font-normal text-sm">
               Trending in {trend.location || "Egypt"}
