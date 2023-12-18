@@ -6,26 +6,25 @@ import { useEffect } from "react";
 type TweetsListProps = {
   data: TweetWithRetweet[];
   fetcherRef?: (node?: Element | null | undefined) => void;
-  hasMoreData?: boolean;
   childOnEnd?: React.ReactNode;
+  isFetchingNextPage?: boolean;
+  isFetching?: boolean;
+  hasNextPage?: boolean;
 };
-
-/*
-NEEDED:
-  loading state & error
-*/
 
 const TweetsList = ({
   data,
   fetcherRef,
-  hasMoreData,
   childOnEnd,
+  isFetchingNextPage,
+  isFetching,
+  hasNextPage,
 }: TweetsListProps) => {
   useEffect(() => {
     console.log(data);
   }, [data]);
 
-  if (!data || data.length === 0) {
+  if ((!data || data.length === 0) && isFetching) {
     return (
       <div className="mt-52">
         <Spinner />
@@ -45,13 +44,13 @@ const TweetsList = ({
             key={tweet.id}
             // key={tweet.id + Math.floor(Math.random() * 50000)} // for mock server only
           />
-          {hasMoreData && i === data.length - 1 && (
+          {(hasNextPage || isFetchingNextPage) && i === data.length - 1 && (
             <div className="py-10">
               <div ref={fetcherRef}></div>
               <Spinner />
             </div>
           )}
-          {!hasMoreData && childOnEnd}
+          {!hasNextPage && !isFetchingNextPage && childOnEnd}
         </>
       ))}
     </div>

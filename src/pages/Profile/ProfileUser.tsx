@@ -50,10 +50,7 @@ export function ProfileUser() {
             <ArrowLeft size="1.25rem" onClick={handleBackArrow} />
           </div>
         </span>
-        <span
-          className="flex flex-col justify-center w-full h-[52px] ml-3"
-          // height here may change later
-        >
+        <span className="flex flex-col justify-center w-full h-[52px] ml-3">
           <span className="text-xl font-bold">
             {user == null ? "Profile" : user?.name}
           </span>

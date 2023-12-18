@@ -9,12 +9,13 @@ export const ProfileReplies = () => {
   const { username } = useParams();
   const { token } = useContext(UserContext);
 
-  const { ref, data, refetch, hasMoreData } = useInfiniteScroll(
-    async ({ pageParam }) => {
-      return await profileReplies(pageParam, 10, username!, token!);
-    },
-    ["tweets", "profile", "replies", username!]
-  );
+  const { ref, data, refetch, isFetching, isFetchingNextPage, hasNextPage } =
+    useInfiniteScroll(
+      async ({ pageParam }) => {
+        return await profileReplies(pageParam, 10, username!, token!);
+      },
+      ["tweets", "profile", "replies", username!]
+    );
 
   useEffect(() => {
     if (!token) return;
@@ -26,6 +27,12 @@ export const ProfileReplies = () => {
   }, [data]);
 
   return (
-    <TweetsList data={dataArr} fetcherRef={ref} hasMoreData={hasMoreData} />
+    <TweetsList
+      data={dataArr}
+      fetcherRef={ref}
+      isFetching={isFetching}
+      isFetchingNextPage={isFetchingNextPage}
+      hasNextPage={hasNextPage}
+    />
   );
 };
