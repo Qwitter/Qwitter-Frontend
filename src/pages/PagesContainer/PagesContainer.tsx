@@ -16,6 +16,7 @@ import SideBar from "../SideBar/SideBar";
 import NotFound from "../NotFound/NotFound";
 import ProtectedRoute from "./ProtectedRoute";
 import { Explore } from "@/pages/Explore/Explore";
+import ConnectionList from "@/components/ConnectionList/ConnectionList";
 
 export function PagesContainer() {
   const location = useLocation();
@@ -81,6 +82,7 @@ export function PagesContainer() {
                 <Route path="/Profile/:username/*" element={<Profile />} />
                 <Route path="/Explore/*" element={<ProtectedRoute token={token}> <Explore /> </ProtectedRoute>} />
                 <Route path="/Tweet/:tweetId" element={<TweetDetails />} />
+                <Route path="/Connection" element={<ProtectedRoute token={token}> <ConnectionList /> </ProtectedRoute>} />
                 <Route
                   path="/:username/:tweetId/Likers"
                   element={<LikeRetweetList type={"Likers"} />}

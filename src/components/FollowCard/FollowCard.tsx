@@ -6,9 +6,11 @@ import { useContext } from "react";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { User } from "@/models/User";
 import { Skeleton } from "../ui/skeleton";
+import { useNavigate } from "react-router-dom";
 
 export function FollowCard() {
   const { token } = useContext(UserContext);
+  const naviagte = useNavigate();
   const { data: FollowSuggestions } = useQuery<User[]>({
     queryKey: ["followSuggestions", token],
     queryFn: () => GetFollowSuggestionsService(token!),
@@ -28,8 +30,16 @@ export function FollowCard() {
             users={FollowSuggestions!}
           />
 
-          <CardFooter className="hover:cursor-pointer mt-3 pt-3 hover:bg-light-gray rounded-br-lg rounded-bl-lg" data-testid="showMoreFollowers">
-            <span className="text-secondary">show more</span>
+          <CardFooter
+            className="hover:cursor-pointer mt-3 pt-3 hover:bg-light-gray rounded-br-lg rounded-bl-lg"
+            data-testid="showMoreFollowers"
+          >
+            <span
+              className="text-secondary"
+              onClick={() => naviagte("/connection")}
+            >
+              show more
+            </span>
           </CardFooter>
         </Card>
       ) : (
