@@ -1,8 +1,3 @@
-export function ExploreSearchTop()
-{
-    return(
-        <>
-        
-        </>
-    );
+export function ExploreSearchTop() {
+  return <></>;
 }

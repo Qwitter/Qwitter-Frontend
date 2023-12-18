@@ -51,7 +51,7 @@ function SearchInput({isSearchPage=false, value}:{isSearchPage?:boolean,value?:s
             if (searchText.length > 0) {
                 setDisabled(true)
                 setPopupOpen(false)
-                navigate(`/Explore/search/${searchText}`)
+                navigate(`/Explore/search/Top/?q=${searchText}`)
             }
         }
     }

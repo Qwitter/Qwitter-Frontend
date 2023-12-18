@@ -1,11 +1,11 @@
 import { Trend } from "@/models/Trend";
-import { TrendList } from "../TrendList/TrendList";
+import { TrendList } from "../../components/TrendList/TrendList";
 import { GetTrendsService } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { useContext, useEffect } from "react";
 import { UserContext } from "@/contexts/UserContextProvider";
-import { Spinner } from "../Spinner";
-import SearchInput from "../SearchInput/SearchInput";
+import { Spinner } from "../../components/Spinner";
+import SearchInput from "../../components/SearchInput/SearchInput";
 
 export function ExploreList() {
   const { token } = useContext(UserContext);

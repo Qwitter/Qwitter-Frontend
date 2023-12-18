@@ -15,7 +15,7 @@ import { LikeRetweetList } from "@/components/LikeRetweetList/LikeRetweetList";
 import SideBar from "../SideBar/SideBar";
 import NotFound from "../NotFound/NotFound";
 import ProtectedRoute from "./ProtectedRoute";
-import { Explore } from "@/components/ExploreList/Explore";
+import { Explore } from "@/pages/Explore/Explore";
 
 export function PagesContainer() {
   const location = useLocation();
