@@ -13,29 +13,29 @@ type Props = {
 };
 
 export function UsernameSuggestion({ nextStep }: Props) {
-  const { user, token, saveUser } = useContext(UserContext);
-  const form = useForm<z.infer<typeof UsernameSchema>>({
-    resolver: zodResolver(UsernameSchema),
-    mode: "onChange",
-  });
-  const [skip, setSkip] = useState("Skip for now");
-  const { mutate, isPending } = useMutation({
-    mutationFn: updateUsername,
-    onSuccess: (data, { username }) => {
-      if (data) {
-        saveUser({ ...user!, userName: username }, token!);
-        nextStep();
-      }
-    },
-    onError: (data) => {
-      console.log(data);
-    },
-  });
-  useEffect(() => {
-    form.setValue("defaultUsername", user!.userName!);
-    setInputFieldValue(user!.userName!);
-    form.trigger("defaultUsername");
-  }, []);
+    const form = useForm<z.infer<typeof UsernameSchema>>({
+        resolver: zodResolver(UsernameSchema),
+        mode: 'onChange'
+    });
+    const { user, token,saveUser } = useContext(UserContext)
+    const [skip,setSkip] = useState("Skip for now")
+    const { mutate, isPending } = useMutation({
+        mutationFn: updateUsername,
+        onSuccess: (data,{username}) => {
+            if (data) {
+                saveUser({...user!,userName:username},token!)
+                nextStep();
+            }
+        },
+        onError: (data) => {
+            console.log(data);
+        }
+    })
+    useEffect(() => {
+        form.setValue("defaultUsername", user!.userName!)
+        setInputFieldValue(user!.userName!)
+        form.trigger("defaultUsername")
+    }, [])
 
   const [inputValue, setInputValue] = useState("");
   const setInputFieldValue = (value: string) => {

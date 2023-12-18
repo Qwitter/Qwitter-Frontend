@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { TextInput } from "../TextInput/TextInput";
-import { Search, X } from "lucide-react";
+import { Search,  X } from "lucide-react";
 import {
   Popover,
   PopoverContent,
@@ -14,6 +14,7 @@ import { UserContext } from "@/contexts/UserContextProvider";
 import { useQuery } from "@tanstack/react-query";
 import { Spinner } from "../Spinner";
 import { User } from "@/models/User";
+import { AvatarFallback } from "../ui/avatar";
 
 type Tags = {
   count: number;
@@ -191,7 +192,7 @@ function TagsResults({ text }: { text: string }) {
             key={tag.entityId}
             className="py-3 flex-grow px-4 items-center flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer"
             onClick={() => {
-              navigate(`/explore/${tag.text}`);
+              navigate(`/Explore/search/top/?q=${tag.text}`);
             }}
           >
             <div className="w-10 h-10 flex justify-center items-center mr-3">
@@ -232,13 +233,16 @@ function UsersResults({ text }: { text: string }) {
             data-testid="user-item"
             key={user.userName}
             className="py-3 px-4 flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer"
-            onClick={() => navigate("/" + user.userName)}
+            onClick={() => navigate(`/Profile/${user.userName}`)}
           >
             <Avatar className="mr-4">
               <AvatarImage
                 className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid"
                 src={user.profileImageUrl}
               />
+              <AvatarFallback className="text-white w-10 h-10" >
+                {user.name.substring(0, 2)}
+              </AvatarFallback>
             </Avatar>
             <div className="flex flex-col h-full gap-1 ">
               <h3 className="text-primary text-[15px]">{user.name}</h3>

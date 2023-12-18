@@ -58,13 +58,17 @@ export type MessagesRequestPopUpProp = {
 }
 export type MessagesMessage = {
     isMessage: boolean;
-    isGroup: boolean;
+    isGroup?: boolean;
     id: string;
     text: string;
     date: string;
+    setChatMessages?:React.Dispatch<React.SetStateAction<MessagesMessage[]>>;
     userName: string;
     profileImageUrl: string;
-    replyToMessage: MessagesMessage;
+    sending?:boolean;
+    error?:boolean;
+    logicalId?:string;
+    replyToMessage: MessagesMessage|null;
     entities: {
         hasthtags: { text: string; count: 15 }[];
         media: { value: string; type: string; id: string }[];
@@ -76,6 +80,7 @@ export type MessagesMessage = {
 export type ConversationPopUpProps = {
     show: boolean;
     setShow?: React.Dispatch<React.SetStateAction<boolean>>;
+    setChatMessages?:React.Dispatch<React.SetStateAction<MessagesMessage[]>>
     conversationToDelete?: string;
     messageId?: string;
     userName?: string;
