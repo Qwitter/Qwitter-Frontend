@@ -2,7 +2,7 @@ import { UserContext } from "@/contexts/UserContextProvider";
 import { GetFollowSuggestionsService } from "@/lib/utils";
 import { User } from "@/models/User";
 import { useQuery } from "@tanstack/react-query";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UsersList } from "../UsersList/UsersList";
 import { OptionsHeader } from "../OptionsHeader/OptionsHeader";
 import { Spinner } from "../Spinner";
@@ -13,7 +13,9 @@ export default function ConnectionList() {
     queryKey: ["followSuggestions", token],
     queryFn: () => GetFollowSuggestionsService(token!),
   });
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="max-w-[600px] w-full h-full flex-grow border-r border-primary border-opacity-30">
       <OptionsHeader header="Connection" />
