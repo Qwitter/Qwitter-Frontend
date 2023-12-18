@@ -1,7 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { useContext, useState } from "react";
 import "../../index.css";
-import { UsersList } from "../UsersList/UsersList";
+import { UsersList } from "@/components/UsersList/UsersList";
 import { GetFollowersService, GetFollowingsService } from "@/lib/utils";
 import { useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "@/contexts/UserContextProvider";
@@ -25,13 +25,13 @@ export function FollowList({ type }: { type: string }) {
   return (
     <>
       <Tabs defaultValue={Liststate} className="max-w-[600px] w-full">
-        <TabsList className="grid w-full grid-cols-2" >
+        <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger
             className="flex justify-center tabhover"
             value="Following"
             onClick={() => {
               setListstate("Following");
-              navigate(`/${username}/Following`);
+              navigate(`/Profile/${username}/Following`);
             }}
             data-testid="followingTab"
           >
@@ -44,7 +44,7 @@ export function FollowList({ type }: { type: string }) {
             value="Followers"
             onClick={() => {
               setListstate("Followers");
-              navigate(`/${username}/Followers`);
+              navigate(`/Profile/${username}/Followers`);
             }}
             data-testid="followersTab"
           >
