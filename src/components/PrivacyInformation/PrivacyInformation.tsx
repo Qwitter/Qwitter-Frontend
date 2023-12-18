@@ -8,7 +8,6 @@ export function PrivacyInformation() {
     <>
       <OptionsHeader
         header="Privacy information"
-        className="lg:hidden"
         defaultBack
       />
       <div>

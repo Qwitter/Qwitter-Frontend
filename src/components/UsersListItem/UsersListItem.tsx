@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { MdOutlineVerified } from "react-icons/md";
 import { CardContent } from "../ui/card";
 import { FollowButton } from "../FollowButton/FollowButton";

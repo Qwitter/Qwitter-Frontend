@@ -65,9 +65,6 @@ export function Home() {
             hasMoreData={hasMoreData}
           />
         </div>
-
       </div>
-    
-    
   );
 }
