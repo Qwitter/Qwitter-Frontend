@@ -585,6 +585,7 @@ export const timelineTweets = async (
 export const getUsersSuggestions = async (token: string, username: string) => {
   try {
     if (!username) return [];
+    console.log(username)
     const res = await axios.get(
 
       `${VITE_BACKEND_URL}/api/v1/user/search?q=${username}`,
@@ -594,6 +595,8 @@ export const getUsersSuggestions = async (token: string, username: string) => {
         },
       }
     );
+    console.log(res.data.users);
+    
     return res.data.users;
   } catch (err) {
     console.log(err);
@@ -707,6 +710,7 @@ export const getUserConversations = async (token: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    console.log(res.data)
     return res.data;
   } catch (err) {
     console.log(err);
@@ -865,12 +869,15 @@ export const CreateMessage = async ({
   formData,
   token,
   conversationId,
+  logicalId
 }: {
   conversationId: string;
   formData: FormData;
   token: string;
+  logicalId:string;
 }) => {
   try {
+    logicalId
     const res = await axios.post(
       `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/message`,
       formData,
@@ -886,7 +893,7 @@ export const CreateMessage = async ({
     return res.data.createdMessage;
   } catch (error) {
     console.log(error);
-    return null;
+    throw new Error("Error sending Message")
   }
 };
 /**
@@ -1045,10 +1052,8 @@ export const deleteMessage = async ({
     const res = await axios.delete(
       `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/message`,
       {
-        data: { messageId: messageId },
+        data:{ message_id: messageId },
         headers: {
-          Accept: "application/json",
-          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       }
@@ -1056,7 +1061,7 @@ export const deleteMessage = async ({
     return res.data;
   } catch (error) {
     console.log(error);
-    throw new Error("Error deleting conversation");
+    throw new Error("Error deleting message");
   }
 };
 

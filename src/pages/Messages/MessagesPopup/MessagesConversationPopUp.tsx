@@ -2,15 +2,19 @@ import { Trash2, ForwardIcon, Copy } from "lucide-react";
 import { useContext, useState } from "react";
 import { MessagesContext } from "@/contexts/MessagesContextProvider";
 import { ConversationRemoveMessagePopUp } from "./ConversationRemoveMessagePopUp";
+import { MessagesMessage } from "../types/MessagesTypes";
 
-export function MessagesConversationPopUp({ isUser,text, setIsOpen,image, replyId,userNameOFReplyMessage ,messageId}: {isUser:boolean;image:[{ value:string, type:string }] ;messageId:string; userNameOFReplyMessage:string;replyId: string; text: string; setIsOpen: React.Dispatch<React.SetStateAction<boolean>>; }) {
+export function MessagesConversationPopUp({ isUser,text,setChatMessages ,setIsOpen,image, replyId,userNameOFReplyMessage ,messageId}: {setChatMessages:React.Dispatch<React.SetStateAction<MessagesMessage[]>>;isUser:boolean;image:[{ value:string, type:string }] ;messageId:string; userNameOFReplyMessage:string;replyId: string; text: string; setIsOpen: React.Dispatch<React.SetStateAction<boolean>>; }) {
     const handleCopyText = () => {
         navigator.clipboard.writeText(text);
         setIsOpen(false);
     };
     const { setMessageReply } = useContext(MessagesContext);
     const [show, setShow] = useState<boolean>(false);
-
+    const handleHidePopUp = () => {
+        setShow(false)
+        setIsOpen(false);
+    };
     const handleSetReply = () => {
         setMessageReply({ image:image,message: text, replyId: replyId,userName:userNameOFReplyMessage });
         setIsOpen(false);
@@ -37,7 +41,7 @@ export function MessagesConversationPopUp({ isUser,text, setIsOpen,image, replyI
                 </div>
                 <span className="text-primary text-[15px] font-bold" onClick={()=>setShow(true)}>Delete for All</span>
             </div>}
-            <ConversationRemoveMessagePopUp show={show} setShow={setShow} messageId={messageId} />
+            <ConversationRemoveMessagePopUp setChatMessages={setChatMessages} show={show} setShow={handleHidePopUp} messageId={messageId} />
 
         </>
     );

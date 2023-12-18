@@ -49,8 +49,8 @@ export function MessagesConversationInput({ text, setText, handleSubmit, selecte
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter' && e.code === 'Enter' && !e.shiftKey && !e.ctrlKey && !e.altKey && !e.metaKey) {
             e.preventDefault()
-            handleRemoveImage()
             handleSubmit()
+            handleRemoveImage()
         }
 
     }
@@ -84,7 +84,7 @@ export function MessagesConversationInput({ text, setText, handleSubmit, selecte
                             </div>
                         </div></>}
                     <div className="flex flex-col w-full pl-2">
-                        {selectedImageFile && <div className="w-[20vw] ">
+                        {selectedImageFile && <div >
                             <TweetImagesViewer screen="message" images={selectedImage} mode="edit" removeAttachment={handleRemoveImage} />
                         </div>}
                         <div className={cn("w-full max-w-[440px] max-h-[160px] overflow-y-auto relative", `${selectedImageFile ? 'max-w-[500px]' : ''}`)}>

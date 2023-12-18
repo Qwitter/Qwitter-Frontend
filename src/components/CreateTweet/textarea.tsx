@@ -116,7 +116,6 @@ const Textarea: React.FC<TextareaProps> = ({ highlightClassName,text, className,
     const cursor = getCaretCoordinates(textAreaRef.current!, textAreaRef.current!.selectionEnd);
     const numOfScreen =Math.floor(containerRef.current!.scrollHeight/480);
     const popupTop = cursor.top+30-numOfScreen*textAreaRef.current!.scrollHeight;
-    console.log(popupTop,containerRef.current!.scrollHeight/480)
     const mentionContent = getSubstringLimited(text, mention.position + 1)
     const popupLeft = cursor.left - 8 * mentionContent.length;
     
