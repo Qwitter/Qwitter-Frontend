@@ -16,8 +16,6 @@ export const ProfileMedia = () => {
     ["tweets", "profile", "media", username!]
   );
 
-  // console.log("worked");
-
   useEffect(() => {
     if (!token) return;
     refetch();

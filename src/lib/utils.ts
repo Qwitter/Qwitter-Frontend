@@ -559,13 +559,14 @@ export const convertNumberToShortForm = (number: number) => {
 export const timelineTweets = async (
   pageParam: number = 1,
   limit: number = 10,
-  token: string
+  token: string,
+  q?: string,
 ) => {
   if (!token) return [];
 
   try {
     const response = await axios.get(
-      `${VITE_BACKEND_URL}/api/v1/tweets?page=${pageParam}&limit=${limit}`,
+      `${VITE_BACKEND_URL}/api/v1/tweets?page=${pageParam}&limit=${limit}`+ (q ? `&q=${q}` : ''),
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -589,7 +590,8 @@ export const getUsersSuggestions = async (token: string, username: string) => {
   try {
     if (!username) return [];
     const res = await axios.get(
-      `${VITE_BACKEND_URL}/api/v1/user/search?q=${username.slice(1)}`,
+
+      `${VITE_BACKEND_URL}/api/v1/user/search?q=${username}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -1103,7 +1105,6 @@ export const updateGroupImageAndName = async ({
  */
 export const GetFollowSuggestionsService = async (token: string) => {
   try {
-    // debugger;
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/suggestions`, {
       headers: {
         Accept: "application/json",

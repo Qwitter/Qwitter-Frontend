@@ -7,6 +7,7 @@ import { useContext, useState } from "react";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { Avatar } from "@radix-ui/react-avatar";
 import { AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Link } from "react-router-dom";
 export default function CreateTweetMain({
   selectedImages,
   setSelectedImages,
@@ -15,6 +16,7 @@ export default function CreateTweetMain({
   tweet,
   files,
   mode,
+  replyTo,
   setTweet,
   handleRemoveFile,
   form,
@@ -59,6 +61,14 @@ export default function CreateTweetMain({
   };
 
   return (
+    <>
+      {mode=="reply"&&<div className="flex flex-row">
+          <div className="w-10 h-5  mr-1"></div>
+          <div className="px-3 pb-2">
+            <span className="text-gray text-[15px]"> Replying to </span>
+            <Link to={`/${replyTo}`} className="text-secondary text-[15px]">@{replyTo}</Link>
+          </div>
+      </div>}
     <div className="flex flex-row items-start h-full w-full ">
       <div className="mr-1 mt-3 min-w-fit">
         <Avatar className="w-10 h-10 rounded-full border-[#ffffee62] border-[1px] border-solid block">
@@ -82,7 +92,7 @@ export default function CreateTweetMain({
             setPopup={setPopup}
             mode={mode}
             mentionsAndTags={mentionsAndTags}
-            placeholder="What is happing?!"
+            placeholder={mode=="reply"?"Post your reply":"What is happing?!"}
             text={tweet}
             className="bg-transparent  placeholder:text-gray  focus:ring-transparent focus:border-none focus:outline-none resize-none border-none"
             data-testid="tweetInput"
@@ -110,7 +120,8 @@ export default function CreateTweetMain({
           />
         )}
 
-        {mode == "home" && (
+
+        {mode != "popUp" && (
           <CreateTweetFooter
             mode={mode}
             files={files!}
@@ -124,5 +135,6 @@ export default function CreateTweetMain({
         )}
       </div>
     </div>
+    </>
   );
 }

@@ -1,7 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { useContext, useState } from "react";
 import "../../index.css";
-import { UsersList } from "../UsersList/UsersList";
+import { UsersList } from "@/components/UsersList/UsersList";
 import { GetFollowersService, GetFollowingsService } from "@/lib/utils";
 import { useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "@/contexts/UserContextProvider";
@@ -31,8 +31,9 @@ export function FollowList({ type }: { type: string }) {
             value="Following"
             onClick={() => {
               setListstate("Following");
-              navigate(`/${username}/Following`);
+              navigate(`/Profile/${username}/Following`);
             }}
+            data-testid="followingTab"
           >
             <div className={Liststate == "Following" ? "active-tab" : "tab"}>
               Following
@@ -43,15 +44,16 @@ export function FollowList({ type }: { type: string }) {
             value="Followers"
             onClick={() => {
               setListstate("Followers");
-              navigate(`/${username}/Followers`);
+              navigate(`/Profile/${username}/Followers`);
             }}
+            data-testid="followersTab"
           >
             <div className={Liststate == "Followers" ? "active-tab" : "tab"}>
               Followers
             </div>
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="Following">
+        <TabsContent value="Following" data-testid="followingList">
           {Followings ? (
             <UsersList
               listType={"FollowList"}
@@ -64,7 +66,7 @@ export function FollowList({ type }: { type: string }) {
             </div>
           )}
         </TabsContent>
-        <TabsContent value="Followers">
+        <TabsContent value="Followers" data-testid="followersList">
           {Followers ? (
             <UsersList
               listType={"FollowList"}

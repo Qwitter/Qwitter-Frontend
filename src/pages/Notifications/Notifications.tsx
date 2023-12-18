@@ -1,7 +1,4 @@
 import { useState } from "react";
-import SearchInput from "@/components/SearchInput/SearchInput";
-import { TrendCard } from "@/components/TrendCard/TrendCard";
-import { FollowCard } from "@/components/FollowCard/FollowCard";
 import { Heart, User } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { BiRepost } from "react-icons/bi";
@@ -10,7 +7,6 @@ export function Notifications() {
   const [active, setActive] = useState("ALL");
 
   return (
-    <>
       <div className="max-w-[600px] w-full h-full flex-grow border-r border-primary border-opacity-30 ">
         <div className="flex flex-col min-h-[50px] w-full sticky backdrop-blur-2xl top-[-1px] bg-black  z-50 border-b border-primary border-opacity-20">
           <div className="px-4 w-full h-[53px]">
@@ -67,18 +63,7 @@ export function Notifications() {
           <Notification type="love" url="https://pbs.twimg.com/profile_images/1544863990110736384/PDf-ZViV_normal.jpg" />
         </div>
       </div>
-      <div className="max-w-[600px]  pb-16 relative flex flex-col z-0 w-[36.5%] max-largeX:hidden  h-full">
-        <div className="w-full sticky top-0 z-50 bg-black   ">
-          <SearchInput />
-        </div>
-        <div className="mt-5 rounded-lg bg-dark-gray">
-          <TrendCard />
-        </div>
-        <div className="mt-5 rounded-lg bg-dark-gray">
-          <FollowCard />
-        </div>
-      </div>
-    </>
+   
   );
 }
 

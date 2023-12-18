@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { MdOutlineVerified } from "react-icons/md";
 import { CardContent } from "../ui/card";
 import { FollowButton } from "../FollowButton/FollowButton";
@@ -23,9 +24,10 @@ export function UsersListItem({
   return (
     <CardContent
       onClick={() => {
-        navigate("/" + username);
+        navigate("/Profile/" + username);
       }}
       className="hover:cursor-pointer py-3 hover:bg-light-gray"
+      data-testid="userToFollow"
     >
       <div className="flex">
         <img

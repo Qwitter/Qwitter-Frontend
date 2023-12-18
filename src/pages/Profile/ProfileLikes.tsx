@@ -16,8 +16,6 @@ export const ProfileLikes = () => {
     ["tweets", "profile", "likes", username!]
   );
 
-  // console.log("worked");
-
   useEffect(() => {
     if (!token) return;
     refetch();

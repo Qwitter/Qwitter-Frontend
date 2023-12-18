@@ -19,8 +19,13 @@ type Images = {
 };
 const CreateTweetContainer = ({
   mode = "popUp",
+  replyToTweetId,
+  replyToUser
 }: {
-  mode?: "home" | "popUp";
+  mode?: "home" | "popUp" | "reply";
+  replyToTweetId?: string;
+  replyToUser?: string;
+
 }) => {
   const [showPopUp, setShowPopUp] = useState<boolean>(true);
   const [userLocation, setUserLocation] = useState("");
@@ -36,6 +41,7 @@ const CreateTweetContainer = ({
     mode: "onChange",
   });
   const clearForm = () => {
+    form.reset()
     setTweet("");
     setFiles([]);
     setSelectedImages([]);
@@ -46,12 +52,17 @@ const CreateTweetContainer = ({
       console.log(data);
       if (data) {
         toast({
-          description: "Your post was sent.",
+          description: `Your ${mode=="reply"?"reply":"post"} was sent.`,
           variant: "secondary",
           duration: 2000,
           className: "py-4",
         });
-        queryClient.invalidateQueries({ queryKey: ["tweets"] });
+        if (mode != "reply")
+          queryClient.invalidateQueries({ queryKey: ["tweets"] });
+        else
+        {
+          queryClient.invalidateQueries({ queryKey: ["tweet", replyToTweetId!, "replies"] });
+        }
         clearForm();
       }
     },
@@ -72,27 +83,18 @@ const CreateTweetContainer = ({
 
   function getOperatingSystem() {
     const userAgent = navigator.userAgent;
-    // Check for Windows
     if (userAgent.indexOf("Win") !== -1) {
       return "Windows";
     }
-
-    // Check for Linux
     if (userAgent.indexOf("Linux") !== -1) {
       return "Linux";
     }
-
-    // Check for iPhone (iOS)
     if (/iPhone|iPod/.test(userAgent)) {
       return "iPhone (iOS)";
     }
-
-    // Check for Android
     if (/Android/.test(userAgent)) {
       return "Android";
     }
-
-    // Default to unknown
     return "Unknown";
   }
   function getLocationOfUser() {
@@ -115,11 +117,13 @@ const CreateTweetContainer = ({
     const formData = new FormData();
     formData.append("text", tweet);
     formData.append("coordinates", userLocation);
+    replyToTweetId && formData.append("replyToTweetId", replyToTweetId);
     formData.append("source", getOperatingSystem());
     formData.append("sensitive", "false");
     files.forEach((file) => {
       formData.append("media[]", file);
     });
+    
     mutate({ formData: formData, token: token! });
   }
 
@@ -134,7 +138,6 @@ const CreateTweetContainer = ({
   if (mode == "home") {
     return (
       <div className="px-4  h-fit max-h-[1000px] py-1 justify-start ">
-        {" "}
         {isPending ? (
           <div className="w-full h-[180px] p-8">
             <Spinner />
@@ -150,6 +153,35 @@ const CreateTweetContainer = ({
               selectedImages={selectedImages}
               setSelectedImages={setSelectedImages}
               mode="home"
+              tweet={tweet}
+              form={form}
+              setTweet={setTweet}
+              handleRemoveFile={handleRemoveFile}
+            />
+          </>
+        )}
+      </div>
+    );
+  }
+  if (mode == "reply") {
+    return (
+      <div className="px-4  h-fit max-h-[1000px] py-1 justify-start ">
+        {isPending ? (
+          <div className="w-full h-[180px] p-8">
+            <Spinner />
+          </div>
+        ) : (
+          <>
+            <CreateTweetMain
+              files={files}
+              setFiles={setFiles}
+              isValid={form.formState.isValid}
+              text={tweet}
+              replyTo={replyToUser}
+              handleSubmit={handleSubmit}
+              selectedImages={selectedImages}
+              setSelectedImages={setSelectedImages}
+              mode="reply"
               tweet={tweet}
               form={form}
               setTweet={setTweet}

@@ -1,10 +1,12 @@
+import { cn } from '@/lib';
 import React from 'react';
 
 interface ImageGridProps {
     images: string[];
+    className?: string;
 }
 
-const ImageGrid:React.FC<ImageGridProps> = ({ images }) => {
+const ImageGrid:React.FC<ImageGridProps> = ({ images,className }) => {
     // Determine the grid layout based on the number of images
     if (images.length === 1) {
         return (<div className=' flex flex-row mr-4 w-10 h-10 overflow-hidden rounded-full '>
@@ -38,9 +40,9 @@ const ImageGrid:React.FC<ImageGridProps> = ({ images }) => {
 
     } else {
         return (
-            <div className='flex flex-row mr-4 w-10 h-10 overflow-hidden rounded-full '>
+            <div className={cn('flex flex-row mr-4 w-10 h-10 overflow-hidden rounded-full ',className)}>
                 <div className={`grid grid-rows-2 grid-cols-2 gap-[0.05rem] w-full`}>
-                    {images.map((image, index) => (
+                    {images.slice(0,4).map((image, index) => (
                         <img src={image} key={`Image ${index + 1}`} className="w-full h-full object-cover" />
                     ))}
                 </div>

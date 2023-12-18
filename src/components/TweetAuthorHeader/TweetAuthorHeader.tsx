@@ -28,7 +28,7 @@ const TweetAuthorHeader = ({
       >
         <HoverCard>
           <HoverCardTrigger className="hover:underline">
-            <Link to={`/user/${tweet.author.userName}`}>
+            <Link to={`/profile/${tweet.author.userName}`}>
               {tweet.author.name}
             </Link>
           </HoverCardTrigger>
@@ -41,7 +41,7 @@ const TweetAuthorHeader = ({
                 </AvatarFallback>
               </Avatar>
               <Link
-                to={`/user/${tweet.author.userName}`}
+                to={`/profile/${tweet.author.userName}`}
                 className="hover:underline self-start"
               >
                 <h3 className="font-semibold">{tweet.author.name}</h3>
