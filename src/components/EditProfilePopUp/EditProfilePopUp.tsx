@@ -89,8 +89,14 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
 
   const { mutate, isPending } = useMutation<User, Error, User, unknown>({
     mutationFn: async (editedUserData: User) => {
-      profileImage && (await uploadProfileImage(profileImage!, token!));
-      profileBanner && (await uploadProfileImage(profileBanner!, token!, true));
+      profileImage &&
+        (await uploadProfileImage({ picFile: profileImage!, token: token! }));
+      profileBanner &&
+        (await uploadProfileImage({
+          picFile: profileBanner!,
+          token: token!,
+          isBanner: true,
+        }));
       return await editUserProfile(editedUserData, token!);
     },
     onSuccess: (editedUserData) => {

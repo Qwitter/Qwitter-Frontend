@@ -434,11 +434,15 @@ export const registerNewUser = async (newUserData: object) => {
  * @returns New user data after the image has changed
  */
 
-export const uploadProfileImage = async (
-  picFile: File,
-  token: string,
-  isBanner: boolean = false
-) => {
+export const uploadProfileImage = async ({
+  picFile,
+  token,
+  isBanner = false,
+}: {
+  picFile: File;
+  token: string;
+  isBanner?: boolean;
+}) => {
   const formData = new FormData();
   formData.append("photo", picFile);
 
@@ -463,7 +467,7 @@ export const uploadProfileImage = async (
     return res.data.user;
   } catch (error) {
     console.log(error);
-    return null;
+    throw new Error("Couldn't upload image");
   }
 };
 
