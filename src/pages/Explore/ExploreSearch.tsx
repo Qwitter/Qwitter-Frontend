@@ -76,7 +76,7 @@ export function ExploreSearch() {
       </div>
       <div>
         <Routes>
-          <Route path="/" element={<ExploreSearchTop />} />
+          <Route path="/Top" element={<ExploreSearchTop />} />
           <Route path="/people" element={<ExploreSearchPeople />} />
         </Routes>
       </div>

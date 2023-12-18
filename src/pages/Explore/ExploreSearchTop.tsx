@@ -17,7 +17,7 @@ export function ExploreSearchTop() {
         SearchParams.get("q")!
       );
     },
-    ["tweets", "timeline"]
+    ["searchTweets", token!, SearchParams.get("q")!]
   );
   const dataArr = useMemo(() => {
     return data?.pages.flat() || [];
