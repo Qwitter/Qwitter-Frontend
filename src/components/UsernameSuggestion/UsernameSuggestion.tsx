@@ -18,12 +18,13 @@ export function UsernameSuggestion({ nextStep }: Props) {
         resolver: zodResolver(UsernameSchema),
         mode: 'onChange'
     });
-    const { user, token } = useContext(UserContext)
+    const { user, token,saveUser } = useContext(UserContext)
     const [skip,setSkip] = useState("Skip for now")
     const { mutate, isPending } = useMutation({
         mutationFn: updateUsername,
-        onSuccess: (data) => {
+        onSuccess: (data,{username}) => {
             if (data) {
+                saveUser({...user!,userName:username},token!)
                 nextStep();
             }
         },
