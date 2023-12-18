@@ -125,7 +125,7 @@ function SearchInput({
             )}
           >
             <div className=" max-h-[calc(80vh-53px)] overflow-y-auto">
-              <Results searchText={searchText} />
+              <Results searchText={searchText} closePopUp={() => setPopupOpen(false)} />
             </div>
           </PopoverContent>
         </Popover>
@@ -133,7 +133,7 @@ function SearchInput({
     </ClickAwayListener>
   );
 }
-function Results({ searchText }: { searchText: string }) {
+function Results({ searchText ,closePopUp}: { searchText: string;closePopUp:()=>void }) {
   return (
     <>
       {searchText.length == 0 ? (
@@ -144,7 +144,7 @@ function Results({ searchText }: { searchText: string }) {
         </div>
       ) : (
         <div className="w-full">
-          <TagsResults text={searchText} />
+          <TagsResults text={searchText} closePopUp={closePopUp} />
           <div className="w-full h-[2px] bg-primary bg-opacity-20 my-1"></div>
           <UsersResults text={searchText} />
         </div>
@@ -152,7 +152,7 @@ function Results({ searchText }: { searchText: string }) {
     </>
   );
 }
-function TagsResults({ text }: { text: string }) {
+function TagsResults({ text,closePopUp }: { text: string;closePopUp:()=>void }) {
   const { token } = useContext(UserContext);
   const navigate = useNavigate();
   const { isPending, data: tags, refetch } = useQuery<Tags[]>({
@@ -193,6 +193,7 @@ function TagsResults({ text }: { text: string }) {
             className="py-3 flex-grow px-4 items-center flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer"
             onClick={() => {
               navigate(`/Explore/search/top/?q=${tag.text}`);
+              closePopUp()
             }}
           >
             <div className="w-10 h-10 flex justify-center items-center mr-3">
