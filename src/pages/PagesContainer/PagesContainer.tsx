@@ -22,15 +22,15 @@ export function PagesContainer() {
   const location = useLocation();
   const token = localStorage.getItem("token");
   const previousLocation = location.state?.previousLocation;
-  const user = JSON.parse(localStorage.getItem("user")!)
+  const user = JSON.parse(localStorage.getItem("user")!);
 
   useEffect(() => {
-    if(!user) return;
-    socket.connect()
-    socket.on('connect', () => {
-      console.log("connected -----------")
-    })
-    console.log(socket.connected)
+    if (!user) return;
+    socket.connect();
+    socket.on("connect", () => {
+      console.log("connected -----------");
+    });
+    console.log(socket.connected);
     socket.emit(EVENTS.CLIENT.JOIN_ROOM, user.userName);
     socket.on(EVENTS.SERVER.NOTIFICATION, async (notification) => {
       console.log(notification);
@@ -38,8 +38,8 @@ export function PagesContainer() {
     return () => {
       socket.disconnect();
     };
-  }, [])
-  
+  }, []);
+
   const getPageFromUrl = (pathname: string) => {
     if (pathname.includes("home")) {
       return "home";
@@ -59,7 +59,7 @@ export function PagesContainer() {
       return "unknown";
     }
   };
-  
+
   return (
     <>
       {location.pathname !== "/" && (
@@ -70,19 +70,68 @@ export function PagesContainer() {
             <div
               className={cn(
                 `w-auto mobile:w-[920px] h-full flex flex-row justify-between large2X:w-[990px] max-largeX:max-w-[600px] flex-shrink-1 flex-grow-2`,
-                getPageFromUrl(location.pathname.toLowerCase()) == "messages" && "large2X:w-[1025px]"
+                getPageFromUrl(location.pathname.toLowerCase()) == "messages" &&
+                  "large2X:w-[1025px]"
               )}
             >
               <Routes location={previousLocation || location}>
                 {/* this is the main routs*/}
-                <Route path="/Settings/*" element={<ProtectedRoute token={token}><Settings /></ProtectedRoute>} />
-                <Route path="/Messages/*" element={<ProtectedRoute token={token}> <Messages /> </ProtectedRoute>} />
-                <Route index path="/Home" element={<ProtectedRoute token={token}> <Home /></ProtectedRoute>} />
-                <Route path="/Notification" element={<ProtectedRoute token={token}> <Notifications /> </ProtectedRoute>} />
+                <Route
+                  path="/Settings/*"
+                  element={
+                    <ProtectedRoute token={token}>
+                      <Settings />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/Messages/*"
+                  element={
+                    <ProtectedRoute token={token}>
+                      {" "}
+                      <Messages />{" "}
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  index
+                  path="/Home"
+                  element={
+                    <ProtectedRoute token={token}>
+                      {" "}
+                      <Home />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/Notification"
+                  element={
+                    <ProtectedRoute token={token}>
+                      {" "}
+                      <Notifications />{" "}
+                    </ProtectedRoute>
+                  }
+                />
                 <Route path="/Profile/:username/*" element={<Profile />} />
-                <Route path="/Explore/*" element={<ProtectedRoute token={token}> <Explore /> </ProtectedRoute>} />
+                <Route
+                  path="/Explore/*"
+                  element={
+                    <ProtectedRoute token={token}>
+                      {" "}
+                      <Explore />{" "}
+                    </ProtectedRoute>
+                  }
+                />
                 <Route path="/Tweet/:tweetId" element={<TweetDetails />} />
-                <Route path="/Connection" element={<ProtectedRoute token={token}> <ConnectionList /> </ProtectedRoute>} />
+                <Route
+                  path="/Connection"
+                  element={
+                    <ProtectedRoute token={token}>
+                      {" "}
+                      <ConnectionList />{" "}
+                    </ProtectedRoute>
+                  }
+                />
                 <Route
                   path="/:username/:tweetId/Likers"
                   element={<LikeRetweetList type={"Likers"} />}
@@ -93,9 +142,15 @@ export function PagesContainer() {
                 />
                 <Route path="*" element={<NotFound />} />
               </Routes>
-              {!(getPageFromUrl(location.pathname.toLowerCase()) == "settings" || getPageFromUrl(location.pathname.toLowerCase()) == "unknown" || getPageFromUrl(location.pathname.toLowerCase()) == "messages") &&
-                <SideBar page={getPageFromUrl(location.pathname.toLowerCase())} />
-              }
+              {!(
+                getPageFromUrl(location.pathname.toLowerCase()) == "settings" ||
+                getPageFromUrl(location.pathname.toLowerCase()) == "unknown" ||
+                getPageFromUrl(location.pathname.toLowerCase()) == "messages"
+              ) && (
+                <SideBar
+                  page={getPageFromUrl(location.pathname.toLowerCase())}
+                />
+              )}
             </div>
           </div>
           {!previousLocation?.pathname.toLowerCase().includes("/messages") &&

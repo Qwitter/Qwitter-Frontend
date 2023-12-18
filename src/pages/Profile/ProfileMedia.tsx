@@ -9,12 +9,13 @@ export const ProfileMedia = () => {
   const { username } = useParams();
   const { token } = useContext(UserContext);
 
-  const { ref, data, refetch, hasMoreData } = useInfiniteScroll(
-    async ({ pageParam }) => {
-      return await profileMedia(pageParam, 10, username!, token!);
-    },
-    ["tweets", "profile", "media", username!]
-  );
+  const { ref, data, refetch, isFetching, isFetchingNextPage, hasNextPage } =
+    useInfiniteScroll(
+      async ({ pageParam }) => {
+        return await profileMedia(pageParam, 10, username!, token!);
+      },
+      ["tweets", "profile", "media", username!]
+    );
 
   useEffect(() => {
     if (!token) return;
@@ -26,6 +27,15 @@ export const ProfileMedia = () => {
   }, [data]);
 
   return (
-    <TweetsList data={dataArr} fetcherRef={ref} hasMoreData={hasMoreData} />
+    <>
+      <div></div>
+      <TweetsList
+        data={dataArr}
+        fetcherRef={ref}
+        isFetching={isFetching}
+        isFetchingNextPage={isFetchingNextPage}
+        hasNextPage={hasNextPage}
+      />
+    </>
   );
 };

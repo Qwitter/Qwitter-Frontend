@@ -12,7 +12,6 @@ export const useInfiniteScroll = (
   fetchFunction: ({ pageParam }: { pageParam: number }) => Promise<any>,
   queryKey: string[]
 ) => {
-  const [hasMoreData, setHasMoreData] = useState(false);
   const { ref, inView } = useInView();
 
   const {
@@ -23,12 +22,14 @@ export const useInfiniteScroll = (
     hasNextPage,
     isFetchingNextPage,
     refetch,
+    isFetching,
   } = useInfiniteQuery({
     queryKey: queryKey,
     queryFn: fetchFunction,
     initialPageParam: 1,
-    getNextPageParam: (_, allPages) => {
-      return allPages.length + 1;
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.length > 0) return allPages.length + 1;
+      return null;
     },
   });
 
@@ -38,11 +39,6 @@ export const useInfiniteScroll = (
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
-  useEffect(() => {
-    if (!isFetchingNextPage && !hasNextPage) setHasMoreData(false);
-    else setHasMoreData(true);
-  }, [isFetchingNextPage, hasNextPage, setHasMoreData]);
-
   return {
     data,
     ref,
@@ -50,7 +46,7 @@ export const useInfiniteScroll = (
     error,
     isError,
     refetch,
-    hasMoreData,
     hasNextPage,
+    isFetching,
   };
 };
