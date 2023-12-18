@@ -14,7 +14,6 @@ export function ExploreSearchPeople() {
     queryKey: ["ExploreSearchPeopleResult", searchParams.get("q"), token],
     queryFn: () => getUsersSuggestions(token!, searchParams.get("q")!),
   });
-
   return (
     <>
       {ExploreSearchPeopleResult ? (

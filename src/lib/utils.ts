@@ -1099,7 +1099,6 @@ export const updateGroupImageAndName = async ({
  */
 export const GetFollowSuggestionsService = async (token: string) => {
   try {
-    // debugger;
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/suggestions`, {
       headers: {
         Accept: "application/json",

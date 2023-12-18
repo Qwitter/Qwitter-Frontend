@@ -1,19 +1,19 @@
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { Routes, Route, useNavigate, useSearchParams } from "react-router-dom";
 import SearchInput from "@/components/SearchInput/SearchInput";
 import { MoveLeft } from "lucide-react";
 import { useEffect, useState } from "react";
+import { ExploreSearchTop } from "./ExploreSearchTop";
+import { ExploreSearchPeople } from "./ExploreSearchPeople";
 export function ExploreSearch() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [active, setActive] = useState("Top");
-  const { pathname } = useLocation();
   const openTab = (tabname: string) => {
     setActive(tabname);
     navigate("/Explore/search/" + tabname + `/?q=${searchParams.get("q")}`);
   };
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log(pathname);
   }, []);
   return (
     <div className="max-w-[600px] w-full h-full flex-grow border-r border-primary border-opacity-30 ">
@@ -63,6 +63,12 @@ export function ExploreSearch() {
           </div>
         </div>
         <div className="border-b  border-primary border-opacity-30"></div>
+      </div>
+      <div>
+        <Routes>
+          <Route path="/" element={<ExploreSearchTop />} />
+          <Route path="/people" element={<ExploreSearchPeople />} />
+        </Routes>
       </div>
     </div>
   );

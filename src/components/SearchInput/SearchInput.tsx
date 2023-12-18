@@ -76,7 +76,7 @@ function SearchInput({isSearchPage=false, value}:{isSearchPage?:boolean,value?:s
             >
                 <Popover open={isPopupOpen}  >
 
-                    <PopoverTrigger className='w-full' onClick={() => { console.log("work"); setPopupOpen(true) }} data-testid="searchBar">
+                    <PopoverTrigger className='w-full' onClick={() => { setPopupOpen(true) }} data-testid="searchBar">
                         <div className={`absolute top-0 left-0 z-[${disabled ? 100 : -100}] cursor-text w-full h-full opacity-0 bg-white`} onClick={handleFocusIn}
                         ></div>
                         <TextInput LeftIcon={Search}
