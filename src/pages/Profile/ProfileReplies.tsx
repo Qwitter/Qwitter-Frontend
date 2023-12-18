@@ -21,6 +21,8 @@ export const ProfileReplies = () => {
     refetch();
   }, [token, refetch]);
 
+  // console.log("worked");
+
   const dataArr = useMemo(() => {
     return data?.pages.flat() || [];
   }, [data]);

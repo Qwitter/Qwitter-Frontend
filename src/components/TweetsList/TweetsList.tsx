@@ -10,11 +10,6 @@ type TweetsListProps = {
   childOnEnd?: React.ReactNode;
 };
 
-/*
-NEEDED:
-  loading state & error
-*/
-
 const TweetsList = ({
   data,
   fetcherRef,
@@ -25,7 +20,7 @@ const TweetsList = ({
     console.log(data);
   }, [data]);
 
-  if (!data || data.length === 0) {
+  if ((!data || data.length === 0) && hasMoreData) {
     return (
       <div className="mt-52">
         <Spinner />

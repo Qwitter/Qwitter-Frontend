@@ -27,8 +27,9 @@ export const useInfiniteScroll = (
     queryKey: queryKey,
     queryFn: fetchFunction,
     initialPageParam: 1,
-    getNextPageParam: (_, allPages) => {
-      return allPages.length + 1;
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.length > 0) return allPages.length + 1;
+      return null;
     },
   });
 

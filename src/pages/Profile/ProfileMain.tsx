@@ -23,7 +23,7 @@ import {
   PopoverTrigger,
 } from "@radix-ui/react-popover";
 import { CreateConversation, cn, convertNumberToShortForm } from "@/lib/utils";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 //TODO: options menu , message, notification
 
@@ -34,6 +34,7 @@ type ProfileMainProps = {
 export const ProfileMain = ({ user }: ProfileMainProps) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const token = localStorage.getItem("token");
   // const [followState, setFollowState] = useState(user?.isFollowing);
   const { username } = useParams();
@@ -70,6 +71,10 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
       token: token!,
       users: [username!],
     });
+  };
+
+  const handleFollow = () => {
+    queryClient.invalidateQueries({ queryKey: ["profile", token, username] });
   };
 
   return (
@@ -143,12 +148,14 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
                       </PopoverContent>
                     </Popover>
 
-                    <div
-                      onClick={handleMessageClick}
-                      className="w-[35px] h-[35px] mb-3 mr-2 cursor-pointer flex justify-center items-center rounded-full border border-[#536471] hover:bg-[#eff3f4]/10"
-                    >
-                      <Mail size={20} />
-                    </div>
+                    {!user.isBlocked && (
+                      <div
+                        onClick={handleMessageClick}
+                        className="w-[35px] h-[35px] mb-3 mr-2 cursor-pointer flex justify-center items-center rounded-full border border-[#536471] hover:bg-[#eff3f4]/10"
+                      >
+                        <Mail size={20} />
+                      </div>
+                    )}
 
                     {/* {followState && (
                     <div 
@@ -165,6 +172,7 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
                         "h-[35px] min-w-20",
                         user?.isFollowing && "w-[100px]"
                       )}
+                      onClick={handleFollow}
                       // onClick={() => {
                       //   setFollowState(!followState);
                       // }}
@@ -190,21 +198,21 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
             </div>
             <div className="mb-3">{user?.description}</div>
             <div className="flex flex-wrap leading-4 mb-3">
-              {user?.location && (
+              {!user.isBlocked && user?.location && (
                 <span className="text-[15px] text-gray mr-3">
                   <MapPin size="1.1rem" className="inline mr-1 mb-1" />
                   {user.location}
                 </span>
               )}
 
-              {user?.birthDate && (
+              {!user.isBlocked && user?.birthDate && (
                 <span className="text-[15px] text-gray mr-3">
                   <Cake size="1.1rem" className="inline mr-1 mb-1" />
                   Born {birthDate}
                 </span>
               )}
 
-              {user?.createdAt && (
+              {!user.isBlocked && user?.createdAt && (
                 <span className="text-[15px] text-gray mr-3">
                   <CalendarDays size="1.1rem" className="inline mr-1 mb-1" />
                   Joined {joinDate}

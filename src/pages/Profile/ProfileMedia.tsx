@@ -16,6 +16,8 @@ export const ProfileMedia = () => {
     ["tweets", "profile", "media", username!]
   );
 
+  // console.log("worked");
+
   useEffect(() => {
     if (!token) return;
     refetch();
@@ -26,6 +28,9 @@ export const ProfileMedia = () => {
   }, [data]);
 
   return (
-    <TweetsList data={dataArr} fetcherRef={ref} hasMoreData={hasMoreData} />
+    <>
+      <div></div>
+      <TweetsList data={dataArr} fetcherRef={ref} hasMoreData={hasMoreData} />
+    </>
   );
 };

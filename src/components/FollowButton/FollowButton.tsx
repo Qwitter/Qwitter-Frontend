@@ -32,21 +32,24 @@ export function FollowButton({
   const handleMouseLeave = () => {
     setIsHovered(false);
   };
-  const handleFollowButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleFollowButton = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     event.stopPropagation();
-    FollowServiceFn(username);
+    await FollowServiceFn(username);
     setstate(true);
     onClick && onClick();
   };
   const handleunFollowButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     setshowDialog(true);
+    onClick && onClick();
   };
-  const confirmUnFollowButton = (
+  const confirmUnFollowButton = async (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.stopPropagation();
-    unFollowServiceFn(username);
+    await unFollowServiceFn(username);
     setstate(false);
     setshowDialog(false);
     onClick && onClick();
