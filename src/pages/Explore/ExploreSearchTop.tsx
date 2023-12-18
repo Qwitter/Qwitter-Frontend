@@ -8,23 +8,30 @@ import { useSearchParams } from "react-router-dom";
 export function ExploreSearchTop() {
   const { token } = useContext(UserContext);
   const [SearchParams] = useSearchParams();
-  const { data, ref, hasMoreData } = useInfiniteScroll(
-    async ({ pageParam }) => {
-      return await timelineTweets(
-        pageParam,
-        10,
-        token!,
-        SearchParams.get("q")!
-      );
-    },
-    ["searchTweets", token!, SearchParams.get("q")!]
-  );
+  const { data, ref, isFetching, isFetchingNextPage, hasNextPage } =
+    useInfiniteScroll(
+      async ({ pageParam }) => {
+        return await timelineTweets(
+          pageParam,
+          10,
+          token!,
+          SearchParams.get("q")!
+        );
+      },
+      ["searchTweets", token!, SearchParams.get("q")!]
+    );
   const dataArr = useMemo(() => {
     return data?.pages.flat() || [];
   }, [data]);
   return (
     <>
-      <TweetsList fetcherRef={ref} data={dataArr} hasMoreData={hasMoreData} />
+      <TweetsList
+        fetcherRef={ref}
+        data={dataArr}
+        isFetching={isFetching}
+        isFetchingNextPage={isFetchingNextPage}
+        hasNextPage={hasNextPage}
+      />
     </>
   );
 }
