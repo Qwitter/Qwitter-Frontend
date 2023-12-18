@@ -66,7 +66,7 @@ export function UsernameSuggestion({ nextStep }: Props) {
                 <TextInput
                     required
                     placeHolder='Username'
-                    onClick={()=>setSkip("Next")}
+                    onFocus={()=>setSkip("Next")}
                     className='w-full'
                     data-testid='username'
                     {...form.register("username", {
