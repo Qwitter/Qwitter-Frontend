@@ -586,7 +586,8 @@ export const getUsersSuggestions = async (token: string, username: string) => {
   try {
     if (!username) return [];
     const res = await axios.get(
-      `${VITE_BACKEND_URL}/api/v1/user/search?q=${username.slice(1)}`,
+
+      `${VITE_BACKEND_URL}/api/v1/user/search?q=${username}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
