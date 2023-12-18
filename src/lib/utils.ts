@@ -555,13 +555,14 @@ export const convertNumberToShortForm = (number: number) => {
 export const timelineTweets = async (
   pageParam: number = 1,
   limit: number = 10,
-  token: string
+  token: string,
+  q?: string,
 ) => {
   if (!token) return [];
 
   try {
     const response = await axios.get(
-      `${VITE_BACKEND_URL}/api/v1/tweets?page=${pageParam}&limit=${limit}`,
+      `${VITE_BACKEND_URL}/api/v1/tweets?page=${pageParam}&limit=${limit}`+ (q ? `&q=${q}` : ''),
       {
         headers: {
           Authorization: `Bearer ${token}`,

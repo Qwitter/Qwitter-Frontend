@@ -17,23 +17,20 @@ export function ExploreList() {
     window.scrollTo(0, 0);
   }, []);
   return (
-    
-      <div className="max-w-[600px] w-full h-full flex-grow border-r border-primary border-opacity-30 ">
-        <div className="sticky top-0 z-50 backdrop-blur-sm ">
-          <div className="w-[90%] mx-auto ">
-            <SearchInput isSearchPage />
-          </div>
-          <div className="border-b  border-primary border-opacity-30"></div>
+    <div className="max-w-[600px] w-full h-full flex-grow border-r border-primary border-opacity-30 ">
+      <div className="sticky top-0 z-50 backdrop-blur-sm ">
+        <div className="w-[90%] mx-auto ">
+          <SearchInput isSearchPage />
         </div>
-
-        {Trends ? (
-          <TrendList Trends={Trends!} />
-        ) : (
-          <div className="mx-auto">
-            <Spinner />
-          </div>
-        )}
+        <div className="border-b  border-primary border-opacity-30"></div>
       </div>
-    
+      {Trends ? (
+        <TrendList Trends={Trends!} />
+      ) : (
+        <div className="mx-auto">
+          <Spinner />
+        </div>
+      )}
+    </div>
   );
 }
