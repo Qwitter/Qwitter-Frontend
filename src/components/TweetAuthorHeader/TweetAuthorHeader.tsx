@@ -21,7 +21,7 @@ const TweetAuthorHeader = ({
 }: TweetAuthorHeaderProps) => {
   return (
     <div className="w-full flex items-center">
-      <h3
+      <h3 data-testid="authorName"
         className={cn("flex gap-1 font-semibold items-center w-full", {
           "flex-col gap-0 self-start text-start items-start": mode === "page",
         })}
