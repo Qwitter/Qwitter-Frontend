@@ -19,6 +19,7 @@ export default function ConnectionList() {
   return (
     <div className="max-w-[600px] w-full h-full flex-grow border-r border-primary border-opacity-30">
       <OptionsHeader header="Connection" />
+      <div className="border-b border-primary border-opacity-30"></div>
       {FollowSuggestions ? (
         <UsersList
           listType={"FollowList"}
