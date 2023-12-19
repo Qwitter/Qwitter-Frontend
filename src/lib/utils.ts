@@ -32,7 +32,7 @@ export const getUserData = async (token: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(res.data)
+    console.log(res.data);
     return res.data;
   } catch (err) {
     console.log(err);
@@ -1653,7 +1653,7 @@ export const GetTweetRetweetersService = async (
  * @returns tweet object represents the response from the backend or null
  */
 export const getTweetById = async (tweetId: string, token: string) => {
-  console.log(token)
+  console.log(token);
   try {
     const res = await axios.get(
       `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}`,
@@ -1684,7 +1684,7 @@ export const getTweetReplies = async (
   pageParam: number = 1,
   limit: number = 10
 ) => {
-  console.log(token)
+  console.log(token);
   try {
     const res = await axios.get(
       `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}/replies?page=${pageParam}&limit=${limit}`,
@@ -1694,12 +1694,29 @@ export const getTweetReplies = async (
         },
       }
     );
-    console.log(res.data.replies)
+    console.log(res.data.replies);
     return res.data.replies;
   } catch (err) {
     console.log(err);
     throw new Error("Replies not found");
   }
+};
+
+export const getOperatingSystem = () => {
+  const userAgent = navigator.userAgent;
+  if (userAgent.indexOf("Win") !== -1) {
+    return "Windows";
+  }
+  if (userAgent.indexOf("Linux") !== -1) {
+    return "Linux";
+  }
+  if (/iPhone|iPod/.test(userAgent)) {
+    return "iPhone (iOS)";
+  }
+  if (/Android/.test(userAgent)) {
+    return "Android";
+  }
+  return "Unknown";
 };
 
 /**
@@ -1711,6 +1728,10 @@ export const getTweetReplies = async (
 export const retweet = async (tweetId: string, token: string) => {
   const formData = new FormData();
   formData.append("retweetedId", tweetId);
+  formData.append("text", "");
+  formData.append("body", "");
+  formData.append("source", getOperatingSystem());
+  formData.append("sensitive", "false");
   try {
     const res = await axios.post(
       `${VITE_BACKEND_URL}/api/v1/tweets`,
