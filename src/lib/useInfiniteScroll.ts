@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 
 /*
@@ -28,7 +28,8 @@ export const useInfiniteScroll = (
     queryFn: fetchFunction,
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
-      if (lastPage.length > 0) return allPages.length + 1;
+      console.log(lastPage, allPages)
+      if (lastPage && lastPage.length > 0) return allPages.length + 1;
       return null;
     },
   });

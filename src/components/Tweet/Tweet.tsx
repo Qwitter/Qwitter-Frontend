@@ -51,9 +51,7 @@ const tweetTextHighlighter = (text: string): JSX.Element => {
               <span key={i}>
                 {temp.map((w, i) => {
                   if (w.match(regex)) {
-                    return (
-                      <span key={i}>{convertWordToAnchor(w)} </span>
-                    );
+                    return <span key={i}>{convertWordToAnchor(w)} </span>;
                   }
                   return w + " ";
                 })}
@@ -117,7 +115,7 @@ const Tweet = ({
             </AvatarFallback>
           </Avatar>
         )}
-        <article className="w-full">
+        <article className="w-full overflow-hidden">
           {mode === "page" ? (
             <div>
               {retweeter && (
@@ -157,8 +155,8 @@ const Tweet = ({
               <TweetAuthorHeader tweet={tweet} mode={mode} />
             </>
           )}
-          <>{highlightedTweet}</>
-          {size === "normal" &&
+          <p className="max-w-full w-full break-words">{highlightedTweet}</p>
+          {size === "normal" && tweet.entities &&
             (tweet.entities.media?.[0]?.type === "video" ? (
               <div
                 className="my-4 rounded-lg overflow-hidden"
@@ -167,7 +165,7 @@ const Tweet = ({
                 <Player
                   playsInline
                   poster="/assets/poster.png"
-                  src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
+                  src={tweet.entities.media?.[0].value}
                 >
                   <BigPlayButton position="center" />
                 </Player>
@@ -190,6 +188,7 @@ const Tweet = ({
                   <TweetInteractionsButtons
                     tweet={tweet}
                     className="my-2.5 px-4"
+                    mode={mode}
                   />
                 </div>
                 <hr className="border-primary border-opacity-30" />
@@ -197,7 +196,7 @@ const Tweet = ({
             </div>
           ) : (
             <div onClick={(e) => e.preventDefault()}>
-              <TweetInteractionsButtons tweet={tweet} className="mt-4" />
+              <TweetInteractionsButtons tweet={tweet} className="mt-4" mode={mode}/>
             </div>
           )}
         </article>

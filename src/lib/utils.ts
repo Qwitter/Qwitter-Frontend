@@ -32,6 +32,7 @@ export const getUserData = async (token: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    console.log(res.data)
     return res.data;
   } catch (err) {
     console.log(err);
@@ -434,15 +435,11 @@ export const registerNewUser = async (newUserData: object) => {
  * @returns New user data after the image has changed
  */
 
-export const uploadProfileImage = async ({
-  picFile,
-  token,
-  isBanner = false,
-}: {
-  picFile: File;
-  token: string;
-  isBanner?: boolean;
-}) => {
+export const uploadProfileImage = async (
+  picFile: File,
+  token: string,
+  isBanner: boolean = false
+) => {
   const formData = new FormData();
   formData.append("photo", picFile);
 
@@ -467,7 +464,7 @@ export const uploadProfileImage = async ({
     return res.data.user;
   } catch (error) {
     console.log(error);
-    throw new Error("Couldn't upload image");
+    return null;
   }
 };
 
@@ -559,14 +556,13 @@ export const convertNumberToShortForm = (number: number) => {
 export const timelineTweets = async (
   pageParam: number = 1,
   limit: number = 10,
-  token: string,
-  q?: string,
+  token: string
 ) => {
   if (!token) return [];
 
   try {
     const response = await axios.get(
-      `${VITE_BACKEND_URL}/api/v1/tweets?page=${pageParam}&limit=${limit}`+ (q ? `&q=${q}` : ''),
+      `${VITE_BACKEND_URL}/api/v1/tweets?page=${pageParam}&limit=${limit}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -589,18 +585,14 @@ export const timelineTweets = async (
 export const getUsersSuggestions = async (token: string, username: string) => {
   try {
     if (!username) return [];
-    console.log(username)
     const res = await axios.get(
-
-      `${VITE_BACKEND_URL}/api/v1/user/search?q=${username}`,
+      `${VITE_BACKEND_URL}/api/v1/user/search?q=${username.slice(1)}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       }
     );
-    console.log(res.data.users);
-    
     return res.data.users;
   } catch (err) {
     console.log(err);
@@ -714,7 +706,6 @@ export const getUserConversations = async (token: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(res.data)
     return res.data;
   } catch (err) {
     console.log(err);
@@ -873,15 +864,12 @@ export const CreateMessage = async ({
   formData,
   token,
   conversationId,
-  logicalId
 }: {
   conversationId: string;
   formData: FormData;
   token: string;
-  logicalId:string;
 }) => {
   try {
-    logicalId
     const res = await axios.post(
       `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/message`,
       formData,
@@ -897,7 +885,7 @@ export const CreateMessage = async ({
     return res.data.createdMessage;
   } catch (error) {
     console.log(error);
-    throw new Error("Error sending Message")
+    return null;
   }
 };
 /**
@@ -1056,8 +1044,10 @@ export const deleteMessage = async ({
     const res = await axios.delete(
       `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/message`,
       {
-        data:{ message_id: messageId },
+        data: { messageId: messageId },
         headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       }
@@ -1065,7 +1055,7 @@ export const deleteMessage = async ({
     return res.data;
   } catch (error) {
     console.log(error);
-    throw new Error("Error deleting message");
+    throw new Error("Error deleting conversation");
   }
 };
 
@@ -1110,6 +1100,7 @@ export const updateGroupImageAndName = async ({
  */
 export const GetFollowSuggestionsService = async (token: string) => {
   try {
+    // debugger;
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/suggestions`, {
       headers: {
         Accept: "application/json",
@@ -1659,6 +1650,7 @@ export const GetTweetRetweetersService = async (
  * @returns tweet object represents the response from the backend or null
  */
 export const getTweetById = async (tweetId: string, token: string) => {
+  console.log(token)
   try {
     const res = await axios.get(
       `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}`,
@@ -1689,6 +1681,7 @@ export const getTweetReplies = async (
   pageParam: number = 1,
   limit: number = 10
 ) => {
+  console.log(token)
   try {
     const res = await axios.get(
       `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}/replies?page=${pageParam}&limit=${limit}`,
@@ -1698,7 +1691,8 @@ export const getTweetReplies = async (
         },
       }
     );
-    return res.data.tweets;
+    console.log(res.data.replies)
+    return res.data.replies;
   } catch (err) {
     console.log(err);
     throw new Error("Replies not found");
