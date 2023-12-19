@@ -864,12 +864,15 @@ export const CreateMessage = async ({
   formData,
   token,
   conversationId,
+  logicalId
 }: {
   conversationId: string;
   formData: FormData;
   token: string;
+  logicalId:string;
 }) => {
   try {
+    logicalId
     const res = await axios.post(
       `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/message`,
       formData,
