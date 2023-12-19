@@ -9,11 +9,11 @@ pipeline {
                 sh 'cp /home/fares/.env.local /var/lib/jenkins/workspace/Qwitter_Front_pipeline_main'
             }
         }  
-        stage('Test') {  
-            steps {  
+        // stage('Test') {  
+            // steps {  
                 //sh 'npm run test'
-            }
-        }
+            // }
+        // }
         stage('Build') {  
             steps {  
                 sh 'npm run build'
