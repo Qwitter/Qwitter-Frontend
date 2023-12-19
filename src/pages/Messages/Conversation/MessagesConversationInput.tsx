@@ -49,8 +49,10 @@ export function MessagesConversationInput({ text, setText, handleSubmit, selecte
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter' && e.code === 'Enter' && !e.shiftKey && !e.ctrlKey && !e.altKey && !e.metaKey) {
             e.preventDefault()
+            if(text.length>0){
             handleSubmit()
             handleRemoveImage()
+            }
         }
 
     }
@@ -107,7 +109,7 @@ export function MessagesConversationInput({ text, setText, handleSubmit, selecte
                             Send
                         </div>
                     </button>:
-                    <div className="text-secondary h-full  relative max-w-[40px] flex items-center w-full " onClick={handleSubmit}>
+                    <div className="text-secondary h-full  relative max-w-[40px] flex items-center w-full " >
                     <SendHorizonal className="w-10 h-10 p-2 rounded-3xl " />
                     <div className="absolute bg-[#657b8b] w-fit rounded-sm text-primary text-xs px-2 py-1 opacity-0 bg-opacity-75 group-hover:opacity-100 transition-opacity bottom-full left-1/2 transform -translate-x-1/2 translate-y-[0]">
                         Send
