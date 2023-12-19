@@ -115,7 +115,7 @@ export const ImagePicker = ({
             />
           </div>
           {isRemovable && (
-            <div className="ml-5 rounded-full p-2 bg-gray/80 hover:bg-gray/70 cursor-pointer">
+            <div className="ml-5 rounded-full p-2 bg-gray/80 hover:bg-gray/70 cursor-pointer" data-testid="removePic">
               <X onClick={handleImageDelete} />
             </div>
           )}
