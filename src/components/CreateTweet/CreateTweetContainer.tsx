@@ -10,7 +10,7 @@ import { CreateTweetSchema } from "@/models/CreateTweet";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createTweet } from "@/lib/utils";
+import { createTweet, getOperatingSystem } from "@/lib/utils";
 import { toast } from "../ui/use-toast";
 import { Spinner } from "../Spinner";
 type Images = {
@@ -81,22 +81,6 @@ const CreateTweetContainer = ({
     setShowPopUp(false);
   };
 
-  function getOperatingSystem() {
-    const userAgent = navigator.userAgent;
-    if (userAgent.indexOf("Win") !== -1) {
-      return "Windows";
-    }
-    if (userAgent.indexOf("Linux") !== -1) {
-      return "Linux";
-    }
-    if (/iPhone|iPod/.test(userAgent)) {
-      return "iPhone (iOS)";
-    }
-    if (/Android/.test(userAgent)) {
-      return "Android";
-    }
-    return "Unknown";
-  }
   function getLocationOfUser() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(success, error);
@@ -112,6 +96,7 @@ const CreateTweetContainer = ({
       setUserLocation("");
     }
   }
+
   function handleSubmit() {
     getLocationOfUser();
     const formData = new FormData();

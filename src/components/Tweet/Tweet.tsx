@@ -33,6 +33,7 @@ const convertWordToAnchor = (word: string): JSX.Element => {
 };
 
 const tweetTextHighlighter = (text: string): JSX.Element => {
+  if (!text) return <p className="text-gray-700">{text}</p>;
   const regex = /(@|#)([a-zA-Z0-9_]+)/g;
   const matches = text.match(regex);
   if (!matches) return <p className="text-gray-700">{text}</p>;
@@ -71,6 +72,7 @@ type TweetProps = {
   size?: "normal" | "compact";
   mode?: "list" | "page";
   retweeter?: Tweet["author"];
+  mainTweet?: Tweet;
 };
 
 const Tweet = ({
@@ -78,12 +80,15 @@ const Tweet = ({
   mode = "list",
   size = "normal",
   retweeter,
+  mainTweet,
 }: TweetProps) => {
   const { user } = useContext(UserContext);
 
   const highlightedTweet = useMemo(() => {
     return tweetTextHighlighter(tweet.text);
   }, [tweet.text]);
+
+  console.log(tweet)
 
   if (tweet.retweetedTweet)
     return (
@@ -92,8 +97,11 @@ const Tweet = ({
         mode={mode}
         size={size}
         retweeter={tweet.author}
+        mainTweet={tweet}
       />
     );
+
+  if (!tweet.author) return null;
 
   return (
     <div data-testid="tweetDiv">
@@ -115,7 +123,9 @@ const Tweet = ({
             </AvatarFallback>
           </Avatar>
         )}
-        <article className={cn("w-full overflow-x-clip", {"px-2" : mode === "list"})}>
+        <article
+          className={cn("w-full overflow-x-clip", { "px-2": mode === "list" })}
+        >
           {mode === "page" ? (
             <div>
               {retweeter && (
@@ -155,8 +165,11 @@ const Tweet = ({
               <TweetAuthorHeader tweet={tweet} mode={mode} />
             </>
           )}
-          <p className="max-w-full break-words overflow-clip">{highlightedTweet}</p>
-          {size === "normal" && tweet.entities &&
+          <p className="max-w-full break-words overflow-clip">
+            {highlightedTweet}
+          </p>
+          {size === "normal" &&
+            tweet.entities &&
             (tweet.entities.media?.[0]?.type === "video" ? (
               <div
                 className="my-4 rounded-lg overflow-hidden"
@@ -189,6 +202,7 @@ const Tweet = ({
                     tweet={tweet}
                     className="my-2.5 px-4"
                     mode={mode}
+                    mainTweet={mainTweet}
                   />
                 </div>
                 <hr className="border-primary border-opacity-30" />
@@ -196,7 +210,12 @@ const Tweet = ({
             </div>
           ) : (
             <div onClick={(e) => e.preventDefault()}>
-              <TweetInteractionsButtons tweet={tweet} className="mt-4" mode={mode}/>
+              <TweetInteractionsButtons
+                tweet={tweet}
+                className="mt-4"
+                mode={mode}
+                mainTweet={mainTweet}
+              />
             </div>
           )}
         </article>
