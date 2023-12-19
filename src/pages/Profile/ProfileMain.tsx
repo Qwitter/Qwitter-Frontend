@@ -191,12 +191,12 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
         ) : (
           <div>
             <div className="w-full flex flex-col mt-1 mb-3">
-              <span className="text-xl leading-5 font-bold">{user?.name}</span>
+              <span className="text-xl leading-5 font-bold" data-testid="name">{user?.name}</span>
               <span className="text-gray text-[15px] mt-1">
                 @{user?.userName}
               </span>
             </div>
-            <div className="mb-3">{user?.description}</div>
+            <div className="mb-3" data-testid="bio">{user?.description}</div>
             <div className="flex flex-wrap leading-4 mb-3">
               {!user.isBlocked && user?.location && (
                 <span className="text-[15px] text-gray mr-3">
@@ -206,7 +206,7 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
               )}
 
               {!user.isBlocked && user?.birthDate && (
-                <span className="text-[15px] text-gray mr-3">
+                <span className="text-[15px] text-gray mr-3" data-testid="birthDate">
                   <Cake size="1.1rem" className="inline mr-1 mb-1" />
                   Born {birthDate}
                 </span>

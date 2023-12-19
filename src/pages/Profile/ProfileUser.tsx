@@ -46,7 +46,7 @@ export function ProfileUser() {
     <>
       <div className="flex flex-row min-h-[53px] w-full sticky  top-[-1px] px-4 bg-black bg-opacity-60 backdrop-blur-xl z-50 border-b border-primary border-opacity-30">
         <span className="h-full my-auto w-14">
-          <div className="w-[35px] h-[35px] flex justify-center items-center rounded-full transition-colors hover:bg-dark-gray cursor-pointer">
+          <div className="w-[35px] h-[35px] flex justify-center items-center rounded-full transition-colors hover:bg-dark-gray cursor-pointer" data-testid="backHome">
             <ArrowLeft size="1.25rem" onClick={handleBackArrow} />
           </div>
         </span>
