@@ -164,7 +164,6 @@ const Tweet = ({
               >
                 <Player
                   playsInline
-                  poster="/assets/poster.png"
                   src={tweet.entities.media?.[0].value}
                 >
                   <BigPlayButton position="center" />

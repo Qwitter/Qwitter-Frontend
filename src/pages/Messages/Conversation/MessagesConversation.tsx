@@ -117,7 +117,7 @@ export function MessagesConversation() {
       replyToMessage: replyToMessage?replyToMessage:null,
       entities: {
           hasthtags:[],
-          media: media?[{ value: URL.createObjectURL(media) , type: "image", id: "123" }]:[],
+          media: media?[{ value: URL.createObjectURL(media) , type: media.type.startsWith('video')?"video":"photo", id: "123" }]:[],
           mentions: [],
       }
     }
