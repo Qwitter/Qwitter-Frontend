@@ -10,6 +10,10 @@ import { TbDiscountCheckFilled } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { cn, convertNumberToShortForm } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { useQueryClient } from "@tanstack/react-query";
+import { useContext } from "react";
+import { UserContext } from "@/contexts/UserContextProvider";
+import { FollowButton } from "../FollowButton/FollowButton";
 
 type TweetAuthorHeaderProps = {
   tweet: Tweet;
@@ -19,6 +23,19 @@ const TweetAuthorHeader = ({
   tweet,
   mode = "list",
 }: TweetAuthorHeaderProps) => {
+  const { token } = useContext(UserContext);
+  const queryClient = useQueryClient();
+
+  const invalidateUserData = () => {
+    queryClient.invalidateQueries({
+      queryKey: ["profile", token, tweet.author.userName],
+    });
+
+    queryClient.invalidateQueries({
+      queryKey: ["tweets"],
+    });
+  };
+
   return (
     <div className="w-full flex items-center">
       <h3
@@ -34,12 +51,21 @@ const TweetAuthorHeader = ({
           </HoverCardTrigger>
           <HoverCardContent className="w-72 bg-black text-start box-shadow">
             <Link to="#" className="w-full cursor-default flex flex-col">
-              <Avatar className="w-16 h-16 mb-5">
-                <AvatarImage src={`${tweet.author.profileImageUrl}`} />
-                <AvatarFallback>
-                  {tweet.author.userName.substring(0, 2)}
-                </AvatarFallback>
-              </Avatar>
+              <div className="flex w-full justify-between">
+                <Avatar className="w-16 h-16 mb-5">
+                  <AvatarImage src={`${tweet.author.profileImageUrl}`} />
+                  <AvatarFallback>
+                    {tweet.author.userName.substring(0, 2)}
+                  </AvatarFallback>
+                </Avatar>
+                {/* //TODO: Change true to is following */}
+                <FollowButton
+                  isFollowing={true}
+                  username={tweet.author.userName}
+                  className={cn("h-[35px] min-w-20")}
+                  onClick={invalidateUserData}
+                />
+              </div>
               <Link
                 to={`/profile/${tweet.author.userName}`}
                 className="hover:underline self-start"
