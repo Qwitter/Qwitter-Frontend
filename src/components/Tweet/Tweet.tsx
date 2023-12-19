@@ -102,7 +102,7 @@ const Tweet = ({
         className={cn(
           "w-full flex px-4 py-3 gap-4 transition-all cursor-default",
           {
-            "hover:bg-[#080808] cursor-pointer  border-b border-primary border-opacity-30":
+            "hover:bg-[#080808] cursor-pointer border-b border-primary border-opacity-30 gap-2":
               mode === "list",
           }
         )}
@@ -115,7 +115,7 @@ const Tweet = ({
             </AvatarFallback>
           </Avatar>
         )}
-        <article className="w-full overflow-hidden">
+        <article className={cn("w-full overflow-x-clip", {"px-2" : mode === "list"})}>
           {mode === "page" ? (
             <div>
               {retweeter && (
@@ -155,7 +155,7 @@ const Tweet = ({
               <TweetAuthorHeader tweet={tweet} mode={mode} />
             </>
           )}
-          <p className="max-w-full w-full break-words">{highlightedTweet}</p>
+          <p className="max-w-full break-words overflow-clip">{highlightedTweet}</p>
           {size === "normal" && tweet.entities &&
             (tweet.entities.media?.[0]?.type === "video" ? (
               <div

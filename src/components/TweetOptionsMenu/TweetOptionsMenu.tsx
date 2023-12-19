@@ -13,6 +13,7 @@ import { FiTrash2 } from "react-icons/fi";
 import { UserContext } from "@/contexts/UserContextProvider";
 import DeleteTweetPopUp from "../DeleteTweetPopUp/DeleteTweetPopUp";
 import { Ban, UserPlus, UserX, VolumeX } from "lucide-react";
+import { Link } from "react-router-dom";
 
 type TweetOptionsMenuProps = {
   tweet: Tweet;
@@ -23,7 +24,7 @@ const TweetOptionsMenu = ({ tweet }: TweetOptionsMenuProps) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   return (
-    <>
+    <Link to="#">
       <DropdownMenu>
         <DeleteTweetPopUp
           tweetId={tweet.id}
@@ -73,7 +74,7 @@ const TweetOptionsMenu = ({ tweet }: TweetOptionsMenuProps) => {
           )}
         </DropdownMenuContent>
       </DropdownMenu>
-    </>
+    </Link>
   );
 };
 
