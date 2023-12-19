@@ -15,20 +15,24 @@ import {
   unBookmarkTweet,
   unlikeTweet,
 } from "@/lib/utils";
-import { useContext,  useState } from "react";
+import { useContext, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { toast } from "../ui/use-toast";
+import { useNavigate } from "react-router-dom";
 
 type TweetInteractionsButtonsProps = {
   tweet: Tweet;
   className?: string;
+  mode?: "list" | "page";
 };
 
 const TweetInteractionsButtons = ({
   tweet,
   className,
+  mode = "list",
 }: TweetInteractionsButtonsProps) => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [tweetClone, setTweetClone] = useState<Tweet>(tweet);
   const { token } = useContext(UserContext);
@@ -195,7 +199,18 @@ const TweetInteractionsButtons = ({
 
   return (
     <div className={cn("flex gap-4 text-gray justify-between", className)}>
-      <div className="tweet-icon-container group" data-testid="Comment">
+      <div
+        className="tweet-icon-container group"
+        data-testid="Comment"
+        onClick={(e) => {
+          e.preventDefault();
+          if (mode === "page") {
+            console.log("same route")
+            return;
+          }
+          navigate(`/tweet/${tweet.id}`);
+        }}
+      >
         <div className="relative">
           <div className="tweet-icon-radius group-hover:bg-secondary"></div>
           <GoComment className="tweet-icon group-hover:text-secondary" />
