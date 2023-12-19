@@ -8,6 +8,7 @@ import { ConversationLeavePopUp } from "../MessagesPopup/ConversationLeavePopUp"
 import { Spinner } from "@/components/Spinner";
 import { UsersListItem } from "@/components/UsersListItem/UsersListItem";
 import { ConversationBlockUserPopup } from "../MessagesPopup/ConversationBlockUserPopup";
+import ImageGrid from "../ImageGrid";
 
 export function MessagesConversationInfo() {
   const navigate = useNavigate();
@@ -35,12 +36,12 @@ export function MessagesConversationInfo() {
         {currentConversation.isGroup && (
           <>
             <div className="px-4 py-3 flex flex-row items-center">
-              <Avatar className="mr-4">
-                <AvatarImage
-                  className="w-10 h-10 rounded-full border-primary border-[2px] border-solid border-opacity-30"
-                  src={currentConversation.photo}
-                />
-              </Avatar>
+              {!currentConversation.photo ? <ImageGrid
+                className="w-12 h-10  rounded-full mr-2 min-w-[40px] max-lg:w-10 "
+                images={currentConversation.users.map(conversation => conversation.profileImageUrl || "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg")} /> :
+                <Avatar className="mr-4 min-w-max ">
+                  <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" src={currentConversation.photo} />
+                </Avatar>}
               <div className="flex flex-row justify-between w-full">
                 <span className="text-primary text-[15px] font-bold">
                   {currentConversation?.fullName}
@@ -68,7 +69,7 @@ export function MessagesConversationInfo() {
               verified={user.isVerified! || false}
               key={index}
               username={user.userName}
-              profileImageUrl={user.profileImageUrl||"https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"}
+              profileImageUrl={user.profileImageUrl || "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"}
               name={user.name}
               description=""
               listType={
@@ -87,10 +88,10 @@ export function MessagesConversationInfo() {
             !currentConversation.isGroup
               ? handleBlock
               : () => {
-                  navigate("/Messages/" + currentConversation.id + "/add", {
-                    state: { previousLocation: location },
-                  });
-                }
+                navigate("/Messages/" + currentConversation.id + "/add", {
+                  state: { previousLocation: location },
+                });
+              }
           }
         >
           {!currentConversation.isGroup

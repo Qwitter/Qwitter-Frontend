@@ -46,7 +46,7 @@ export function MessagesConversationMessage({ isMessage, isGroup, error, sending
         return text;
     }
     useEffect(() => {
-        console.log(entities.media)
+        console.log(replyToMessage)
 
     }, []);
 
@@ -64,7 +64,7 @@ export function MessagesConversationMessage({ isMessage, isGroup, error, sending
                             {replyToMessage && <div className={cn("flex flex-col mt-3 w-full -mb-7", userName == user?.userName && "justify-end", entities.media.length > 0 && " -mb-10")}>
                                 <div className={cn("pb-2 gap-1 min-w-max flex flex-row items-center", userName == user?.userName && "justify-end")}>
                                     {userName == user?.userName ? <Reply strokeWidth={5} className="w-[10px] h-[10px] text-[#71767B]" /> : <ForwardIcon strokeWidth={5} className="w-[10px] h-[10px] text-[#71767B]" />}
-                                    <span className="text-gray text-[11px]">Replying to {isGroup && replyToMessage.userName}</span>
+                                    <span className="text-gray text-[11px]">Replying to {isGroup &&replyToMessage.userName != user?.userName && replyToMessage.userName}</span>
                                 </div>
                                 <div className={cn("bg-[#16181C] mt-2 text-[13px] px-4 py-3 max-w-full text-gray  rounded-3xl pb-8 ", userName == user?.userName && "justify-end")}>
                                     <p className="break-words max-w-[400px] max-md:max-w-[60vw]">{replyToMessage.text}</p>
@@ -99,7 +99,7 @@ export function MessagesConversationMessage({ isMessage, isGroup, error, sending
 
                 </div>
                 <div className={`flex flex-row gap-1 items-center mt-1 ${isGroup && userName != user?.userName && 'ml-12'}`}>
-                    {isGroup && <span className="text-gray text-[13px] ">{userName}</span>}
+                    {isGroup &&userName != user?.userName && <span className="text-gray text-[13px] ">{userName}</span>}
                     <span className="text-gray text-[13px] ">{formatDate(date)}</span>
                     {sending && <><div className="bg-gray rounded-full w-[3px] h-[3px]"></div>
                         <div className="flex flex-row gap-1 items-center">
