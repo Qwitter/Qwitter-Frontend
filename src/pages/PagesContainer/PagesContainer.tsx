@@ -34,6 +34,10 @@ export function PagesContainer() {
     socket.emit(EVENTS.CLIENT.JOIN_ROOM, user.userName);
     socket.on(EVENTS.SERVER.NOTIFICATION, async (notification) => {
       console.log(notification);
+      if (Notification.permission === 'granted') {
+        // Show a notification
+        new Notification(notification.text);
+    }
     });
     return () => {
       socket.disconnect();
