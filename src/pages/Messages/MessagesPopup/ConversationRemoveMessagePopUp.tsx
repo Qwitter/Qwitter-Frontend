@@ -19,7 +19,15 @@ export function ConversationRemoveMessagePopUp({ setChatMessages, show, setShow,
             const previousConversationMessages = queryClient.getQueryData(["userConversation", conversationId])
             // Optimistically update to the new value
             queryClient.setQueryData(["userConversation", conversationId], (old: InfiniteData<conversation, unknown>) => {
-                old.pages[0].messages = old.pages[0].messages.filter(message => message.id != messageId)
+                old.pages = old.pages.map(page => {
+
+                    const updatedMessages = page.messages.filter(message => message.id !== messageId);
+
+                    return {
+                        ...page,
+                        messages: updatedMessages,
+                    };
+                });
                 setChatMessages!([...handlePagingMessages(old)])
                 return old
             })
@@ -28,7 +36,7 @@ export function ConversationRemoveMessagePopUp({ setChatMessages, show, setShow,
             return { previousConversationMessages }
         },
         onSuccess: () => {
-                setShow!(false)
+            setShow!(false)
         },
         onError: (data) => {
             console.log(data);
@@ -36,6 +44,7 @@ export function ConversationRemoveMessagePopUp({ setChatMessages, show, setShow,
         },
         onSettled: () => {
             queryClient.invalidateQueries({ queryKey: ["userConversation", conversationId] })
+            setShow!(false)
         }
     })
     const handlePagingMessages = (data: InfiniteData<conversation, unknown>) => {

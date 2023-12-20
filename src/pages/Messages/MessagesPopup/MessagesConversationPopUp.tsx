@@ -35,11 +35,11 @@ export function MessagesConversationPopUp({ isUser,text,setChatMessages ,setIsOp
                 </div>
                 <span className="text-primary text-[15px] font-bold">Copy message</span>
             </div>
-            {isUser&& <div className="w-full px-4 py-3 flex-row flex hover:bg-[#16181c] cursor-pointer">
+            {isUser&& <div className="w-full px-4 py-3 flex-row flex hover:bg-[#16181c] cursor-pointer" onClick={()=>setShow(true)}>
                 <div className="pr-3 flex justify-center items-center ">
                     <Trash2 className="h-5 w-5 text-primary" />
                 </div>
-                <span className="text-primary text-[15px] font-bold" onClick={()=>setShow(true)}>Delete for All</span>
+                <span className="text-primary text-[15px] font-bold" >Delete for All</span>
             </div>}
             <ConversationRemoveMessagePopUp setChatMessages={setChatMessages} show={show} setShow={handleHidePopUp} messageId={messageId} />
 
