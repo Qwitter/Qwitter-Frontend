@@ -117,7 +117,7 @@ export function MessagesConversation() {
       replyToMessage: replyToMessage?replyToMessage:null,
       entities: {
           hasthtags:[],
-          media: media?[{ value: URL.createObjectURL(media) , type: "image", id: "123" }]:[],
+          media: media?[{ value: URL.createObjectURL(media) , type: media.type.startsWith('video')?"video":"photo", id: "123" }]:[],
           mentions: [],
       }
     }
@@ -252,12 +252,12 @@ export function MessagesConversation() {
           </div>
 
           {
-            !inView && data.pages[0].isGroup ?
+            !inView && data.pages[0].isGroup&&!data.pages[0].photo ?
               <ImageGrid
                 className="w-10 h-8 rounded-full mr-2"
                 images={data.pages[0].users.map(conversation => conversation.profileImageUrl || "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg")} /> :
               <img
-                src={
+                src={data.pages[0].isGroup? data.pages[0].photo :
                   data.pages[0].users[0].profileImageUrl ||
                   "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
                 }

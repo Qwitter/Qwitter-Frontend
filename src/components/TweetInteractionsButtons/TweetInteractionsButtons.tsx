@@ -169,11 +169,13 @@ const TweetInteractionsButtons = ({
     onSettled(_, error) {
       if (error) {
         toast({ title: error.message });
-        if (tweetClone.hasRetweeted) unRetweetLocalTweet();
+        if (tweetClone.isRetweeted) unRetweetLocalTweet();
       }
 
+      toast({ title: "Retweeted Successfully" });
+
       queryClient.invalidateQueries({
-        queryKey: ["tweet", tweet.id],
+        queryKey: ["tweets"],
       });
     },
   });
@@ -188,11 +190,13 @@ const TweetInteractionsButtons = ({
     onSettled(_, error) {
       if (error) {
         toast({ title: error.message });
-        if (!tweetClone.hasRetweeted) retweetLocalTweet();
+        if (!tweetClone.isRetweeted) retweetLocalTweet();
       }
 
+      toast({ title: "Removed Retweet Successfully" });
+
       queryClient.invalidateQueries({
-        queryKey: ["tweet", tweet.id],
+        queryKey: ["tweets"],
       });
     },
   });
@@ -205,7 +209,7 @@ const TweetInteractionsButtons = ({
         onClick={(e) => {
           e.preventDefault();
           if (mode === "page") {
-            console.log("same route")
+            console.log("same route");
             return;
           }
           navigate(`/tweet/${tweet.id}`);
@@ -224,7 +228,7 @@ const TweetInteractionsButtons = ({
         className="tweet-icon-container group"
         data-testid="Retweet"
         onClick={
-          tweetClone.hasRetweeted
+          tweetClone.isRetweeted
             ? () => unRetweetTweetMutate(tweet.id)
             : () => retweetTweetMutate(tweet.id)
         }
@@ -232,12 +236,12 @@ const TweetInteractionsButtons = ({
         <div className="relative">
           <div
             className={cn("tweet-icon-radius group-hover:bg-[#00ba7c]", {
-              "bg-[#00ba7c]": tweetClone.hasRetweeted,
+              "bg-[#00ba7c]": tweetClone.isRetweeted,
             })}
           ></div>
           <BiRepost
             className={cn("tweet-icon group-hover:text-[#00ba7c]", {
-              "text-[#00ba7c]": tweetClone.hasRetweeted,
+              "text-[#00ba7c]": tweetClone.isRetweeted,
             })}
           />
         </div>
@@ -245,7 +249,7 @@ const TweetInteractionsButtons = ({
           className={cn(
             "text-gray transition-all group-hover:text-[#00ba7c] duration-200 ease-in-out",
             {
-              "text-[#00ba7c]": tweetClone.hasRetweeted,
+              "text-[#00ba7c]": tweetClone.isRetweeted,
             }
           )}
         >

@@ -50,8 +50,8 @@ export function MessagesList({
         {conversations && conversations.map((user, index) => (
             <li key={index} className={cn("py-3 px-4 flex overflow-x-hidden flex-row justify-between group  hover:bg-[#16181c] w-full transition-all cursor-pointer items-start ", (user.id == currentConversation?.id) ? "bg-[#16181c]  border-secondary border-r-4 " : "")} onClick={() => handleConversationClick(user)} >
                 <div className={`flex flex-row flex-grow  ${mode != "Group" && 'truncate'} max-w-[86%]`} >
-                    {user.isGroup ? <ImageGrid
-                        className="w-14 h-10 rounded-full mr-2 min-w-[40px] "
+                    {user.isGroup &&!user.photo? <ImageGrid
+                        className="w-12 h-10  rounded-full mr-2 min-w-[40px] max-lg:w-10 "
                         images={user.users.map(conversation => conversation.profileImageUrl || "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg")} /> : <Avatar className="mr-4 min-w-max ">
                         <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" src={user.isGroup ? user.photo : user.users[0].profileImageUrl} />
                         <AvatarFallback className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" >{user?.users[0].userName.substring(0, 2)}</AvatarFallback>
