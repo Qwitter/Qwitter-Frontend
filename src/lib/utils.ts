@@ -480,8 +480,7 @@ export const deleteProfileImage = async (
 ) => {
   try {
     const res = await axios.delete(
-      `${VITE_BACKEND_URL}/api/v1/user/profile_${
-        isBanner ? "banner" : "picture"
+      `${VITE_BACKEND_URL}/api/v1/user/profile_${isBanner ? "banner" : "picture"
       }`,
       {
         headers: {
@@ -869,7 +868,7 @@ export const CreateMessage = async ({
   conversationId: string;
   formData: FormData;
   token: string;
-  logicalId:string;
+  logicalId: string;
 }) => {
   try {
     logicalId
@@ -1047,10 +1046,8 @@ export const deleteMessage = async ({
     const res = await axios.delete(
       `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/message`,
       {
-        data: { messageId: messageId },
+        data: { message_id: messageId },
         headers: {
-          Accept: "application/json",
-          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       }
