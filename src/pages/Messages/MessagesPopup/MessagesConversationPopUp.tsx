@@ -22,7 +22,7 @@ export function MessagesConversationPopUp({ isUser,text,setChatMessages ,setIsOp
 
     return (
         <>
-            <div className="w-full px-4 py-3 flex-row flex hover:bg-[#16181c] cursor-pointer" onClick={handleSetReply}>
+            <div data-testid="reply" className="w-full px-4 py-3 flex-row flex hover:bg-[#16181c] cursor-pointer" onClick={handleSetReply}>
                 <div className="pr-3 flex justify-center items-center ">
                     <ForwardIcon className="h-5 w-5 text-primary" />
                 </div>
@@ -35,7 +35,7 @@ export function MessagesConversationPopUp({ isUser,text,setChatMessages ,setIsOp
                 </div>
                 <span className="text-primary text-[15px] font-bold">Copy message</span>
             </div>
-            {isUser&& <div className="w-full px-4 py-3 flex-row flex hover:bg-[#16181c] cursor-pointer">
+            {isUser&& <div data-testid="delete" className="w-full px-4 py-3 flex-row flex hover:bg-[#16181c] cursor-pointer">
                 <div className="pr-3 flex justify-center items-center ">
                     <Trash2 className="h-5 w-5 text-primary" />
                 </div>

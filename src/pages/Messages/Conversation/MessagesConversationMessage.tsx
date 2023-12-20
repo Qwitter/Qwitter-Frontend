@@ -67,7 +67,7 @@ export function MessagesConversationMessage({ isMessage, isGroup, error, sending
                                     <span className="text-gray text-[11px]">Replying to {isGroup && replyToMessage.userName}</span>
                                 </div>
                                 <div className={cn("bg-[#16181C] mt-2 text-[13px] px-4 py-3 max-w-full text-gray  rounded-3xl pb-8 ", userName == user?.userName && "justify-end")}>
-                                    <p className="break-words max-w-[400px] max-md:max-w-[60vw]">{replyToMessage.text}</p>
+                                    <p data-testid="replyToMessageText" className="break-words max-w-[400px] max-md:max-w-[60vw]">{replyToMessage.text}</p>
                                 </div>
                             </div>}
                             <div className={cn("flex-shrink relative flex flex-col items-start ", userName == user?.userName && "items-end")}>
@@ -76,7 +76,7 @@ export function MessagesConversationMessage({ isMessage, isGroup, error, sending
                                     <TweetImagesViewer images={[{ value: entities.media[0].value, type: entities.media[0].type }]} />
                                 </div>}
 
-                                {text.length > 0 && <div className={cn("bg-[#2f3336] text-[15px] px-4 py-3 mt-1 min-w-max rounded-3xl ", userName == user?.userName ? "bg-secondary rounded-br-sm" : "rounded-bl-sm", error && "bg-danger")}>
+                                {text.length > 0 && <div data-testid="text" className={cn("bg-[#2f3336] text-[15px] px-4 py-3 mt-1 min-w-max rounded-3xl ", userName == user?.userName ? "bg-secondary rounded-br-sm" : "rounded-bl-sm", error && "bg-danger")}>
                                     <p className="text-primary text-[15px] break-words max-w-[400px] max-md:max-w-[60vw]" dangerouslySetInnerHTML={ { __html: handleMentions() }}>
                                         
                                     </p>
@@ -85,7 +85,7 @@ export function MessagesConversationMessage({ isMessage, isGroup, error, sending
                         </div>
                         <Popover open={isOpen} onOpenChange={setIsOpen} >
                             <div className={cn("opacity-0   flex flex-row  group-hover:opacity-100 ", userName == user?.userName ? "pr-1" : "pl-1")}>
-                                {!sending && !error && <div className="text-secondary h-full group relative max-w-[40px] flex items-center w-full cursor-pointer">
+                                {!sending && !error && <div data-testid="moreButton" className="text-secondary h-full group relative max-w-[40px] flex items-center w-full cursor-pointer">
                                     <PopoverTrigger >
                                         <MoreHorizontal className="w-10 h-10 p-2 rounded-3xl text-gray hover:bg-secondary hover:bg-opacity-10" />
                                     </PopoverTrigger>

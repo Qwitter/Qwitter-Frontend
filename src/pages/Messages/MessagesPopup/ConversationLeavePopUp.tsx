@@ -61,7 +61,7 @@ export function ConversationLeavePopUp({ show, setShow, conversationToDelete }: 
                     This conversation will be deleted from your inbox. Other people in the conversation will still be able to see it.
                 </p>
             </div>
-                <div className="w-full">
+                <div data-testid="leave" className="w-full">
                     <Button
                         onClick={onSubmit}
                         variant="destructive" size="full" className="mb-3">

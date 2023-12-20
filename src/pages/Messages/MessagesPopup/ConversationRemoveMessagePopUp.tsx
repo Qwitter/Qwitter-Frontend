@@ -63,7 +63,7 @@ export function ConversationRemoveMessagePopUp({ setChatMessages, show, setShow,
                     This message will be deleted for you. Other people in the conversation will still be able to see it.
                 </p>
             </div>
-                <div className="w-full">
+                <div data-testid="confirmDelete" className="w-full">
                     <Button
                         onClick={onSubmit}
                         variant="destructive" size="full" className="mb-3">

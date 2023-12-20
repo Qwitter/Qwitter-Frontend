@@ -45,7 +45,7 @@ export function MessagesList({
 
 
 
-    return (<>
+    return (<div data-testid="convos">
 
         {conversations && conversations.map((user, index) => (
             <li key={index} className={cn("py-3 px-4 flex overflow-x-hidden flex-row justify-between group  hover:bg-[#16181c] w-full transition-all cursor-pointer items-start ", (user.id == currentConversation?.id) ? "bg-[#16181c]  border-secondary border-r-4 " : "")} onClick={() => handleConversationClick(user)} >
@@ -112,7 +112,7 @@ export function MessagesList({
                                 <div className="z-0 flex flex-row items-first cursor-pointer">
                                     <PopoverTrigger >
                                         <div className={"hidden group-hover:flex flex-row  group-hover: pl-1"}>
-                                            <div className="text-secondary h-full group relative max-w-[40px] flex items-start w-full cursor-pointer">
+                                            <div data-testid="convoPopover" className="text-secondary h-full group relative max-w-[40px] flex items-start w-full cursor-pointer">
                                                 <MoreHorizontal className="w-10 h-10 p-2 rounded-3xl text-gray hover:bg-secondary hover:bg-opacity-10" />
                                             </div>
                                         </div>
@@ -126,7 +126,7 @@ export function MessagesList({
                     </Popover>
                 </div>
             </li>
-        ))}</>
+        ))}</div>
     );
 }
 export function MessagesConversationListPopUp({ showDeletePopUp }: { showDeletePopUp: () => void }) {
@@ -145,7 +145,7 @@ export function MessagesConversationListPopUp({ showDeletePopUp }: { showDeleteP
             </div>
 
             <div className="w-full px-4 py-3 flex-row flex hover:bg-[#16181c] cursor-pointer" onClick={showDeletePopUp} >
-                <div className="pr-3 flex justify-center items-center ">
+                <div data-testid="deleteConversation" className="pr-3 flex justify-center items-center ">
                     <Trash2 className="h-5 w-5 text-danger" />
                 </div>
                 <span className="text-danger text-[15px] font-bold">Delete conversation</span>
