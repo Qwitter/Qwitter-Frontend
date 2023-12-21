@@ -1,5 +1,5 @@
 import { conversation } from "@/pages/Messages/types/MessagesTypes";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 type MessagesContextProviderProps = {
     children: React.ReactNode;
@@ -9,7 +9,7 @@ type MessageReply = {
     replyId: string;
     message: string;
     userName: string;
-    image:{value:string,type:string}[]
+    image: { value: string, type: string }[]
 }
 
 type MessagesContextType = {
@@ -41,25 +41,49 @@ const MessagesContextProvider = ({ children }: MessagesContextProviderProps) => 
     const [userAllConversation, setUserAllConversation] = useState<conversation[] | null>(null);
     const [currentConversation, setCurrentConversation] = useState<conversation | null>(null);
 
-    // useEffect(() => {
-    //     const storedUser = localStorage.getItem("user");
-    //     const storedToken = localStorage.getItem("token");
+    useEffect(() => {
+        // Retrieve data from localStorage
+        const storedUserAllConversation = localStorage.getItem("userAllConversation");
+        const storedCurrentConversation = localStorage.getItem("currentConversation");
+        const storedMessageReply = localStorage.getItem("messageReply");
 
-    //     if (storedUser && storedToken) {
-    //         setUser(JSON.parse(storedUser));
-    //         setToken(storedToken);
-    //     }
-    // }, []);
+        const parsedUserAllConversation = storedUserAllConversation
+            ? JSON.parse(storedUserAllConversation)
+            : null;
+        const parsedCurrentConversation = storedCurrentConversation
+            ? JSON.parse(storedCurrentConversation)
+            : null;
+        const parsedMessageReply = storedMessageReply
+            ? JSON.parse(storedMessageReply)
+            : null;
 
+        setUserAllConversation(parsedUserAllConversation);
+        setCurrentConversation(parsedCurrentConversation);
+        setMessageReply(parsedMessageReply);
+    }, []); 
 
+    // Update localStorage when state changes
+    useEffect(() => {
+        localStorage.setItem("userAllConversation", JSON.stringify(userAllConversation));
+    }, [userAllConversation]);
 
+    useEffect(() => {
+        localStorage.setItem("currentConversation", JSON.stringify(currentConversation));
+    }, [currentConversation]);
+
+    useEffect(() => {
+        localStorage.setItem("messageReply", JSON.stringify(messageReply));
+    }, [messageReply]);
 
     return (
         <MessagesContext.Provider
             value={{
-                currentConversation, setCurrentConversation,
+                currentConversation,
+                setCurrentConversation,
                 messageReply,
-                setMessageReply, userAllConversation, setUserAllConversation
+                setMessageReply,
+                userAllConversation,
+                setUserAllConversation
             }}
         >
             {children}

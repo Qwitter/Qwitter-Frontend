@@ -93,7 +93,7 @@ const TweetImagesViewer = ({
             })}
           >
             {images.slice(0, 2).map((image, i) => (
-              <div
+              <div data-testid="messageMedia"
                 className={cn("relative flex-1 h-full w-full overflow-hidden")}
                 key={image.value}
               >

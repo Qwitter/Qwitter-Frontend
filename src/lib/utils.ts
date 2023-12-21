@@ -32,6 +32,7 @@ export const getUserData = async (token: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    console.log(res.data);
     return res.data;
   } catch (err) {
     console.log(err);
@@ -434,15 +435,11 @@ export const registerNewUser = async (newUserData: object) => {
  * @returns New user data after the image has changed
  */
 
-export const uploadProfileImage = async ({
-  picFile,
-  token,
-  isBanner = false,
-}: {
-  picFile: File;
-  token: string;
-  isBanner?: boolean;
-}) => {
+export const uploadProfileImage = async (
+  picFile: File,
+  token: string,
+  isBanner: boolean = false
+) => {
   const formData = new FormData();
   formData.append("photo", picFile);
 
@@ -467,7 +464,7 @@ export const uploadProfileImage = async ({
     return res.data.user;
   } catch (error) {
     console.log(error);
-    throw new Error("Couldn't upload image");
+    return null;
   }
 };
 
@@ -483,8 +480,7 @@ export const deleteProfileImage = async (
 ) => {
   try {
     const res = await axios.delete(
-      `${VITE_BACKEND_URL}/api/v1/user/profile_${
-        isBanner ? "banner" : "picture"
+      `${VITE_BACKEND_URL}/api/v1/user/profile_${isBanner ? "banner" : "picture"
       }`,
       {
         headers: {
@@ -559,14 +555,13 @@ export const convertNumberToShortForm = (number: number) => {
 export const timelineTweets = async (
   pageParam: number = 1,
   limit: number = 10,
-  token: string,
-  q?: string,
+  token: string
 ) => {
   if (!token) return [];
 
   try {
     const response = await axios.get(
-      `${VITE_BACKEND_URL}/api/v1/tweets?page=${pageParam}&limit=${limit}`+ (q ? `&q=${q}` : ''),
+      `${VITE_BACKEND_URL}/api/v1/tweets?page=${pageParam}&limit=${limit}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -590,8 +585,7 @@ export const getUsersSuggestions = async (token: string, username: string) => {
   try {
     if (!username) return [];
     const res = await axios.get(
-
-      `${VITE_BACKEND_URL}/api/v1/user/search?q=${username}`,
+      `${VITE_BACKEND_URL}/api/v1/user/search?q=${username.slice(1)}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -869,12 +863,15 @@ export const CreateMessage = async ({
   formData,
   token,
   conversationId,
+  logicalId
 }: {
   conversationId: string;
   formData: FormData;
   token: string;
+  logicalId: string;
 }) => {
   try {
+    logicalId
     const res = await axios.post(
       `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/message`,
       formData,
@@ -1049,10 +1046,8 @@ export const deleteMessage = async ({
     const res = await axios.delete(
       `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/message`,
       {
-        data: { messageId: messageId },
+        data: { message_id: messageId },
         headers: {
-          Accept: "application/json",
-          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       }
@@ -1105,6 +1100,7 @@ export const updateGroupImageAndName = async ({
  */
 export const GetFollowSuggestionsService = async (token: string) => {
   try {
+    // debugger;
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user/suggestions`, {
       headers: {
         Accept: "application/json",
@@ -1654,6 +1650,7 @@ export const GetTweetRetweetersService = async (
  * @returns tweet object represents the response from the backend or null
  */
 export const getTweetById = async (tweetId: string, token: string) => {
+  console.log(token);
   try {
     const res = await axios.get(
       `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}`,
@@ -1684,6 +1681,7 @@ export const getTweetReplies = async (
   pageParam: number = 1,
   limit: number = 10
 ) => {
+  console.log(token);
   try {
     const res = await axios.get(
       `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}/replies?page=${pageParam}&limit=${limit}`,
@@ -1693,11 +1691,29 @@ export const getTweetReplies = async (
         },
       }
     );
-    return res.data.tweets;
+    console.log(res.data.replies);
+    return res.data.replies;
   } catch (err) {
     console.log(err);
     throw new Error("Replies not found");
   }
+};
+
+export const getOperatingSystem = () => {
+  const userAgent = navigator.userAgent;
+  if (userAgent.indexOf("Win") !== -1) {
+    return "Windows";
+  }
+  if (userAgent.indexOf("Linux") !== -1) {
+    return "Linux";
+  }
+  if (/iPhone|iPod/.test(userAgent)) {
+    return "iPhone (iOS)";
+  }
+  if (/Android/.test(userAgent)) {
+    return "Android";
+  }
+  return "Unknown";
 };
 
 /**
@@ -1709,6 +1725,10 @@ export const getTweetReplies = async (
 export const retweet = async (tweetId: string, token: string) => {
   const formData = new FormData();
   formData.append("retweetedId", tweetId);
+  formData.append("text", "");
+  formData.append("body", "");
+  formData.append("source", getOperatingSystem());
+  formData.append("sensitive", "false");
   try {
     const res = await axios.post(
       `${VITE_BACKEND_URL}/api/v1/tweets`,

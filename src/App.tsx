@@ -24,6 +24,7 @@ import { ProfileImageViewer } from "./pages/Profile/ProfileImageViewer";
 import { MessagesGroupEditPopup } from "./pages/Messages/MessagesPopup/MessagesGroupEditPopup";
 import MessagesContextProvider from "./contexts/MessagesContextProvider";
 import MessagesAddPeoplePopup from "./pages/Messages/MessagesPopup/MessagesAddPeoplePopup";
+import NotificationLoginPopup from "./pages/Notifications/NotificationLoginPopup";
 
 const queryClient = new QueryClient();
 
@@ -72,8 +73,6 @@ function App() {
                 path="/Messages/:conversationId/add"
                 element={<MessagesAddPeoplePopup />}
               />
-              {/* <Route path="settings/profile" element={<MessagesNewMessage />} /> */}
-              <Route path="settings/profile" element={<MessagesNewMessage />} />
               <Route
                 path="/profile/:username/settings/profile"
                 element={<EditProfilePopUp />}
@@ -85,6 +84,10 @@ function App() {
               <Route
                 path="/:username/header_photo"
                 element={<ProfileImageViewer isBanner={true} />}
+              />
+              <Route
+                path="/Notification/login"
+                element={<NotificationLoginPopup  />}
               />
             </Routes>
             <Toaster />

@@ -49,6 +49,7 @@ export function ProfileUser() {
           <div
             onClick={handleBackArrow}
             className="w-[35px] h-[35px] flex justify-center items-center rounded-full transition-colors hover:bg-dark-gray cursor-pointer"
+            data-testid="backHome"
           >
             <ArrowLeft size="1.25rem" />
           </div>

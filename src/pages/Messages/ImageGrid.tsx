@@ -9,14 +9,14 @@ interface ImageGridProps {
 const ImageGrid:React.FC<ImageGridProps> = ({ images,className }) => {
     // Determine the grid layout based on the number of images
     if (images.length === 1) {
-        return (<div className=' flex flex-row mr-4 w-10 h-10 overflow-hidden rounded-full '>
+        return (<div className={cn('flex flex-row mr-4 w-10 h-10 overflow-hidden rounded-full ',className)}>
             <img src={images[0]} className="w-full h-full " />
 
         </div>)
 
     } else if (images.length === 2) {
         return (
-            <div className='flex flex-row mr-4 w-10 h-10 overflow-hidden rounded-full  gap-[0.05rem]'>
+            <div className={cn('flex flex-row mr-4 w-10 h-10 overflow-hidden rounded-full  gap-[0.05rem]',className)}>
                 <div className={`grid grid-rows-1 grid-cols-2 gap-[0.05rem]`}>
                     {images.map((image, index) => (
                         <img src={image} key={`Image ${index + 1}`} className="w-full h-full object-cover" />
@@ -27,7 +27,7 @@ const ImageGrid:React.FC<ImageGridProps> = ({ images,className }) => {
         );
     } else if (images.length === 3) {
         return (
-            <div className='flex flex-row mr-4 w-10 h-10 overflow-hidden rounded-full  gap-[0.05rem]'>
+            <div className={cn('flex flex-row mr-4 w-10 h-10 overflow-hidden rounded-full min-w-[32px]  gap-[0.05rem]',className)}>
                 <div className={`grid grid-rows-2 gap-[0.05rem]`}>
                     {images.slice(0, -1).map((image, index) => (
                         <img src={image} key={`Image ${index + 1}`} className=" max-w-full" />

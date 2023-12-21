@@ -160,7 +160,7 @@ function ShowGroupPeople() {
     const { currentConversation } = useContext(MessagesContext)
 
     return (
-        <ul className="flex-shrink min-h-[60vh]" >
+        <ul data-testid="searchedUsers" className="flex-shrink min-h-[60vh]" >
 
             {
                 currentConversation && currentConversation.users.slice(0, -1).map((user, index) => (
