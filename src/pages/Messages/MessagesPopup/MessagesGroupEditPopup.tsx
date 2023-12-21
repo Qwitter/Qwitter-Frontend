@@ -21,7 +21,7 @@ import { updateGroupImageAndName } from "@/lib/utils";
 export const MessagesGroupEditPopup = () => {
     const [imageFile, setImageFile] = useState<File>(); // here is where the file of the image will be set so we can send it to backend
     const [image, setImage] = useState(""); // here is where the file of the image will be set so we can send it to backend
-    const { currentConversation } = useContext(MessagesContext)
+    const { currentConversation ,setCurrentConversation} = useContext(MessagesContext)
     const navigate = useNavigate()
     const { conversationId } = useParams();
     const [imageKey, setImageKey] = useState<number>(0);
@@ -45,12 +45,14 @@ export const MessagesGroupEditPopup = () => {
 
     const { mutate, isPending } = useMutation({
         mutationFn: updateGroupImageAndName,
-        onSuccess: (data) => {
+        onSuccess: (data,{formData}) => {
             if (data) {
                 toast({
                     title: "Change Group",
                     description: "Group changed successfully",
                 });
+                const pic =URL.createObjectURL(formData.get("media")!as File);
+                setCurrentConversation({...currentConversation!,photo:pic,name:formData.get('name')! as string})
                 navigate(-1);
             }
             else {

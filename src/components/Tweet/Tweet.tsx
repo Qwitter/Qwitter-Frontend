@@ -33,6 +33,7 @@ const convertWordToAnchor = (word: string): JSX.Element => {
 };
 
 const tweetTextHighlighter = (text: string): JSX.Element => {
+  if (!text) return <p className="text-gray-700">{text}</p>;
   const regex = /(@|#)([a-zA-Z0-9_]+)/g;
   const matches = text.match(regex);
   if (!matches) return <p className="text-gray-700">{text}</p>;
@@ -51,9 +52,7 @@ const tweetTextHighlighter = (text: string): JSX.Element => {
               <span key={i}>
                 {temp.map((w, i) => {
                   if (w.match(regex)) {
-                    return (
-                      <span key={i}>{convertWordToAnchor(w)} </span>
-                    );
+                    return <span key={i}>{convertWordToAnchor(w)} </span>;
                   }
                   return w + " ";
                 })}
@@ -73,6 +72,7 @@ type TweetProps = {
   size?: "normal" | "compact";
   mode?: "list" | "page";
   retweeter?: Tweet["author"];
+  mainTweet?: Tweet;
 };
 
 const Tweet = ({
@@ -80,12 +80,15 @@ const Tweet = ({
   mode = "list",
   size = "normal",
   retweeter,
+  mainTweet,
 }: TweetProps) => {
   const { user } = useContext(UserContext);
 
   const highlightedTweet = useMemo(() => {
     return tweetTextHighlighter(tweet.text);
   }, [tweet.text]);
+
+  console.log(tweet)
 
   if (tweet.retweetedTweet)
     return (
@@ -94,8 +97,11 @@ const Tweet = ({
         mode={mode}
         size={size}
         retweeter={tweet.author}
+        mainTweet={tweet}
       />
     );
+
+  if (!tweet.author) return null;
 
   return (
     <div data-testid="tweetDiv">
@@ -104,7 +110,7 @@ const Tweet = ({
         className={cn(
           "w-full flex px-4 py-3 gap-4 transition-all cursor-default",
           {
-            "hover:bg-[#080808] cursor-pointer  border-b border-primary border-opacity-30":
+            "hover:bg-[#080808] cursor-pointer border-b border-primary border-opacity-30 gap-2":
               mode === "list",
           }
         )}
@@ -117,7 +123,9 @@ const Tweet = ({
             </AvatarFallback>
           </Avatar>
         )}
-        <article className="w-full">
+        <article
+          className={cn("w-full overflow-x-clip", { "px-2": mode === "list" })}
+        >
           {mode === "page" ? (
             <div>
               {retweeter && (
@@ -157,8 +165,11 @@ const Tweet = ({
               <TweetAuthorHeader tweet={tweet} mode={mode} />
             </>
           )}
-          <>{highlightedTweet}</>
+          <p className="max-w-full break-words overflow-clip">
+            {highlightedTweet}
+          </p>
           {size === "normal" &&
+            tweet.entities &&
             (tweet.entities.media?.[0]?.type === "video" ? (
               <div
                 className="my-4 rounded-lg overflow-hidden"
@@ -166,8 +177,7 @@ const Tweet = ({
               >
                 <Player
                   playsInline
-                  poster="/assets/poster.png"
-                  src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
+                  src={tweet.entities.media?.[0].value}
                 >
                   <BigPlayButton position="center" />
                 </Player>
@@ -190,6 +200,8 @@ const Tweet = ({
                   <TweetInteractionsButtons
                     tweet={tweet}
                     className="my-2.5 px-4"
+                    mode={mode}
+                    mainTweet={mainTweet}
                   />
                 </div>
                 <hr className="border-primary border-opacity-30" />
@@ -197,7 +209,12 @@ const Tweet = ({
             </div>
           ) : (
             <div onClick={(e) => e.preventDefault()}>
-              <TweetInteractionsButtons tweet={tweet} className="mt-4" />
+              <TweetInteractionsButtons
+                tweet={tweet}
+                className="mt-4"
+                mode={mode}
+                mainTweet={mainTweet}
+              />
             </div>
           )}
         </article>

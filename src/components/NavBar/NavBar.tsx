@@ -45,7 +45,7 @@ export function NavBar() {
   return (
     <div className="items-end flex flex-col min-w-[80px] max-h-[100vh] sticky top-0">
       <div className="flex flex-col items-start xl:w-[275px] px-2 h-full min-h-[100vh] justify-between ">
-        <div className="flex items-start w-full flex-col">
+        <div data-testid='navbar' className="flex items-start w-full flex-col">
           <Link to="/">
             <img
               src={Logo}
@@ -72,7 +72,7 @@ export function NavBar() {
         </div>
 
         <div className="my-3 p-3 w-full flex flex-row justify-between items-center hover:bg-[#191919] transition-all hover:rounded-full">
-          <div className="flex flex-row gap-0">
+          <div data-testid="userdata" className="flex flex-row gap-0">
             <Popover>
               <PopoverTrigger>
                 <Avatar className="w-10 h-10 rounded-full border-[#ffffee62] border-[1px] border-solid block">

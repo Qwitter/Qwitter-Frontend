@@ -124,7 +124,7 @@ function MessagesNewMessage() {
             </div>
           </div>
           {selectedUsers.length > 0 && (
-            <ul className="flex flex-row w-full flex-wrap max-h-fit  flex-shrink-0 border-b border-primary border-opacity-30   p-3 gap-2">
+            <ul data-testid="searchedUsers" className="flex flex-row w-full flex-wrap max-h-fit  flex-shrink-0 border-b border-primary border-opacity-30   p-3 gap-2">
               {selectedUsers.map((selectedUser, index) => (
                 <li key={index} className="h-fit">
                   <div
@@ -145,7 +145,7 @@ function MessagesNewMessage() {
               ))}
             </ul>
           )}
-          <div className="overflow-y-auto w-full ">
+          <div data-testid="searchedUsers" className="overflow-y-auto w-full ">
             {peopleSearchText.length > 0 ? (
               <ShowUsersSuggestions
                 onUserClick={handlePickUser}
@@ -177,7 +177,7 @@ function ShowUsersSuggestions({
     console.log(users)
   })
   return (
-    <ul className="flex-shrink min-h-[60vh]">
+    <ul data-testid="searchedUsers" className="flex-shrink min-h-[60vh]">
       {users &&
         users.slice(0, 12).map((user, index) => (
           <li
@@ -223,7 +223,7 @@ function ShowAllUserConversations({
   const navigate = useNavigate();
 
   return (
-    <ul className="flex-shrink min-h-[60vh]">
+    <ul data-testid="searchedUsers" className="flex-shrink min-h-[60vh]">
       {userAllConversation &&
         userAllConversation.map((user, index) => (
           <li
