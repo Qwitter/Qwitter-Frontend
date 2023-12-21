@@ -117,7 +117,7 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
         id: user?.id ?? "",
         google_id: user?.google_id ?? "",
         profileImageUrl: editedUserData.profileImageUrl,
-        profileBannerUrl: `http://${editedUserData.profileBannerUrl}`,
+        profileBannerUrl: editedUserData.profileBannerUrl,
         verified: editedUserData.verified ?? false,
         isFollowing: editedUserData.isFollowing ?? false,
       });
@@ -135,6 +135,8 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
   });
 
   const handleSave = async (): Promise<void> => {
+    console.log(!(!isChanged() && !profileImage && !profileBanner));
+
     // check for errors first
     await form.trigger();
     if (Object.keys(form.formState.errors).length > 0) {
@@ -200,6 +202,7 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
             className="w-full h-[193px] rounded-none border-none p-0"
             imageClassName="rounded-none "
             isRemovable={true}
+            isBanner
           />
         </div>
         <ImagePicker
