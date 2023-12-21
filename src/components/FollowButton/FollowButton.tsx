@@ -12,7 +12,6 @@ export function FollowButton({
   className,
   onClick,
 }: FollowButtonProp) {
-  const [isHovered, setIsHovered] = useState(false);
   const [state, setstate] = useState(isFollowing);
   const [showDialog, setshowDialog] = useState(false);
   const { token } = useContext(UserContext);
@@ -26,12 +25,7 @@ export function FollowButton({
       ? (username: string) => UnFollowService(username, token)
       : undefined,
   });
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
+
   const handleFollowButton = async (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -67,16 +61,15 @@ export function FollowButton({
       )}
       {state === true && (
         <Button
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
           onClick={handleunFollowButton}
-          className={cn("text-sm w-[100px] h-[30px] font-bold", className)}
+          className={cn(
+            "text-sm w-[100px] h-[30px] font-bold [&>*]:hover:text-danger [&>*]:hover:before:content-['Unfollow']",
+            className
+          )}
           variant={"danger"}
           data-testid="followUnfollow"
         >
-          <span className={cn("text-white", isHovered && "text-danger")}>
-            {isHovered ? "Unfollow" : "Following"}
-          </span>
+          <span className={"text-white before:content-['Following']"}></span>
         </Button>
       )}
       <WarningPopUp

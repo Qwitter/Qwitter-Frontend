@@ -87,7 +87,7 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
             className="w-full"
           >
             <img
-              src={`http://${user?.profileBannerUrl}`}
+              src={user?.profileBannerUrl}
               alt="user banner image"
               className="w-full h-full"
             />
