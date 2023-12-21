@@ -9,6 +9,7 @@ import {
 import { SignUpDataSchema } from "@/models/SignUp";
 import { BirthDay, MONTHS } from "@/models/BirthDay";
 import { EditUserSchema, UserDataSchema } from "@/models/User";
+import moment from "moment";
 
 const { VITE_BACKEND_URL } = import.meta.env;
 
@@ -575,6 +576,36 @@ export const timelineTweets = async (
     return [];
   }
 };
+/**
+ * @description Load forYou timeline tweets
+ * @param pageParam used for infinite queries
+ * @param limit used to specify the array length
+ * @param token used to authorize the request
+ * @returns Array of tweets
+ */
+export const timelineForYouTweets = async (
+  pageParam: number = 1,
+  limit: number = 10,
+  token: string
+) => {
+  if (!token) return [];
+
+  try {
+    const response = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/timeline?page=${pageParam}&limit=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      }
+    );
+    return response.data.tweets;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
 
 /*
  * @description get a list of users with userName contain the given string
@@ -585,7 +616,7 @@ export const getUsersSuggestions = async (token: string, username: string) => {
   try {
     if (!username) return [];
     const res = await axios.get(
-      `${VITE_BACKEND_URL}/api/v1/user/search?q=${username.slice(1)}`,
+      `${VITE_BACKEND_URL}/api/v1/user/search?q=${username.trim()}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -679,7 +710,7 @@ export const conversationSearch = async (token: string, query: string) => {
 export const getHashtags = async (token: string, tag: string) => {
   try {
     const res = await axios.get(
-      `${VITE_BACKEND_URL}/api/v1/tweets/hashtags?q=${tag.slice(1)}`,
+      `${VITE_BACKEND_URL}/api/v1/tweets/hashtags?q=${tag.trim()}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -1746,4 +1777,36 @@ export const retweet = async (tweetId: string, token: string) => {
     console.log(err);
     throw new Error("Error retweeting");
   }
+};
+
+/**
+ * @description get Notifications list  for user
+ * @returns  Notifications list represents the response from the backend or throw error
+ */
+export const getNotificationsList = async () => {
+  try {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/notifications/`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return res.data.notifications;
+  } catch (err) {
+    throw new Error("Error getting notifications");
+  }
+};
+export const formatDate = (dateString: string) => {
+  const date = moment(dateString);
+  const now = moment();
+  if (now.diff(date, 'days') === 0)
+      return date.format('h:mm A');
+  else if (now.diff(date, 'days') === 1)
+      return 'Yesterday,' + date.format('h:mm A');
+  else if (now.diff(date, 'days') < 7)
+      return date.format('ddd h:mm A');
+
+  else
+      return date.format('MMM D, YYYY, h:mm A');
 };

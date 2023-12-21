@@ -183,7 +183,7 @@ export function MessagesConversation() {
       updateChatMessages(makeTempMessage(formData,logicalId));
       handleScrollDown(); 
     },
-    onError: (data,{logicalId,formData}) => {
+    onError: (_,{logicalId,formData}) => {
       updateChatMessages( makeTempMessage(formData,logicalId,true),true,logicalId);
       handleScrollDown(); 
 

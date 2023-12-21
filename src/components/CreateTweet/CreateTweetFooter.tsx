@@ -4,14 +4,15 @@ import { whoToReply } from "../../constants"
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { cn } from "@/lib";
-import {  useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { CreateTweetFooterProp } from "./types/CreateTweetProps";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-export default function CreateTweetFooter({ mode, setFiles, files, text, selectedImages, setSelectedImages, isValid, handleSubmit }: CreateTweetFooterProp) {
+import { toast } from "../ui/use-toast";
+export default function CreateTweetFooter({ mode, setFiles, text,files, selectedImages, setSelectedImages, isValid, handleSubmit, setVideoFile, videoFile }: CreateTweetFooterProp) {
     const icons = [{ icon: Image, hover: "media" }, { icon: ScanSearch, hover: "GIF" }, { icon: Vote, hover: "Poll" }, { icon: Smile, hover: "Emoji" }]
     const [isPopupOpen, setPopupOpen] = useState(false);
     const fileInput = useRef<HTMLInputElement>(null)
@@ -23,19 +24,32 @@ export default function CreateTweetFooter({ mode, setFiles, files, text, selecte
     }
 
     const handleFileChange = () => {
-        const file = fileInput.current!.files;
-        if (file) {
-            const tempFiles = [...files, file[0]];
-            const newFiles = [...selectedImages, { value: URL.createObjectURL(file[0]), type: "photo" }];
-            setSelectedImages(newFiles)
+        const filesTemp = fileInput.current!.files;
+        if (filesTemp && filesTemp.length > 0) {
+            const selectedFile = filesTemp[0];
+            const tempFiles = [...files, selectedFile];
             setFiles(tempFiles);
+            if (selectedFile.type.startsWith('image/')) {
+                console.log(selectedFile)
+                const newFiles = [...selectedImages, { value: URL.createObjectURL(selectedFile), type: "photo" }];
+                setSelectedImages(newFiles)
+            }
+            else if (selectedFile.type.startsWith('video/') && selectedImages.length == 0) {
+                setVideoFile(selectedFile);
+            } else if (!selectedFile.type.startsWith('video/') && !selectedFile.type.startsWith('image/')) {
+                toast({
+                    description: 'Unsupported file type. Please select an image or a video.',
+                    variant: "destructive"
+                });
+            }
             fileInput.current!.value = ''
+
         }
     };
 
     return (
         <div className="flex flex-col items-start w-full">
-            {(text.length != 0 || mode == "popUp" || selectedImages.length > 0)&&mode!="reply" &&
+            {(text.length != 0 || mode == "popUp" || selectedImages.length > 0) && mode != "reply" &&
                 <Popover open={isPopupOpen} onOpenChange={setPopupOpen} >
                     <PopoverTrigger className="z-30 w-full">
                         <div className="h-12 z-0 flex flex-row items-center pb-3 w-full border-b border-primary border-opacity-20 cursor-pointer">
@@ -55,7 +69,7 @@ export default function CreateTweetFooter({ mode, setFiles, files, text, selecte
                         <div className="flex flex-row items-center h-full ">
                             {
                                 icons.map((Icon, index) => (
-                                    <div key={index} className="text-secondary h-full group relative max-w-[40px] w-full cursor-pointer" onClick={index == 0 ? handleUploadImg : () => { }}>
+                                    <div key={index} className={cn("text-secondary h-full  relative max-w-[40px] w-full", index == 0 && (videoFile || selectedImages.length > 3) ? "opacity-40" : "group  cursor-pointer")} onClick={index == 0 && !videoFile && selectedImages.length < 4 ? handleUploadImg : () => { }}>
                                         <Icon.icon className="w-10 h-10 p-2 rounded-3xl group-hover:bg-secondary group-hover:bg-opacity-25" />
                                         <div className="absolute bg-[#657b8b] rounded-sm text-primary text-xs px-2 py-1 opacity-0 bg-opacity-75 group-hover:opacity-100 transition-opacity bottom-full left-1/2 transform -translate-x-1/2 -translate-y-[-65px]" data-testid={Icon.hover}>
                                             {Icon.hover}
@@ -100,9 +114,9 @@ export default function CreateTweetFooter({ mode, setFiles, files, text, selecte
                         }
                         {text.length > 0 &&
                             <div className="w-[1px] h-[31px] bg-[#3E4144] ml-[8px] mr-3"></div>}
-                        <Button variant="secondary" className=' px-5 py-2 mt-1 ml-2'  {...{ disabled: (text.trim().length == 0 && selectedImages.length > 0) ? false : !isValid }} type="button" onClick={handleSubmit} data-testid="postTweet"> Post</Button>
+                        <Button variant="secondary" className=' px-5 py-2 mt-1 ml-2'  {...{ disabled: (text.trim().length == 0 && (selectedImages.length > 0 || videoFile)) ? false : !isValid }} type="button" onClick={handleSubmit} data-testid="postTweet"> Post</Button>
                     </div>
-                    <input type="file" className="hidden" onChange={handleFileChange} ref={fileInput} accept="images/*" data-testid="uploadImage"/>
+                    <input type="file" className="hidden" onChange={handleFileChange} ref={fileInput} accept={selectedImages.length > 0 ? "image/*" : "image/*,video/*"} data-testid="uploadImage" multiple={false} />
                 </div>
             </div>
         </div>

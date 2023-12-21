@@ -13,8 +13,8 @@ import { MessagesContext } from "@/contexts/MessagesContextProvider";
 export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRequest = false }: { newMessageRequest?: boolean; messagesRequests?: number; }) {
     const navigate = useNavigate();
     const { token } = useContext(UserContext);
-    const {setUserAllConversation}= useContext(MessagesContext)
-    const [conversationToDelete,setConversationToDelete] = useState("")
+    const { setUserAllConversation } = useContext(MessagesContext)
+    const [conversationToDelete, setConversationToDelete] = useState("")
     const [show, setShow] = useState<boolean>(false);
 
     const {
@@ -23,21 +23,21 @@ export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRe
         queryKey: ["getUserConversations"],
         queryFn: () => getUserConversations(token!),
         refetchOnReconnect: "always",
-        // refetchIntervalInBackground: true,
-        // refetchInterval: 10000,
+        refetchIntervalInBackground: true,
+        refetchInterval: 2000,
         // enabled: token !== null
-        
+
 
     });
     useEffect(() => {
         setUserAllConversation(data!)
         refetch();
-    }, [token, refetch, data,setUserAllConversation]);
+    }, [token, refetch, data, setUserAllConversation]);
 
     const handleRequestClick = () => {
         navigate('/Messages/requests');
     };
-    const deleteConversation = (conversationId:string)=>{
+    const deleteConversation = (conversationId: string) => {
         setConversationToDelete(conversationId)
         setShow(true)
     }
@@ -48,7 +48,7 @@ export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRe
             </div>
         );
     }
-    
+
     return (
         <div>
             {messagesRequests > 0 &&
@@ -85,7 +85,7 @@ export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRe
                 mode={"normal"}
                 showDeletePopUp={deleteConversation}
             />
-            <ConversationLeavePopUp show={show} setShow={setShow}  conversationToDelete ={conversationToDelete} />
+            <ConversationLeavePopUp show={show} setShow={setShow} conversationToDelete={conversationToDelete} />
         </div>
     );
 }

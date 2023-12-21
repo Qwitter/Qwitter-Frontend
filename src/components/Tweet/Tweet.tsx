@@ -17,7 +17,7 @@ const convertWordToAnchor = (word: string): JSX.Element => {
   if (word.startsWith("@")) {
     return (
       <Link
-        to={`/user/${word.substring(1).toLowerCase()}`}
+        to={`/Profile/${word.substring(1).toLowerCase()}`}
         className="text-secondary"
       >
         {word}
@@ -25,7 +25,7 @@ const convertWordToAnchor = (word: string): JSX.Element => {
     );
   } else {
     return (
-      <Link to={`/search/?q=${word.substring(1)}`} className="text-secondary">
+      <Link to={`/explore/search/Top/?q=${word.substring(1)}`} className="text-secondary">
         {word}
       </Link>
     );

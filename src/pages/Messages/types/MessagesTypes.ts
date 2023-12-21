@@ -21,7 +21,8 @@ export type MessageUser = {
     isFollowed?:boolean;
     isFollowing?:boolean;
     name: string;
-
+    isBlocked?:boolean;
+    isMuted?:boolean;
     isVerified?: boolean;
 }
 export type Mention = {
