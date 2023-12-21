@@ -2,7 +2,7 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import TweetsList from "@/components/TweetsList/TweetsList";
 import CreateTweetContainer from "@/components/CreateTweet/CreateTweetContainer";
 import { useInfiniteScroll } from "@/lib/useInfiniteScroll";
-import { timelineTweets } from "@/lib/utils";
+import { timelineForYouTweets, timelineTweets } from "@/lib/utils";
 import { UserContext } from "@/contexts/UserContextProvider";
 
 export function Home() {
@@ -11,9 +11,13 @@ export function Home() {
   const { data, ref, refetch, isFetching, isFetchingNextPage, hasNextPage } =
     useInfiniteScroll(
       async ({ pageParam }) => {
-        return await timelineTweets(pageParam, 10, token!);
+        if (active == "For you")
+          return await timelineForYouTweets(pageParam, 10, token!)
+        
+        else
+          return await timelineTweets(pageParam, 10, token!);
       },
-      ["tweets", "timeline"]
+      ["tweets", "timeline",active]
     );
 
   useEffect(() => {
@@ -34,11 +38,10 @@ export function Home() {
           onClick={() => setActive("For you")}
         >
           <span
-            className={`${
-              active == "For you"
+            className={`${active == "For you"
                 ? "text-primary border-b-4 font-bold py-3 border-solid border-secondary "
                 : "text-gray"
-            } text-base  `}
+              } text-base  `}
           >
             For you
           </span>
@@ -49,11 +52,10 @@ export function Home() {
           onClick={() => setActive("Following")}
         >
           <span
-            className={`${
-              active == "Following"
+            className={`${active == "Following"
                 ? "text-primary border-b-4 font-bold py-3 border-solid border-secondary "
                 : "text-gray"
-            } text-base`}
+              } text-base`}
           >
             Following
           </span>

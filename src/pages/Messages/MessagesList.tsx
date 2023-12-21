@@ -86,7 +86,7 @@ export function MessagesList({
 
                 </div>
                 <div className="flex justify-end gap-3 self-start  flex-row items-first">
-                    {mode != "People" && user.seen &&
+                    {mode != "People" && !user.seen &&
                         <div>
                             <div className="bg-secondary rounded-full w-[10px] h-[10px] mt-3.5 "></div>
                         </div>}

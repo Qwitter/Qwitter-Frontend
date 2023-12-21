@@ -4,9 +4,31 @@ import { Link, useLocation, /*useNavigate*/ } from "react-router-dom";
 import { BiRepost } from "react-icons/bi";
 import Logo from "../../assets/logo.png";
 import { User as UserType } from "@/models/User";
+import { useQuery } from "@tanstack/react-query";
+import { TweetWithRetweet } from "@/models/Tweet";
+import { MessageUser } from "../Messages/types/MessagesTypes";
+import { getNotificationsList } from "@/lib/utils";
+import { Spinner } from "@/components/Spinner";
+import moment from "moment";
+import { default as TweetComponent } from "../../components/Tweet/Tweet";
+type NotificationsType = {
+  type: string;
+  createdAt: string;
+  reply?: TweetWithRetweet;
+  follower?: MessageUser;
+  retweet?: TweetWithRetweet;
 
+}
 export function Notifications() {
   const [active, setActive] = useState("ALL");
+  const {
+    isPending,
+    data: notifications,
+  } = useQuery<NotificationsType[]>({
+    queryKey: ["Notifications"],
+    queryFn: () => getNotificationsList()
+    ,
+  });
 
   return (
     <div className="max-w-[600px] w-full h-full flex-grow border-r border-primary border-opacity-30 ">
@@ -47,28 +69,52 @@ export function Notifications() {
         </div>
       </div>
       <div className="relative min-h-[60vh]">
-        <Notification type="repost" url="https://pbs.twimg.com/profile_images/1544863990110736384/PDf-ZViV_normal.jpg" />
-        <Notification type="follow" url="https://pbs.twimg.com/profile_images/1544863990110736384/PDf-ZViV_normal.jpg" />
-        <Notification type="love" url="https://pbs.twimg.com/profile_images/1544863990110736384/PDf-ZViV_normal.jpg" />
-        <Notification type="login" url="https://pbs.twimg.com/profile_images/1544863990110736384/PDf-ZViV_normal.jpg" />
+        {isPending || !notifications ? <div className="w-full h-[500px] p-10">
+          <Spinner />
+        </div> : notifications.map((notification) => (
+          <Notification
+            key={notification.createdAt}
+            createdAt={notification.createdAt}
+            retweet={notification.retweet}
+            reply={notification.reply}
+            follower={notification.follower}
+            type={notification.type}
+          />
+        ))}
       </div>
     </div>
 
   );
 }
 
-function Notification({ type, url }: { type: string; url: string }) {
+function Notification({ type, createdAt, follower, reply, retweet }: NotificationsType) {
   // const navigate = useNavigate()
   const user = JSON.parse(localStorage.getItem("user")!) as UserType;
   const location = useLocation();
-
+  console.log(type)
+  const formatDateMonthYear = (dateString: string) => {
+    const date = moment(dateString);
+    return date.format('MMM DD, YYYY');
+  };
+  if (type == 'reply' || type == "retweet") {
+    console.log(reply!)
+    return (
+      <div className="px-4 py-3 cursor-pointer flex flex-row border-b border-primary border-opacity-30" /*onClick={() => navigate(url)}*/>
+        <div className=" mr-3 w-10 h-full flex justify-end basis-10">
+        <TweetComponent
+          tweet={reply!}
+        />
+      </div>
+    </div>
+    )
+  }
   return (
     <div className="px-4 py-3 cursor-pointer flex flex-row border-b border-primary border-opacity-30" /*onClick={() => navigate(url)}*/>
       <div className=" mr-3 w-10 h-full flex justify-end basis-10">
         {
           type == 'follow' && <User className="text-transparent w-8 h-8" fill="#1d9bf0" />}
         {
-          type == 'repost' && <BiRepost className="text-transparent w-9 h-[38px]" fill="#00ba7c" />
+          type == 'retweet' && <BiRepost className="text-transparent w-9 h-[38px]" fill="#00ba7c" />
         }
         {
           type == 'love' && <Heart className="text-transparent w-8 h-8" fill="#f91880" />
@@ -82,8 +128,8 @@ function Notification({ type, url }: { type: string; url: string }) {
           to={"/Notification/login"}
           state={{ previousLocation: location }}
           className="font-semibold break-words">
-          There was a login to your account @{user.userName} from a new device on Dec 18, 2023. Review it now.
-          </Link> :
+          There was a login to your account @{user.userName} from a new device on {formatDateMonthYear(createdAt)}. Review it now.
+        </Link> :
           <><div className="mb-3 pr-5">
             <div className="flex flex-row">
               <img className="w-9 h-9 p-1 rounded-full " src="https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg" alt="" />
@@ -92,7 +138,7 @@ function Notification({ type, url }: { type: string; url: string }) {
             <div>
               <Link to={`/${'marwansamy99'}`} className="text-primary font-bold hover:underline transition-all">Ahmed Osama Helmy</Link>
 
-              <Link to={url}> {type == 'follow' ? "Followed you" : type == 'repost' ? "reposted your post" : "liked your post"}</Link>
+              <Link to={"/"}> {type == 'follow' ? "Followed you" : type == 'retweet' ? "reposted your post" : "liked your post"}</Link>
             </div></>}
       </div>
     </div>

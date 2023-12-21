@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { MessagesMessage } from "../types/MessagesTypes";
 import { cn } from "@/lib";
 import TweetImagesViewer from "@/components/TweetImagesViewer/TweetImagesViewer";
-import moment from "moment";
+import { formatDate } from "@/lib/utils";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { MessagesConversationPopUp } from "../MessagesPopup/MessagesConversationPopUp";
@@ -13,19 +13,7 @@ import { BigPlayButton, Player } from "video-react";
 export function MessagesConversationMessage({ isMessage, isGroup, error, sending, date, id, entities, profileImageUrl, replyToMessage, text, userName, setChatMessages }: MessagesMessage) {
     const { user } = useContext(UserContext);
     const [isOpen, setIsOpen] = useState(false);
-    const formatDate = (dateString: string) => {
-        const date = moment(dateString);
-        const now = moment();
-        if (now.diff(date, 'days') === 0)
-            return date.format('h:mm A');
-        else if (now.diff(date, 'days') === 1)
-            return 'Yesterday,' + date.format('h:mm A');
-        else if (now.diff(date, 'days') < 7)
-            return date.format('ddd h:mm A');
 
-        else
-            return date.format('MMM D, YYYY, h:mm A');
-    };
     const handleMentions = () => {
         const reg = /(^|\s)(((@|#)[\w]{1,20}|#[\w]+))/g;
         const matches = text.match(reg);
