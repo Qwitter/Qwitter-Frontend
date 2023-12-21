@@ -97,7 +97,7 @@ export default function CreateTweetMain({
               setPopup={setPopup}
               mode={mode}
               mentionsAndTags={mentionsAndTags}
-              placeholder={mode == "reply" ? "Post your reply" : "What is happing?!"}
+              placeholder={mode == "reply" ? "Post your reply" : "What is happening?!"}
               text={tweet}
               className="bg-transparent  placeholder:text-gray  focus:ring-transparent focus:border-none focus:outline-none resize-none border-none"
               data-testid="tweetInput"

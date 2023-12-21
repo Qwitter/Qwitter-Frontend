@@ -437,9 +437,13 @@ export const registerNewUser = async (newUserData: object) => {
  */
 
 export const uploadProfileImage = async (
-  picFile: File,
+  {picFile,
+  token,
+  isBanner = false} : {
+    picFile: File,
   token: string,
-  isBanner: boolean = false
+  isBanner?: boolean
+  }
 ) => {
   const formData = new FormData();
   formData.append("photo", picFile);

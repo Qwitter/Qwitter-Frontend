@@ -91,7 +91,6 @@ function Notification({ type, createdAt, follower, reply, retweet }: Notificatio
   // const navigate = useNavigate()
   const user = JSON.parse(localStorage.getItem("user")!) as UserType;
   const location = useLocation();
-  console.log(type)
   const formatDateMonthYear = (dateString: string) => {
     const date = moment(dateString);
     return date.format('MMM DD, YYYY');
@@ -99,13 +98,11 @@ function Notification({ type, createdAt, follower, reply, retweet }: Notificatio
   if (type == 'reply' || type == "retweet") {
     console.log(reply!)
     return (
-      <div className="px-4 py-3 cursor-pointer flex flex-row border-b border-primary border-opacity-30" /*onClick={() => navigate(url)}*/>
-        <div className=" mr-3 w-10 h-full flex justify-end basis-10">
+
         <TweetComponent
           tweet={reply!}
         />
-      </div>
-    </div>
+
     )
   }
   return (
