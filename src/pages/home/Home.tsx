@@ -26,7 +26,6 @@ export function Home() {
   }, [token]);
 
   const dataArr = useMemo(() => {
-    console.log(data?.pages.flat());
     return data?.pages.flat() || [];
   }, [data]);
 

@@ -8,7 +8,7 @@ import { Spinner } from "@/components/Spinner";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { addUserToGroup, cn, getUsersSuggestionsToAdd } from "@/lib/utils";
 import { UserContext } from "@/contexts/UserContextProvider";
-import { MessageUser } from "../types/MessagesTypes";
+import { MessageUser } from "../../../models/MessagesTypes";
 import { MessagesContext } from "@/contexts/MessagesContextProvider";
 function MessagesAddPeoplePopup() {
     const [isFocus, setFocus] = useState(false);

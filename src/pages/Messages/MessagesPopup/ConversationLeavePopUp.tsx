@@ -1,5 +1,5 @@
 import { Button, PopUpContainer } from '@/components'
-import { ConversationPopUpProps, conversation } from '../types/MessagesTypes'
+import { ConversationPopUpProps, conversation } from '../../../models/MessagesTypes'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { deleteConversation } from '@/lib/utils'
 import { useContext } from 'react'
