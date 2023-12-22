@@ -2,14 +2,14 @@ import { NavBar } from "../../components";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Settings } from "../Settings/Settings";
 import { Home } from "../home/Home";
-import { Notifications } from "../Notifications/Notifications";
+import { Notifications, NotificationsType } from "../Notifications/Notifications";
 import { Messages } from "../Messages/Messages";
 import { cn } from "@/lib/utils";
 import { MessagesAccordion } from "../Messages/MessagesAccordion";
 import { Profile } from "../Profile/Profile";
 import TweetDetails from "../TweetDetails/TweetDetails";
 import { socket } from "@/lib/socketInit";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { EVENTS } from "../../models/MessagesTypes";
 import { LikeRetweetList } from "@/components/LikeRetweetList/LikeRetweetList";
 import SideBar from "../SideBar/SideBar";
@@ -17,27 +17,42 @@ import NotFound from "../NotFound/NotFound";
 import ProtectedRoute from "./ProtectedRoute";
 import { Explore } from "@/pages/Explore/Explore";
 import ConnectionList from "@/components/ConnectionList/ConnectionList";
+import { toast } from "@/components/ui/use-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function PagesContainer() {
   const location = useLocation();
   const token = localStorage.getItem("token");
   const previousLocation = location.state?.previousLocation;
   const user = JSON.parse(localStorage.getItem("user")!);
+  const isSiteOpened = useDocumentVisible();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (!user) return;
     socket.connect();
+    
     socket.on("connect", () => {
       console.log("connected -----------");
     });
     console.log(socket.connected);
     socket.emit(EVENTS.CLIENT.JOIN_ROOM, user.userName);
-    socket.on(EVENTS.SERVER.NOTIFICATION, async (notification) => {
+    socket.on(EVENTS.SERVER.NOTIFICATION, async (notification:NotificationsType) => {
       console.log(notification);
-      if (Notification.permission === 'granted') {
-        // Show a notification
-        new Notification(notification.text);
-    }
+      if (isSiteOpened&&Notification.permission === 'granted') {
+          new Notification(notification.type=="follow"?"New Follower":"SomeOne killed ur tweet");
+        
+      }
+      else{
+        toast({
+          description: notification.type=="follow"?"New Follower":"SomeOne killed ur tweet",
+          variant: "secondary",
+          duration: 2000,
+          className: "py-4",
+        });
+      }
+      queryClient.invalidateQueries({ queryKey: ["Notifications"] });
+
     });
     return () => {
       socket.disconnect();
@@ -75,7 +90,7 @@ export function PagesContainer() {
               className={cn(
                 `w-auto mobile:w-[920px] h-full flex flex-row justify-between large2X:w-[990px] max-largeX:max-w-[600px] flex-shrink-1 flex-grow-2`,
                 getPageFromUrl(location.pathname.toLowerCase()) == "messages" &&
-                  "large2X:w-[1025px]"
+                "large2X:w-[1025px]"
               )}
             >
               <Routes location={previousLocation || location}>
@@ -151,10 +166,10 @@ export function PagesContainer() {
                 getPageFromUrl(location.pathname.toLowerCase()) == "unknown" ||
                 getPageFromUrl(location.pathname.toLowerCase()) == "messages"
               ) && (
-                <SideBar
-                  page={getPageFromUrl(location.pathname.toLowerCase())}
-                />
-              )}
+                  <SideBar
+                    page={getPageFromUrl(location.pathname.toLowerCase())}
+                  />
+                )}
             </div>
           </div>
           {!previousLocation?.pathname.toLowerCase().includes("/messages") &&
@@ -166,3 +181,28 @@ export function PagesContainer() {
     </>
   );
 }
+
+
+export const useDocumentVisible = (documentElement = document) => {
+  const [documentVisible, setDocumentVisible] = useState(
+    documentElement.visibilityState,
+  );
+
+  useEffect(() => {
+    const handleVisibilityChange = () =>
+      setDocumentVisible(documentElement.visibilityState);
+
+    documentElement.addEventListener(
+      "visibilitychange",
+      handleVisibilityChange,
+    );
+
+    return () =>
+      documentElement.removeEventListener(
+        "visibilitychange",
+        handleVisibilityChange,
+      );
+  }, [documentElement]);
+
+  return documentVisible === "visible";
+};

@@ -15,7 +15,7 @@ export function Home() {
           return await timelineForYouTweets(pageParam, 10, token!)
         
         else
-          return await timelineTweets(pageParam, 10, token!);
+          return await timelineTweets(pageParam, 10, token!,"");
       },
       ["tweets", "timeline",active]
     );

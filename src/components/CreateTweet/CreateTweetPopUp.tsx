@@ -64,7 +64,7 @@ function ShowUsersSuggestions({ onUserClick, username, closePopup }: ShowUsersSu
     data,
     refetch
   } = useQuery<User[]>({
-    queryKey: ["UsersSuggestions"],
+    queryKey: ["UsersSuggestions",username!.slice(1)],
     queryFn: () => getUsersSuggestions(token!, username!.slice(1))
     ,
   });
@@ -113,7 +113,7 @@ function ShowTagsSuggestions({ onUserClick, tag, closePopup }: ShowUsersSuggesti
     data,
     refetch
   } = useQuery<{ count: number, text: string, entityId: string }[]>({
-    queryKey: ["getHashtags"],
+    queryKey: ["getHashtags",tag!.slice(1)],
     queryFn: () => getHashtags(token!, tag!.slice(1))
     ,
   });
