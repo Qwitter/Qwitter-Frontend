@@ -9,7 +9,7 @@ import { MessagesAccordion } from "../Messages/MessagesAccordion";
 import { Profile } from "../Profile/Profile";
 import TweetDetails from "../TweetDetails/TweetDetails";
 import { socket } from "@/lib/socketInit";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { EVENTS } from "../../models/MessagesTypes";
 import { LikeRetweetList } from "@/components/LikeRetweetList/LikeRetweetList";
 import SideBar from "../SideBar/SideBar";
@@ -25,33 +25,35 @@ export function PagesContainer() {
   const token = localStorage.getItem("token");
   const previousLocation = location.state?.previousLocation;
   const user = JSON.parse(localStorage.getItem("user")!);
-  const isSiteOpened = useDocumentVisible();
   const queryClient = useQueryClient();
+  const handleComingNotification = (notification: NotificationsType) => {
+    console.log(notification)
+    if (document.visibilityState=="hidden" && Notification.permission === 'granted') {
+      new Notification(notification.type == "follow" ? `New Follower @${notification.follower!.username} ` : "SomeOne killed ur tweet");
+
+    }
+    else {
+      toast({
+        description: notification.type == "follow" ? `New Follower @${notification.follower!.username} ` : "SomeOne killed ur tweet",
+        variant: "secondary",
+        duration: 2000,
+        className: "py-4",
+      });
+    }
+    queryClient.invalidateQueries({ queryKey: ["Notifications"] });
+  }
 
   useEffect(() => {
     if (!user) return;
     socket.connect();
-    
+
     socket.on("connect", () => {
       console.log("connected -----------");
     });
     console.log(socket.connected);
     socket.emit(EVENTS.CLIENT.JOIN_ROOM, user.userName);
-    socket.on(EVENTS.SERVER.NOTIFICATION, async (notification:NotificationsType) => {
-      console.log(notification);
-      if (isSiteOpened&&Notification.permission === 'granted') {
-          new Notification(notification.type=="follow"?"New Follower":"SomeOne killed ur tweet");
-        
-      }
-      else{
-        toast({
-          description: notification.type=="follow"?"New Follower":"SomeOne killed ur tweet",
-          variant: "secondary",
-          duration: 2000,
-          className: "py-4",
-        });
-      }
-      queryClient.invalidateQueries({ queryKey: ["Notifications"] });
+    socket.on(EVENTS.SERVER.NOTIFICATION, async (notification: NotificationsType) => {
+      handleComingNotification(notification);
 
     });
     return () => {
@@ -74,6 +76,8 @@ export function PagesContainer() {
       return "messages";
     } else if (pathname.includes("tweet")) {
       return "tweet";
+    } else if (pathname.includes("connection")) {
+      return "connection";
     } else {
       return "unknown";
     }
@@ -181,28 +185,3 @@ export function PagesContainer() {
     </>
   );
 }
-
-
-export const useDocumentVisible = (documentElement = document) => {
-  const [documentVisible, setDocumentVisible] = useState(
-    documentElement.visibilityState,
-  );
-
-  useEffect(() => {
-    const handleVisibilityChange = () =>
-      setDocumentVisible(documentElement.visibilityState);
-
-    documentElement.addEventListener(
-      "visibilitychange",
-      handleVisibilityChange,
-    );
-
-    return () =>
-      documentElement.removeEventListener(
-        "visibilitychange",
-        handleVisibilityChange,
-      );
-  }, [documentElement]);
-
-  return documentVisible === "visible";
-};

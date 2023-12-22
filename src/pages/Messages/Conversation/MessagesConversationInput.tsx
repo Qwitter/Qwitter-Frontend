@@ -11,10 +11,11 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import EmojiPicker, { Theme, EmojiStyle } from "emoji-picker-react";
 
 
-export function MessagesConversationInput({ text, setText, handleSubmit, selectedImageFile, setSelectedImageFile }:
+export function MessagesConversationInput({ text, setText, isAccordion, handleSubmit, selectedImageFile, setSelectedImageFile }:
     {
         selectedImageFile: File | undefined; setSelectedImageFile: React.Dispatch<React.SetStateAction<File | undefined>>
         handleSubmit: () => void; text: string; setText: React.Dispatch<React.SetStateAction<string>>;
+        isAccordion: boolean;
     }) {
     const [selectedImage, setSelectedImage] = useState<{ value: string; type: string }[]>([])
 
@@ -27,7 +28,7 @@ export function MessagesConversationInput({ text, setText, handleSubmit, selecte
         position: { top: 0, left: 0 },
     });
 
-    const handleInputChange = (inputText:string) => {
+    const handleInputChange = (inputText: string) => {
         setText(inputText);
     };
     const handleFileChange = () => {
@@ -58,6 +59,13 @@ export function MessagesConversationInput({ text, setText, handleSubmit, selecte
         }
 
     }
+    function autoHeight(input: HTMLTextAreaElement) {
+        
+            input.style.height = '1px';
+            input.style.height = `${input.scrollHeight}px`;
+        
+    }
+
     const handleUserClick = (username: string) => {
         // Find the mention in the current text and replace it with the selected username
         const mention = mentionsAndTags[popup.index];
@@ -98,7 +106,7 @@ export function MessagesConversationInput({ text, setText, handleSubmit, selecte
                     <div className="flex flex-col w-full pl-2 ">
                         {selectedImageFile && (selectedImage[0].type == "video" ?
                             <div
-                                className="my-4 relative  rounded-lg overflow-hidden max-h-[200px] max-w-[300px]"
+                                className={cn("my-4 relative  rounded-lg overflow-hidden max-h-[200px] max-w-[300px]",isAccordion&&"max-h-[100px] max-w-[150px]")}
                                 onClick={(e) => e.preventDefault()}
                             >
 
@@ -116,18 +124,29 @@ export function MessagesConversationInput({ text, setText, handleSubmit, selecte
                             </div> : <div >
                                 <TweetImagesViewer screen="message" images={selectedImage} mode="edit" removeAttachment={handleRemoveImage} />
                             </div>)}
-                        <div className={cn("w-full max-w-[440px] max-h-[160px] overflow-y-auto relative", `${selectedImageFile ? 'max-w-[500px]' : ''}`)}>
-                            <Textarea
-                                text={text}
-                                SetMentionsAndTags={SetMentionsAndTags}
-                                mentionsAndTags={mentionsAndTags}
-                                popup={popup}
-                                setPopup={setPopup}
+                        <div className={cn("w-full max-w-[440px] max-h-[160px] overflow-y-auto relative", `${selectedImageFile ? 'max-w-[500px]' : ''}`, isAccordion && 'max-h-[300px]')}>
+                            {isAccordion ? <div className="max-h-[150px] w-full overflow-y-auto"><textarea
+                                value={text}
+                                className="bg-transparent text-sm overflow-x-hidden 
+                                    h-[36px]
+                                 placeholder:text-gray w-full  focus:ring-transparent focus:border-none focus:outline-none resize-none border-none"
+
                                 onKeyDown={handleKeyDown}
-                                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>)=>handleInputChange(e.target.value)}
-                                mode="Message"
-                                highlightClassName={cn("text-sm bg-transparent overflow-x-hidden  max-w-[440px] ", `${selectedImageFile ? 'max-w-[540px]' : ''}`)}
-                                className="bg-transparent text-sm overflow-x-hidden  placeholder:text-gray  focus:ring-transparent focus:border-none focus:outline-none resize-none border-none" placeholder="Start a new message" />
+                                placeholder="Start a new message"
+                                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => { handleInputChange(e.target.value); autoHeight(e.target) }}
+                            ></textarea></div> :
+                                <Textarea
+                                    text={text}
+                                    SetMentionsAndTags={SetMentionsAndTags}
+                                    mentionsAndTags={mentionsAndTags}
+                                    popup={popup}
+                                    setPopup={setPopup}
+                                    onKeyDown={handleKeyDown}
+                                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleInputChange(e.target.value)}
+                                    mode="Message"
+                                    highlightClassName={cn("text-sm bg-transparent overflow-x-hidden  max-w-[440px] ", `${selectedImageFile ? 'max-w-[540px]' : ''}`)}
+                                    className="bg-transparent text-sm overflow-x-hidden  placeholder:text-gray  focus:ring-transparent focus:border-none focus:outline-none resize-none border-none" placeholder="Start a new message" />
+                            }
                         </div>
                     </div>
                     {text.length > 0 || selectedImage.length > 0 ? <button data-testid="sendButton" className="text-secondary h-full group relative max-w-[40px] flex items-center w-full cursor-pointer" onClick={handleSubmit}>

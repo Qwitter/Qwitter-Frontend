@@ -11,7 +11,7 @@ import { Spinner } from "@/components/Spinner";
 import { MessagesContext } from "@/contexts/MessagesContextProvider";
 import { socket } from "@/lib/socketInit";
 
-export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRequest = false }: { newMessageRequest?: boolean; messagesRequests?: number; }) {
+export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRequest = false,setOpenConversation}: {setOpenConversation?: React.Dispatch<React.SetStateAction<string|undefined>>; newMessageRequest?: boolean; messagesRequests?: number; }) {
     const navigate = useNavigate();
     const { token } = useContext(UserContext);
     const { setUserAllConversation } = useContext(MessagesContext)
@@ -88,6 +88,7 @@ export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRe
 
             <MessagesList conversations={data}
                 mode={"normal"}
+                setOpenConversation={setOpenConversation}
                 showDeletePopUp={deleteConversation}
             />
             <ConversationLeavePopUp show={show} setShow={setShow} conversationToDelete={conversationToDelete} />
