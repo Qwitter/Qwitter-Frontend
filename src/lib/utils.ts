@@ -555,13 +555,14 @@ export const convertNumberToShortForm = (number: number) => {
 export const timelineTweets = async (
   pageParam: number = 1,
   limit: number = 10,
-  token: string
+  token: string,
+  q:string
 ) => {
   if (!token) return [];
 
   try {
     const response = await axios.get(
-      `${VITE_BACKEND_URL}/api/v1/tweets?page=${pageParam}&limit=${limit}`,
+      `${VITE_BACKEND_URL}/api/v1/tweets?q=${q}&page=${pageParam}&limit=${limit}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -1777,9 +1778,12 @@ export const retweet = async (tweetId: string, token: string) => {
  * @description get Notifications list  for user
  * @returns  Notifications list represents the response from the backend or throw error
  */
-export const getNotificationsList = async () => {
+export const getNotificationsList = async (
+  pageParam:number,
+  limit:number,
+) => {
   try {
-    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/notifications/`, {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/notifications?page=${pageParam}&limit=${limit}`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",

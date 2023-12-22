@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Heart, User } from "lucide-react";
-import { Link, useLocation, /*useNavigate*/ } from "react-router-dom";
+import { Link, useLocation, useNavigate, /*useNavigate*/ } from "react-router-dom";
 import { BiRepost } from "react-icons/bi";
 import Logo from "../../assets/logo.png";
 import { User as UserType } from "@/models/User";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { TweetWithRetweet } from "@/models/Tweet";
 import { MessageUser } from "../../models/MessagesTypes";
 import { getNotificationsList } from "@/lib/utils";
@@ -12,7 +12,8 @@ import { Spinner } from "@/components/Spinner";
 import moment from "moment";
 import { default as TweetComponent } from "../../components/Tweet/Tweet";
 import { UserNameHoverCard } from "@/components/UserNameHoverCard/UserNameHoverCard";
-type NotificationsType = {
+import { useInView } from "react-intersection-observer";
+export type NotificationsType = {
   type: string;
   createdAt: string;
   reply?: TweetWithRetweet;
@@ -21,16 +22,35 @@ type NotificationsType = {
 
 }
 export function Notifications() {
+  const { ref, inView } = useInView();
   const [active, setActive] = useState("ALL");
-  const {
-    isPending,
-    data: notifications,
-  } = useQuery<NotificationsType[]>({
-    queryKey: ["Notifications"],
-    queryFn: () => getNotificationsList()
-    ,
-  });
-
+  const handleNotificationsPaging = ({
+    pageParam
+  }: {
+    pageParam: number;
+  }): Promise<NotificationsType[]> => {
+    return getNotificationsList(pageParam, 10)
+  }
+  const { isPending, data: notifications, fetchNextPage, hasNextPage,isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ["Notifications"],
+      initialPageParam: 1,
+      getNextPageParam: (data, allPages) => {
+        return data.length === 10? allPages.length + 1: undefined;
+      },
+      queryFn: handleNotificationsPaging,
+    });
+    useEffect(() => {
+      if ( hasNextPage && notifications) {
+        fetchNextPage();
+      }
+  
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [inView]);
+    const NotificationsList = useMemo(() => {
+      return notifications?.pages.flat() || [];
+    }, [notifications]);
+  
   return (
     <div className="max-w-[600px] w-full h-full flex-grow border-r border-primary border-opacity-30 ">
       <div className="flex flex-col min-h-[50px] w-full sticky backdrop-blur-2xl top-[-1px] bg-black  z-50 border-b border-primary border-opacity-20">
@@ -72,16 +92,28 @@ export function Notifications() {
       <div className="relative min-h-[60vh]">
         {isPending || !notifications ? <div className="w-full h-[500px] p-10">
           <Spinner />
-        </div> : notifications.map((notification) => (
-          <Notification
-            key={notification.createdAt}
-            createdAt={notification.createdAt}
-            retweet={notification.retweet}
-            reply={notification.reply}
-            follower={notification.follower}
-            type={notification.type}
-          />
-        ))}
+        </div> : 
+          NotificationsList.map((notification,i) => (
+            <>
+            <Notification
+              key={notification.createdAt}
+              createdAt={notification.createdAt}
+              retweet={notification.retweet}
+              reply={notification.reply}
+              follower={notification.follower}
+              type={notification.type}
+            />
+            {(hasNextPage ||isFetchingNextPage) && i === NotificationsList.length - 1 && (
+              <div className="py-10">
+                <div ref={ref}></div>
+                <Spinner />
+              </div>
+            )}
+            </>
+          ))
+          
+        }
+        
       </div>
     </div>
 
@@ -89,7 +121,7 @@ export function Notifications() {
 }
 
 function Notification({ type, createdAt, follower, reply }: NotificationsType) {
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
   const user = JSON.parse(localStorage.getItem("user")!) as UserType;
   const { VITE_DEFAULT_IMAGE } = import.meta.env;
 
@@ -101,14 +133,14 @@ function Notification({ type, createdAt, follower, reply }: NotificationsType) {
   if (type == 'reply' || type == "retweet") {
     return (
 
-        <TweetComponent
-          tweet={reply!}
-        />
+      <TweetComponent
+        tweet={reply!}
+      />
 
     )
   }
   return (
-    <div className="px-4 py-3 cursor-pointer flex flex-row border-b border-primary border-opacity-30" /*onClick={() => navigate(url)}*/>
+    <div className="px-4 py-3 cursor-pointer flex flex-row border-b border-primary border-opacity-30" onClick={type=="follow"?() => navigate('/profile/'+follower?.userName):() => {}}>
       <div className=" mr-3 w-10 h-full flex justify-end basis-10">
         {
           type == 'follow' && <User className="text-transparent w-8 h-8" fill="#1d9bf0" />}
@@ -131,15 +163,15 @@ function Notification({ type, createdAt, follower, reply }: NotificationsType) {
         </Link> :
           <><div className="mb-3 pr-5">
             <div className="flex flex-row">
-              <img className="w-10 aspect-square p-1 rounded-full " src={follower?.profileImageUrl||VITE_DEFAULT_IMAGE} alt="" />
+              <img className="w-10 aspect-square p-1 rounded-full " src={follower?.profileImageUrl || VITE_DEFAULT_IMAGE} alt="" />
             </div>
           </div>
             <div>
               <div className="flex flex-row items-center gap-1 transition-all">
-                <UserNameHoverCard name={follower?.name||""} isFollowing={follower?.isFollowing||false} description={follower?.description||""} userName={follower?.userName||""} followersCount={follower?.followersCount||0} followingCount={follower?.followingCount||0} profileImageUrl={follower?.profileImageUrl||VITE_DEFAULT_IMAGE} />
-              <Link to={type=='follow'&&`/Profile/${follower?.userName}`||"#"}> {type == 'follow' ? "followed you" : type == 'retweet' ? "reposted your post" : "liked your post"}</Link>
-                </div>
-                {type=="love"&&<p className="text-sm text-gray mt-2">post text , img or video url</p>}
+                <UserNameHoverCard name={follower?.name || ""} isFollowing={follower?.isFollowing || false} description={follower?.description || ""} userName={follower?.userName || ""} followersCount={follower?.followersCount || 0} followingCount={follower?.followingCount || 0} profileImageUrl={follower?.profileImageUrl || VITE_DEFAULT_IMAGE} />
+                <Link to={type == 'follow' && `/Profile/${follower?.userName}` || "#"}> {type == 'follow' ? "followed you" : type == 'retweet' ? "reposted your post" : "liked your post"}</Link>
+              </div>
+              {type == "love" && <p className="text-sm text-gray mt-2">post text , img or video url</p>}
             </div></>}
       </div>
     </div>
