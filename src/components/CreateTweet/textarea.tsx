@@ -35,7 +35,7 @@ const Textarea: React.FC<TextareaProps> = ({ highlightClassName,text, className,
   const containerRef = useRef<HTMLDivElement>(null);
   const [mentionOpenedPopup, setMentionOpenedPopup] = useState(false);
   useEffect(() => {
-    auto_height()
+    autoHeight()
     updateMention()
     checkMention()
     
@@ -60,7 +60,7 @@ const Textarea: React.FC<TextareaProps> = ({ highlightClassName,text, className,
 
   }
 
-  function auto_height() {
+  function autoHeight() {
     textAreaRef.current!.style.height = '1px';
     textAreaRef.current!.style.height = `${textAreaRef.current!.scrollHeight}px`;
     containerRef.current!.style.height = '1px';
