@@ -1,4 +1,4 @@
-import { TweetWithRetweet, type Tweet } from "@/models/Tweet";
+import { type Tweet, TweetWithReplyAndRetweet } from "@/models/Tweet";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Link } from "react-router-dom";
 import TweetInteractionsButtons from "../TweetInteractionsButtons/TweetInteractionsButtons";
@@ -39,7 +39,6 @@ const tweetTextHighlighter = (text: string): JSX.Element => {
   if (!matches) return <p className="text-gray-700">{text}</p>;
   const temp = text;
   const words: string[] = temp.split(" ");
-  console.log(words);
 
   return (
     <p className="text-gray-700">
@@ -68,7 +67,7 @@ const tweetTextHighlighter = (text: string): JSX.Element => {
 };
 
 type TweetProps = {
-  tweet: TweetWithRetweet;
+  tweet: TweetWithReplyAndRetweet;
   size?: "normal" | "compact";
   mode?: "list" | "page";
   retweeter?: Tweet["author"];
@@ -88,7 +87,8 @@ const Tweet = ({
     return tweetTextHighlighter(tweet.text);
   }, [tweet.text]);
 
-  console.log(tweet)
+  console.log(tweet);
+  console.log(retweeter)
 
   if (tweet.retweetedTweet)
     return (
@@ -106,7 +106,7 @@ const Tweet = ({
   return (
     <div data-testid="tweetDiv">
       <Link
-        to={mode === "list" ? `/tweet/${tweet.id}` : "#"}
+        to={mode === "list" ? mainTweet ? `/tweet/${mainTweet.id}` : `/tweet/${tweet.id}`  : "#"}
         className={cn(
           "w-full flex px-4 py-3 gap-4 transition-all cursor-default",
           {
@@ -116,7 +116,7 @@ const Tweet = ({
         )}
       >
         {mode === "list" && (
-          <Avatar>
+          <Avatar className={cn({"mt-10": retweeter})}>
             <AvatarImage src={`${tweet.author.profileImageUrl}`} />
             <AvatarFallback>
               {tweet.author.userName.substring(0, 2)}
@@ -201,7 +201,8 @@ const Tweet = ({
                     tweet={tweet}
                     className="my-2.5 px-4"
                     mode={mode}
-                    mainTweet={mainTweet}
+                    isRetweeted={tweet.isRetweeted}
+                    userRetweetId={tweet.userRetweetId}
                   />
                 </div>
                 <hr className="border-primary border-opacity-30" />
@@ -213,7 +214,8 @@ const Tweet = ({
                 tweet={tweet}
                 className="mt-4"
                 mode={mode}
-                mainTweet={mainTweet}
+                isRetweeted={tweet.isRetweeted} //! not inside the retweeted one
+                userRetweetId={tweet.userRetweetId} //! not inside the retweeted one
               />
             </div>
           )}

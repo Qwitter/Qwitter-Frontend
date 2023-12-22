@@ -23,7 +23,8 @@ const TweetDetails = () => {
     hasNextPage,
   } = useInfiniteScroll(
     async ({ pageParam }) => {
-      return await getTweetReplies(tweetId!, token!, pageParam, 10);
+      if (!token) return () => {};
+      return getTweetReplies(tweetId!, token, pageParam, 10);
     },
     ["tweet", tweetId!, "replies"]
   );

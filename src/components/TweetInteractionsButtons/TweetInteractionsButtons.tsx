@@ -15,7 +15,7 @@ import {
   unBookmarkTweet,
   unlikeTweet,
 } from "@/lib/utils";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { toast } from "../ui/use-toast";
@@ -25,17 +25,27 @@ type TweetInteractionsButtonsProps = {
   tweet: Tweet;
   className?: string;
   mode?: "list" | "page";
+  isRetweeted: boolean;
+  userRetweetId?: string;
 };
 
 const TweetInteractionsButtons = ({
   tweet,
   className,
   mode = "list",
+  isRetweeted,
 }: TweetInteractionsButtonsProps) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [tweetClone, setTweetClone] = useState<Tweet>(tweet);
+  const [isRetweetedLocal, setIsRetweetedLocal] =
+    useState<boolean>(isRetweeted);
   const { token } = useContext(UserContext);
+
+  useEffect(() => {
+    setTweetClone(tweet);
+    console.log(tweet);
+  }, [tweet]);
 
   const likeLocalTweet = () => {
     setTweetClone((prev: Tweet) => ({
@@ -69,6 +79,10 @@ const TweetInteractionsButtons = ({
       queryClient.invalidateQueries({
         queryKey: ["tweet", tweet.id],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: ["tweets"],
+      });
     },
   });
 
@@ -87,6 +101,10 @@ const TweetInteractionsButtons = ({
 
       queryClient.invalidateQueries({
         queryKey: ["tweet", tweet.id],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["tweets"],
       });
     },
   });
@@ -146,7 +164,6 @@ const TweetInteractionsButtons = ({
   const retweetLocalTweet = () => {
     setTweetClone((prev: Tweet) => ({
       ...prev,
-      hasRetweeted: true,
       retweetCount: prev.retweetCount + 1,
     }));
   };
@@ -154,7 +171,6 @@ const TweetInteractionsButtons = ({
   const unRetweetLocalTweet = () => {
     setTweetClone((prev: Tweet) => ({
       ...prev,
-      hasRetweeted: false,
       retweetCount: prev.retweetCount - 1,
     }));
   };
@@ -173,6 +189,10 @@ const TweetInteractionsButtons = ({
       }
 
       toast({ title: "Retweeted Successfully" });
+
+      queryClient.invalidateQueries({
+        queryKey: ["tweet", tweet.id],
+      });
 
       queryClient.invalidateQueries({
         queryKey: ["tweets"],
@@ -194,6 +214,10 @@ const TweetInteractionsButtons = ({
       }
 
       toast({ title: "Removed Retweet Successfully" });
+
+      queryClient.invalidateQueries({
+        queryKey: ["tweet", tweet.id],
+      });
 
       queryClient.invalidateQueries({
         queryKey: ["tweets"],
