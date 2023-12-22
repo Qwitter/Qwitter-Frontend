@@ -1,9 +1,6 @@
 import { cn } from "@/lib";
-import { deleteProfileImage } from "@/lib/utils";
-import { useMutation } from "@tanstack/react-query";
 import { Camera, X } from "lucide-react";
 import { useRef, useState } from "react";
-import { useToast } from "../ui/use-toast";
 
 interface ImagePickerProps extends React.InputHTMLAttributes<HTMLInputElement> {
   alt?: string;
@@ -15,6 +12,9 @@ interface ImagePickerProps extends React.InputHTMLAttributes<HTMLInputElement> {
   setImagePath: React.Dispatch<React.SetStateAction<File | undefined>>;
   isRemovable?: boolean;
   isBanner?: boolean;
+  setIsDeleted?: React.Dispatch<React.SetStateAction<boolean>>;
+  onDelete?: () => void;
+  hasDefault?: boolean;
 }
 
 export const ImagePicker = ({
@@ -25,13 +25,14 @@ export const ImagePicker = ({
   className,
   image,
   isRemovable,
-  isBanner = false,
+  setIsDeleted,
+  onDelete,
+  hasDefault,
   alt = "Uploaded Image",
 }: ImagePickerProps) => {
-  const token = localStorage.getItem("token");
   const [displayImage, setDisplayImage] = useState<string | undefined>(image);
   const inputFileRef = useRef<HTMLInputElement | null>(null);
-  const { toast } = useToast();
+  const [randKey, setRandKey] = useState(new Date());
 
   const handleIconClick = () => {
     if (inputFileRef.current) inputFileRef.current.click();
@@ -41,6 +42,8 @@ export const ImagePicker = ({
   const handleImageChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
+    setIsDeleted && setIsDeleted(false);
+
     const newPicPath = event.target.files?.[0];
 
     if (newPicPath) {
@@ -57,24 +60,13 @@ export const ImagePicker = ({
     }
   };
 
-  const { mutate } = useMutation({
-    mutationKey: ["deleteImage", isBanner],
-    mutationFn: () => deleteProfileImage(isBanner, token!),
-    onSuccess: () => {
-      setDisplayImage(undefined);
-    },
-    onError: () => {
-      toast({
-        variant: "secondary",
-        title: "Request error",
-        description: "Error deleting image",
-      });
-    },
-  });
-
   // deletes the image from the database
   const handleImageDelete = async () => {
-    mutate();
+    if (hasDefault) setDisplayImage(image);
+    else setDisplayImage(undefined);
+    setRandKey(new Date());
+    setIsDeleted && setIsDeleted(true);
+    onDelete && onDelete();
   };
 
   return (
@@ -112,10 +104,14 @@ export const ImagePicker = ({
               name="photo"
               alt="Upload Image"
               data-testid="imageBtn"
+              key={randKey.toString()}
             />
           </div>
           {isRemovable && (
-            <div className="ml-5 rounded-full p-2 bg-gray/80 hover:bg-gray/70 cursor-pointer" data-testid="removePic">
+            <div
+              className="ml-5 rounded-full p-2 bg-gray/80 hover:bg-gray/70 cursor-pointer"
+              data-testid="removePic"
+            >
               <X onClick={handleImageDelete} />
             </div>
           )}

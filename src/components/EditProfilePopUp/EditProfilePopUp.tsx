@@ -11,7 +11,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { EditUserSchema, User } from "@/models/User";
 import { useToast } from "../ui/use-toast";
 import { DiscardProfileChanges } from "./DiscardProfileChanges";
-import { editUserProfile, uploadProfileImage } from "@/lib/utils";
+import {
+  deleteProfileBanner,
+  editUserProfile,
+  uploadProfileImage,
+} from "@/lib/utils";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { LoadingOverlay } from "../LoadingOverlay/LoadingOverlay";
@@ -27,6 +31,7 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
   const [profileBanner, setProfileBanner] = useState<File>();
   const [showDiscardChanges, setShowDiscardChanges] = useState<boolean>(false);
   const { user, token, saveUser } = useContext(UserContext);
+  const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const { username } = useParams();
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -69,7 +74,10 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
       form.getValues().description == user?.description &&
       form.getValues().location == user?.location &&
       form.getValues().url == user?.url &&
-      getFormDate().toISOString() == contextBD
+      getFormDate().toISOString() == contextBD &&
+      profileImage == undefined &&
+      profileBanner == undefined &&
+      !isDeleted
     );
   };
 
@@ -87,16 +95,24 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
     navigate(-1);
   };
 
-  const { mutate, isPending } = useMutation<User, Error, User, unknown>({
+  const { mutate: editUser, isPending } = useMutation<
+    User,
+    Error,
+    User,
+    unknown
+  >({
     mutationFn: async (editedUserData: User) => {
-      profileImage &&
-        (await uploadProfileImage({ picFile: profileImage!, token: token! }));
-      profileBanner &&
-        (await uploadProfileImage({
+      if (profileImage)
+        await uploadProfileImage({ picFile: profileImage!, token: token! });
+      if (profileBanner && !isDeleted)
+        await uploadProfileImage({
           picFile: profileBanner!,
           token: token!,
           isBanner: true,
-        }));
+        });
+
+      if (isDeleted) deleteProfileBanner({ token: token! });
+
       return await editUserProfile(editedUserData, token!);
     },
     onSuccess: (editedUserData) => {
@@ -135,8 +151,6 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
   });
 
   const handleSave = async (): Promise<void> => {
-    console.log(!(!isChanged() && !profileImage && !profileBanner));
-
     // check for errors first
     await form.trigger();
     if (Object.keys(form.formState.errors).length > 0) {
@@ -150,25 +164,32 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
       return;
     }
 
-    if (!isChanged() && !profileImage && !profileBanner) {
+    if (!isChanged()) {
       if (onSave) onSave();
       handleClose();
       return;
     }
+
+    let newURL = "";
+
+    if (form.getValues().url.startsWith("http")) newURL = form.getValues().url;
+    else newURL = `http://${form.getValues().url}`;
+
+    if (newURL[newURL.length - 1] == "/") newURL = newURL.slice(0, -1);
 
     const editedUserData = {
       ...user,
       name: form.getValues().name,
       description: form.getValues().description,
       location: form.getValues().location,
-      url: form.getValues().url,
+      url: newURL,
       day: form.getValues().day,
       month: form.getValues().month.toString(),
       year: form.getValues().year.toString(),
       birthDate: getFormDate().toISOString(),
     } as User;
 
-    mutate(editedUserData);
+    editUser(editedUserData);
   };
 
   const saveButton = (
@@ -201,8 +222,9 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
             image={user?.profileBannerUrl}
             className="w-full h-[193px] rounded-none border-none p-0"
             imageClassName="rounded-none "
-            isRemovable={true}
+            isRemovable
             isBanner
+            setIsDeleted={setIsDeleted}
           />
         </div>
         <ImagePicker

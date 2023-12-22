@@ -24,11 +24,9 @@ export function cn(...inputs: ClassValue[]) {
 export const getUserData = async (token: string) => {
   try {
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user`, {
-      withCredentials: true,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true,
         Authorization: `Bearer ${token}`,
       },
     });
@@ -435,11 +433,15 @@ export const registerNewUser = async (newUserData: object) => {
  * @returns New user data after the image has changed
  */
 
-export const uploadProfileImage = async (
-  picFile: File,
-  token: string,
-  isBanner: boolean = false
-) => {
+export const uploadProfileImage = async ({
+  picFile,
+  token,
+  isBanner = false,
+}: {
+  picFile: File;
+  token: string;
+  isBanner?: boolean;
+}) => {
   const formData = new FormData();
   formData.append("photo", picFile);
 
@@ -474,14 +476,10 @@ export const uploadProfileImage = async (
  * @param isBanner Used to upload the profile banner
  * @returns New user data after the image has changed
  */
-export const deleteProfileImage = async (
-  isBanner: boolean = false,
-  token: string
-) => {
+export const deleteProfileBanner = async ({ token }: { token: string }) => {
   try {
     const res = await axios.delete(
-      `${VITE_BACKEND_URL}/api/v1/user/profile_${isBanner ? "banner" : "picture"
-      }`,
+      `${VITE_BACKEND_URL}/api/v1/user/profile_banner`,
       {
         headers: {
           Accept: "application/json",
@@ -863,7 +861,7 @@ export const CreateMessage = async ({
   formData,
   token,
   conversationId,
-  logicalId
+  logicalId,
 }: {
   conversationId: string;
   formData: FormData;
@@ -871,7 +869,7 @@ export const CreateMessage = async ({
   logicalId: string;
 }) => {
   try {
-    logicalId
+    logicalId;
     const res = await axios.post(
       `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/message`,
       formData,

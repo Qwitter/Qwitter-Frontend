@@ -78,16 +78,16 @@ function App() {
                 element={<EditProfilePopUp />}
               />
               <Route
-                path="/:username/photo"
+                path="profile/:username/photo"
                 element={<ProfileImageViewer isBanner={false} />}
               />
               <Route
-                path="/:username/header_photo"
+                path="profile/:username/header_photo"
                 element={<ProfileImageViewer isBanner={true} />}
               />
               <Route
                 path="/Notification/login"
-                element={<NotificationLoginPopup  />}
+                element={<NotificationLoginPopup />}
               />
             </Routes>
             <Toaster />
