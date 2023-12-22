@@ -2,7 +2,7 @@ import { Trash2, ForwardIcon, Copy } from "lucide-react";
 import { useContext, useState } from "react";
 import { MessagesContext } from "@/contexts/MessagesContextProvider";
 import { ConversationRemoveMessagePopUp } from "./ConversationRemoveMessagePopUp";
-import { MessagesMessage } from "../types/MessagesTypes";
+import { MessagesMessage } from "../../../models/MessagesTypes";
 
 export function MessagesConversationPopUp({ isUser,text,setChatMessages ,setIsOpen,image, replyId,userNameOFReplyMessage ,messageId}: {setChatMessages:React.Dispatch<React.SetStateAction<MessagesMessage[]>>;isUser:boolean;image:[{ value:string, type:string }] ;messageId:string; userNameOFReplyMessage:string;replyId: string; text: string; setIsOpen: React.Dispatch<React.SetStateAction<boolean>>; }) {
     const handleCopyText = () => {

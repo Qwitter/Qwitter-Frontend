@@ -1,6 +1,6 @@
 import { TextInput } from "@/components";
 import { MoveLeft, Search, X } from "lucide-react";
-import { MessagesSearchProp } from "./types/MessagesTypes";
+import { MessagesSearchProp } from "../../models/MessagesTypes";
 import { cn } from "@/lib";
 
 export function MessagesSearch({ text,setShowSearch, showSearch, setText, className, inputClassName, handleInputFocus }: MessagesSearchProp) {

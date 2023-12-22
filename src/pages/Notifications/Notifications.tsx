@@ -6,11 +6,12 @@ import Logo from "../../assets/logo.png";
 import { User as UserType } from "@/models/User";
 import { useQuery } from "@tanstack/react-query";
 import { TweetWithRetweet } from "@/models/Tweet";
-import { MessageUser } from "../Messages/types/MessagesTypes";
+import { MessageUser } from "../../models/MessagesTypes";
 import { getNotificationsList } from "@/lib/utils";
 import { Spinner } from "@/components/Spinner";
 import moment from "moment";
 import { default as TweetComponent } from "../../components/Tweet/Tweet";
+import { UserNameHoverCard } from "@/components/UserNameHoverCard/UserNameHoverCard";
 type NotificationsType = {
   type: string;
   createdAt: string;
@@ -87,16 +88,17 @@ export function Notifications() {
   );
 }
 
-function Notification({ type, createdAt, follower, reply, retweet }: NotificationsType) {
+function Notification({ type, createdAt, follower, reply }: NotificationsType) {
   // const navigate = useNavigate()
   const user = JSON.parse(localStorage.getItem("user")!) as UserType;
+  const { VITE_DEFAULT_IMAGE } = import.meta.env;
+
   const location = useLocation();
   const formatDateMonthYear = (dateString: string) => {
     const date = moment(dateString);
     return date.format('MMM DD, YYYY');
   };
   if (type == 'reply' || type == "retweet") {
-    console.log(reply!)
     return (
 
         <TweetComponent
@@ -129,13 +131,15 @@ function Notification({ type, createdAt, follower, reply, retweet }: Notificatio
         </Link> :
           <><div className="mb-3 pr-5">
             <div className="flex flex-row">
-              <img className="w-9 h-9 p-1 rounded-full " src="https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg" alt="" />
+              <img className="w-10 aspect-square p-1 rounded-full " src={follower?.profileImageUrl||VITE_DEFAULT_IMAGE} alt="" />
             </div>
           </div>
             <div>
-              <Link to={`/${'marwansamy99'}`} className="text-primary font-bold hover:underline transition-all">Ahmed Osama Helmy</Link>
-
-              <Link to={"/"}> {type == 'follow' ? "Followed you" : type == 'retweet' ? "reposted your post" : "liked your post"}</Link>
+              <div className="flex flex-row items-center gap-1 transition-all">
+                <UserNameHoverCard name={follower?.name||""} isFollowing={follower?.isFollowing||false} description={follower?.description||""} userName={follower?.userName||""} followersCount={follower?.followersCount||0} followingCount={follower?.followingCount||0} profileImageUrl={follower?.profileImageUrl||VITE_DEFAULT_IMAGE} />
+              <Link to={type=='follow'&&`/Profile/${follower?.userName}`||"#"}> {type == 'follow' ? "followed you" : type == 'retweet' ? "reposted your post" : "liked your post"}</Link>
+                </div>
+                {type=="love"&&<p className="text-sm text-gray mt-2">post text , img or video url</p>}
             </div></>}
       </div>
     </div>

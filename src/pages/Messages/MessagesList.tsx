@@ -1,5 +1,5 @@
 import { MoreHorizontal, Pin, Trash2, XCircle } from "lucide-react";
-import { conversation, MessagesListProp } from "./types/MessagesTypes";
+import { conversation, MessagesListProp } from "../../models/MessagesTypes";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";

@@ -1,6 +1,6 @@
 import { MoreHorizontal, ForwardIcon, Reply, Info } from "lucide-react";
-import { useContext, useEffect, useState } from "react";
-import { MessagesMessage } from "../types/MessagesTypes";
+import { useContext,  useState } from "react";
+import { MessagesMessage } from "../../../models/MessagesTypes";
 import { cn } from "@/lib";
 import TweetImagesViewer from "@/components/TweetImagesViewer/TweetImagesViewer";
 import { formatDate } from "@/lib/utils";
@@ -33,10 +33,7 @@ export function MessagesConversationMessage({ isMessage, isGroup, error, sending
 
         return text;
     }
-    useEffect(() => {
-        console.log(entities.media[0]?.type)
 
-    }, []);
 
     return (
 

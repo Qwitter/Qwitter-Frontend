@@ -1,7 +1,7 @@
 import { OptionsHeader } from "@/components";
 import { Ban, Settings, Trash2 } from "lucide-react";
 import {  useState } from "react";
-import { MessageUser, MessagesRequestPopUpProp } from "./types/MessagesTypes";
+import { MessageUser, MessagesRequestPopUpProp } from "../../models/MessagesTypes";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { MessagesMain } from "./MessagesMain";
 import { MessagesList } from "./MessagesList";

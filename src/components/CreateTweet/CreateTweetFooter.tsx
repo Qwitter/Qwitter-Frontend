@@ -6,15 +6,19 @@ import 'react-circular-progressbar/dist/styles.css';
 import { cn } from "@/lib";
 import { useRef, useState } from "react";
 import { CreateTweetFooterProp } from "./types/CreateTweetProps";
+import EmojiPicker from 'emoji-picker-react';
+import { EmojiStyle, Theme } from 'emoji-picker-react';
+
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { toast } from "../ui/use-toast";
-export default function CreateTweetFooter({ mode, setFiles, text,files, selectedImages, setSelectedImages, isValid, handleSubmit, setVideoFile, videoFile }: CreateTweetFooterProp) {
+export default function CreateTweetFooter({ mode, setFiles,handleTextChange ,text, files, selectedImages, setSelectedImages, isValid, handleSubmit, setVideoFile, videoFile }: CreateTweetFooterProp) {
     const icons = [{ icon: Image, hover: "media" }, { icon: ScanSearch, hover: "GIF" }, { icon: Vote, hover: "Poll" }, { icon: Smile, hover: "Emoji" }]
     const [isPopupOpen, setPopupOpen] = useState(false);
+    const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
     const fileInput = useRef<HTMLInputElement>(null)
 
 
@@ -30,7 +34,6 @@ export default function CreateTweetFooter({ mode, setFiles, text,files, selected
             const tempFiles = [...files, selectedFile];
             setFiles(tempFiles);
             if (selectedFile.type.startsWith('image/')) {
-                console.log(selectedFile)
                 const newFiles = [...selectedImages, { value: URL.createObjectURL(selectedFile), type: "photo" }];
                 setSelectedImages(newFiles)
             }
@@ -69,14 +72,33 @@ export default function CreateTweetFooter({ mode, setFiles, text,files, selected
                         <div className="flex flex-row items-center h-full ">
                             {
                                 icons.map((Icon, index) => (
-                                    <div key={index} className={cn("text-secondary h-full  relative max-w-[40px] w-full", index == 0 && (videoFile || selectedImages.length > 3) ? "opacity-40" : "group  cursor-pointer")} onClick={index == 0 && !videoFile && selectedImages.length < 4 ? handleUploadImg : () => { }}>
-                                        <Icon.icon className="w-10 h-10 p-2 rounded-3xl group-hover:bg-secondary group-hover:bg-opacity-25" />
-                                        <div className="absolute bg-[#657b8b] rounded-sm text-primary text-xs px-2 py-1 opacity-0 bg-opacity-75 group-hover:opacity-100 transition-opacity bottom-full left-1/2 transform -translate-x-1/2 -translate-y-[-65px]" data-testid={Icon.hover}>
-                                            {Icon.hover}
-                                        </div>
-                                    </div>
+                                    index < 3 ?
+                                        (<div key={index} className={cn("text-secondary h-full  relative max-w-[40px] w-full", index == 0 && (videoFile || selectedImages.length > 3) ? "opacity-40" : "group  cursor-pointer")}
+                                            onClick={index == 0 && !videoFile && selectedImages.length < 4 ? handleUploadImg : index == icons.length - 1 ? () => { setPopupOpen(true) } : () => { }}>
+                                            <Icon.icon className="w-10 h-10 p-2 rounded-3xl group-hover:bg-secondary group-hover:bg-opacity-25" />
+                                            <div className="absolute bg-[#657b8b] rounded-sm text-primary text-xs px-2 py-1 opacity-0 bg-opacity-75 group-hover:opacity-100 transition-opacity bottom-full left-1/2 transform -translate-x-1/2 -translate-y-[-65px]" data-testid={Icon.hover}>
+                                                {Icon.hover}
+                                            </div>
+                                        </div>)
+                                        :
+                                        (<Popover open={isEmojiPickerOpen} onOpenChange={setIsEmojiPickerOpen} >
+                                            <PopoverTrigger className="z-30 ">
+                                                <div className={cn("text-secondary h-full  relative max-w-[40px] w-full group  cursor-pointer")}
+                                                    onClick={() => { setIsEmojiPickerOpen(true) }}>
+                                                    <Icon.icon className="w-10 h-10 p-2 rounded-3xl group-hover:bg-secondary group-hover:bg-opacity-25" />
+                                                    <div className="absolute bg-[#657b8b] rounded-sm text-primary text-xs px-2 py-1 opacity-0 bg-opacity-75 group-hover:opacity-100 transition-opacity bottom-full left-1/2 transform -translate-x-1/2 -translate-y-[-65px]" data-testid={Icon.hover}>
+                                                        {Icon.hover}
+                                                    </div>
+                                                </div>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-[220px] h-[380px] min-h-[100px]  border-none bg-transparent rounded-xl">
+                                                <EmojiPicker  theme={Theme.DARK} emojiStyle={EmojiStyle.TWITTER} width={300} height={400} onEmojiClick={(emoji)=>{handleTextChange(text+emoji.emoji)}} skinTonesDisabled  autoFocusSearch  />
+                                            </PopoverContent>
+                                        </Popover>)
+
                                 ))
                             }
+
                         </div>
                     </div>
 

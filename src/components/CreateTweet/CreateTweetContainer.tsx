@@ -54,7 +54,6 @@ const CreateTweetContainer = ({
   const { mutate, isPending } = useMutation({
     mutationFn: createTweet,
     onSuccess: (data) => {
-      console.log(data);
       if (data) {
         toast({
           description: `Your ${mode=="reply"?"reply":"post"} was sent.`,
@@ -71,8 +70,7 @@ const CreateTweetContainer = ({
         clearForm();
       }
     },
-    onError: (data) => {
-      console.log(data);
+    onError: () => {
       toast({
         title: "Something went wrong.",
         variant: "destructive",
@@ -85,6 +83,13 @@ const CreateTweetContainer = ({
     navigate(-1);
     setShowPopUp(false);
   };
+  const handleInputChange = (inputText:string) => {
+    if (inputText.length > 700) return;
+    setTweet(inputText);
+    form.setValue("Text", inputText);
+    form.trigger("Text");
+  };
+
 
   function getLocationOfUser() {
     if (navigator.geolocation) {
@@ -221,6 +226,8 @@ const CreateTweetContainer = ({
             setSelectedImages={setSelectedImages}
             setVideoFile={setVideoFile}
             videoFile={videoFile}
+            handleTextChange={handleInputChange}
+            
           />
         </>
       )}

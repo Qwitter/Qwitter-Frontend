@@ -33,7 +33,6 @@ export const getUserData = async (token: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(res.data);
     return res.data;
   } catch (err) {
     console.log(err);
@@ -293,7 +292,6 @@ export const loginService = async ({
       email_or_username: email,
       password,
     });
-    console.log(res.data);
     return res.data;
   } catch (err) {
     console.log(err);
@@ -375,7 +373,6 @@ export const verifySignUpEmail = async (email: string, token: string) => {
  * @returns object represents the response from the backend or throws error
  */
 export const verifyResetPasswordEmail = async (token: string) => {
-  console.log(token);
   const parseResult =
     PasswordChangeEmailVerificationTokenSchema.safeParse(token);
   if (!parseResult.success) throw new Error("Invalid token");
@@ -495,7 +492,6 @@ export const deleteProfileImage = async (
         },
       }
     );
-    console.log("delete", res.data);
 
     return res.data;
   } catch (error) {
@@ -514,7 +510,6 @@ export const oAuthSignUp = async (token: string, birthday: BirthDay) => {
     birthday.day
   ).toISOString();
 
-  console.log(token, birthDate);
 
   try {
     const res = await axios.post(
@@ -881,7 +876,6 @@ export const CreateConversation = async ({
         },
       }
     );
-    console.log(res.data);
     return res.data;
   } catch (error) {
     console.log(error);
@@ -1044,7 +1038,6 @@ export const deleteConversation = async ({
   token: string;
 }) => {
   try {
-    console.log(conversationId, token);
     const res = await axios.delete(
       `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}`,
       {
@@ -1572,7 +1565,6 @@ export const addUserToGroup = async ({
         },
       }
     );
-    console.log(res.data);
     return res.data;
   } catch (error) {
     console.log(error);
@@ -1716,7 +1708,6 @@ export const getTweetReplies = async (
   pageParam: number = 1,
   limit: number = 10
 ) => {
-  console.log(token);
   try {
     const res = await axios.get(
       `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}/replies?page=${pageParam}&limit=${limit}`,
@@ -1726,7 +1717,6 @@ export const getTweetReplies = async (
         },
       }
     );
-    console.log(res.data.replies);
     return res.data.replies;
   } catch (err) {
     console.log(err);

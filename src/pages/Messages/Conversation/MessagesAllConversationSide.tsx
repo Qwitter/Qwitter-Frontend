@@ -1,14 +1,15 @@
 import { MailPlus } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
-import { conversation } from "../types/MessagesTypes";
+import { EVENTS, conversation } from "../../../models/MessagesTypes";
 import { useNavigate } from "react-router-dom";
 import { MessagesList } from "../MessagesList";
 import { ConversationLeavePopUp } from "../MessagesPopup/ConversationLeavePopUp";
 import { UserContext } from "@/contexts/UserContextProvider";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getUserConversations } from "@/lib/utils";
 import { Spinner } from "@/components/Spinner";
 import { MessagesContext } from "@/contexts/MessagesContextProvider";
+import { socket } from "@/lib/socketInit";
 
 export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRequest = false }: { newMessageRequest?: boolean; messagesRequests?: number; }) {
     const navigate = useNavigate();
@@ -16,24 +17,28 @@ export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRe
     const { setUserAllConversation } = useContext(MessagesContext)
     const [conversationToDelete, setConversationToDelete] = useState("")
     const [show, setShow] = useState<boolean>(false);
+    const queryClient = useQueryClient();
 
     const {
         isPending, data, refetch
     } = useQuery<conversation[]>({
         queryKey: ["getUserConversations"],
         queryFn: () => getUserConversations(token!),
-        refetchOnReconnect: "always",
-        refetchIntervalInBackground: true,
-        refetchInterval: 2000,
-        // enabled: token !== null
-
-
     });
     useEffect(() => {
         setUserAllConversation(data!)
         refetch();
-    }, [token, refetch, data, setUserAllConversation]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [token, data]);
+    useEffect(() => {
 
+        socket.on(EVENTS.SERVER.CONVERSATION, async (conversation) => {
+            console.log(conversation)
+            queryClient.invalidateQueries({ queryKey: ["getUserConversations"] });
+
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     const handleRequestClick = () => {
         navigate('/Messages/requests');
     };

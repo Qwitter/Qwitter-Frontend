@@ -10,7 +10,7 @@ import { Profile } from "../Profile/Profile";
 import TweetDetails from "../TweetDetails/TweetDetails";
 import { socket } from "@/lib/socketInit";
 import { useEffect } from "react";
-import { EVENTS } from "../Messages/types/MessagesTypes";
+import { EVENTS } from "../../models/MessagesTypes";
 import { LikeRetweetList } from "@/components/LikeRetweetList/LikeRetweetList";
 import SideBar from "../SideBar/SideBar";
 import NotFound from "../NotFound/NotFound";

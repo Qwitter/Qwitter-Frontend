@@ -12,6 +12,7 @@ export type CreateTweetFooterProp =
         videoFile: File|undefined; 
         setVideoFile: React.Dispatch<React.SetStateAction<File|undefined>>;
         handleSubmit(): void;
+        handleTextChange:(e:string)=>void;
         isValid: boolean;
         text: string;
         selectedImages: Images[];

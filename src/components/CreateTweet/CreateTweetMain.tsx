@@ -34,8 +34,7 @@ export default function CreateTweetMain({
     position: { top: 0, left: 0 },
   });
   const { user } = useContext(UserContext);
-  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const inputText = e.target.value;
+  const handleInputChange = (inputText:string) => {
     if (inputText.length > 700) return;
     setTweet(inputText);
     form.setValue("Text", inputText);
@@ -90,7 +89,7 @@ export default function CreateTweetMain({
             <Textarea
               {...form.register("Text", {
                 required: "Enter a tweet",
-                onChange: (e) => handleInputChange(e),
+                onChange: (e) => handleInputChange(e.target.value),
               })}
               SetMentionsAndTags={SetMentionsAndTags}
               popup={popup}
@@ -138,6 +137,7 @@ export default function CreateTweetMain({
               selectedImages={selectedImages!}
               setSelectedImages={setSelectedImages!}
               setVideoFile={setVideoFile!}
+              handleTextChange={handleInputChange}
               videoFile={videoFile}
             />
           )}
