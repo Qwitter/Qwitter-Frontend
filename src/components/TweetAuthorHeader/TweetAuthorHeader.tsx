@@ -147,6 +147,7 @@ const TweetAuthorHeader = ({
       <TweetOptionsMenu
         author={tweet.author}
         isFollowing={tweet.isFollowing}
+        isMuted={true} //! replace this with tweetClone.isMuted
         tweetId={tweet.id}
       />
     </Link>

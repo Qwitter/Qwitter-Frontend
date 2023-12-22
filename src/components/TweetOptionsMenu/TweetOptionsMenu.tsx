@@ -12,7 +12,7 @@ import { useContext, useEffect, useState } from "react";
 import { FiTrash2 } from "react-icons/fi";
 import { UserContext } from "@/contexts/UserContextProvider";
 import DeleteTweetPopUp from "../DeleteTweetPopUp/DeleteTweetPopUp";
-import { Ban, UserPlus, UserX, VolumeX } from "lucide-react";
+import { Ban, UserPlus, UserX, Volume, VolumeX } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { WarningPopUp } from "../WarningPopUp/WarningPopUp";
 import {
@@ -29,6 +29,7 @@ import { toast } from "../ui/use-toast";
 type TweetOptionsMenuProps = {
   author: Tweet["author"];
   isFollowing: boolean;
+  isMuted: boolean;
   tweetId?: string;
 };
 
@@ -36,11 +37,12 @@ const TweetOptionsMenu = ({
   author,
   isFollowing,
   tweetId,
+  isMuted,
 }: TweetOptionsMenuProps) => {
   const { user } = useContext(UserContext);
-  const [authorClone, setAuthorClone] = useState<Tweet["author"]>(author);
   const [isFollowingClone, setIsFollowingClone] =
     useState<boolean>(isFollowing);
+  const [isMutedClone, setIsMutedClone] = useState<boolean>(isMuted);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const { token } = useContext(UserContext);
@@ -51,12 +53,12 @@ const TweetOptionsMenu = ({
   );
 
   useEffect(() => {
-    setAuthorClone(author);
-  }, [author]);
-
-  useEffect(() => {
     setIsFollowingClone(isFollowing);
   }, [isFollowing]);
+
+  useEffect(() => {
+    setIsMutedClone(isMuted);
+  }, [isMuted]);
 
   const { mutateAsync: FollowServiceFn } = useMutation({
     mutationFn: token
@@ -143,16 +145,23 @@ const TweetOptionsMenu = ({
     mutationFn: token
       ? (username: string) => MuteService(username, token)
       : undefined,
+    onMutate: () => {
+      setIsMutedClone(true);
+    },
     onSuccess: () => {
       toast({
         title: "User muted successfully",
       });
     },
   });
+  
   const { mutateAsync: unMuteServiceFn } = useMutation({
     mutationFn: token
       ? (username: string) => UnMuteService(username, token)
       : undefined,
+    onMutate: () => {
+      setIsMutedClone(false);
+    },
     onSuccess: () => {
       toast({
         title: "User unmuted successfully",
@@ -210,16 +219,29 @@ const TweetOptionsMenu = ({
                   Follow @{author.userName}
                 </DropdownMenuItem>
               )}
-              <DropdownMenuItem
-                className="gap-4 items-center font-bold p-2"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  MuteServiceFn(author.userName);
-                }}
-              >
-                <VolumeX className="text-lg" />
-                Mute @{author.userName}
-              </DropdownMenuItem>
+              {isMutedClone ? (
+                <DropdownMenuItem
+                  className="gap-4 items-center font-bold p-2"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    unMuteServiceFn(author.userName);
+                  }}
+                >
+                  <Volume className="text-lg" />
+                  Unmute @{author.userName}
+                </DropdownMenuItem>
+              ) : (
+                <DropdownMenuItem
+                  className="gap-4 items-center font-bold p-2"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    MuteServiceFn(author.userName);
+                  }}
+                >
+                  <VolumeX className="text-lg" />
+                  Mute @{author.userName}
+                </DropdownMenuItem>
+              )}
               <DropdownMenuItem
                 className="gap-4 items-center font-bold p-2"
                 onClick={() => handleBlockButton()}
