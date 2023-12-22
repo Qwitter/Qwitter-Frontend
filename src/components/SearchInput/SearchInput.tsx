@@ -192,7 +192,7 @@ function TagsResults({ text,closePopUp }: { text: string;closePopUp:()=>void }) 
             key={tag.entityId}
             className="py-3 flex-grow px-4 items-center flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer"
             onClick={() => {
-              navigate(`/Explore/search/top/?q=${tag.text}`);
+              navigate(`/Explore/search/top/?q=${tag.text.startsWith("#") ? tag.text.slice(1): tag.text}`);
               closePopUp()
             }}
           >

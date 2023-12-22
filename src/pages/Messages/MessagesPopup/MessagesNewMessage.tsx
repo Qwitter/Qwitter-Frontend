@@ -5,7 +5,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { Search, X, Check } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { Spinner } from "@/components/Spinner";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   CreateConversation,
   cn,
@@ -14,6 +14,7 @@ import {
 import { UserContext } from "@/contexts/UserContextProvider";
 import { MessageUser } from "../../../models/MessagesTypes";
 import { MessagesContext } from "@/contexts/MessagesContextProvider";
+import ImageGrid from "../ImageGrid";
 function MessagesNewMessage() {
   const [isFocus, setFocus] = useState(false);
   const [peopleSearchText, setPeopleSearchText] = useState("");
@@ -106,9 +107,8 @@ function MessagesNewMessage() {
             <div className="flex flex-row w-full items-center">
               <div className="ml-3 flex justify-center items-center ">
                 <Search
-                  className={`w-5 h-5  ${
-                    isFocus ? "text-secondary" : "text-gray"
-                  } `}
+                  className={`w-5 h-5  ${isFocus ? "text-secondary" : "text-gray"
+                    } `}
                 />
               </div>
               <input
@@ -132,7 +132,7 @@ function MessagesNewMessage() {
                     onClick={() => removeSelected(index)}
                   >
                     <img
-                      src={selectedUser.profileImageUrl||"https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"}
+                      src={selectedUser.profileImageUrl || "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"}
                       alt=""
                       className="w-6 h-6 rounded-full"
                     />
@@ -221,6 +221,7 @@ function ShowAllUserConversations({
 }) {
   const { userAllConversation } = useContext(MessagesContext);
   const navigate = useNavigate();
+  const { VITE_DEFAULT_IMAGE } = import.meta.env;
 
   return (
     <ul data-testid="searchedUsers" className="flex-shrink min-h-[60vh]">
@@ -231,27 +232,24 @@ function ShowAllUserConversations({
             className={cn(
               "py-3 px-4 flex flex-row justify-between hover:bg-[#16181c] w-full transition-all items-center cursor-pointer",
               user.isGroup &&
-                selectedUsers.length > 0 &&
-                "bg-[#16181c] opacity-70"
+              selectedUsers.length > 0 &&
+              "bg-[#16181c] opacity-70"
             )}
             onClick={
               !user.isGroup
                 ? () => onUserClick(user.users[0])
                 : selectedUsers.length == 0
-                ? () => navigate("/Messages/" + user.id)
-                : () => {}
+                  ? () => navigate("/Messages/" + user.id)
+                  : () => { }
             }
           >
             <div className=" flex flex-row">
-              <Avatar className="mr-4">
-                <AvatarImage
-                  className="w-10 h-10 rounded-full border-[#ffffee46] border-[1px] border-solid"
-                  src={
-                    user.isGroup? user.photo : user.users[0].profileImageUrl ||
-                    "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
-                  }
-                />
-              </Avatar>
+              {user.isGroup  && !user.photo ? <ImageGrid
+                className="w-12 h-10  rounded-full mr-2 min-w-[40px] max-lg:w-10 "
+                images={user.users.map(conversation => conversation.profileImageUrl || VITE_DEFAULT_IMAGE)} /> : <Avatar className="mr-4 min-w-max ">
+                <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" src={user.isGroup ? user.photo : user.users[0].profileImageUrl} />
+                <AvatarFallback className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" >{user?.users[0].userName.substring(0, 2)}</AvatarFallback>
+              </Avatar>}
               <div className="flex flex-col h-full gap-0 ">
                 <h3 className="text-primary text-[15px]">{user.name}</h3>
                 <span className="text-gray">

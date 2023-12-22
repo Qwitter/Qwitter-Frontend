@@ -17,6 +17,8 @@ export function MessagesConversationInfo() {
   const { currentConversation } = useContext(MessagesContext);
   const [show, setShow] = useState(false);
   const [showBlock, setShowBlock] = useState(false);
+  const { VITE_DEFAULT_IMAGE } = import.meta.env;
+
   const handleBlock = () => {
     console.log(currentConversation);
     setShowBlock(true);
@@ -38,7 +40,7 @@ export function MessagesConversationInfo() {
             <div className="px-4 py-3 flex flex-row items-center">
               {!currentConversation.photo ? <ImageGrid
                 className="w-12 h-10  rounded-full mr-2 min-w-[40px] max-lg:w-10 "
-                images={currentConversation.users.map(conversation => conversation.profileImageUrl || "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg")} /> :
+                images={currentConversation.users.map(conversation => conversation.profileImageUrl || VITE_DEFAULT_IMAGE)} /> :
                 <Avatar className="mr-4 min-w-max ">
                   <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" src={currentConversation.photo} />
                 </Avatar>}

@@ -16,12 +16,16 @@ import { AvatarFallback } from "@/components/ui/avatar";
 
 export function MessagesList({
     conversations, showDeletePopUp = () => { },
+    setOpenConversation,
     matchedPart = "", mode = "normal" }: MessagesListProp) {
     const navigate = useNavigate()
+    const { VITE_DEFAULT_IMAGE } = import.meta.env;
+
     const { currentConversation, setCurrentConversation } = useContext(MessagesContext)
 
     const handleConversationClick = (conversation: conversation) => {
         setCurrentConversation && setCurrentConversation(conversation);
+        setOpenConversation?setOpenConversation(conversation.id):
         navigate("/Messages/" + conversation.id)
     }
     const formatDate = (dateString: string) => {
@@ -42,7 +46,7 @@ export function MessagesList({
         }
 
     };
-
+    console.log(conversations)
 
 
     return (<div data-testid="convos">
@@ -52,7 +56,7 @@ export function MessagesList({
                 <div className={`flex flex-row flex-grow  ${mode != "Group" && 'truncate'} max-w-[86%]`} >
                     {user.isGroup &&!user.photo? <ImageGrid
                         className="w-12 h-10  rounded-full mr-2 min-w-[40px] max-lg:w-10 "
-                        images={user.users.map(conversation => conversation.profileImageUrl || "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg")} /> : <Avatar className="mr-4 min-w-max ">
+                        images={user.users.map(conversation => conversation.profileImageUrl || VITE_DEFAULT_IMAGE)} /> : <Avatar className="mr-4 min-w-max ">
                         <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" src={user.isGroup ? user.photo : user.users[0].profileImageUrl} />
                         <AvatarFallback className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" >{user?.users[0].userName.substring(0, 2)}</AvatarFallback>
                     </Avatar>}
@@ -76,8 +80,8 @@ export function MessagesList({
                             mode == "conversations" ?
                                 <Highlighter searchWords={[matchedPart]} highlightClassName="text-black" ClassName={'text-gray'} autoEscape={true}
                                     textToHighlight={user.lastMessage?.text || ""}
-                                /> : mode == "Group" ? <Highlighter searchWords={[matchedPart]} highlightClassName="text-black " ClassName={`ext-gray`} autoEscape={true}
-                                    textToHighlight={user.users.map(user => user.name).join(', ')}
+                                /> : mode == "Group" ? <Highlighter searchWords={[matchedPart]} highlightClassName="text-black " ClassName={`text-gray`} autoEscape={true}
+                                    textToHighlight={""}
                                 /> :
                                     <span className={`overflow-hidden ${((user.id == currentConversation?.id)) && mode != "People" ? 'text-primary' : 'text-gray'}`}>{mode != "People" ? `${user.lastMessage?.text}` : `@${user.users[0].userName}`}</span>
                         }
