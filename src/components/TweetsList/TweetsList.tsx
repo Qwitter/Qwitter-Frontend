@@ -1,7 +1,6 @@
 import { TweetWithRetweet } from "@/models/Tweet";
 import { default as TweetComponent } from "../Tweet/Tweet";
 import { Spinner } from "../Spinner";
-import { useEffect } from "react";
 
 type TweetsListProps = {
   data: TweetWithRetweet[];
@@ -20,9 +19,7 @@ const TweetsList = ({
   isFetching,
   hasNextPage,
 }: TweetsListProps) => {
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+
 
   if ((!data || data.length === 0) && isFetching) {
     return (

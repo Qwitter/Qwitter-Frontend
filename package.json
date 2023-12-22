@@ -38,6 +38,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "draft-js": "^0.11.7",
+    "emoji-picker-react": "^4.5.16",
     "flowbite": "^2.2.0",
     "flowbite-react": "^0.6.4",
     "isomorphic-fetch": "^3.0.0",

@@ -9,6 +9,7 @@ import {
 import { SignUpDataSchema } from "@/models/SignUp";
 import { BirthDay, MONTHS } from "@/models/BirthDay";
 import { EditUserSchema, UserDataSchema } from "@/models/User";
+import moment from "moment";
 
 const { VITE_BACKEND_URL } = import.meta.env;
 
@@ -30,7 +31,6 @@ export const getUserData = async (token: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(res.data);
     return res.data;
   } catch (err) {
     console.log(err);
@@ -290,7 +290,6 @@ export const loginService = async ({
       email_or_username: email,
       password,
     });
-    console.log(res.data);
     return res.data;
   } catch (err) {
     console.log(err);
@@ -372,7 +371,6 @@ export const verifySignUpEmail = async (email: string, token: string) => {
  * @returns object represents the response from the backend or throws error
  */
 export const verifyResetPasswordEmail = async (token: string) => {
-  console.log(token);
   const parseResult =
     PasswordChangeEmailVerificationTokenSchema.safeParse(token);
   if (!parseResult.success) throw new Error("Invalid token");
@@ -488,7 +486,6 @@ export const deleteProfileBanner = async ({ token }: { token: string }) => {
         },
       }
     );
-    console.log("delete", res.data);
 
     return res.data;
   } catch (error) {
@@ -506,8 +503,6 @@ export const oAuthSignUp = async (token: string, birthday: BirthDay) => {
     MONTHS.indexOf(birthday.month),
     birthday.day
   ).toISOString();
-
-  console.log(token, birthDate);
 
   try {
     const res = await axios.post(
@@ -553,13 +548,44 @@ export const convertNumberToShortForm = (number: number) => {
 export const timelineTweets = async (
   pageParam: number = 1,
   limit: number = 10,
+  token: string,
+  q: string
+) => {
+  if (!token) return [];
+
+  try {
+    const response = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/tweets?q=${q}&page=${pageParam}&limit=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      }
+    );
+    return response.data.tweets;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+/**
+ * @description Load forYou timeline tweets
+ * @param pageParam used for infinite queries
+ * @param limit used to specify the array length
+ * @param token used to authorize the request
+ * @returns Array of tweets
+ */
+export const timelineForYouTweets = async (
+  pageParam: number = 1,
+  limit: number = 10,
   token: string
 ) => {
   if (!token) return [];
 
   try {
     const response = await axios.get(
-      `${VITE_BACKEND_URL}/api/v1/tweets?page=${pageParam}&limit=${limit}`,
+      `${VITE_BACKEND_URL}/api/v1/timeline?page=${pageParam}&limit=${limit}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -583,7 +609,7 @@ export const getUsersSuggestions = async (token: string, username: string) => {
   try {
     if (!username) return [];
     const res = await axios.get(
-      `${VITE_BACKEND_URL}/api/v1/user/search?q=${username.slice(1)}`,
+      `${VITE_BACKEND_URL}/api/v1/user/search?q=${username.trim()}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -677,7 +703,7 @@ export const conversationSearch = async (token: string, query: string) => {
 export const getHashtags = async (token: string, tag: string) => {
   try {
     const res = await axios.get(
-      `${VITE_BACKEND_URL}/api/v1/tweets/hashtags?q=${tag.slice(1)}`,
+      `${VITE_BACKEND_URL}/api/v1/tweets/hashtags?q=${tag.trim()}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -844,7 +870,6 @@ export const CreateConversation = async ({
         },
       }
     );
-    console.log(res.data);
     return res.data;
   } catch (error) {
     console.log(error);
@@ -1007,7 +1032,6 @@ export const deleteConversation = async ({
   token: string;
 }) => {
   try {
-    console.log(conversationId, token);
     const res = await axios.delete(
       `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}`,
       {
@@ -1535,7 +1559,6 @@ export const addUserToGroup = async ({
         },
       }
     );
-    console.log(res.data);
     return res.data;
   } catch (error) {
     console.log(error);
@@ -1679,7 +1702,6 @@ export const getTweetReplies = async (
   pageParam: number = 1,
   limit: number = 10
 ) => {
-  console.log(token);
   try {
     const res = await axios.get(
       `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}/replies?page=${pageParam}&limit=${limit}`,
@@ -1689,7 +1711,6 @@ export const getTweetReplies = async (
         },
       }
     );
-    console.log(res.data.replies);
     return res.data.replies;
   } catch (err) {
     console.log(err);
@@ -1744,4 +1765,38 @@ export const retweet = async (tweetId: string, token: string) => {
     console.log(err);
     throw new Error("Error retweeting");
   }
+};
+
+/**
+ * @description get Notifications list  for user
+ * @returns  Notifications list represents the response from the backend or throw error
+ */
+export const getNotificationsList = async (
+  pageParam: number,
+  limit: number
+) => {
+  try {
+    const res = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/notifications?page=${pageParam}&limit=${limit}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return res.data.notifications;
+  } catch (err) {
+    throw new Error("Error getting notifications");
+  }
+};
+export const formatDate = (dateString: string) => {
+  const date = moment(dateString);
+  const now = moment();
+  if (now.diff(date, "days") === 0) return date.format("h:mm A");
+  else if (now.diff(date, "days") === 1)
+    return "Yesterday," + date.format("h:mm A");
+  else if (now.diff(date, "days") < 7) return date.format("ddd h:mm A");
+  else return date.format("MMM D, YYYY, h:mm A");
 };

@@ -12,7 +12,7 @@ import {
   getConversationsUsersSuggestions,
 } from "@/lib/utils";
 import { UserContext } from "@/contexts/UserContextProvider";
-import { MessageUser } from "../types/MessagesTypes";
+import { MessageUser } from "../../../models/MessagesTypes";
 import { MessagesContext } from "@/contexts/MessagesContextProvider";
 function MessagesNewMessage() {
   const [isFocus, setFocus] = useState(false);

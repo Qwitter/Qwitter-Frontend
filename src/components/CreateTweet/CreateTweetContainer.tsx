@@ -13,10 +13,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createTweet, getOperatingSystem } from "@/lib/utils";
 import { toast } from "../ui/use-toast";
 import { Spinner } from "../Spinner";
+import React from "react";
 type Images = {
   value: string;
   type: string;
 };
+const CreateTweetMainMemoized = React.memo(CreateTweetMain);
+
 const CreateTweetContainer = ({
   mode = "popUp",
   replyToTweetId,
@@ -31,6 +34,7 @@ const CreateTweetContainer = ({
   const [userLocation, setUserLocation] = useState("");
   const [selectedImages, setSelectedImages] = useState<Images[]>([]);
   const [files, setFiles] = useState<File[]>([]);
+  const [videoFile, setVideoFile] = useState<File>();
   const queryClient = useQueryClient();
 
   const [tweet, setTweet] = useState("");
@@ -45,11 +49,11 @@ const CreateTweetContainer = ({
     setTweet("");
     setFiles([]);
     setSelectedImages([]);
+    setVideoFile(undefined);
   }
   const { mutate, isPending } = useMutation({
     mutationFn: createTweet,
     onSuccess: (data) => {
-      console.log(data);
       if (data) {
         toast({
           description: `Your ${mode=="reply"?"reply":"post"} was sent.`,
@@ -66,8 +70,7 @@ const CreateTweetContainer = ({
         clearForm();
       }
     },
-    onError: (data) => {
-      console.log(data);
+    onError: () => {
       toast({
         title: "Something went wrong.",
         variant: "destructive",
@@ -80,6 +83,13 @@ const CreateTweetContainer = ({
     navigate(-1);
     setShowPopUp(false);
   };
+  const handleInputChange = (inputText:string) => {
+    if (inputText.length > 700) return;
+    setTweet(inputText);
+    form.setValue("Text", inputText);
+    form.trigger("Text");
+  };
+
 
   function getLocationOfUser() {
     if (navigator.geolocation) {
@@ -120,6 +130,7 @@ const CreateTweetContainer = ({
     setSelectedImages(updatedImages);
     setFiles(updatedFiles);
   };
+
   if (mode == "home") {
     return (
       <div className="px-4  h-fit max-h-[1000px] py-1 justify-start ">
@@ -129,7 +140,7 @@ const CreateTweetContainer = ({
           </div>
         ) : (
           <>
-            <CreateTweetMain
+            <CreateTweetMainMemoized
               files={files}
               setFiles={setFiles}
               isValid={form.formState.isValid}
@@ -141,6 +152,8 @@ const CreateTweetContainer = ({
               tweet={tweet}
               form={form}
               setTweet={setTweet}
+              setVideoFile={setVideoFile}
+              videoFile={videoFile}
               handleRemoveFile={handleRemoveFile}
             />
           </>
@@ -157,7 +170,7 @@ const CreateTweetContainer = ({
           </div>
         ) : (
           <>
-            <CreateTweetMain
+            <CreateTweetMainMemoized
               files={files}
               setFiles={setFiles}
               isValid={form.formState.isValid}
@@ -170,6 +183,8 @@ const CreateTweetContainer = ({
               tweet={tweet}
               form={form}
               setTweet={setTweet}
+              setVideoFile={setVideoFile}
+              videoFile={videoFile}
               handleRemoveFile={handleRemoveFile}
             />
           </>
@@ -184,20 +199,21 @@ const CreateTweetContainer = ({
       headerButton={HeaderButton.close}
       headerFunction={closePopUp}
     >
-      {" "}
       {isPending ? (
         <div className="w-full h-[180px] p-8">
           <Spinner />
         </div>
       ) : (
         <>
-          <CreateTweetMain
+          <CreateTweetMainMemoized
             mode="popUp"
             tweet={tweet}
             form={form}
             setTweet={setTweet}
             selectedImages={selectedImages}
             handleRemoveFile={handleRemoveFile}
+            videoFile={videoFile}
+            setVideoFile={setVideoFile}
           />
           <CreateTweetFooter
             files={files}
@@ -208,6 +224,10 @@ const CreateTweetContainer = ({
             handleSubmit={handleSubmit}
             selectedImages={selectedImages}
             setSelectedImages={setSelectedImages}
+            setVideoFile={setVideoFile}
+            videoFile={videoFile}
+            handleTextChange={handleInputChange}
+            
           />
         </>
       )}

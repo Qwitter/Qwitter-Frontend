@@ -78,6 +78,9 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
     queryClient.invalidateQueries({ queryKey: ["profile", token, username] });
   };
 
+  console.log(user);
+  
+
   return (
     <div>
       <div className="w-full aspect-[3/1] max-h-[200px] bg-[#333639]">

@@ -1,5 +1,5 @@
 import { Button, PopUpContainer } from '@/components'
-import { ConversationPopUpProps, MessagesMessage, conversation } from '../types/MessagesTypes'
+import { ConversationPopUpProps, MessagesMessage, conversation } from '../../../models/MessagesTypes'
 import { InfiniteData, useMutation, useQueryClient } from '@tanstack/react-query'
 import { deleteMessage } from '@/lib/utils'
 import { useContext } from 'react'
@@ -53,7 +53,6 @@ export function ConversationRemoveMessagePopUp({ setChatMessages, show, setShow,
         );
     };
     const onSubmit = () => {
-        console.log(conversationId, token, messageId);
         mutate({ conversationId: conversationId!, token: token!, messageId: messageId! });
     }
 

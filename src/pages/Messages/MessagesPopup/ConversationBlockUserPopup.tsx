@@ -1,5 +1,5 @@
 import { Button, PopUpContainer } from '@/components'
-import { ConversationPopUpProps } from '../types/MessagesTypes'
+import { ConversationPopUpProps } from '../../../models/MessagesTypes'
 import { useMutation } from '@tanstack/react-query'
 import { BlockService } from '@/lib/utils'
 import { useContext } from 'react'

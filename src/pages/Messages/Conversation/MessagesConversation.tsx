@@ -12,7 +12,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { CreateMessage, cn } from "@/lib/utils";
-import { EVENTS, MessagesMessage, conversation } from "../types/MessagesTypes";
+import { EVENTS, MessagesMessage, conversation } from "../../../models/MessagesTypes";
 import { getConversation } from "@/lib/utils";
 import { Spinner } from "@/components/Spinner";
 import { socket } from "@/lib/socketInit";
@@ -103,7 +103,6 @@ export function MessagesConversation() {
       ):null;
       const text =formData.get("text")! as string;
       const media = formData.get("media") as File;
-    console.log(media);
     const tempMessageSending = {
       isMessage: true,
       id: "",
@@ -183,7 +182,7 @@ export function MessagesConversation() {
       updateChatMessages(makeTempMessage(formData,logicalId));
       handleScrollDown(); 
     },
-    onError: (data,{logicalId,formData}) => {
+    onError: (_,{logicalId,formData}) => {
       updateChatMessages( makeTempMessage(formData,logicalId,true),true,logicalId);
       handleScrollDown(); 
 

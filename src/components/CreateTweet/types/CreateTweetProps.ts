@@ -7,11 +7,16 @@ type Images = {
 export type CreateTweetFooterProp =
     {
         mode: "popUp" | "home"|"reply";
-        files: File[]; setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+        files: File[]; 
+        setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+        videoFile: File|undefined; 
+        setVideoFile: React.Dispatch<React.SetStateAction<File|undefined>>;
         handleSubmit(): void;
+        handleTextChange:(e:string)=>void;
         isValid: boolean;
         text: string;
         selectedImages: Images[];
+
         setSelectedImages: React.Dispatch<React.SetStateAction<Images[]>>;
     }
 export type CreateTweetMainProp = {
@@ -20,6 +25,7 @@ export type CreateTweetMainProp = {
         Text: string;
     }>;
     replyTo?:string;
+    
     selectedImages: Images[]; tweet: string, setTweet: React.Dispatch<React.SetStateAction<string>>, handleRemoveFile: (index: number) => void
 } & Partial<CreateTweetFooterProp>
 

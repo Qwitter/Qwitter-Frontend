@@ -1,5 +1,4 @@
 import { Button, PopUpContainer } from '@/components'
-import React from 'react'
 import Logo from "../../assets/logo.png";
 import { User } from '@/models/User';
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 export default function NotificationLoginPopup() {
     const user = JSON.parse(localStorage.getItem("user")!) as User;
     const navigate = useNavigate();
+
     return (
         <PopUpContainer
             show={true}
