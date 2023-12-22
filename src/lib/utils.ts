@@ -25,11 +25,9 @@ export function cn(...inputs: ClassValue[]) {
 export const getUserData = async (token: string) => {
   try {
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user`, {
-      withCredentials: true,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true,
         Authorization: `Bearer ${token}`,
       },
     });
@@ -433,15 +431,15 @@ export const registerNewUser = async (newUserData: object) => {
  * @returns New user data after the image has changed
  */
 
-export const uploadProfileImage = async (
-  {picFile,
+export const uploadProfileImage = async ({
+  picFile,
   token,
-  isBanner = false} : {
-    picFile: File,
-  token: string,
-  isBanner?: boolean
-  }
-) => {
+  isBanner = false,
+}: {
+  picFile: File;
+  token: string;
+  isBanner?: boolean;
+}) => {
   const formData = new FormData();
   formData.append("photo", picFile);
 
@@ -482,7 +480,8 @@ export const deleteProfileImage = async (
 ) => {
   try {
     const res = await axios.delete(
-      `${VITE_BACKEND_URL}/api/v1/user/profile_${isBanner ? "banner" : "picture"
+      `${VITE_BACKEND_URL}/api/v1/user/profile_${
+        isBanner ? "banner" : "picture"
       }`,
       {
         headers: {
@@ -509,7 +508,6 @@ export const oAuthSignUp = async (token: string, birthday: BirthDay) => {
     MONTHS.indexOf(birthday.month),
     birthday.day
   ).toISOString();
-
 
   try {
     const res = await axios.post(
@@ -892,7 +890,7 @@ export const CreateMessage = async ({
   formData,
   token,
   conversationId,
-  logicalId
+  logicalId,
 }: {
   conversationId: string;
   formData: FormData;
@@ -900,7 +898,7 @@ export const CreateMessage = async ({
   logicalId: string;
 }) => {
   try {
-    logicalId
+    logicalId;
     const res = await axios.post(
       `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/message`,
       formData,
@@ -1708,8 +1706,8 @@ export const getTweetReplies = async (
   pageParam: number = 1,
   limit: number = 10
 ) => {
-  console.log(tweetId)
-  console.log(token)
+  console.log(tweetId);
+  console.log(token);
   try {
     const res = await axios.get(
       `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}/replies?page=${pageParam}&limit=${limit}`,
@@ -1719,7 +1717,7 @@ export const getTweetReplies = async (
         },
       }
     );
-    console.log(res.data)
+    console.log(res.data);
     return res.data.replies;
   } catch (err) {
     console.log(err);
@@ -1797,13 +1795,9 @@ export const getNotificationsList = async () => {
 export const formatDate = (dateString: string) => {
   const date = moment(dateString);
   const now = moment();
-  if (now.diff(date, 'days') === 0)
-      return date.format('h:mm A');
-  else if (now.diff(date, 'days') === 1)
-      return 'Yesterday,' + date.format('h:mm A');
-  else if (now.diff(date, 'days') < 7)
-      return date.format('ddd h:mm A');
-
-  else
-      return date.format('MMM D, YYYY, h:mm A');
+  if (now.diff(date, "days") === 0) return date.format("h:mm A");
+  else if (now.diff(date, "days") === 1)
+    return "Yesterday," + date.format("h:mm A");
+  else if (now.diff(date, "days") < 7) return date.format("ddd h:mm A");
+  else return date.format("MMM D, YYYY, h:mm A");
 };
