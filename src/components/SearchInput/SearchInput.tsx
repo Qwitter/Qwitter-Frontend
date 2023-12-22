@@ -253,9 +253,8 @@ function UsersResults({ text }: { text: string }) {
         ))}
       <li
         className="p-4 flex flex-row rounded-md hover:bg-[#16181c] w-full transition-all cursor-pointer"
-        data-testid="targetUser"
       >
-        <Link to={`/profile/${text}`} className="text-primary text-[15px]">
+        <Link to={`/profile/${text}`} className="text-primary text-[15px]" data-testid="targetUser">
           Go to @{text}
         </Link>
       </li>

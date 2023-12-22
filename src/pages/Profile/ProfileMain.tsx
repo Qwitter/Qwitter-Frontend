@@ -195,7 +195,7 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
           <div>
             <div className="w-full flex flex-col mt-1 mb-3">
               <span className="text-xl leading-5 font-bold" data-testid="name">{user?.name}</span>
-              <span className="text-gray text-[15px] mt-1">
+              <span className="text-gray text-[15px] mt-10" data-testid="username">
                 @{user?.userName}
               </span>
             </div>
