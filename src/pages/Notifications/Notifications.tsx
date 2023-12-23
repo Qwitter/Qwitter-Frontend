@@ -192,8 +192,9 @@ function Notification({ type, createdAt, follower,retweet, reply ,like}: Notific
                 />
                 <p > {type == 'follow' ? "followed you" : type == 'retweet' ? "reposted your post" : "liked your post"}</p>
               </div>
-              {type == "like" && <p className="text-sm text-gray mt-2 w-full"><span className="max-w-[10vw] truncate">{like!.text}</span> {like!.entities.media.length>0&&' '+like!.entities.media[0].value.substring(0,70)+'...'}</p>}
-              {type == "retweet" && <p className="text-sm text-gray mt-2 w-full"><span className="max-w-[10vw] truncate">{retweet!.retweetedTweet!.text}</span> {retweet!.retweetedTweet!.entities.media.length>0&&' '+retweet!.retweetedTweet!.entities.media[0].value.substring(0,70)+'...'}</p>}
+              {type == "like" && <p className="text-sm text-gray mt-2 w-full max-sm:w-[50vw]"><span className="max-w-[10vw] truncate">{like!.text}</span> <span className="break-words">{like!.entities.media.length>0&&' '+like!.entities.media[0].value.substring(0,70)+'...'} </span></p>}
+              {type == "retweet" && <p className="text-sm text-gray mt-2 w-full max-sm:w-[50vw] "><span className="max-w-[10vw] truncate">{retweet!.retweetedTweet!.text}</span>
+              <span className="break-words ">{retweet!.retweetedTweet!.entities.media.length>0&&' '+retweet!.retweetedTweet!.entities.media[0].value.substring(0,70)+'...'}</span> </p>}
             </div></>}
       </div>
     </div>
