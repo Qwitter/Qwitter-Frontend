@@ -16,6 +16,7 @@ export const SignUpProfile = ({ nextStep }: SignUpProfileProps) => {
   const [buttonText, setButtonText] = useState<string>("Skip for now");
   const { token } = useContext(UserContext);
   const { toast } = useToast();
+  const [isRemovable, setIsRemovable] = useState(false);
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["signupProfile"],
@@ -39,6 +40,17 @@ export const SignUpProfile = ({ nextStep }: SignUpProfileProps) => {
     nextStep();
   };
 
+  const handleChange = () => {
+    setButtonText("Next");
+    setIsRemovable(true);
+  };
+
+  const handleDelete = () => {
+    setImagePath(undefined);
+    setButtonText("Skip for now");
+    setIsRemovable(false);
+  };
+
   return (
     <>
       <div className="flex flex-col justify-between h-full w-full sm:w-[424px]">
@@ -54,9 +66,10 @@ export const SignUpProfile = ({ nextStep }: SignUpProfileProps) => {
               name="photo"
               image="https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
               setImagePath={setImagePath}
-              optionalOnChange={() => {
-                setButtonText("Next");
-              }}
+              optionalOnChange={handleChange}
+              isRemovable={isRemovable}
+              onDelete={handleDelete}
+              hasDefault
             />
           </div>
         </div>

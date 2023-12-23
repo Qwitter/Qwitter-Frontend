@@ -474,15 +474,10 @@ export const uploadProfileImage = async ({
  * @param isBanner Used to upload the profile banner
  * @returns New user data after the image has changed
  */
-export const deleteProfileImage = async (
-  isBanner: boolean = false,
-  token: string
-) => {
+export const deleteProfileBanner = async ({ token }: { token: string }) => {
   try {
     const res = await axios.delete(
-      `${VITE_BACKEND_URL}/api/v1/user/profile_${
-        isBanner ? "banner" : "picture"
-      }`,
+      `${VITE_BACKEND_URL}/api/v1/user/profile_banner`,
       {
         headers: {
           Accept: "application/json",
@@ -554,7 +549,7 @@ export const timelineTweets = async (
   pageParam: number = 1,
   limit: number = 10,
   token: string,
-  q:string
+  q: string
 ) => {
   if (!token) return [];
 
@@ -1782,17 +1777,20 @@ export const retweet = async (tweetId: string, token: string) => {
  * @returns  Notifications list represents the response from the backend or throw error
  */
 export const getNotificationsList = async (
-  pageParam:number,
-  limit:number,
+  pageParam: number,
+  limit: number
 ) => {
   try {
-    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/notifications?page=${pageParam}&limit=${limit}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
+    const res = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/notifications?page=${pageParam}&limit=${limit}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
     return res.data.notifications;
   } catch (err) {
     throw new Error("Error getting notifications");

@@ -5,6 +5,7 @@ import {
   // BellPlus,
   Cake,
   CalendarDays,
+  LinkIcon,
   Mail,
   MapPin,
   MoreHorizontal,
@@ -85,7 +86,7 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
       <div className="w-full aspect-[3/1] max-h-[200px] bg-[#333639]">
         {user?.profileBannerUrl && (
           <Link
-            to={`/${username}/header_photo`}
+            to={`header_photo`}
             state={{ bannerImg: user?.profileBannerUrl }}
             className="w-full"
           >
@@ -102,8 +103,8 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
           {
             <Avatar className="rounded-full mt-[-15%] mb-3 w-[20vw] h-auto aspect-square sm:w-[142px] bg-black p-0.5 sm:p-1 border-solid block">
               <Link
-                to={`/flow/photo`}
-                state={{ photo: user?.profileImageUrl ,previousLocation: location }}
+                to={`photo`}
+                state={{ profileImg: user?.profileImageUrl }}
                 className="w-full h-full cursor-pointer"
               >
                 <AvatarImage
@@ -194,12 +195,16 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
         ) : (
           <div>
             <div className="w-full flex flex-col mt-1 mb-3">
-              <span className="text-xl leading-5 font-bold" data-testid="name">{user?.name}</span>
-              <span className="text-gray text-[15px] mt-10" data-testid="username">
+              <span className="text-xl leading-5 font-bold" data-testid="name">
+                {user?.name}
+              </span>
+              <span className="text-gray text-[15px] mt-1">
                 @{user?.userName}
               </span>
             </div>
-            <div className="mb-3" data-testid="bio">{user?.description}</div>
+            <div className="mb-3" data-testid="bio">
+              {user?.description}
+            </div>
             <div className="flex flex-wrap leading-4 mb-3">
               {!user.isBlocked && user?.location && (
                 <span className="text-[15px] text-gray mr-3">
@@ -208,8 +213,27 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
                 </span>
               )}
 
+              {!user.isBlocked && user?.url && (
+                <span className="mr-3">
+                  <LinkIcon
+                    size="1.1rem"
+                    className="text-gray inline mr-1 mb-1"
+                  />
+                  <Link
+                    to={user.url}
+                    className="text-[15px] text-[#1D9BF0] hover:underline"
+                    target="blank"
+                  >
+                    {user.url.slice(user.url.indexOf(".") + 1)}
+                  </Link>
+                </span>
+              )}
+
               {!user.isBlocked && user?.birthDate && (
-                <span className="text-[15px] text-gray mr-3" data-testid="birthDate">
+                <span
+                  className="text-[15px] text-gray mr-3"
+                  data-testid="birthDate"
+                >
                   <Cake size="1.1rem" className="inline mr-1 mb-1" />
                   Born {birthDate}
                 </span>
