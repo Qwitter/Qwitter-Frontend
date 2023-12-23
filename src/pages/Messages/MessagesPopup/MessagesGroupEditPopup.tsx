@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { GroupNameSchema } from "@/models/GroupName";
 import { z } from "zod";
 import { useNavigate, useParams } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Spinner } from "@/components/Spinner";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { toast } from "@/components/ui/use-toast";
@@ -21,9 +21,13 @@ import { updateGroupImageAndName } from "@/lib/utils";
 export const MessagesGroupEditPopup = () => {
     const [imageFile, setImageFile] = useState<File>(); // here is where the file of the image will be set so we can send it to backend
     const [image, setImage] = useState(""); // here is where the file of the image will be set so we can send it to backend
+    const queryClient = useQueryClient();
+
     const { currentConversation ,setCurrentConversation} = useContext(MessagesContext)
     const navigate = useNavigate()
     const { conversationId } = useParams();
+    const { VITE_DEFAULT_IMAGE } = import.meta.env;
+
     const [imageKey, setImageKey] = useState<number>(0);
 
     const { token } = useContext(UserContext);
@@ -39,7 +43,7 @@ export const MessagesGroupEditPopup = () => {
         handleImageChange()
         setInputFieldValue(currentConversation?.name || "")
         setNewName(currentConversation?.name || "")
-        setImage(currentConversation?.photo  || "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg")
+        setImage(currentConversation?.photo  || VITE_DEFAULT_IMAGE)
     }, []);
     const [newName, setNewName] = useState<string>("");
 
@@ -53,6 +57,8 @@ export const MessagesGroupEditPopup = () => {
                 });
                 const pic =URL.createObjectURL(formData.get("media")!as File);
                 setCurrentConversation({...currentConversation!,photo:pic,name:formData.get('name')! as string})
+                queryClient.invalidateQueries({ queryKey: ["userConversation", conversationId] });
+                queryClient.invalidateQueries({ queryKey: ["getUserConversations"] });
                 navigate(-1);
             }
             else {

@@ -13,13 +13,14 @@ import {
 } from "@/components/ui/popover";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { AvatarFallback } from "../ui/avatar";
+import { getPageFromUrl } from "@/lib/utils";
 
 export function NavBar() {
   const { user } = useContext(UserContext);
-  const [active, setActive] = useState("");
   const [isShown, setIsShown] = useState(false);
   const navigation = useNavigate();
   const location = useLocation();
+  const [active, setActive] = useState(getPageFromUrl(location.pathname.toLowerCase()));
 
   useEffect(() => {
     // Add a listener for changes to the screen size
@@ -137,7 +138,7 @@ function NavElements({
             data-testid={`${link.title}`}
           >
             <div className="relative">
-              <link.icon {...(active == link.title ? link.clicked : {})} />
+              <link.icon {...(active.slice(1) == link.title.slice(1) ? link.clicked : {})} />
               {link.notificationCount > 0 && (
                 <div className="absolute top-[-6px] right-[-6px] bg-secondary rounded-full w-[17px] h-[17px] flex items-center justify-center text-white text-[11px]">
                   {link.notificationCount > 9 ? "+9" : link.notificationCount}

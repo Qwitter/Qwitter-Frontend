@@ -35,6 +35,7 @@ export type MessagesListProp = {
     conversations?: conversation[];
     messagesRequests?: number;
     newMessageRequest?: boolean;
+    setOpenConversation?: React.Dispatch<React.SetStateAction<string|undefined>>;
     selectedUser?: MessageUser;
     selectedConversation?: conversation;
     mode: "normal" | "request" | "People" | "conversations"|"Group";
@@ -59,6 +60,7 @@ export type MessagesRequestPopUpProp = {
 }
 export type MessagesMessage = {
     isMessage: boolean;
+    isAccordion?:boolean;
     isGroup?: boolean;
     id: string;
     text: string;
@@ -88,6 +90,7 @@ export type ConversationPopUpProps = {
 }
 
 export type conversation = {
+    type?: string;
     seen: boolean;
     blocked:boolean;
     id?: string;

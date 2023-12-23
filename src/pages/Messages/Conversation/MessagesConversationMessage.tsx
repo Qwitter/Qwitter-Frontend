@@ -10,7 +10,7 @@ import { MessagesConversationPopUp } from "../MessagesPopup/MessagesConversation
 import ReactLoading from 'react-loading';
 import { BigPlayButton, Player } from "video-react";
 
-export function MessagesConversationMessage({ isMessage, isGroup, error, sending, date, id, entities, profileImageUrl, replyToMessage, text, userName, setChatMessages }: MessagesMessage) {
+export function MessagesConversationMessage({ isMessage, isGroup,isAccordion, error, sending, date, id, entities, profileImageUrl, replyToMessage, text, userName, setChatMessages }: MessagesMessage) {
     const { user } = useContext(UserContext);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -52,7 +52,7 @@ export function MessagesConversationMessage({ isMessage, isGroup, error, sending
                                     <span className="text-gray text-[11px]">Replying to {isGroup && replyToMessage.userName != user?.userName && replyToMessage.userName}</span>
                                 </div>
                                 <div className={cn("bg-[#16181C] mt-2 text-[13px] px-4 py-3 max-w-full text-gray  rounded-3xl pb-8 ", userName == user?.userName && "justify-end")}>
-                                    <p data-testid="replyToMessageText" className="break-words max-w-[400px] max-md:max-w-[60vw]">{replyToMessage.text}</p>
+                                    <p data-testid="replyToMessageText" className={cn("break-words max-w-[400px] max-md:max-w-[60vw]",isAccordion&&"max-w-[225px] max-md:max-w-[225px]")}>{replyToMessage.text}</p>
                                 </div>
                             </div>}
                             <div className={cn("flex-shrink relative flex flex-col items-start ", userName == user?.userName && "items-end")}>
@@ -63,16 +63,14 @@ export function MessagesConversationMessage({ isMessage, isGroup, error, sending
                                             className={cn(" h-max rounded-lg  max-sm:w-[50vw] max overflow-hidden w-[300px] ", error && "opacity-50")}
                                             onClick={(e) => e.preventDefault()}
                                         >
-
                                             <Player
-
                                                 playsInline
                                                 src={entities.media[0].value}
                                             >
                                                 <BigPlayButton position="center" />
                                             </Player>
                                         </div> : <div className={cn("max-w-[80%] ", error && "opacity-50")}>
-                                            <TweetImagesViewer images={[{ value: entities.media[0].value, type: entities.media[0].type }]} />
+                                            <TweetImagesViewer viewImage images={[{ value: entities.media[0].value, type: entities.media[0].type }]}  />
                                         </div>)
                                 }
 

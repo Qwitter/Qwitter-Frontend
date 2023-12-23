@@ -15,16 +15,17 @@ import {
   unBookmarkTweet,
   unlikeTweet,
 } from "@/lib/utils";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { toast } from "../ui/use-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 type TweetInteractionsButtonsProps = {
   tweet: Tweet;
   className?: string;
   mode?: "list" | "page";
+  userRetweetId?: string;
 };
 
 const TweetInteractionsButtons = ({
@@ -32,10 +33,19 @@ const TweetInteractionsButtons = ({
   className,
   mode = "list",
 }: TweetInteractionsButtonsProps) => {
+  const { tweetId } = useParams<{ tweetId: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [tweetClone, setTweetClone] = useState<Tweet>(tweet);
+  const [isRetweeted, setIsRetweeted] = useState<boolean>(
+    !!tweet.currentUserRetweetId
+  );
   const { token } = useContext(UserContext);
+
+  useEffect(() => {
+    setTweetClone(tweet);
+    setIsRetweeted(!!tweet.currentUserRetweetId);
+  }, [tweet]);
 
   const likeLocalTweet = () => {
     setTweetClone((prev: Tweet) => ({
@@ -69,6 +79,10 @@ const TweetInteractionsButtons = ({
       queryClient.invalidateQueries({
         queryKey: ["tweet", tweet.id],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: ["tweets"],
+      });
     },
   });
 
@@ -87,6 +101,10 @@ const TweetInteractionsButtons = ({
 
       queryClient.invalidateQueries({
         queryKey: ["tweet", tweet.id],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["tweets"],
       });
     },
   });
@@ -146,17 +164,19 @@ const TweetInteractionsButtons = ({
   const retweetLocalTweet = () => {
     setTweetClone((prev: Tweet) => ({
       ...prev,
-      hasRetweeted: true,
       retweetCount: prev.retweetCount + 1,
     }));
+
+    setIsRetweeted(true);
   };
 
   const unRetweetLocalTweet = () => {
     setTweetClone((prev: Tweet) => ({
       ...prev,
-      hasRetweeted: false,
       retweetCount: prev.retweetCount - 1,
     }));
+
+    setIsRetweeted(false);
   };
 
   const { mutate: retweetTweetMutate } = useMutation({
@@ -166,13 +186,26 @@ const TweetInteractionsButtons = ({
     onMutate: () => {
       retweetLocalTweet();
     },
-    onSettled(_, error) {
+    onSettled(data, error) {
+      console.log(data);
       if (error) {
         toast({ title: error.message });
-        if (tweetClone.isRetweeted) unRetweetLocalTweet();
+        if (isRetweeted) unRetweetLocalTweet();
+        return;
       }
 
+      setTweetClone((prev: Tweet) => ({
+        ...prev,
+        currentUserRetweetId: data?.tweet.retweetedTweet.currentUserRetweetId,
+      }));
+
+      console.log(data?.tweet.retweetedTweet.currentUserRetweetId);
+
       toast({ title: "Retweeted Successfully" });
+
+      queryClient.invalidateQueries({
+        queryKey: ["tweet", tweet.id],
+      });
 
       queryClient.invalidateQueries({
         queryKey: ["tweets"],
@@ -187,17 +220,28 @@ const TweetInteractionsButtons = ({
     onMutate: () => {
       unRetweetLocalTweet();
     },
-    onSettled(_, error) {
+    onSettled: async (_, error) => {
       if (error) {
         toast({ title: error.message });
-        if (!tweetClone.isRetweeted) retweetLocalTweet();
+        if (!isRetweeted) retweetLocalTweet();
+        return;
       }
 
       toast({ title: "Removed Retweet Successfully" });
 
-      queryClient.invalidateQueries({
+      console.log(tweet.id);
+
+      await queryClient.invalidateQueries({
+        queryKey: ["tweet", tweet.id],
+      });
+
+      await queryClient.invalidateQueries({
         queryKey: ["tweets"],
       });
+
+      if (tweetId && tweetClone.currentUserRetweetId! === tweetId) {
+        navigate("/home");
+      }
     },
   });
 
@@ -228,20 +272,18 @@ const TweetInteractionsButtons = ({
         className="tweet-icon-container group"
         data-testid="Retweet"
         onClick={
-          tweetClone.isRetweeted
-            ? () => unRetweetTweetMutate(tweet.id)
-            : () => retweetTweetMutate(tweet.id)
+          isRetweeted
+            ? () => unRetweetTweetMutate(tweetClone.currentUserRetweetId!)
+            : () => retweetTweetMutate(tweetClone.id)
         }
       >
         <div className="relative">
           <div
-            className={cn("tweet-icon-radius group-hover:bg-[#00ba7c]", {
-              "bg-[#00ba7c]": tweetClone.isRetweeted,
-            })}
+            className={cn("tweet-icon-radius group-hover:bg-[#00ba7c]")}
           ></div>
           <BiRepost
             className={cn("tweet-icon group-hover:text-[#00ba7c]", {
-              "text-[#00ba7c]": tweetClone.isRetweeted,
+              "text-[#00ba7c]": isRetweeted,
             })}
           />
         </div>
@@ -249,7 +291,7 @@ const TweetInteractionsButtons = ({
           className={cn(
             "text-gray transition-all group-hover:text-[#00ba7c] duration-200 ease-in-out",
             {
-              "text-[#00ba7c]": tweetClone.isRetweeted,
+              "text-[#00ba7c]": isRetweeted,
             }
           )}
         >
@@ -288,7 +330,7 @@ const TweetInteractionsButtons = ({
           <IoMdStats className="tweet-icon group-hover:text-secondary" />
         </div>
         <span className="text-gray transition-all group-hover:text-secondary duration-200 ease-in-out">
-          {convertNumberToShortForm(13000)}
+          {convertNumberToShortForm(tweetClone.readCount)}
         </span>
       </div>
       <div

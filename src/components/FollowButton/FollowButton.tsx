@@ -29,12 +29,14 @@ export function FollowButton({
   const handleFollowButton = async (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
+    event.preventDefault();
     event.stopPropagation();
     await FollowServiceFn(username);
     setstate(true);
     onClick && onClick();
   };
   const handleunFollowButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     event.stopPropagation();
     setshowDialog(true);
     onClick && onClick();
@@ -42,6 +44,7 @@ export function FollowButton({
   const confirmUnFollowButton = async (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
+    event.preventDefault();
     event.stopPropagation();
     await unFollowServiceFn(username);
     setstate(false);
