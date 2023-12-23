@@ -1,32 +1,15 @@
 import { Button } from "@/components";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { UserProfileData } from "@/models/User";
-import {
-  // BellPlus,
-  Cake,
-  CalendarDays,
-  LinkIcon,
-  Mail,
-  MapPin,
-  MoreHorizontal,
-} from "lucide-react";
-import {
-  useContext,
-  // useState
-} from "react";
+import { Cake, CalendarDays, LinkIcon, Mail, MapPin } from "lucide-react";
+import { useContext } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { FollowButton } from "@/components/FollowButton/FollowButton";
 import { BlockButton } from "@/components/BlockButton/BlockButton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@radix-ui/react-popover";
 import { CreateConversation, cn, convertNumberToShortForm } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
-//TODO: options menu , message, notification
+import TweetOptionsMenu from "@/components/TweetOptionsMenu/TweetOptionsMenu";
 
 type ProfileMainProps = {
   user: UserProfileData | null;
@@ -37,7 +20,6 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const token = localStorage.getItem("token");
-  // const [followState, setFollowState] = useState(user?.isFollowing);
   const { username } = useParams();
   const { user: contextUser } = useContext(UserContext);
 
@@ -74,11 +56,9 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
     });
   };
 
-  const handleFollow = () => {
+  const handleFollow_Block = () => {
     queryClient.invalidateQueries({ queryKey: ["profile", token, username] });
   };
-
-  console.log(user);
 
   return (
     <div>
@@ -123,7 +103,11 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
           }
 
           {user && user.isBlocked ? (
-            <BlockButton username={user.userName} />
+            <BlockButton
+              username={user.userName}
+              onClick={handleFollow_Block}
+              className="h-[35px]"
+            />
           ) : (
             <>
               {contextUser?.userName == username ? (
@@ -139,17 +123,13 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
               ) : (
                 user && (
                   <div className="flex justify-start align-start">
-                    <Popover>
-                      <PopoverTrigger className="w-[35px] h-[35px] mb-3 mr-2 flex justify-center items-center rounded-full border border-[#536471] hover:bg-[#eff3f4]/10">
-                        <MoreHorizontal size={20} />
-                      </PopoverTrigger>
-                      <PopoverContent className="w-[240px] cursor-pointer hover:bg-[#16181c] p-3 bg-black box-shadow text-primary text-xs rounded-xl">
-                        {
-                          //TODO: block, mute, unblock?
-                        }
-                        Oh hello there
-                      </PopoverContent>
-                    </Popover>
+                    <TweetOptionsMenu
+                      author={user}
+                      isMuted={user?.isMuted || false}
+                      isFollowing={user?.isFollowing || false}
+                      className="w-[35px] h-[35px] mb-3 mr-2 flex justify-center items-center rounded-full border border-[#536471] hover:bg-[#eff3f4]/10 text-white hover:text-white outline-none"
+                      linkClassName="outline-none cursor-default"
+                    />
 
                     {!user.isBlocked && (
                       <div
@@ -160,14 +140,6 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
                       </div>
                     )}
 
-                    {/* {followState && (
-                    <div 
-                    
-                    className="w-[35px] h-[35px] mb-3 mr-2 cursor-pointer flex justify-center items-center rounded-full border border-[#536471] hover:bg-[#eff3f4]/10">
-                      <BellPlus size={20} />
-                    </div>
-                  )} */}
-
                     <FollowButton
                       isFollowing={user?.isFollowing!}
                       username={user?.userName!}
@@ -175,10 +147,7 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
                         "h-[35px] min-w-20",
                         user?.isFollowing && "w-[100px]"
                       )}
-                      onClick={handleFollow}
-                      // onClick={() => {
-                      //   setFollowState(!followState);
-                      // }}
+                      onClick={handleFollow_Block}
                     />
                   </div>
                 )
