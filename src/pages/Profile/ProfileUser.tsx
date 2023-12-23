@@ -21,15 +21,17 @@ export function ProfileUser() {
   const { token } = useContext(UserContext);
   const [blocked, setBlocked] = useState(false);
 
-  const { data: user, isPending } = useQuery<UserProfileData>({
+  const { data: user,isSuccess,isPending } = useQuery<UserProfileData>({
     queryKey: ["profile", token, username],
-    queryFn: () => getUserProfile(token!, username!),
+    queryFn: () => getUserProfile(token!, username!),    
   });
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    console.log(user?.isBlocked);
     setBlocked(user?.isBlocked!);
-  }, []);
+    console.log(blocked);
+  }, [isSuccess]);
 
   if (isPending)
     return (
