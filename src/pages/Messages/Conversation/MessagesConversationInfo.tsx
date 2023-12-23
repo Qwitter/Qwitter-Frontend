@@ -67,7 +67,7 @@ export function MessagesConversationInfo() {
         <div className="max-h-[40vh] overflow-y-auto">
           {currentConversation.users.map((user, index) => (
             <UsersListItem
-              isFollowing={user.isFollowed!}
+              isFollowing={user.isFollowing!}
               verified={user.isVerified! || false}
               key={index}
               username={user.userName}

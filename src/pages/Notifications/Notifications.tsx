@@ -5,7 +5,7 @@ import { BiRepost } from "react-icons/bi";
 import Logo from "../../assets/logo.png";
 import { User as UserType } from "@/models/User";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { TweetWithRetweet } from "@/models/Tweet";
+import { TweetWithReplyAndRetweet, TweetWithRetweet } from "@/models/Tweet";
 import { MessageUser } from "../../models/MessagesTypes";
 import { getNotificationsList } from "@/lib/utils";
 import { Spinner } from "@/components/Spinner";
@@ -16,7 +16,7 @@ import { useInView } from "react-intersection-observer";
 export type NotificationsType = {
   type: string;
   createdAt: string;
-  reply?: TweetWithRetweet;
+  reply?: TweetWithReplyAndRetweet;
   follower?: MessageUser;
   like?: TweetWithRetweet &{liker:MessageUser}
   ;
@@ -147,7 +147,7 @@ function Notification({ type, createdAt, follower,retweet, reply ,like}: Notific
     return (
 
       <TweetComponent
-        tweet={reply}
+        tweet={reply!}
       />
 
     )
@@ -192,7 +192,7 @@ function Notification({ type, createdAt, follower,retweet, reply ,like}: Notific
                 />
                 <p > {type == 'follow' ? "followed you" : type == 'retweet' ? "reposted your post" : "liked your post"}</p>
               </div>
-              {type == "like" && <p className="text-sm text-gray mt-2 w-full max-sm:w-[50vw]"><span className="max-w-[10vw] truncate">{like!.text}</span> <span className="break-words">{like!.entities.media.length>0&&' '+like!.entities.media[0].value.substring(0,70)+'...'} </span></p>}
+              {type == "like" && <p className="text-sm text-gray mt-2 w-full max-sm:w-[50vw]"><p className="max-w-[88%] truncate">{like!.text}</p> <span className="break-words">{like!.entities.media.length>0&&' '+like!.entities.media[0].value.substring(0,70)+'...'} </span></p>}
               {type == "retweet" && <p className="text-sm text-gray mt-2 w-full max-sm:w-[50vw] "><span className="max-w-[10vw] truncate">{retweet!.retweetedTweet!.text}</span>
               <span className="break-words ">{retweet!.retweetedTweet!.entities.media.length>0&&' '+retweet!.retweetedTweet!.entities.media[0].value.substring(0,70)+'...'}</span> </p>}
             </div></>}
