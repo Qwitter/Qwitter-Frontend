@@ -19,7 +19,6 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { LoadingOverlay } from "../LoadingOverlay/LoadingOverlay";
-import { log } from "console";
 
 type EditProfileProps = {
   onSave?: () => void;
@@ -117,9 +116,6 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
       return await editUserProfile(editedUserData, token!);
     },
     onSuccess: (editedUserData) => {
-      console.log("user", user);
-      console.log("edited", editedUserData);
-      
       queryClient.invalidateQueries({
         queryKey: ["profile", token, username],
       });
