@@ -1,12 +1,15 @@
 import { cn } from "@/lib";
 import { Tweet } from "@/models/Tweet";
 import { HiOutlineXMark } from "react-icons/hi2";
+import { Link, useLocation } from "react-router-dom";
 
 type TweetImagesViewerOnly = {
   mode?: "view-only";
   images: Tweet["entities"]["media"];
   removeAttachment?: (index: number) => void;
   screen?: "tweet" | "message";
+  viewImage?: boolean;
+
 };
 
 type TweetImagesEditor = {
@@ -14,6 +17,7 @@ type TweetImagesEditor = {
   images: Tweet["entities"]["media"];
   removeAttachment: (index: number) => void;
   screen: "tweet" | "message";
+  viewImage?: boolean;
 };
 
 type TweetImagesViewerProps = TweetImagesEditor | TweetImagesViewerOnly;
@@ -23,7 +27,9 @@ const TweetImagesViewer = ({
   mode = "view-only",
   screen = "tweet",
   removeAttachment,
+  viewImage
 }: TweetImagesViewerProps) => {
+  const location = useLocation();
   return (
     <div
       className={cn("mt-4 rounded-xl overflow-hidden w-full", {
@@ -41,13 +47,28 @@ const TweetImagesViewer = ({
             className={cn("relative flex-1 h-full w-full overflow-hidden")}
             key={images[0].value}
           >
-            <img
-              src={images[0].value}
-              alt=""
-              className={cn("h-full absolute object-cover min-w-full", {
-                "rounded-xl": mode === "edit",
-              })}
-            />
+            {viewImage ?
+              <Link
+                to={"/flow/photo"}
+                state={{ previousLocation: location, photo: images[0].value }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <img
+                  src={images[0].value}
+                  alt=""
+                  className={cn("h-full absolute object-cover min-w-full cursor-pointer", {
+                    "rounded-xl": mode === "edit",
+                  })}
+                />
+              </Link> :
+              <img
+                src={images[0].value}
+                alt=""
+                className={cn("h-full absolute object-cover min-w-full ", {
+                  "rounded-xl": mode === "edit",
+                })}
+              />
+            }
             {mode === "edit" && (
               <HiOutlineXMark
                 className="tweet-image-remover-icon"
@@ -65,13 +86,28 @@ const TweetImagesViewer = ({
                 className="relative flex-1 h-full w-full overflow-hidden"
                 key={image.value}
               >
-                <img
-                  src={image.value}
-                  alt=""
-                  className={cn("h-full absolute object-cover min-w-full", {
-                    "rounded-xl": mode === "edit",
-                  })}
-                />
+                {viewImage ?
+                  <Link
+                    to={"/flow/photo"}
+                    state={{ previousLocation: location, photo: image.value }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <img
+                      src={image.value}
+                      alt=""
+                      className={cn("h-full absolute object-cover min-w-full cursor-pointer", {
+                        "rounded-xl": mode === "edit",
+                      })}
+                    />
+                  </Link> :
+                  <img
+                    src={image.value}
+                    alt=""
+                    className={cn("h-full absolute object-cover min-w-full", {
+                      "rounded-xl": mode === "edit",
+                    })}
+                  />
+                }
                 {mode === "edit" && (
                   <HiOutlineXMark
                     className="tweet-image-remover-icon"
@@ -97,14 +133,31 @@ const TweetImagesViewer = ({
                 className={cn("relative flex-1 h-full w-full overflow-hidden")}
                 key={image.value}
               >
-                <img
-                  src={image.value}
-                  alt=""
-                  className={cn("h-full absolute object-cover min-w-full", {
-                    static: images.length === 1,
-                    "rounded-xl": mode === "edit",
-                  })}
-                />
+                {viewImage ?
+                  <Link
+                    to={"/flow/photo"}
+                    state={{ previousLocation: location, photo: image.value }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <img
+                      src={image.value}
+                      alt=""
+                      className={cn("h-full absolute object-cover min-w-full cursor-pointer", {
+                        static: images.length === 1,
+                        "rounded-xl": mode === "edit",
+                      })}
+                    />
+                  </Link> :
+                  <img
+                    src={image.value}
+                    alt=""
+                    className={cn("h-full absolute object-cover min-w-full", {
+                      static: images.length === 1,
+                      "rounded-xl": mode === "edit",
+                    })}
+                  />
+                }
+
                 {mode === "edit" && (
                   <HiOutlineXMark
                     className="tweet-image-remover-icon"
@@ -125,6 +178,30 @@ const TweetImagesViewer = ({
                 className="relative flex-1 h-full w-full overflow-hidden"
                 key={image.value}
               >
+                {viewImage ?
+                  <Link
+                    to={"/flow/photo"}
+                    state={{ previousLocation: location, photo: image.value }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <img
+                      src={image.value}
+                      alt=""
+                      className={cn("h-full absolute object-cover min-w-full cursor-pointer", {
+                        static: images.length === 1,
+                        "rounded-xl": mode === "edit",
+                      })}
+                    />
+                  </Link> :
+                  <img
+                    src={image.value}
+                    alt=""
+                    className={cn("h-full absolute object-cover min-w-full", {
+                      static: images.length === 1,
+                      "rounded-xl": mode === "edit",
+                    })}
+                  />
+                }
                 <img
                   src={image.value}
                   alt=""

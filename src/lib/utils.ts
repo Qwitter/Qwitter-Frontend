@@ -593,6 +593,7 @@ export const timelineForYouTweets = async (
         },
       }
     );
+    console.log(response.data.tweets)
     return response.data.tweets;
   } catch (error) {
     console.log(error);
@@ -1559,6 +1560,7 @@ export const addUserToGroup = async ({
         },
       }
     );
+    console.log(res.data)
     return res.data;
   } catch (error) {
     console.log(error);
@@ -1702,6 +1704,8 @@ export const getTweetReplies = async (
   pageParam: number = 1,
   limit: number = 10
 ) => {
+  console.log(tweetId);
+  console.log(token);
   try {
     const res = await axios.get(
       `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}/replies?page=${pageParam}&limit=${limit}`,
@@ -1711,6 +1715,7 @@ export const getTweetReplies = async (
         },
       }
     );
+    console.log(res.data);
     return res.data.replies;
   } catch (err) {
     console.log(err);
@@ -1760,7 +1765,7 @@ export const retweet = async (tweetId: string, token: string) => {
         },
       }
     );
-    return res.status == 201;
+    return res.data;
   } catch (err) {
     console.log(err);
     throw new Error("Error retweeting");
@@ -1799,4 +1804,26 @@ export const formatDate = (dateString: string) => {
     return "Yesterday," + date.format("h:mm A");
   else if (now.diff(date, "days") < 7) return date.format("ddd h:mm A");
   else return date.format("MMM D, YYYY, h:mm A");
+};
+
+export const getPageFromUrl = (pathname: string) => {
+  if (pathname.includes("home")) {
+    return "home";
+  } else if (pathname.includes("profile")) {
+    return "profile";
+  } else if (pathname.includes("explore")) {
+    return "explore";
+  } else if (pathname.includes("settings")) {
+    return "settings";
+  } else if (pathname.includes("notification")) {
+    return "notification";
+  } else if (pathname.includes("messages")) {
+    return "messages";
+  } else if (pathname.includes("tweet")) {
+    return "tweet";
+  } else if (pathname.includes("connection")) {
+    return "connection";
+  } else {
+    return "unknown";
+  }
 };

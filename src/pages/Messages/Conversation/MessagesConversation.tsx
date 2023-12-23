@@ -20,7 +20,7 @@ import { MessagesConversationUserInfo } from "./MessagesConversationUserInfo";
 import ImageGrid from "../ImageGrid";
 import { v4 as uuidv4 } from 'uuid';
 import { User } from "@/models/User";
-export function MessagesConversation() {
+export function MessagesConversation({conversationAccordionId}:{conversationAccordionId?:string}) {
   const [text, setText] = useState("");
 
   const [chatMessages, setChatMessages] = useState<MessagesMessage[]>([]);
@@ -32,10 +32,13 @@ export function MessagesConversation() {
   const [scroll, setScroll] = useState(0);
 
   const token = localStorage.getItem("token")!;
+  const { VITE_DEFAULT_IMAGE } = import.meta.env;
+
   const user = JSON.parse(localStorage.getItem("user")!)as User;
   const { messageReply, setMessageReply, setCurrentConversation } =
     useContext(MessagesContext);
-  const { conversationId } = useParams();
+  const {conversationId:conversationUrlId} =useParams()
+  const conversationId  = conversationAccordionId?conversationAccordionId:conversationUrlId;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { ref, inView } = useInView();
@@ -239,7 +242,7 @@ export function MessagesConversation() {
   return (
     data && (
       <div className="h-full">
-        <div className="px-4 w-full h-[53px] basis-4 flex flex-row justify-center  sticky  top-[-1px] bg-black bg-opacity-60 backdrop-blur-xl z-50 items-center">
+        {!conversationAccordionId&&(<div className="px-4 w-full h-[53px] basis-4 flex flex-row justify-center  sticky  top-[-1px] bg-black bg-opacity-60 backdrop-blur-xl z-50 items-center">
           <div
             className="hover:bg-[#191919] h-10 flex mr-2 lg:hidden rounded-full transition-all p-2 cursor-pointer"
             data-testid="Back"
@@ -254,11 +257,10 @@ export function MessagesConversation() {
             !inView && data.pages[0].isGroup&&!data.pages[0].photo ?
               <ImageGrid
                 className="w-10 h-8 rounded-full mr-2"
-                images={data.pages[0].users.map(conversation => conversation.profileImageUrl || "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg")} /> :
+                images={data.pages[0].users.map(conversation => conversation.profileImageUrl || VITE_DEFAULT_IMAGE)} /> :
               <img
                 src={data.pages[0].isGroup? data.pages[0].photo :
-                  data.pages[0].users[0].profileImageUrl ||
-                  "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
+                  data.pages[0].users[0].profileImageUrl ||VITE_DEFAULT_IMAGE
                 }
                 className="w-8 h-8 rounded-full mr-2"
               />
@@ -274,9 +276,9 @@ export function MessagesConversation() {
               </Link>
             </div>
           </div>
-        </div>
-        <div className="w-full relative mx-auto flex flex-col max-h-[calc(100vh-55px)] ">
-          <div className="  overflow-y-auto" ref={messageContainerRef}>
+        </div>)}
+        <div className={cn("w-full relative mx-auto flex flex-col max-h-[calc(100vh-55px)] ",conversationAccordionId&&"h-[53vh] max-h-[400px]")}>
+          <div className={`${conversationAccordionId&&"overflow-x-hidden"}  overflow-y-auto`} ref={messageContainerRef}>
             {!data.pages[0].isGroup && !hasNextPage && (
               <div
                 className=" w-full px-4 "
@@ -289,8 +291,8 @@ export function MessagesConversation() {
                     data.pages[0].isGroup ? data.pages[0].photo : data.pages[0].users[0].profileImageUrl ||
                       "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
                   }
-                  userName={data?.pages[0].users[0].userName || ""}
-                  name={data?.pages[0].users[0].name || ""}
+                 user={data.pages[0].users[0]}
+                 
                   ref={ref}
                 />
               </div>
@@ -324,6 +326,7 @@ export function MessagesConversation() {
 
                       <MessagesConversationMessage
                         key={index}
+                        isAccordion={!!conversationAccordionId}
                         setChatMessages={setChatMessages}
                         {...message}
                         isGroup={data.pages[0].isGroup}
@@ -368,6 +371,7 @@ export function MessagesConversation() {
               )}
               <MessagesConversationInput
                 selectedImageFile={selectedImageFile}
+                isAccordion ={!!conversationAccordionId}
                 setSelectedImageFile={setSelectedImageFile}
                 handleSubmit={handleSubmit}
                 text={text}

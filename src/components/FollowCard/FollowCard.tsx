@@ -33,10 +33,11 @@ export function FollowCard() {
           <CardFooter
             className="hover:cursor-pointer mt-3 pt-3 hover:bg-light-gray rounded-br-lg rounded-bl-lg"
             data-testid="showMoreFollowers"
+            onClick={() => navigate("/connection")}
           >
             <span
               className="text-secondary"
-              onClick={() => navigate("/connection")}
+            
             >
               show more
             </span>
