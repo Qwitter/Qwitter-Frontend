@@ -102,8 +102,8 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
           {
             <Avatar className="rounded-full mt-[-15%] mb-3 w-[20vw] h-auto aspect-square sm:w-[142px] bg-black p-0.5 sm:p-1 border-solid block">
               <Link
-                to={`/${username}/photo`}
-                state={{ profileImg: user?.profileImageUrl }}
+                to={`/flow/photo`}
+                state={{ photo: user?.profileImageUrl ,previousLocation: location }}
                 className="w-full h-full cursor-pointer"
               >
                 <AvatarImage

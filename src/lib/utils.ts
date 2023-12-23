@@ -1565,6 +1565,7 @@ export const addUserToGroup = async ({
         },
       }
     );
+    console.log(res.data)
     return res.data;
   } catch (error) {
     console.log(error);
@@ -1805,4 +1806,26 @@ export const formatDate = (dateString: string) => {
     return "Yesterday," + date.format("h:mm A");
   else if (now.diff(date, "days") < 7) return date.format("ddd h:mm A");
   else return date.format("MMM D, YYYY, h:mm A");
+};
+
+export const getPageFromUrl = (pathname: string) => {
+  if (pathname.includes("home")) {
+    return "home";
+  } else if (pathname.includes("profile")) {
+    return "profile";
+  } else if (pathname.includes("explore")) {
+    return "explore";
+  } else if (pathname.includes("settings")) {
+    return "settings";
+  } else if (pathname.includes("notification")) {
+    return "notification";
+  } else if (pathname.includes("messages")) {
+    return "messages";
+  } else if (pathname.includes("tweet")) {
+    return "tweet";
+  } else if (pathname.includes("connection")) {
+    return "connection";
+  } else {
+    return "unknown";
+  }
 };

@@ -13,15 +13,16 @@ interface ProfileImageViewerProps
 export const ProfileImageViewer = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   ProfileImageViewerProps
->(({ isBanner, className, children, ...props }, ref) => {
+>(({ isBanner, ...props }, ref) => {
   const navigate = useNavigate();
   const handleClose = () => {
     navigate(-1);
   };
-
+  const location =useLocation();
+  console.log(location.state.previousLocation?.pathname.includes('rofile'))
   const img = isBanner
-    ? useLocation().state.bannerImg
-    : useLocation().state.profileImg;
+    ?location.state.bannerImg
+    :location.state.photo;
 
   return (
     <Dialog open={true}>
@@ -44,7 +45,7 @@ export const ProfileImageViewer = React.forwardRef<
 
           <div
             className={cn(
-              "fixed left-[50%] top-[50%] z-50 w-full max-w-[368px] translate-x-[-50%] translate-y-[-50%] aspect-square",
+              "fixed left-[50%] top-[50%] z-50 w-full max-w-[368px] translate-x-[-50%] translate-y-[-50%] ",
               isBanner && "max-w-none sm:aspect-[3/1]"
             )}
             // change the max-w here to change the size
@@ -52,8 +53,8 @@ export const ProfileImageViewer = React.forwardRef<
           >
             <div
               className={cn(
-                "aspect-square h-full",
-                isBanner && "aspect-[3/1] w-full"
+                " h-full",
+                location.state.previousLocation?.pathname.includes('rofile')&& "aspect-square w-full"
               )}
             >
               <img
@@ -61,7 +62,7 @@ export const ProfileImageViewer = React.forwardRef<
                 alt="Profile Image"
                 className={cn(
                   "rounded-full w-full h-full",
-                  isBanner && "rounded-none"
+                  (isBanner||!location.state.previousLocation?.pathname.includes('rofile')) && "rounded-none"
                 )}
               />
             </div>

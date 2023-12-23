@@ -60,10 +60,10 @@ export function MessagesConversationInput({ text, setText, isAccordion, handleSu
 
     }
     function autoHeight(input: HTMLTextAreaElement) {
-        
-            input.style.height = '1px';
-            input.style.height = `${input.scrollHeight}px`;
-        
+
+        input.style.height = '1px';
+        input.style.height = `${input.scrollHeight}px`;
+
     }
 
     const handleUserClick = (username: string) => {
@@ -106,7 +106,7 @@ export function MessagesConversationInput({ text, setText, isAccordion, handleSu
                     <div className="flex flex-col w-full pl-2 ">
                         {selectedImageFile && (selectedImage[0].type == "video" ?
                             <div
-                                className={cn("my-4 relative  rounded-lg overflow-hidden max-h-[200px] max-w-[300px]",isAccordion&&"max-h-[100px] max-w-[150px]")}
+                                className={cn("my-4 relative  rounded-lg overflow-hidden max-h-[200px] max-w-[300px]", isAccordion && "max-h-[100px] max-w-[150px]")}
                                 onClick={(e) => e.preventDefault()}
                             >
 
@@ -127,9 +127,8 @@ export function MessagesConversationInput({ text, setText, isAccordion, handleSu
                         <div className={cn("w-full max-w-[440px] max-h-[160px] overflow-y-auto relative", `${selectedImageFile ? 'max-w-[500px]' : ''}`, isAccordion && 'max-h-[300px]')}>
                             {isAccordion ? <div className="max-h-[150px] w-full overflow-y-auto"><textarea
                                 value={text}
-                                className="bg-transparent text-sm overflow-x-hidden 
-                                    h-[36px]
-                                 placeholder:text-gray w-full  focus:ring-transparent focus:border-none focus:outline-none resize-none border-none"
+                                className="bg-transparent text-sm overflow-x-hidden h-[36px]
+                                placeholder:text-gray w-full  focus:ring-transparent focus:border-none focus:outline-none resize-none border-none"
 
                                 onKeyDown={handleKeyDown}
                                 placeholder="Start a new message"
@@ -149,7 +148,7 @@ export function MessagesConversationInput({ text, setText, isAccordion, handleSu
                             }
                         </div>
                     </div>
-                    {text.length > 0 || selectedImage.length > 0 ? <button data-testid="sendButton" className="text-secondary h-full group relative max-w-[40px] flex items-center w-full cursor-pointer" onClick={handleSubmit}>
+                    {text.trim().length > 0 || selectedImage.length > 0 ? <button data-testid="sendButton" className="text-secondary h-full group relative max-w-[40px] flex items-center w-full cursor-pointer" onClick={handleSubmit}>
                         <SendHorizonal className="w-10 h-10 p-2 rounded-3xl group-hover:bg-secondary group-hover:bg-opacity-25" />
                         <div className="absolute bg-[#657b8b] w-fit rounded-sm text-primary text-xs px-2 py-1 opacity-0 bg-opacity-75 group-hover:opacity-100 transition-opacity bottom-full left-1/2 transform -translate-x-1/2 translate-y-[0]">
                             Send
