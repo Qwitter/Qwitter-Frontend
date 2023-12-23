@@ -14,11 +14,11 @@ export function FollowList({ type }: { type: string }) {
   const navigate = useNavigate();
   const { token } = useContext(UserContext);
   const { username } = useParams();
-  const { data: Followings } = useQuery<User[]>({
+  const { data: Followings, refetch: refetchFollowings } = useQuery<User[]>({
     queryKey: ["followings", token, username],
     queryFn: () => GetFollowingsService(username!, token!),
   });
-  const { data: Followers } = useQuery<User[]>({
+  const { data: Followers, refetch: refetchFollowers } = useQuery<User[]>({
     queryKey: ["followers", token, username],
     queryFn: () => GetFollowersService(username!, token!),
   });
@@ -32,6 +32,7 @@ export function FollowList({ type }: { type: string }) {
             onClick={() => {
               setListstate("Following");
               navigate(`/Profile/${username}/Following`);
+              refetchFollowings();
             }}
             data-testid="followingTab"
           >
@@ -45,6 +46,7 @@ export function FollowList({ type }: { type: string }) {
             onClick={() => {
               setListstate("Followers");
               navigate(`/Profile/${username}/Followers`);
+              refetchFollowers();
             }}
             data-testid="followersTab"
           >
