@@ -5,7 +5,6 @@ import { HoverCard, HoverCardTrigger, HoverCardContent } from '@radix-ui/react-h
 import { FollowButton } from '../FollowButton/FollowButton'
 import { Link } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
-
 type Props = {
     userName: string;
     name: string;
@@ -32,7 +31,7 @@ export const UserNameHoverCard = ({ userName, name, profileImageUrl, description
     return (
         <HoverCard>
             <HoverCardTrigger className="hover:underline">
-                <Link to={`/profile/${userName}`}>
+                <Link to={`/profile/${userName}`} onClick={(e)=>{e.stopPropagation();}}>
                     {name}
                 </Link>
             </HoverCardTrigger>

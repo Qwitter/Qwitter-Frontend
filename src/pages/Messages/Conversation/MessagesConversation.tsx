@@ -291,8 +291,8 @@ export function MessagesConversation({conversationAccordionId}:{conversationAcco
                     data.pages[0].isGroup ? data.pages[0].photo : data.pages[0].users[0].profileImageUrl ||
                       "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
                   }
-                  userName={data?.pages[0].users[0].userName || ""}
-                  name={data?.pages[0].users[0].name || ""}
+                 user={data.pages[0].users[0]}
+                 
                   ref={ref}
                 />
               </div>

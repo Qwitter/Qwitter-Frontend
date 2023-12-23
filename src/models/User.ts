@@ -18,7 +18,9 @@ export type User = {
   profileImageUrl: string;
   profileBannerUrl: string;
   verified: boolean,
-  isFollowing:boolean,
+  isFollowing: boolean,
+  followersCount: number,
+  followingCount: number,
 };
 
 export const EditUserSchema = z

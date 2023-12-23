@@ -23,12 +23,13 @@ const CreateTweetMainMemoized = React.memo(CreateTweetMain);
 const CreateTweetContainer = ({
   mode = "popUp",
   replyToTweetId,
-  replyToUser
+  replyToUser,
+  replyToRetweetId,
 }: {
   mode?: "home" | "popUp" | "reply";
   replyToTweetId?: string;
+  replyToRetweetId?: string;
   replyToUser?: string;
-
 }) => {
   const [showPopUp, setShowPopUp] = useState<boolean>(true);
   const [userLocation, setUserLocation] = useState("");
@@ -45,27 +46,34 @@ const CreateTweetContainer = ({
     mode: "onChange",
   });
   const clearForm = () => {
-    form.reset()
+    form.reset();
     setTweet("");
     setFiles([]);
     setSelectedImages([]);
     setVideoFile(undefined);
-  }
+  };
   const { mutate, isPending } = useMutation({
     mutationFn: createTweet,
     onSuccess: (data) => {
       if (data) {
         toast({
-          description: `Your ${mode=="reply"?"reply":"post"} was sent.`,
+          description: `Your ${mode == "reply" ? "reply" : "post"} was sent.`,
           variant: "secondary",
           duration: 2000,
           className: "py-4",
         });
         if (mode != "reply")
           queryClient.invalidateQueries({ queryKey: ["tweets"] });
-        else
-        {
-          queryClient.invalidateQueries({ queryKey: ["tweet", replyToTweetId!, "replies"] });
+        else {
+          queryClient.invalidateQueries({
+            queryKey: ["tweet", replyToTweetId!],
+          });
+
+          if (replyToRetweetId) {
+            queryClient.invalidateQueries({
+              queryKey: ["tweet", replyToRetweetId],
+            });
+          }
         }
         clearForm();
       }
@@ -83,13 +91,12 @@ const CreateTweetContainer = ({
     navigate(-1);
     setShowPopUp(false);
   };
-  const handleInputChange = (inputText:string) => {
+  const handleInputChange = (inputText: string) => {
     if (inputText.length > 700) return;
     setTweet(inputText);
     form.setValue("Text", inputText);
     form.trigger("Text");
   };
-
 
   function getLocationOfUser() {
     if (navigator.geolocation) {
@@ -118,7 +125,7 @@ const CreateTweetContainer = ({
     files.forEach((file) => {
       formData.append("media[]", file);
     });
-    
+
     mutate({ formData: formData, token: token! });
   }
 
@@ -227,7 +234,6 @@ const CreateTweetContainer = ({
             setVideoFile={setVideoFile}
             videoFile={videoFile}
             handleTextChange={handleInputChange}
-            
           />
         </>
       )}

@@ -25,11 +25,9 @@ export function cn(...inputs: ClassValue[]) {
 export const getUserData = async (token: string) => {
   try {
     const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/user`, {
-      withCredentials: true,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true,
         Authorization: `Bearer ${token}`,
       },
     });
@@ -433,15 +431,15 @@ export const registerNewUser = async (newUserData: object) => {
  * @returns New user data after the image has changed
  */
 
-export const uploadProfileImage = async (
-  {picFile,
+export const uploadProfileImage = async ({
+  picFile,
   token,
-  isBanner = false} : {
-    picFile: File,
-  token: string,
-  isBanner?: boolean
-  }
-) => {
+  isBanner = false,
+}: {
+  picFile: File;
+  token: string;
+  isBanner?: boolean;
+}) => {
   const formData = new FormData();
   formData.append("photo", picFile);
 
@@ -476,14 +474,10 @@ export const uploadProfileImage = async (
  * @param isBanner Used to upload the profile banner
  * @returns New user data after the image has changed
  */
-export const deleteProfileImage = async (
-  isBanner: boolean = false,
-  token: string
-) => {
+export const deleteProfileBanner = async ({ token }: { token: string }) => {
   try {
     const res = await axios.delete(
-      `${VITE_BACKEND_URL}/api/v1/user/profile_${isBanner ? "banner" : "picture"
-      }`,
+      `${VITE_BACKEND_URL}/api/v1/user/profile_banner`,
       {
         headers: {
           Accept: "application/json",
@@ -509,7 +503,6 @@ export const oAuthSignUp = async (token: string, birthday: BirthDay) => {
     MONTHS.indexOf(birthday.month),
     birthday.day
   ).toISOString();
-
 
   try {
     const res = await axios.post(
@@ -556,13 +549,13 @@ export const timelineTweets = async (
   pageParam: number = 1,
   limit: number = 10,
   token: string,
-  q:string
+  q?: string,
 ) => {
   if (!token) return [];
-
+  // this is a fucking comment
   try {
     const response = await axios.get(
-      `${VITE_BACKEND_URL}/api/v1/tweets?q=${q}&page=${pageParam}&limit=${limit}`,
+      `${VITE_BACKEND_URL}/api/v1/tweets?page=${pageParam}&limit=${limit}` + (q ? `&q=${q}` : ''),
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -576,6 +569,7 @@ export const timelineTweets = async (
     return [];
   }
 };
+
 /**
  * @description Load forYou timeline tweets
  * @param pageParam used for infinite queries
@@ -600,6 +594,7 @@ export const timelineForYouTweets = async (
         },
       }
     );
+    console.log(response.data.tweets)
     return response.data.tweets;
   } catch (error) {
     console.log(error);
@@ -893,7 +888,7 @@ export const CreateMessage = async ({
   formData,
   token,
   conversationId,
-  logicalId
+  logicalId,
 }: {
   conversationId: string;
   formData: FormData;
@@ -901,7 +896,7 @@ export const CreateMessage = async ({
   logicalId: string;
 }) => {
   try {
-    logicalId
+    logicalId;
     const res = await axios.post(
       `${VITE_BACKEND_URL}/api/v1/conversation/${conversationId}/message`,
       formData,
@@ -1566,6 +1561,7 @@ export const addUserToGroup = async ({
         },
       }
     );
+    console.log(res.data)
     return res.data;
   } catch (error) {
     console.log(error);
@@ -1709,6 +1705,8 @@ export const getTweetReplies = async (
   pageParam: number = 1,
   limit: number = 10
 ) => {
+  console.log(tweetId);
+  console.log(token);
   try {
     const res = await axios.get(
       `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}/replies?page=${pageParam}&limit=${limit}`,
@@ -1718,6 +1716,7 @@ export const getTweetReplies = async (
         },
       }
     );
+    console.log(res.data);
     return res.data.replies;
   } catch (err) {
     console.log(err);
@@ -1767,7 +1766,7 @@ export const retweet = async (tweetId: string, token: string) => {
         },
       }
     );
-    return res.status == 201;
+    return res.data;
   } catch (err) {
     console.log(err);
     throw new Error("Error retweeting");
@@ -1779,17 +1778,20 @@ export const retweet = async (tweetId: string, token: string) => {
  * @returns  Notifications list represents the response from the backend or throw error
  */
 export const getNotificationsList = async (
-  pageParam:number,
-  limit:number,
+  pageParam: number,
+  limit: number
 ) => {
   try {
-    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/notifications?page=${pageParam}&limit=${limit}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
+    const res = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/notifications?page=${pageParam}&limit=${limit}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
     return res.data.notifications;
   } catch (err) {
     throw new Error("Error getting notifications");
@@ -1798,13 +1800,31 @@ export const getNotificationsList = async (
 export const formatDate = (dateString: string) => {
   const date = moment(dateString);
   const now = moment();
-  if (now.diff(date, 'days') === 0)
-      return date.format('h:mm A');
-  else if (now.diff(date, 'days') === 1)
-      return 'Yesterday,' + date.format('h:mm A');
-  else if (now.diff(date, 'days') < 7)
-      return date.format('ddd h:mm A');
+  if (now.diff(date, "days") === 0) return date.format("h:mm A");
+  else if (now.diff(date, "days") === 1)
+    return "Yesterday," + date.format("h:mm A");
+  else if (now.diff(date, "days") < 7) return date.format("ddd h:mm A");
+  else return date.format("MMM D, YYYY, h:mm A");
+};
 
-  else
-      return date.format('MMM D, YYYY, h:mm A');
+export const getPageFromUrl = (pathname: string) => {
+  if (pathname.includes("home")) {
+    return "home";
+  } else if (pathname.includes("profile")) {
+    return "profile";
+  } else if (pathname.includes("explore")) {
+    return "explore";
+  } else if (pathname.includes("settings")) {
+    return "settings";
+  } else if (pathname.includes("notification")) {
+    return "notification";
+  } else if (pathname.includes("messages")) {
+    return "messages";
+  } else if (pathname.includes("tweet")) {
+    return "tweet";
+  } else if (pathname.includes("connection")) {
+    return "connection";
+  } else {
+    return "unknown";
+  }
 };

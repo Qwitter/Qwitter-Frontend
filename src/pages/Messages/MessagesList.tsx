@@ -54,23 +54,23 @@ export function MessagesList({
         {conversations && conversations.map((user, index) => (
             <li key={index} className={cn("py-3 px-4 flex overflow-x-hidden flex-row justify-between group  hover:bg-[#16181c] w-full transition-all cursor-pointer items-start ", (user.id == currentConversation?.id) ? "bg-[#16181c]  border-secondary border-r-4 " : "")} onClick={() => handleConversationClick(user)} >
                 <div className={`flex flex-row flex-grow  ${mode != "Group" && 'truncate'} max-w-[86%]`} >
-                    {user.isGroup &&!user.photo? <ImageGrid
+                    {(user.isGroup||user.type=="group") &&!user.photo? <ImageGrid
                         className="w-12 h-10  rounded-full mr-2 min-w-[40px] max-lg:w-10 "
                         images={user.users.map(conversation => conversation.profileImageUrl || VITE_DEFAULT_IMAGE)} /> : <Avatar className="mr-4 min-w-max ">
-                        <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" src={user.isGroup ? user.photo : user.users[0].profileImageUrl} />
+                        <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" src={(user.isGroup||user.type=="group") ? user.photo : user.users[0].profileImageUrl} />
                         <AvatarFallback className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" >{user?.users[0].userName.substring(0, 2)}</AvatarFallback>
                     </Avatar>}
-                    <div className="flex flex-col gap-0  ">
+                    <div className="flex flex-col gap-0 w-full ">
                         <div className={cn("flex flex-row gap-1 items-center max-w-full", mode == "People" && 'justify-between w-full', mode == "Group" && 'truncate max-w-[77%]')}>
                             {mode == "People" ? <Highlighter searchWords={[matchedPart]} highlightClassName="text-black" ClassName="text-primary font-semibold text-[15px]" autoEscape={true}
-                                textToHighlight={user.name}
-                            /> : <span className="text-primary font-semibold text-[15px] max-w-[60%] truncate ">{user.name}</span>
+                                textToHighlight={user.users.map(user=>user.name).join(", ")}
+                            /> : <span className="text-primary font-semibold text-[15px] max-w-[60%] truncate ">{user.name||user.users[0].name||""}</span>
                             }
                             {mode !== "People" && (
                                 <>
-                                    {mode !== "conversations" && !user.isGroup && <span className="text-gray max-w-[60%] truncate  ">@{user.users[0].userName}</span>}
-                                    <div className="bg-gray rounded-full w-[3px] h-[3px]"></div>
-                                    <span className="text-gray whitespace-nowrap ">{formatDate(user.lastMessage?.date || "")}</span>
+                                    {mode !== "conversations" && !user.isGroup &&mode !== "Group"&& <span className="text-gray max-w-[60%] truncate  max-xs:hidden ">@{user.users[0].userName}</span>}
+                                    <div className="bg-gray rounded-full w-[3px] h-[3px]  max-xs:hidden"></div>
+                                    <span className="text-gray whitespace-nowrap max-xs:hidden  ">{formatDate(user.lastMessage?.date || "")}</span>
 
 
                                 </>)}
@@ -81,7 +81,7 @@ export function MessagesList({
                                 <Highlighter searchWords={[matchedPart]} highlightClassName="text-black" ClassName={'text-gray'} autoEscape={true}
                                     textToHighlight={user.lastMessage?.text || ""}
                                 /> : mode == "Group" ? <Highlighter searchWords={[matchedPart]} highlightClassName="text-black " ClassName={`text-gray`} autoEscape={true}
-                                    textToHighlight={""}
+                                    textToHighlight={user.lastMessage?.text||""}
                                 /> :
                                     <span className={`overflow-hidden ${((user.id == currentConversation?.id)) && mode != "People" ? 'text-primary' : 'text-gray'}`}>{mode != "People" ? `${user.lastMessage?.text}` : `@${user.users[0].userName}`}</span>
                         }

@@ -90,6 +90,7 @@ export type ConversationPopUpProps = {
 }
 
 export type conversation = {
+    type?: string;
     seen: boolean;
     blocked:boolean;
     id?: string;

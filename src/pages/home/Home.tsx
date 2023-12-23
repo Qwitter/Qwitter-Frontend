@@ -26,11 +26,12 @@ export function Home() {
   }, [token]);
 
   const dataArr = useMemo(() => {
+    console.log(data?.pages)
     return data?.pages.flat() || [];
   }, [data]);
 
   return (
-    <div className="max-w-[600px] w-full h-full flex-grow border-r border-primary border-opacity-30 ">
+    <div className="max-w-[600px] w-full h-full flex-grow border-r border-primary border-opacity-30 max-sm:w-[280px]">
       <div className="flex flex-row min-h-[50px] w-full sticky  top-[-1px] bg-black bg-opacity-60 backdrop-blur-xl z-50 border-b border-primary border-opacity-30">
         <div
           className="w-full  flex justify-center items-center  px-4 py-0 min-w-[56px] hover:bg-[#181818] transition-all cursor-pointer"
