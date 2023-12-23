@@ -1,11 +1,19 @@
 import { useContext, useState } from "react";
 import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
-import { BlockService, UnBlockService } from "@/lib/utils";
+import { BlockService, UnBlockService, cn } from "@/lib/utils";
 import { WarningPopUp } from "../WarningPopUp/WarningPopUp";
 import { UserContext } from "@/contexts/UserContextProvider";
 
-export function BlockButton({ username }: { username: string }) {
+export function BlockButton({
+  username,
+  onClick,
+  className,
+}: {
+  username: string;
+  onClick?: () => void;
+  className?: string;
+}) {
   const [state, setstate] = useState(true);
   const [showDialog, setshowDialog] = useState(false);
   const { token } = useContext(UserContext);
@@ -23,16 +31,22 @@ export function BlockButton({ username }: { username: string }) {
     event.stopPropagation();
     setshowDialog(true);
   };
-  const handleunBlockButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleunBlockButton = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     event.stopPropagation();
-    unBlockServiceFn(username);
+    await unBlockServiceFn(username);
     setstate(false);
+    onClick && onClick();
   };
-  const confirmBlockButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const confirmBlockButton = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     event.stopPropagation();
-    BlockServiceFn(username);
+    await BlockServiceFn(username);
     setstate(true);
     setshowDialog(false);
+    onClick && onClick();
   };
   return (
     <>
@@ -40,15 +54,18 @@ export function BlockButton({ username }: { username: string }) {
         <Button
           onClick={handleunBlockButton}
           variant="destructive"
-          className="text-sm w-[100px] h-[30px] font-bold"
+          className={cn(
+            "text-sm w-[100px] h-[30px] font-bold [&>*]:hover:before:content-['Unblock']",
+            className
+          )}
         >
-          <span className="text-white before:content-['Blocked'] hover:before:content-['Unblock']"></span>
+          <span className="text-white before:content-['Blocked']"></span>
         </Button>
       )}
       {state === false && (
         <Button
           onClick={handleBlockButton}
-          className="text-sm w-[100px] h-[30px] font-bold"
+          className={cn("text-sm w-[100px] h-[30px] font-bold", className)}
           variant={"danger"}
         >
           <span className="text-danger">Block</span>

@@ -22,6 +22,7 @@ import {
   UnBlockService,
   UnFollowService,
   UnMuteService,
+  cn,
 } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "../ui/use-toast";
@@ -31,6 +32,8 @@ type TweetOptionsMenuProps = {
   isFollowing: boolean;
   isMuted: boolean;
   tweetId?: string;
+  className?: string;
+  linkClassName?: string;
 };
 
 const TweetOptionsMenu = ({
@@ -38,6 +41,8 @@ const TweetOptionsMenu = ({
   isFollowing,
   tweetId,
   isMuted,
+  className,
+  linkClassName = "",
 }: TweetOptionsMenuProps) => {
   const { user } = useContext(UserContext);
   const [isFollowingClone, setIsFollowingClone] =
@@ -76,6 +81,12 @@ const TweetOptionsMenu = ({
     await FollowServiceFn(author.userName);
 
     queryClient.invalidateQueries({
+      queryKey: ["profile", token, author.userName],
+    });
+
+    console.log(author.userName);
+
+    queryClient.invalidateQueries({
       queryKey: ["tweet", tweetId],
     });
 
@@ -99,6 +110,12 @@ const TweetOptionsMenu = ({
     queryClient.invalidateQueries({
       queryKey: ["tweets"],
     });
+
+    queryClient.invalidateQueries({
+      queryKey: ["profile", token, author.userName],
+    });
+
+    console.log(author.userName);
 
     setShowDialog(false);
   };
@@ -127,6 +144,10 @@ const TweetOptionsMenu = ({
     await queryClient.invalidateQueries({
       queryKey: ["tweets"],
     });
+
+    queryClient.invalidateQueries({
+      queryKey: ["profile", token, author.userName],
+    });
   };
 
   const confirmBlockButton = async () => {
@@ -134,6 +155,10 @@ const TweetOptionsMenu = ({
 
     await queryClient.invalidateQueries({
       queryKey: ["tweets"],
+    });
+
+    queryClient.invalidateQueries({
+      queryKey: ["profile", token, author.userName],
     });
 
     setShowDialog(false);
@@ -152,9 +177,13 @@ const TweetOptionsMenu = ({
       toast({
         title: "User muted successfully",
       });
+
+      queryClient.invalidateQueries({
+        queryKey: ["profile", token, author.userName],
+      });
     },
   });
-  
+
   const { mutateAsync: unMuteServiceFn } = useMutation({
     mutationFn: token
       ? (username: string) => UnMuteService(username, token)
@@ -166,11 +195,15 @@ const TweetOptionsMenu = ({
       toast({
         title: "User unmuted successfully",
       });
+
+      queryClient.invalidateQueries({
+        queryKey: ["profile", token, author.userName],
+      });
     },
   });
 
   return (
-    <Link to="#">
+    <Link to="#" className={linkClassName}>
       <DropdownMenu>
         <DeleteTweetPopUp
           tweetId={tweetId!}
@@ -180,10 +213,13 @@ const TweetOptionsMenu = ({
         <DropdownMenuTrigger asChild>
           <Button
             variant="outline"
-            className="ml-auto ring-0 hover:bg-secondary hover:bg-opacity-20 p-1 outline-0 ease-in-out duration-200"
+            className={cn(
+              "ml-auto ring-0 focus-visible:ring-0 hover:bg-secondary hover:bg-opacity-20 text-gray hover:text-secondary p-1 outline-none ease-in-out duration-200",
+              className
+            )}
             data-testid="MoreOptions"
           >
-            <HiOutlineDotsHorizontal className="cursor-pointer text-xl rounded-full text-gray hover:text-secondary ease-in-out duration-200" />
+            <HiOutlineDotsHorizontal className="cursor-pointer text-xl rounded-full ease-in-out duration-200 outline-none" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-72 mr-48 bg-black">
