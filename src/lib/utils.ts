@@ -597,6 +597,7 @@ export const timelineForYouTweets = async (
         },
       }
     );
+    console.log(response.data.tweets)
     return response.data.tweets;
   } catch (error) {
     console.log(error);
@@ -1767,7 +1768,7 @@ export const retweet = async (tweetId: string, token: string) => {
         },
       }
     );
-    return res.status == 201;
+    return res.data;
   } catch (err) {
     console.log(err);
     throw new Error("Error retweeting");

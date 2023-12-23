@@ -87,9 +87,6 @@ const Tweet = ({
     return tweetTextHighlighter(tweet.text);
   }, [tweet.text]);
 
-  console.log(tweet);
-  console.log(retweeter)
-
   if (tweet.retweetedTweet)
     return (
       <Tweet
@@ -190,7 +187,7 @@ const Tweet = ({
               <h3 className="text-gray font-normal text-sm mb-4">
                 {moment(tweet.createdAt).format("h:mm A · MMM D, YYYY · ")}
                 <span className="text-primary text-base font-bold">
-                  {convertNumberToShortForm(377800)}
+                  {convertNumberToShortForm(tweet.readCount)}
                 </span>
                 {" Views"}
               </h3>
@@ -201,8 +198,6 @@ const Tweet = ({
                     tweet={tweet}
                     className="my-2.5 px-4"
                     mode={mode}
-                    isRetweeted={tweet.isRetweeted}
-                    userRetweetId={tweet.userRetweetId}
                   />
                 </div>
                 <hr className="border-primary border-opacity-30" />
@@ -214,8 +209,6 @@ const Tweet = ({
                 tweet={tweet}
                 className="mt-4"
                 mode={mode}
-                isRetweeted={tweet.isRetweeted} //! not inside the retweeted one
-                userRetweetId={tweet.userRetweetId} //! not inside the retweeted one
               />
             </div>
           )}
@@ -226,6 +219,7 @@ const Tweet = ({
           mode="reply"
           replyToUser={tweet.author.userName}
           replyToTweetId={tweet.id}
+          replyToRetweetId={mainTweet?.id}
         />
       )}
     </div>

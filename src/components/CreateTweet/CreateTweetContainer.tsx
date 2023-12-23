@@ -24,9 +24,11 @@ const CreateTweetContainer = ({
   mode = "popUp",
   replyToTweetId,
   replyToUser,
+  replyToRetweetId,
 }: {
   mode?: "home" | "popUp" | "reply";
   replyToTweetId?: string;
+  replyToRetweetId?: string;
   replyToUser?: string;
 }) => {
   const [showPopUp, setShowPopUp] = useState<boolean>(true);
@@ -66,6 +68,12 @@ const CreateTweetContainer = ({
           queryClient.invalidateQueries({
             queryKey: ["tweet", replyToTweetId!],
           });
+
+          if (replyToRetweetId) {
+            queryClient.invalidateQueries({
+              queryKey: ["tweet", replyToRetweetId],
+            });
+          }
         }
         clearForm();
       }
