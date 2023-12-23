@@ -80,7 +80,7 @@ const TweetDetails = () => {
   }
 
   return (
-    <div className="max-w-[600px] w-full h-full flex-grow border-r border-primary border-opacity-30 ">
+    <div className="max-w-[600px] w-full h-full flex-grow border-r border-primary border-opacity-30 max-sm:w-[280px] ">
       <div className="flex flex-col  w-full sticky bg-opacity-60 backdrop-blur-xl top-0 bg-black  z-50 ">
         <div className="flex p-2 gap-8 items-center mb-4">
           <ArrowLeft

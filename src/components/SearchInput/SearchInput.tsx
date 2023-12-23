@@ -175,7 +175,12 @@ function TagsResults({ text,closePopUp }: { text: string;closePopUp:()=>void }) 
   return (
     <ul className="w-full " data-testid="trends">
       {tags && tags.length == 0 ? (
-        <li className="py-3 flex-grow px-4 items-center flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer">
+        <li className="py-3 flex-grow px-4 items-center flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer"
+        onClick={() => {
+          navigate(`/Explore/search/top/?q=${text}`);
+          closePopUp()
+        }}
+        >
           <div className="w-10 h-10 flex justify-center items-center mr-3">
             <Search className=" w-5 h-5" strokeWidth="3px" />
           </div>

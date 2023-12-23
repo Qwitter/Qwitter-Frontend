@@ -14,7 +14,7 @@ export function Profile() {
 
   return (
     <>
-      <div className="max-w-[600px] w-full h-full flex-grow border-r border-primary border-opacity-30 ">
+      <div className="max-w-[600px] w-full h-full flex-grow border-r border-primary border-opacity-30 max-sm:w-[280px] ">
         <Routes  location={previousLocation || location}>
           <Route
             path="/Followers"

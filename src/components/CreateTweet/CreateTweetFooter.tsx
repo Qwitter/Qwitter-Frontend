@@ -1,4 +1,4 @@
-import { Image, ScanSearch, Smile, Vote, Check, LucideIcon } from "lucide-react";
+import { Image, ScanSearch, Smile,  Check, LucideIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { whoToReply } from "../../constants"
 import { CircularProgressbar } from 'react-circular-progressbar';
@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/popover"
 import { toast } from "../ui/use-toast";
 export default function CreateTweetFooter({ mode, setFiles,handleTextChange ,text, files, selectedImages, setSelectedImages, isValid, handleSubmit, setVideoFile, videoFile }: CreateTweetFooterProp) {
-    const icons = [{ icon: Image, hover: "media" }, { icon: ScanSearch, hover: "GIF" }, { icon: Vote, hover: "Poll" }, { icon: Smile, hover: "Emoji" }]
+    const icons = [{ icon: Image, hover: "media" }, { icon: ScanSearch, hover: "GIF" }, /*{ icon: Vote, hover: "Poll" },*/ { icon: Smile, hover: "Emoji" }]
     const [isPopupOpen, setPopupOpen] = useState(false);
     const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
     const fileInput = useRef<HTMLInputElement>(null)

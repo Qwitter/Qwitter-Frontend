@@ -68,9 +68,9 @@ export function MessagesList({
                             }
                             {mode !== "People" && (
                                 <>
-                                    {mode !== "conversations" && !user.isGroup &&mode !== "Group"&& <span className="text-gray max-w-[60%] truncate  ">@{user.users[0].userName}</span>}
-                                    <div className="bg-gray rounded-full w-[3px] h-[3px]"></div>
-                                    <span className="text-gray whitespace-nowrap ">{formatDate(user.lastMessage?.date || "")}</span>
+                                    {mode !== "conversations" && !user.isGroup &&mode !== "Group"&& <span className="text-gray max-w-[60%] truncate  max-xs:hidden ">@{user.users[0].userName}</span>}
+                                    <div className="bg-gray rounded-full w-[3px] h-[3px]  max-xs:hidden"></div>
+                                    <span className="text-gray whitespace-nowrap max-xs:hidden  ">{formatDate(user.lastMessage?.date || "")}</span>
 
 
                                 </>)}
