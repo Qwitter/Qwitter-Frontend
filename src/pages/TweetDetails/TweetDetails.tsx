@@ -4,14 +4,17 @@ import TweetsList from "@/components/TweetsList/TweetsList";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { useInfiniteScroll } from "@/lib/useInfiniteScroll";
 import { getTweetById, getTweetReplies } from "@/lib/utils";
-import { TweetWithRetweet } from "@/models/Tweet";
+import { TweetWithReplyAndRetweet } from "@/models/Tweet";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft } from "lucide-react";
-import { useContext, useEffect, useMemo } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const TweetDetails = () => {
   const { tweetId } = useParams<{ tweetId: string }>();
+  const [tweetWithRepliesId, setTweetWithRepliesId] = useState<string>(
+    tweetId!
+  );
   const { user, token } = useContext(UserContext);
   const navigate = useNavigate();
   const {
@@ -23,7 +26,8 @@ const TweetDetails = () => {
     hasNextPage,
   } = useInfiniteScroll(
     async ({ pageParam }) => {
-      return await getTweetReplies(tweetId!, token!, pageParam, 10);
+      if (!token || !tweetWithRepliesId) return () => {};
+      return getTweetReplies(tweetWithRepliesId, token, pageParam, 10);
     },
     ["tweet", tweetId!, "replies"]
   );
@@ -46,7 +50,7 @@ const TweetDetails = () => {
     isError,
     isLoading,
     isFetched,
-  } = useQuery<{ tweet: TweetWithRetweet }>({
+  } = useQuery<{ tweet: TweetWithReplyAndRetweet }>({
     queryKey: ["tweet", tweetId],
     queryFn: () => getTweetById(tweetId!, token!),
     enabled: !!user && !!tweetId,
@@ -57,6 +61,10 @@ const TweetDetails = () => {
 
   useEffect(() => {
     console.log(tweetData);
+
+    if (tweetData?.tweet.retweetedTweet){
+      setTweetWithRepliesId(tweetData?.tweet.retweetedTweet.id);
+    }
   }, [tweetData]);
 
   if (isError) {
