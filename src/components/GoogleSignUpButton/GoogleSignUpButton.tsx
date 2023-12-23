@@ -30,7 +30,7 @@ const GoogleSignUpButton = () => {
         const user = await getUserData(token);
         console.log(user);
         saveUser(user, token);
-        navigate("/success");
+        navigate("/home");
       } else {
         setToken(token);
         navigate("/i/flow/single-sign", { state: { token } });

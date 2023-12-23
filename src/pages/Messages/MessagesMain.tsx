@@ -6,7 +6,7 @@ import { MessagesSearch } from "./MessagesSearch";
 import { MessagesHeader } from "./MessagesHeader";
 import { MessagesSide } from "./MessagesSide";
 import { MessagesAllConversationSide } from "./Conversation/MessagesAllConversationSide";
-import { SearchConversations } from "./types/MessagesTypes";
+import { SearchConversations } from "../../models/MessagesTypes";
 import { useQuery } from "@tanstack/react-query";
 import { conversationSearch } from "@/lib/utils";
 import { Spinner } from "@/components/Spinner";

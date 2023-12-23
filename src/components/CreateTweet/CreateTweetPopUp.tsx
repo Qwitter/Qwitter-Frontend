@@ -57,12 +57,14 @@ function CreateTweetPopUp({ popUp, closePopup, handleUserClick, mode = "createTw
 }
 function ShowUsersSuggestions({ onUserClick, username, closePopup }: ShowUsersSuggestionsProps) {
   const { token } = useContext(UserContext)
+  const { VITE_DEFAULT_IMAGE } = import.meta.env;
+ 
   const {
     isPending,
     data,
     refetch
   } = useQuery<User[]>({
-    queryKey: ["UsersSuggestions"],
+    queryKey: ["UsersSuggestions",username!.slice(1)],
     queryFn: () => getUsersSuggestions(token!, username!.slice(1))
     ,
   });
@@ -92,7 +94,7 @@ function ShowUsersSuggestions({ onUserClick, username, closePopup }: ShowUsersSu
           <li key={user.userName} className="py-3 px-4 flex flex-row hover:bg-[#16181c] w-full transition-all cursor-pointer" onClick={() => onUserClick("@" + user.userName)}>
 
             <Avatar className="mr-4">
-              <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" src={user.profileImageUrl} />
+              <AvatarImage className="w-10 h-10 rounded-full border-[#ffffee] border-[1px] border-solid" src={user.profileImageUrl ||VITE_DEFAULT_IMAGE} />
             </Avatar><div className="flex flex-col h-full gap-1 ">
               <h3 className="text-primary text-[15px]">{user.name}</h3>
               <span className="text-gray">@{user.userName}</span>
@@ -111,8 +113,8 @@ function ShowTagsSuggestions({ onUserClick, tag, closePopup }: ShowUsersSuggesti
     data,
     refetch
   } = useQuery<{ count: number, text: string, entityId: string }[]>({
-    queryKey: ["getHashtags"],
-    queryFn: () => getHashtags(token!, tag!)
+    queryKey: ["getHashtags",tag!.slice(1)],
+    queryFn: () => getHashtags(token!, tag!.slice(1))
     ,
   });
   useEffect(() => {

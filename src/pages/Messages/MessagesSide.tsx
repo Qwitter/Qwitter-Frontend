@@ -1,5 +1,5 @@
 import { Button } from "@/components";
-import { MessagesSideProp } from "./types/MessagesTypes";
+import { MessagesSideProp } from "../../models/MessagesTypes";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export function MessagesSide({ p, showButton,h2="Select a message",button="New Messages" }: MessagesSideProp) {

@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 export function FollowCard() {
   const { token } = useContext(UserContext);
-  const naviagte = useNavigate();
+  const navigate = useNavigate();
   const { data: FollowSuggestions } = useQuery<User[]>({
     queryKey: ["followSuggestions", token],
     queryFn: () => GetFollowSuggestionsService(token!),
@@ -36,7 +36,7 @@ export function FollowCard() {
           >
             <span
               className="text-secondary"
-              onClick={() => naviagte("/connection")}
+              onClick={() => navigate("/connection")}
             >
               show more
             </span>

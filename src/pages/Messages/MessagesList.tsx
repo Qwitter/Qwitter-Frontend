@@ -1,5 +1,5 @@
 import { MoreHorizontal, Pin, Trash2, XCircle } from "lucide-react";
-import { conversation, MessagesListProp } from "./types/MessagesTypes";
+import { conversation, MessagesListProp } from "../../models/MessagesTypes";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -86,7 +86,7 @@ export function MessagesList({
 
                 </div>
                 <div className="flex justify-end gap-3 self-start  flex-row items-first">
-                    {mode != "People" && user.seen &&
+                    {mode != "People" && !user.seen &&
                         <div>
                             <div className="bg-secondary rounded-full w-[10px] h-[10px] mt-3.5 "></div>
                         </div>}

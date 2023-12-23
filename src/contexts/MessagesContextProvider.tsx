@@ -1,4 +1,4 @@
-import { conversation } from "@/pages/Messages/types/MessagesTypes";
+import { conversation } from "@/models/MessagesTypes";
 import { createContext, useEffect, useState } from "react";
 
 type MessagesContextProviderProps = {

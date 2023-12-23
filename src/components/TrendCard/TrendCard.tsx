@@ -26,12 +26,14 @@ export function TrendCard() {
             </CardTitle>
           </CardHeader>
           <TrendList Trends={Trends!} />
-          <CardFooter className="hover:cursor-pointer mt-3 pt-3 hover:bg-light-gray rounded-br-lg rounded-bl-lg">
+          <CardFooter className="hover:cursor-pointer mt-3 pt-3 hover:bg-light-gray rounded-br-lg rounded-bl-lg"
+            onClick={() => {
+              navigate("/Explore");
+            }}
+          >
             <span
               className="text-secondary"
-              onClick={() => {
-                navigate("/Explore");
-              }}
+            
               data-testid="showMoreTrends"
             >
               show more

@@ -21,7 +21,8 @@ export type MessageUser = {
     isFollowed?:boolean;
     isFollowing?:boolean;
     name: string;
-
+    isBlocked?:boolean;
+    isMuted?:boolean;
     isVerified?: boolean;
 }
 export type Mention = {
@@ -123,5 +124,6 @@ export const EVENTS = {
         ROOM_MESSAGE: 'ROOM_MESSAGE', // Sending a message to the conversation room socket only
         NOTIFICATION: 'NOTIFICATION', // Sending a message to the room of the username
         MESSAGE: 'MESSAGE', // Sending a general message to the user on the room of the username
+        CONVERSATION: 'CONVERSATION', //Socket for
     },
 };

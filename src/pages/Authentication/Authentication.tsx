@@ -3,17 +3,15 @@ import { Button } from "../../components/ui/button";
 import logo from "../../assets/logo.png"
 import { Link, Navigate, useLocation } from "react-router-dom";
 import GoogleSignUpButton from "@/components/GoogleSignUpButton/GoogleSignUpButton";
-import { useContext } from "react";
-import { UserContext } from "@/contexts/UserContextProvider";
 export default function Authentication() {
   const location = useLocation();
-  const {user} =useContext(UserContext)
+  const user =localStorage.getItem('user')
   if(user){
     return(
-      
-      <Navigate to={'/home'} />
+      <Navigate to={'/Home'} replace />
     )
     }
+  else
   return (
     <>
       <div className="grid lg:grid-cols-2 lg:min-w-full min-h-screen absolute max-[1025px]:left-[20%] max-[1025px]:top-[5%]" >
