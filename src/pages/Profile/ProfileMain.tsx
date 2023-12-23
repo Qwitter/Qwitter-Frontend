@@ -79,7 +79,6 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
   };
 
   console.log(user);
-  
 
   return (
     <div>
@@ -224,7 +223,9 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
                     className="text-[15px] text-[#1D9BF0] hover:underline"
                     target="blank"
                   >
-                    {user.url.slice(user.url.indexOf(".") + 1)}
+                    {user.url.indexOf("www.") == -1
+                      ? user.url.slice(user.url.indexOf("://") + 3)
+                      : user.url.slice(user.url.indexOf("www.") + 4)}
                   </Link>
                 </span>
               )}
