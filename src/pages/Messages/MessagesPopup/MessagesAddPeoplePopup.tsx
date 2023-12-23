@@ -1,7 +1,7 @@
 import { Button, PopUpContainer } from "@/components"
 import { HeaderButton } from "@/models/PopUpModel"
 import { useNavigate, useParams } from "react-router-dom";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Search, X, Check } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { Spinner } from "@/components/Spinner";
@@ -17,6 +17,7 @@ function MessagesAddPeoplePopup() {
     const [selectedUsers, setSelectedUsers] = useState<MessageUser[]>([]);
     const { token } = useContext(UserContext)
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
 
     const handleXClick = () => { navigate(-1) }
 
@@ -29,12 +30,15 @@ function MessagesAddPeoplePopup() {
 
     const { mutate, isPending: isSubmitting } = useMutation({
         mutationFn: addUserToGroup,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             if (data) {
                 navigate('/Messages/' + conversationId)
+
             }
 
         },
+        onMutate: () => queryClient.invalidateQueries({ queryKey: ["userConversation", conversationId] }),
+
         onError: (data) => {
             console.log(data);
 
@@ -107,7 +111,7 @@ function MessagesAddPeoplePopup() {
                         <ul className="flex flex-row w-full flex-wrap max-h-fit  flex-shrink-0 border-b border-primary border-opacity-30   p-3 gap-2">
                             {selectedUsers.map((selectedUser, index) => (<li key={index} className="h-fit">
                                 <div className="flex flex-row items-center pr-3 pl-1 cursor-pointer hover:bg-[#031019] transition-all py-1 gap-2 max-w-fit rounded-2xl border border-primary border-opacity-40" onClick={() => removeSelected(index)}>
-                                    <img src={selectedUser.profileImageUrl||"https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"} alt="" className="w-6 h-6 rounded-full" />
+                                    <img src={selectedUser.profileImageUrl || "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"} alt="" className="w-6 h-6 rounded-full" />
                                     <span>{selectedUser.name}</span>
                                     <div>
                                         <X className="w-5 h-5 text-secondary" />

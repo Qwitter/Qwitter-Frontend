@@ -63,16 +63,14 @@ export function MessagesConversationMessage({ isMessage, isGroup,isAccordion, er
                                             className={cn(" h-max rounded-lg  max-sm:w-[50vw] max overflow-hidden w-[300px] ", error && "opacity-50")}
                                             onClick={(e) => e.preventDefault()}
                                         >
-
                                             <Player
-
                                                 playsInline
                                                 src={entities.media[0].value}
                                             >
                                                 <BigPlayButton position="center" />
                                             </Player>
                                         </div> : <div className={cn("max-w-[80%] ", error && "opacity-50")}>
-                                            <TweetImagesViewer images={[{ value: entities.media[0].value, type: entities.media[0].type }]} />
+                                            <TweetImagesViewer viewImage images={[{ value: entities.media[0].value, type: entities.media[0].type }]}  />
                                         </div>)
                                 }
 

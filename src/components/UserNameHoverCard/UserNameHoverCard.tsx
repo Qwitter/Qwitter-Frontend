@@ -32,7 +32,7 @@ export const UserNameHoverCard = ({ userName, name, profileImageUrl, description
     return (
         <HoverCard>
             <HoverCardTrigger className="hover:underline">
-                <Link to={`/profile/${userName}`}>
+                <Link to={`/profile/${userName}`} onClick={(e)=>{e.stopPropagation();}}>
                     {name}
                 </Link>
             </HoverCardTrigger>
