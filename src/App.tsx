@@ -31,7 +31,7 @@ const queryClient = new QueryClient();
 function App() {
   const location = useLocation();
   const previousLocation = location.state?.previousLocation;
-  console.log(previousLocation)
+  console.log(previousLocation);
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
