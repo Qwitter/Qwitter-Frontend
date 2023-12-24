@@ -12,6 +12,7 @@ import { BiRepost } from "react-icons/bi";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { useContext, useMemo } from "react";
 import CreateTweetContainer from "../CreateTweet/CreateTweetContainer";
+import { ImageOverlay } from "../ImageOverlay/ImageOverlay";
 
 const convertWordToAnchor = (word: string): JSX.Element => {
   if (word.startsWith("@")) {
@@ -25,7 +26,10 @@ const convertWordToAnchor = (word: string): JSX.Element => {
     );
   } else {
     return (
-      <Link to={`/explore/search/Top/?q=${word.substring(1)}`} className="text-secondary">
+      <Link
+        to={`/explore/search/Top/?q=${word.substring(1)}`}
+        className="text-secondary"
+      >
         {word}
       </Link>
     );
@@ -103,7 +107,13 @@ const Tweet = ({
   return (
     <div data-testid="tweetDiv">
       <Link
-        to={mode === "list" ? mainTweet ? `/tweet/${mainTweet.id}` : `/tweet/${tweet.id}`  : "#"}
+        to={
+          mode === "list"
+            ? mainTweet
+              ? `/tweet/${mainTweet.id}`
+              : `/tweet/${tweet.id}`
+            : "#"
+        }
         className={cn(
           "w-full flex px-4 py-3 gap-4 transition-all cursor-default",
           {
@@ -113,7 +123,7 @@ const Tweet = ({
         )}
       >
         {mode === "list" && (
-          <Avatar className={cn({"mt-10": retweeter})}>
+          <Avatar className={cn({ "mt-10": retweeter })}>
             <AvatarImage src={`${tweet.author.profileImageUrl}`} />
             <AvatarFallback>
               {tweet.author.userName.substring(0, 2)}
@@ -172,15 +182,14 @@ const Tweet = ({
                 className="my-4 rounded-lg overflow-hidden"
                 onClick={(e) => e.preventDefault()}
               >
-                <Player
-                  playsInline
-                  src={tweet.entities.media?.[0].value}
-                >
+                <Player playsInline src={tweet.entities.media?.[0].value}>
                   <BigPlayButton position="center" />
                 </Player>
               </div>
             ) : (
+              // <ImageOverlay imageArr={tweet.entities.media} tweet={tweet}>
               <TweetImagesViewer images={tweet.entities.media} />
+              // </ImageOverlay>
             ))}
           {mode === "page" ? (
             <div className="mt-4">
