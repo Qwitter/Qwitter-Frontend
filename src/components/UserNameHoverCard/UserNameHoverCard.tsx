@@ -5,7 +5,6 @@ import { HoverCard, HoverCardTrigger, HoverCardContent } from '@radix-ui/react-h
 import { FollowButton } from '../FollowButton/FollowButton'
 import { Link } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
-
 type Props = {
     userName: string;
     name: string;

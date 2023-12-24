@@ -17,6 +17,8 @@ export function UsersList({ showDesc, users, listType }: UsersListProp) {
             profileImageUrl={user.profileImageUrl}
             isFollowing={user.isFollowing}
             listType={listType}
+            followersCount={user.followersCount}
+            followingCount={user.followingCount}
           />
         ))
       ) : (

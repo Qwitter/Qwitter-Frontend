@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { FollowService, UnFollowService, cn } from "@/lib/utils";
@@ -25,6 +25,10 @@ export function FollowButton({
       ? (username: string) => UnFollowService(username, token)
       : undefined,
   });
+
+  useEffect(() => {
+    setstate(isFollowing);
+  }, [isFollowing]);
 
   const handleFollowButton = async (
     event: React.MouseEvent<HTMLButtonElement>
@@ -72,7 +76,7 @@ export function FollowButton({
           variant={"danger"}
           data-testid="followUnfollow"
         >
-          <span className={"text-white before:content-['Following']"}></span>
+          <span className="text-white before:content-['Following']"></span>
         </Button>
       )}
       <WarningPopUp
