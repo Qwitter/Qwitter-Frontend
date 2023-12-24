@@ -121,6 +121,8 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
       });
 
       saveUser({
+        followersCount:user?.followersCount??0,
+        followingCount:user?.followingCount??0,
         name: editedUserData.name,
         email: user?.email ?? "",
         birthDate: editedUserData.birthDate,

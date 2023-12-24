@@ -70,7 +70,7 @@ export default function CreateTweetMain({
         <div className="w-10 h-5  mr-1"></div>
         <div className="px-3 pb-2">
           <span className="text-gray text-[15px]"> Replying to </span>
-          <Link to={`/${replyTo}`} className="text-secondary text-[15px]">@{replyTo}</Link>
+          <Link to={`/Profile/${replyTo}`} className="text-secondary text-[15px]">@{replyTo}</Link>
         </div>
       </div>}
       <div className="flex flex-row items-start h-full w-full ">

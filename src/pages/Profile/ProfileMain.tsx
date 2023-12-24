@@ -66,7 +66,7 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
         {user?.profileBannerUrl && (
           <Link
             to={`header_photo`}
-            state={{ bannerImg: user?.profileBannerUrl }}
+            state={{ bannerImg: user?.profileBannerUrl, previousLocation: location }}
             className="w-full"
           >
             <img
@@ -82,8 +82,8 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
           {
             <Avatar className="rounded-full mt-[-15%] mb-3 w-[20vw] h-auto aspect-square sm:w-[142px] bg-black p-0.5 sm:p-1 border-solid block">
               <Link
-                to={`photo`}
-                state={{ profileImg: user?.profileImageUrl }}
+                to={'/flow/photo'}
+                state={{ photo: user?.profileImageUrl, previousLocation: location }}
                 className="w-full h-full cursor-pointer"
               >
                 <AvatarImage
@@ -124,6 +124,7 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
                 user && (
                   <div className="flex justify-start align-start">
                     <TweetOptionsMenu
+                      mode="profile"
                       author={user}
                       isMuted={user?.isMuted || false}
                       isFollowing={user?.isFollowing || false}

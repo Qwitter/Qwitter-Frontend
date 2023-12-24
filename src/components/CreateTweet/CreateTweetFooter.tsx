@@ -72,7 +72,7 @@ export default function CreateTweetFooter({ mode, setFiles,handleTextChange ,tex
                         <div className="flex flex-row items-center h-full ">
                             {
                                 icons.map((Icon, index) => (
-                                    index < 3 ?
+                                    index < 2 ?
                                         (<div key={index} className={cn("text-secondary h-full  relative max-w-[40px] w-full", index == 0 && (videoFile || selectedImages.length > 3) ? "opacity-40" : "group  cursor-pointer")}
                                             onClick={index == 0 && !videoFile && selectedImages.length < 4 ? handleUploadImg : index == icons.length - 1 ? () => { setPopupOpen(true) } : () => { }}>
                                             <Icon.icon className="w-10 h-10 p-2 rounded-3xl group-hover:bg-secondary group-hover:bg-opacity-25" />

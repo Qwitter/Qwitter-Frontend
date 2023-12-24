@@ -83,7 +83,7 @@ export function MessagesList({
                                 /> : mode == "Group" ? <Highlighter searchWords={[matchedPart]} highlightClassName="text-black " ClassName={`text-gray`} autoEscape={true}
                                     textToHighlight={user.lastMessage?.text||""}
                                 /> :
-                                    <span className={`overflow-hidden ${((user.id == currentConversation?.id)) && mode != "People" ? 'text-primary' : 'text-gray'}`}>{mode != "People" ? `${user.lastMessage?.text}` : `@${user.users[0].userName}`}</span>
+                                    <span className={`overflow-hidden ${((user.id == currentConversation?.id||!user.seen&& mode != "People" )) && mode != "People" ? 'text-primary' : 'text-gray'}`}>{mode != "People" ? `${user.lastMessage?.text}` : `@${user.users[0].userName}`}</span>
                         }
 
                     </div>
@@ -114,8 +114,8 @@ export function MessagesList({
                         {
                             mode == "normal" && <>
                                 <div className="z-0 flex flex-row items-first cursor-pointer">
-                                    <PopoverTrigger >
-                                        <div className={"hidden group-hover:flex flex-row  group-hover: pl-1"}>
+                                    <PopoverTrigger  onClick={(e) => {e.stopPropagation();}}>
+                                        <div className={"hidden group-hover:flex flex-row  group-hover: pl-1"} >
                                             <div data-testid="convoPopover" className="text-secondary h-full group relative max-w-[40px] flex items-start w-full cursor-pointer">
                                                 <MoreHorizontal className="w-10 h-10 p-2 rounded-3xl text-gray hover:bg-secondary hover:bg-opacity-10" />
                                             </div>

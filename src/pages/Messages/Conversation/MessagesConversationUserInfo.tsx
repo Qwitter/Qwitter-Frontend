@@ -24,8 +24,9 @@ export const MessagesConversationUserInfo = forwardRef(
             >
             <img src={chatPicture} alt="" className="w-16 h-16 rounded-full" />
             </Link>
-            <div className="flex  flex-col mb-1">
+            <div className="flex items-center   flex-col mb-1">
                 <UserNameHoverCard
+                
                     name={user?.name || ""}
                     isFollowing={user?.isFollowing || false}
                     description={user?.description || ""}
