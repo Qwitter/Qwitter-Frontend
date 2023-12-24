@@ -88,7 +88,7 @@ export const ImageOverlay = ({
             onClick={stopProp}
             className="flex flex-col justify-start h-full w-[80%] lg:max-w-[1024px]"
           >
-            {/* <img src={imageArr[imageIndex]?.value} className="w-full h-full" /> */}
+            <img src={imageArr[imageIndex]?.value} className="w-full h-full" />
             <TweetInteractionsButtons tweet={tweet} mode="page" />
           </div>
 

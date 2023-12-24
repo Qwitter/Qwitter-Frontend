@@ -187,9 +187,9 @@ const Tweet = ({
                 </Player>
               </div>
             ) : (
-              <ImageOverlay imageArr={tweet.entities.media} tweet={tweet}>
-                <TweetImagesViewer images={tweet.entities.media} />
-              </ImageOverlay>
+              // <ImageOverlay imageArr={tweet.entities.media} tweet={tweet}>
+              <TweetImagesViewer images={tweet.entities.media} />
+              // </ImageOverlay>
             ))}
           {mode === "page" ? (
             <div className="mt-4">
