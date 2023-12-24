@@ -17,10 +17,10 @@ export type User = {
   google_id: string;
   profileImageUrl: string;
   profileBannerUrl: string;
-  verified: boolean,
-  isFollowing: boolean,
-  followersCount: number,
-  followingCount: number,
+  verified: boolean;
+  isFollowing: boolean;
+  followersCount: number;
+  followingCount: number;
 };
 
 export const EditUserSchema = z
@@ -106,6 +106,7 @@ export const UserProfileSchema = z
     tweetCount: z.number().default(0).nullish(),
     isFollowing: z.boolean().default(false).nullish(),
     isBlocked: z.boolean().default(false).nullish(),
+    isMuted: z.boolean().default(false).nullish(),
   })
   .merge(UserDataSchema);
 

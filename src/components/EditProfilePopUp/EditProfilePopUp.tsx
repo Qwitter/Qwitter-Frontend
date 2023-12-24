@@ -172,10 +172,13 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
 
     let newURL = "";
 
-    if (form.getValues().url.startsWith("http")) newURL = form.getValues().url;
-    else newURL = `http://${form.getValues().url}`;
+    if (form.getValues().url) {
+      if (form.getValues().url.startsWith("http"))
+        newURL = form.getValues().url;
+      else newURL = `http://${form.getValues().url}`;
 
-    if (newURL[newURL.length - 1] == "/") newURL = newURL.slice(0, -1);
+      if (newURL[newURL.length - 1] == "/") newURL = newURL.slice(0, -1);
+    }
 
     const editedUserData = {
       ...user,
