@@ -124,6 +124,7 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
                 user && (
                   <div className="flex justify-start align-start">
                     <TweetOptionsMenu
+                      mode="profile"
                       author={user}
                       isMuted={user?.isMuted || false}
                       isFollowing={user?.isFollowing || false}

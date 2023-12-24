@@ -726,7 +726,7 @@ export const getHashtags = async (token: string, tag: string) => {
  */
 export const getUserConversations = async (token: string) => {
   try {
-    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/conversation/`, {
+    const res = await axios.get(`${VITE_BACKEND_URL}/api/v1/conversation/?limit=100`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -1110,7 +1110,7 @@ export const updateGroupImageAndName = async ({
         },
       }
     );
-    return res.data;
+    return res.status;
   } catch (error) {
     console.log(error);
     throw new Error("Error updating group");
@@ -1795,6 +1795,27 @@ export const getNotificationsList = async (
     return res.data.notifications;
   } catch (err) {
     throw new Error("Error getting notifications");
+  }
+};
+/**
+ * @description get Mentions list  for user
+ * @returns  Mentions list represents the response from the backend or throw error
+ */
+export const getMentionsList = async () => {
+  try {
+    const res = await axios.get(
+      `${VITE_BACKEND_URL}/api/v1/tweets/mention`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return res.data.tweets;
+  } catch (err) {
+    throw new Error("Error getting getMentionsList");
   }
 };
 export const formatDate = (dateString: string) => {

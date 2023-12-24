@@ -34,6 +34,7 @@ type TweetOptionsMenuProps = {
   tweetId?: string;
   className?: string;
   linkClassName?: string;
+  mode?:'profile'|'tweet';
 };
 
 const TweetOptionsMenu = ({
@@ -43,6 +44,7 @@ const TweetOptionsMenu = ({
   isMuted,
   className,
   linkClassName = "",
+  mode='tweet'
 }: TweetOptionsMenuProps) => {
   const { user } = useContext(UserContext);
   const [isFollowingClone, setIsFollowingClone] =
@@ -163,7 +165,7 @@ const TweetOptionsMenu = ({
 
     setShowDialog(false);
 
-    navigate("/home");
+    mode=='tweet'&&navigate("/home");
   };
 
   const { mutateAsync: MuteServiceFn } = useMutation({

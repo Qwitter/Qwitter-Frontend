@@ -31,10 +31,10 @@ export function Settings() {
 
   return (
     <>
-      <div className="max-w-[600px] w-1/2 h-full border-r border-primary border-opacity-30 max-largeX:hidden">
+      <div className="max-w-[600px] w-1/2 h-full border-r border-primary border-opacity-30 max-largeX:hidden ">
         <SettingsOptions setActive={setActive} active={active} />
       </div>
-      <div className="max-w-[600px] w-full mx-auto h-full">
+      <div className="max-w-[600px] w-full mx-auto h-full border-r border-primary border-opacity-30">
         <Routes>
           <Route  path="/" element={<Navigate to="/settings/account" />} />
           <Route  path="/account" element={<YourAccount />} />

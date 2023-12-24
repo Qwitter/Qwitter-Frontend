@@ -77,11 +77,13 @@ export function MessagesConversationInfo() {
               listType={
                 currentConversation.blocked ? "BlockList" : "FollowList"
               }
+              followersCount={user.followersCount}
+              followingCount={user.followingCount}
               showDesc={false}
             />
           ))}
         </div>
-        <div
+        {!currentConversation.blocked&&<div
           className={cn(
             "block text-center cursor-pointer transition-all text-secondary hover:bg-[#031019] p-4 pb-5  border-primary border-opacity-30",
             !currentConversation.isGroup ? "border-t" : "border-b"
@@ -99,7 +101,7 @@ export function MessagesConversationInfo() {
           {!currentConversation.isGroup
             ? `Block @${currentConversation.users[0].userName}`
             : "Add People"}
-        </div>
+        </div>}
         <div
           className="block text-center cursor-pointer transition-all text-danger  hover:bg-danger hover:bg-opacity-10 p-4"
           onClick={() => {

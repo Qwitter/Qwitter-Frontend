@@ -253,8 +253,9 @@ export function MessagesConversation({conversationAccordionId}:{conversationAcco
             <MoveLeft className="max-w-[50px] " />
           </div>
 
-          {
-            !inView && data.pages[0].isGroup&&!data.pages[0].photo ?
+          {!inView && (
+            
+            data.pages[0].isGroup&&!data.pages[0].photo ?
               <ImageGrid
                 className="w-10 h-8 rounded-full mr-2"
                 images={data.pages[0].users.map(conversation => conversation.profileImageUrl || VITE_DEFAULT_IMAGE)} /> :
@@ -262,8 +263,8 @@ export function MessagesConversation({conversationAccordionId}:{conversationAcco
                 src={data.pages[0].isGroup? data.pages[0].photo :
                   data.pages[0].users[0].profileImageUrl ||VITE_DEFAULT_IMAGE
                 }
-                className="w-8 h-8 rounded-full mr-2"
-              />
+                className="min-w-[32px] h-8 rounded-full mr-2"
+              />)
           }
 
           <div className="w-full h-full flex  items-center">
@@ -359,7 +360,7 @@ export function MessagesConversation({conversationAccordionId}:{conversationAcco
                     </span>
                   </div>
                   <div className="flex flex-row items-center max-h-[50px] justify-center ">
-                    <div className=" flex justify-center items-center w-14 h-11 mr-2">
+                    <div className=" flex justify-center items-center w-14 h-11 overflow-hidden mr-2">
                       <img src={messageReply.image[0].value} alt="" />
                     </div>
                     <X

@@ -41,7 +41,9 @@ export function PagesContainer() {
 const handleComingNotification = (notification: NotificationsType) => {
   console.log(notification)
   queryClient.setQueryData(["Notifications"], (old: InfiniteData<NotificationsType[], unknown>) => {
+    if(old){
     old.pages[0] = [notification, ...old.pages[0]];
+    }
     return old;
   });
   queryClient.invalidateQueries({ queryKey:["Notifications"]});
