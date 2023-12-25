@@ -16,7 +16,7 @@ export function PrivacyInformation() {
         </h3>
         <ul className="flex flex-col w-full">
           {privacyOptions.map((link) => (
-            <Link to={`/settings${link.id}`} key={link.id} className="group ">
+            <Link to={`/settings${link.id}`} key={link.id} className="group " data-testid={link.id}>
               <div className="flex flex-row p-3 w-full justify-between items-center group-hover:bg-[#191919] transition-all ">
                 <div className="flex flex-row items-center">
                   <div className="mr-2 w-12 h-12 flex justify-center items-center ">

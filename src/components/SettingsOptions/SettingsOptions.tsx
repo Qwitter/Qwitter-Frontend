@@ -21,7 +21,7 @@ function Options({ active, setActive }: { active: string, setActive: React.Dispa
   return (
     <ul className='flex flex-col w-full'>
       {settingsOptions.map((link) => (
-        <Link to={`/settings/${link.id}`} key={link.id} className='group' onClick={() => setActive(link.id)}>
+        <Link to={`/settings/${link.id}`} key={link.id} className='group' onClick={() => setActive(link.id)} data-testid={link.title}>
           <div className={active == link.title ? 'flex flex-row py-3 px-4 items-center justify-between bg-[#191919]  transition-all border-r-[3px] border-secondary ' : 'flex flex-row py-3 px-4 items-center justify-between group-hover:bg-[#191919]  transition-all '}>
             <li className='text-base text-primary' >
               {link.title}

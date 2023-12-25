@@ -58,6 +58,7 @@ export function BlockButton({
             "text-sm w-[100px] h-[30px] font-bold [&>*]:hover:before:content-['Unblock']",
             className
           )}
+          data-testid="unblockButton"
         >
           <span className="text-white before:content-['Blocked']"></span>
         </Button>
@@ -67,6 +68,7 @@ export function BlockButton({
           onClick={handleBlockButton}
           className={cn("text-sm w-[100px] h-[30px] font-bold", className)}
           variant={"danger"}
+          data-testid="blockButton"
         >
           <span className="text-danger">Block</span>
         </Button>
