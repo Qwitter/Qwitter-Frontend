@@ -30,11 +30,9 @@ export function NavBar() {
   useEffect(() => {
     try {
       socket.on(EVENTS.SERVER.NOTIFICATION_COUNT, async (notificationCount) => {
-        console.log(notificationCount);
         setNotificationCount(notificationCount);
       });
       socket.on(EVENTS.SERVER.UNREAD_CONVERSATIONS, async (conversationsCount: number) => {
-        console.log(conversationsCount);
         setConversationsCount(conversationsCount);
       });
       socket.emit(EVENTS.CLIENT.JOIN_ROOM, "ALL");
@@ -42,7 +40,7 @@ export function NavBar() {
         setHomeNewPosts(1);
       });
     } catch (e) {
-      console.log(e)
+      e
     }
 
     const mediaQuery = window.matchMedia("(max-width: 1280px)");

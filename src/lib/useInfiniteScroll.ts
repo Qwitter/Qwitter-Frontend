@@ -28,7 +28,6 @@ export const useInfiniteScroll = (
     queryFn: fetchFunction,
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
-      console.log(lastPage, allPages)
       if (lastPage && lastPage.length > 0) return allPages.length + 1;
       return null;
     },

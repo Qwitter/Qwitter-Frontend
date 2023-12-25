@@ -31,7 +31,6 @@ const tweet1: Tweet = {
   replyToTweetId: "1718938551163691300",
   retweetedId: "1718938551163691300",
   qouteTweetedId: "1718938551163691300",
-  hasRetweeted: false,
   sensitive: false,
   entities: {
     hasthtags: [
@@ -41,13 +40,11 @@ const tweet1: Tweet = {
     ],
     media: [
       {
-        value:
-          "https://pbs.twimg.com/media/F_u8-DtXkAA7pKd?format=jpg&name=large",
+        value: "https://pbs.twimg.com/media/F_u8-DtXkAA7pKd?format=jpg&name=large",
         type: "video",
       },
       {
-        value:
-          "https://pbs.twimg.com/media/F_u8-DsWMAAFSPl?format=jpg&name=large",
+        value: "https://pbs.twimg.com/media/F_u8-DsWMAAFSPl?format=jpg&name=large",
         type: "photo",
       },
       // {
@@ -61,13 +58,11 @@ const tweet1: Tweet = {
       //   type: "photo",
       // },
       {
-        value:
-          "https://pbs.twimg.com/media/F_u9Wq4XkAAj0qU?format=jpg&name=large",
+        value: "https://pbs.twimg.com/media/F_u9Wq4XkAAj0qU?format=jpg&name=large",
         type: "photo",
       },
       {
-        value:
-          "https://pbs.twimg.com/media/F_u9S-Eb0AACw7j?format=jpg&name=large",
+        value: "https://pbs.twimg.com/media/F_u9S-Eb0AACw7j?format=jpg&name=large",
         type: "photo",
       },
     ],
@@ -82,9 +77,12 @@ const tweet1: Tweet = {
       },
     ],
   },
+  currentUserRetweetId: null,
+  isFollowing: false,
+  isMuted: false,
+  readCount: 0
 };
 const tweet2: Tweet = {
-  hasRetweeted:false,
   createdAt: "2023-11-23 5:02:00",
   id: "1718938551163691301",
   author: {
@@ -133,6 +131,10 @@ const tweet2: Tweet = {
       },
     ],
   },
+  currentUserRetweetId: null,
+  isFollowing: false,
+  isMuted: false,
+  readCount: 0
 };
 
 const tweetsList: Tweet[] = [

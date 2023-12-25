@@ -594,7 +594,6 @@ export const timelineForYouTweets = async (
         },
       }
     );
-    console.log(response.data.tweets)
     return response.data.tweets;
   } catch (error) {
     console.log(error);
@@ -1561,7 +1560,6 @@ export const addUserToGroup = async ({
         },
       }
     );
-    console.log(res.data)
     return res.data;
   } catch (error) {
     console.log(error);
@@ -1674,7 +1672,6 @@ export const GetTweetRetweetersService = async (
  * @returns tweet object represents the response from the backend or null
  */
 export const getTweetById = async (tweetId: string, token: string) => {
-  console.log(token);
   try {
     const res = await axios.get(
       `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}`,
@@ -1705,8 +1702,6 @@ export const getTweetReplies = async (
   pageParam: number = 1,
   limit: number = 10
 ) => {
-  console.log(tweetId);
-  console.log(token);
   try {
     const res = await axios.get(
       `${VITE_BACKEND_URL}/api/v1/tweets/${tweetId}/replies?page=${pageParam}&limit=${limit}`,
@@ -1716,7 +1711,6 @@ export const getTweetReplies = async (
         },
       }
     );
-    console.log(res.data);
     return res.data.replies;
   } catch (err) {
     console.log(err);

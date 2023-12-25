@@ -216,7 +216,6 @@ export function MessagesConversation({conversationAccordionId}:{conversationAcco
 
     if (data) {
       setChatMessages(handlePagingMessages(data));
-      console.log(data.pages[0]);
 
       isFirstPage && setCurrentConversation(data.pages[0]);
     }

@@ -49,7 +49,6 @@ export function Notifications() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView]);
   const NotificationsList = useMemo(() => {
-    console.log(notifications?.pages.flat() || [])
     return notifications?.pages.flat() || [];
   }, [notifications]);
 

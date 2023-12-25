@@ -46,7 +46,6 @@ export function MessagesList({
         }
 
     };
-    console.log(conversations)
 
 
     return (<div data-testid="convos">

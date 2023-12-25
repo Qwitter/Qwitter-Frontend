@@ -31,13 +31,7 @@ const TweetAuthorHeader = ({
     setTweetClone(tweet);
   }, [tweet]);
 
-  useEffect(() => {
-    console.log(tweetClone);
 
-    if(tweet.replyToTweet){
-      console.log(tweet.replyToTweet)
-    }
-  }, [tweetClone]);
 
   const followLocalUser = () => {
     setTweetClone((prev: Tweet) => ({

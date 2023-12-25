@@ -187,7 +187,6 @@ const TweetInteractionsButtons = ({
       retweetLocalTweet();
     },
     onSettled(data, error) {
-      console.log(data);
       if (error) {
         toast({ title: error.message });
         if (isRetweeted) unRetweetLocalTweet();
@@ -199,7 +198,6 @@ const TweetInteractionsButtons = ({
         currentUserRetweetId: data?.tweet.retweetedTweet.currentUserRetweetId,
       }));
 
-      console.log(data?.tweet.retweetedTweet.currentUserRetweetId);
 
       toast({ title: "Retweeted Successfully" });
 
@@ -229,7 +227,6 @@ const TweetInteractionsButtons = ({
 
       toast({ title: "Removed Retweet Successfully" });
 
-      console.log(tweet.id);
 
       await queryClient.invalidateQueries({
         queryKey: ["tweet", tweet.id],
@@ -253,7 +250,6 @@ const TweetInteractionsButtons = ({
         onClick={(e) => {
           e.preventDefault();
           if (mode === "page") {
-            console.log("same route");
             return;
           }
           navigate(`/tweet/${tweet.id}`);

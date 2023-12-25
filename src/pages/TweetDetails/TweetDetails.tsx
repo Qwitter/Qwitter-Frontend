@@ -33,16 +33,13 @@ const TweetDetails = ({compact=false}:{compact?:boolean}) => {
   );
 
   const dataArr = useMemo(() => {
-    console.log(replies?.pages);
     if (!replies?.pages[0]) return [];
     return replies?.pages.flat() || [];
   }, [replies]);
 
   useEffect(() => {
     if (!token) return;
-    console.log(token);
     refetch();
-    // console.log(data);
   }, [token]);
 
   const {

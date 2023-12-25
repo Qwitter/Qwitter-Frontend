@@ -28,7 +28,6 @@ const GoogleSignUpButton = () => {
       } = data;
       if (authenticationMethod === "login") {
         const user = await getUserData(token);
-        console.log(user);
         saveUser(user, token);
         navigate("/home");
       } else {

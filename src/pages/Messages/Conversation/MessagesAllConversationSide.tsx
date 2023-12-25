@@ -35,7 +35,7 @@ export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRe
     useEffect(() => {
 
         socket.on(EVENTS.SERVER.CONVERSATION, async (conversation) => {
-            console.log(conversation)
+            conversation
             queryClient.invalidateQueries({ queryKey: ["getUserConversations"] });
 
         });

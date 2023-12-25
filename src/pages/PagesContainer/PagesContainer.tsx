@@ -71,7 +71,6 @@ export function PagesContainer() {
   }
   useEffect(()=>{
     data&&setUser(data);
-    console.log(data)
   },[data])
 
   useEffect(() => {
@@ -82,7 +81,6 @@ export function PagesContainer() {
       socket.on("connect", () => {
         console.log("connected -----------");
       });
-      console.log(socket.connected);
       socket.emit(EVENTS.CLIENT.JOIN_ROOM, user.userName);
       socket.on(EVENTS.SERVER.NOTIFICATION, async (notification: NotificationsType) => {
         handleComingNotification(notification);

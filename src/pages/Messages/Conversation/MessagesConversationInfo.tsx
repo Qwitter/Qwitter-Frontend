@@ -20,7 +20,6 @@ export function MessagesConversationInfo() {
   const { VITE_DEFAULT_IMAGE } = import.meta.env;
 
   const handleBlock = () => {
-    console.log(currentConversation);
     setShowBlock(true);
   };
   if (!currentConversation) {

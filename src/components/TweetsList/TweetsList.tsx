@@ -1,9 +1,9 @@
-import { TweetWithRetweet } from "@/models/Tweet";
+import { TweetWithReplyAndRetweet } from "@/models/Tweet";
 import { default as TweetComponent } from "../Tweet/Tweet";
 import { Spinner } from "../Spinner";
 
 type TweetsListProps = {
-  data: TweetWithRetweet[];
+  data: TweetWithReplyAndRetweet[];
   fetcherRef?: (node?: Element | null | undefined) => void;
   childOnEnd?: React.ReactNode;
   isFetchingNextPage?: boolean;

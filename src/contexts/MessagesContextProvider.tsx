@@ -46,7 +46,6 @@ const MessagesContextProvider = ({ children }: MessagesContextProviderProps) => 
         const storedUserAllConversation = localStorage.getItem("userAllConversation");
         const storedCurrentConversation = localStorage.getItem("currentConversation");
         const storedMessageReply = localStorage.getItem("messageReply");
-        console.log(typeof storedUserAllConversation)
         const parsedUserAllConversation = storedUserAllConversation&&storedUserAllConversation !== "undefined"
             ? JSON.parse(storedUserAllConversation)
             : null;
