@@ -21,6 +21,7 @@ export function BlockedProfile({
             onClick={ViewPostsFunction}
             className="w-[155px] h-[50px]"
             variant={"secondary"}
+            data-testid="viewPosts"
           >
             View Posts
           </Button>
