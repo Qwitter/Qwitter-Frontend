@@ -79,6 +79,7 @@ export function Notifications() {
           </div>
 
           <div
+            data-testid="mentions"
             className="w-full  flex justify-center items-center  px-4 py-0 min-w-[56px]  hover:bg-[#181818] transition-all cursor-pointer "
             onClick={() => setActive("Mentions")}
           >
@@ -182,7 +183,7 @@ function Notification({ type, createdAt, follower, retweet, reply, like }: Notif
     )
   }
   return (
-    <div className="px-4 py-3 cursor-pointer flex flex-row border-b border-primary border-opacity-30" onClick={handleUrl}>
+    <div data-testid="likeNotif" className="px-4 py-3 cursor-pointer flex flex-row border-b border-primary border-opacity-30" onClick={handleUrl}>
       <div className=" mr-3 w-10 h-full flex justify-end basis-10">
         {
           type == 'follow' && <User className="text-transparent w-8 h-8" fill="#1d9bf0" />}

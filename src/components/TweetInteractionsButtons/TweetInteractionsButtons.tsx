@@ -308,7 +308,7 @@ const TweetInteractionsButtons = ({
         data-testid="Like"
       >
         <div className="relative">
-          <div className="tweet-icon-radius group-hover:bg-[#f91880]"></div>
+          <div data-testid="likeButton" className="tweet-icon-radius group-hover:bg-[#f91880]"></div>
           {tweetClone.liked ? (
             <AiFillHeart className="tweet-icon fill-[#f91880]" />
           ) : (
