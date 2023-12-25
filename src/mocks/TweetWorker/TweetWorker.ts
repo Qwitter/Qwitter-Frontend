@@ -20,7 +20,6 @@ const tempTweet: Tweet = {
     url: "https://www.google.com",
   },
   replyCount: 0,
-  hasRetweeted: false,
   retweetCount: 0,
   qouteCount: 0,
   likesCount: 1,
@@ -41,13 +40,11 @@ const tempTweet: Tweet = {
     ],
     media: [
       {
-        value:
-          "https://pbs.twimg.com/media/F_u8-DtXkAA7pKd?format=jpg&name=large",
+        value: "https://pbs.twimg.com/media/F_u8-DtXkAA7pKd?format=jpg&name=large",
         type: "photo",
       },
       {
-        value:
-          "https://pbs.twimg.com/media/F_u8-DsWMAAFSPl?format=jpg&name=large",
+        value: "https://pbs.twimg.com/media/F_u8-DsWMAAFSPl?format=jpg&name=large",
         type: "photo",
       },
       // {
@@ -61,13 +58,11 @@ const tempTweet: Tweet = {
       //   type: "photo",
       // },
       {
-        value:
-          "https://pbs.twimg.com/media/F_u9Wq4XkAAj0qU?format=jpg&name=large",
+        value: "https://pbs.twimg.com/media/F_u9Wq4XkAAj0qU?format=jpg&name=large",
         type: "photo",
       },
       {
-        value:
-          "https://pbs.twimg.com/media/F_u9S-Eb0AACw7j?format=jpg&name=large",
+        value: "https://pbs.twimg.com/media/F_u9S-Eb0AACw7j?format=jpg&name=large",
         type: "photo",
       },
     ],
@@ -82,6 +77,10 @@ const tempTweet: Tweet = {
       },
     ],
   },
+  currentUserRetweetId: null,
+  isFollowing: false,
+  isMuted: false,
+  readCount: 0
 }
 
 export const getTweetWorker: ResponseResolver = async ({ request }) => {

@@ -25,13 +25,13 @@ import { MessagesGroupEditPopup } from "./pages/Messages/MessagesPopup/MessagesG
 import MessagesContextProvider from "./contexts/MessagesContextProvider";
 import MessagesAddPeoplePopup from "./pages/Messages/MessagesPopup/MessagesAddPeoplePopup";
 import NotificationLoginPopup from "./pages/Notifications/NotificationLoginPopup";
+import { ImageOverlay } from "./components/ImageOverlay/ImageOverlay";
 
 const queryClient = new QueryClient();
 
 function App() {
   const location = useLocation();
   const previousLocation = location.state?.previousLocation;
-  console.log(previousLocation);
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -88,6 +88,10 @@ function App() {
               <Route
                 path="/Notification/login"
                 element={<NotificationLoginPopup />}
+              />
+              <Route
+                path="/tweet/:tweetId/media"
+                element={<ImageOverlay />}
               />
             </Routes>
             <Toaster />

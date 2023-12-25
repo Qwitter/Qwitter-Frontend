@@ -21,6 +21,8 @@ export type User = {
   isFollowing: boolean;
   followersCount: number;
   followingCount: number;
+  unSeenConversation?:number;
+  notificationCount?:number;
 };
 
 export const EditUserSchema = z
@@ -43,6 +45,7 @@ export const EditUserSchema = z
           if (val?.trim() === "") {
             return true;
           }
+          // eslint-disable-next-line no-useless-escape
           return /^(?:\w+:)?\/\/([^\s./]+\.\S{2}|localhost[\:?\d]*)\S*$/.test(
             val?.includes("http") ? val : `http://${val!}`
           );

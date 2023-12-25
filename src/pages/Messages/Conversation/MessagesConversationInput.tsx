@@ -122,7 +122,7 @@ export function MessagesConversationInput({ text, setText, isAccordion, handleSu
                                     <BigPlayButton position="center" />
                                 </Player>
                             </div> : <div >
-                                <TweetImagesViewer screen="message" images={selectedImage} mode="edit" removeAttachment={handleRemoveImage} />
+                                <TweetImagesViewer screen="message" images={selectedImage} mode="edit" removeAttachment={handleRemoveImage} viewImageMode="view" />
                             </div>)}
                         <div className={cn("w-full max-w-[440px] max-h-[160px] overflow-y-auto relative", `${selectedImageFile ? 'max-w-[500px]' : ''}`, isAccordion && 'max-h-[300px]')}>
                             {isAccordion ? <div className="max-h-[150px] w-full overflow-y-auto"><textarea

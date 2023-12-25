@@ -55,8 +55,7 @@ export const MessagesGroupEditPopup = () => {
 
     const { mutate, isPending } = useMutation({
         mutationFn: updateGroupImageAndName,
-        onSuccess: (data,{formData}) => {
-            console.log(data)
+        onSuccess: (_,{formData}) => {
                 toast({
                     title: "update Group information",
                     description: "Group information changed successfully",
@@ -69,8 +68,7 @@ export const MessagesGroupEditPopup = () => {
             
          
         },
-        onError: (data) => {
-            console.log(data)
+        onError: () => {
             toast({
                 title: "Change GroupName",
                 description: "Failed : ServerSide error",

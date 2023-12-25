@@ -5,7 +5,7 @@ import { BiRepost } from "react-icons/bi";
 import Logo from "../../assets/logo.png";
 import { User as UserType } from "@/models/User";
 import { InfiniteData, useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { Tweet, TweetWithReplyAndRetweet, TweetWithRetweet } from "@/models/Tweet";
+import { TweetWithReplyAndRetweet, TweetWithRetweet } from "@/models/Tweet";
 import { MessageUser } from "../../models/MessagesTypes";
 import { getMentionsList, getNotificationsList } from "@/lib/utils";
 import { Spinner } from "@/components/Spinner";
@@ -18,10 +18,8 @@ export type NotificationsType = {
   createdAt: string;
   reply?: TweetWithReplyAndRetweet;
   follower?: MessageUser;
-  like?: TweetWithRetweet & { liker: MessageUser }
-  ;
+  like?: TweetWithRetweet & { liker: MessageUser };
   retweet?: TweetWithRetweet & { author: MessageUser };
-
 }
 export function Notifications() {
   const { ref, inView } = useInView();
@@ -39,7 +37,7 @@ export function Notifications() {
       queryKey: ["Notifications"],
       initialPageParam: 1,
       getNextPageParam: (data, allPages) => {
-        return data.length === 10 ? allPages.length + 1 : undefined;
+        return data.length === 10? allPages.length + 1 : undefined;
       },
       queryFn: handleNotificationsPaging,
     });
@@ -51,7 +49,6 @@ export function Notifications() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView]);
   const NotificationsList = useMemo(() => {
-    console.log(notifications?.pages.flat() || [])
     return notifications?.pages.flat() || [];
   }, [notifications]);
 

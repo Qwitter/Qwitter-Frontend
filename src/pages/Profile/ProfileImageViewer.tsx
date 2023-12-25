@@ -19,7 +19,6 @@ export const ProfileImageViewer = React.forwardRef<
     navigate(-1);
   };
   const location =useLocation();
-  console.log(location.state.previousLocation?.pathname.includes('rofile'))
   const img = isBanner
     ?location.state.bannerImg
     :location.state.photo;

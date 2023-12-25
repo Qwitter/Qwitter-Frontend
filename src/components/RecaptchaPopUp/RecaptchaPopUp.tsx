@@ -33,9 +33,6 @@ export const RecaptchaPopUp = ({ afterAuth, prevPage }: RecaptchaProps) => {
     }, 500);
   };
 
-  const handleExpire = () => {
-    console.log("Expired");
-  };
 
   return (
     <PopUpContainer
@@ -48,7 +45,6 @@ export const RecaptchaPopUp = ({ afterAuth, prevPage }: RecaptchaProps) => {
       <ReCAPTCHA
         sitekey={RECAPTCHA_KEY}
         onChange={handleReCaptcha}
-        onExpired={handleExpire}
       />
     </PopUpContainer>
   );

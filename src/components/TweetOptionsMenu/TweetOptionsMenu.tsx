@@ -19,7 +19,6 @@ import {
   BlockService,
   FollowService,
   MuteService,
-  UnBlockService,
   UnFollowService,
   UnMuteService,
   cn,
@@ -86,7 +85,6 @@ const TweetOptionsMenu = ({
       queryKey: ["profile", token, author.userName],
     });
 
-    console.log(author.userName);
 
     queryClient.invalidateQueries({
       queryKey: ["tweet", tweetId],
@@ -117,7 +115,6 @@ const TweetOptionsMenu = ({
       queryKey: ["profile", token, author.userName],
     });
 
-    console.log(author.userName);
 
     setShowDialog(false);
   };
@@ -128,30 +125,10 @@ const TweetOptionsMenu = ({
       : undefined,
   });
 
-  const { mutateAsync: unBlockServiceFn } = useMutation({
-    mutationFn: token
-      ? (username: string) => UnBlockService(username, token)
-      : undefined,
-  });
-
   const handleBlockButton = () => {
     setDialogType("block");
     setShowDialog(true);
   };
-
-  const handleunBlockButton = async () => {
-    await unBlockServiceFn(author.userName);
-    navigate("/home");
-
-    await queryClient.invalidateQueries({
-      queryKey: ["tweets"],
-    });
-
-    queryClient.invalidateQueries({
-      queryKey: ["profile", token, author.userName],
-    });
-  };
-
   const confirmBlockButton = async () => {
     await BlockServiceFn(author.userName);
 

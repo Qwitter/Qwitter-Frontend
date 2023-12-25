@@ -1,32 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { Sheet, SheetContent, SheetOverlay, SheetTrigger } from "../ui/sheet";
+import React, {  useState } from "react";
+import { Sheet, SheetContent, SheetOverlay } from "../ui/sheet";
 import { ArrowLeft, ArrowRight, X } from "lucide-react";
 import TweetInteractionsButtons from "../TweetInteractionsButtons/TweetInteractionsButtons";
-import { Tweet, TweetWithReplyAndRetweet } from "@/models/Tweet";
-import { default as TweetComponent } from "../Tweet/Tweet";
+import {  TweetWithReplyAndRetweet } from "@/models/Tweet";
+import { useLocation, useNavigate } from "react-router-dom";
+import TweetDetails from "@/pages/TweetDetails/TweetDetails";
 
-type ImageOverlayProps = {
-  tweet: TweetWithReplyAndRetweet;
-  imageArr: Tweet["entities"]["media"];
-  children: React.ReactNode;
-  index?: number;
-};
-
-export const ImageOverlay = ({
-  children,
-  imageArr,
-  tweet,
-  index = 0,
-}: ImageOverlayProps) => {
+export const ImageOverlay = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const tweet = location.state?.tweet as TweetWithReplyAndRetweet;
+  const index = location.state?.index as number;
+  const imageArr = tweet['entities']['media'];
   const [imageIndex, setImageIndex] = useState<number>(index);
-  const [sheetOpen, setSheetOpen] = useState<boolean>(false);
-
-  console.log(children);
-  console.log(imageArr);
-
-  useEffect(() => {
-    setImageIndex(0);
-  }, [sheetOpen]);
 
   const stopProp = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
@@ -34,12 +20,10 @@ export const ImageOverlay = ({
 
   const closeOverlay = (event: React.MouseEvent<HTMLDivElement>) => {
     stopProp(event);
-    setSheetOpen(false);
+    navigate(-1);
+   
   };
 
-  const openOverlay = () => {
-    setSheetOpen(true);
-  };
 
   const prevImage = (event: React.MouseEvent<HTMLDivElement>) => {
     stopProp(event);
@@ -49,12 +33,10 @@ export const ImageOverlay = ({
   const nextImage = (event: React.MouseEvent<HTMLDivElement>) => {
     stopProp(event);
     setImageIndex(imageIndex + 1);
-    console.log(imageIndex);
   };
 
   return (
-    <Sheet open={sheetOpen}>
-      <SheetTrigger onClick={openOverlay}>{children}</SheetTrigger>
+    <Sheet open={true}>
       <SheetOverlay
         onClick={closeOverlay}
         className="bg-black/90 lg:bg-black/90"
@@ -86,10 +68,10 @@ export const ImageOverlay = ({
 
           <div
             onClick={stopProp}
-            className="flex flex-col justify-start h-full w-[80%] lg:max-w-[1024px]"
+            className="flex flex-col justify-between h-full w-[80%] lg:max-w-[1024px]"
           >
-            <img src={imageArr[imageIndex]?.value} className="w-full h-full" />
-            <TweetInteractionsButtons tweet={tweet} mode="page" />
+            <img src={imageArr[imageIndex]?.value} className="w-full h-[calc(100vh-60px)] " />
+            <TweetInteractionsButtons tweet={tweet} mode="page" className="h-10 my-2 items-center" />
           </div>
 
           <div className=" w-[35px] h-[35px]">
@@ -105,7 +87,7 @@ export const ImageOverlay = ({
         </SheetContent>
       </SheetOverlay>
       <SheetContent className="outline-none">
-        <TweetComponent tweet={tweet} size="compact" />
+        <TweetDetails compact />
       </SheetContent>
     </Sheet>
   );

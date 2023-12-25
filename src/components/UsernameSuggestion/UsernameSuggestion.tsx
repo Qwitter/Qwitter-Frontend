@@ -28,7 +28,7 @@ export function UsernameSuggestion({ nextStep }: Props) {
             }
         },
         onError: (data) => {
-            console.log(data);
+            data
         }
     })
     useEffect(() => {

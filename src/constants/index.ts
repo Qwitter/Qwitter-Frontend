@@ -32,7 +32,7 @@ const navLinks = [
   },
   {
     id: "notification",
-    title: "Notification",
+    title: "Notifications",
     icon: Bell,
     clicked: { fill: "white" },
     notificationCount: 0,
