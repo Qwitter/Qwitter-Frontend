@@ -70,7 +70,7 @@ export function MessagesConversationMessage({ isMessage, isGroup,isAccordion, er
                                                 <BigPlayButton position="center" />
                                             </Player>
                                         </div> : <div className={cn("max-w-[80%] ", error && "opacity-50")}>
-                                            <TweetImagesViewer viewImage images={[{ value: entities.media[0].value, type: entities.media[0].type }]}  />
+                                            <TweetImagesViewer viewImageMode="view" images={[{ value: entities.media[0].value, type: entities.media[0].type }]}  />
                                         </div>)
                                 }
 

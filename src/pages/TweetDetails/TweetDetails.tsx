@@ -10,7 +10,7 @@ import { ArrowLeft } from "lucide-react";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-const TweetDetails = () => {
+const TweetDetails = ({compact=false}:{compact?:boolean}) => {
   const { tweetId } = useParams<{ tweetId: string }>();
   const [tweetWithRepliesId, setTweetWithRepliesId] = useState<string>(
     tweetId!
@@ -60,8 +60,6 @@ const TweetDetails = () => {
   });
 
   useEffect(() => {
-    console.log(tweetData);
-
     if (tweetData?.tweet.retweetedTweet){
       setTweetWithRepliesId(tweetData?.tweet.retweetedTweet.id);
     }
@@ -73,7 +71,7 @@ const TweetDetails = () => {
 
   if (isLoading || !tweetData || !isFetched || !user) {
     return (
-      <div className="flex items-center justify-center ml-72">
+      <div className={`flex items-center justify-center ${compact?'ml-5':'ml-72'} mt-5`}>
         <Spinner />
       </div>
     );
@@ -82,15 +80,15 @@ const TweetDetails = () => {
   return (
     <div className="max-w-[600px] w-full h-full flex-grow border-r border-primary border-opacity-30 max-sm:w-[280px] ">
       <div className="flex flex-col  w-full sticky bg-opacity-60 backdrop-blur-xl top-0 bg-black  z-50 ">
-        <div className="flex p-2 gap-8 items-center mb-4">
+       {!compact&& <div className="flex p-2 gap-8 items-center mb-4">
           <ArrowLeft
             className="cursor-pointer bg-transparent p-1 rounded-full transition-all hover:bg-primary hover:bg-opacity-20 w-8 h-8"
             onClick={() => navigate(-1)}
           />
           <h2 className="text-xl font-bold">Post</h2>
-        </div>
+        </div>}
       </div>
-      <TweetComponent tweet={tweetData.tweet} mode="page" />
+      <TweetComponent tweet={tweetData.tweet} mode="page" size={compact?"compact":"normal"}  />
       <TweetsList
         fetcherRef={ref}
         data={dataArr}

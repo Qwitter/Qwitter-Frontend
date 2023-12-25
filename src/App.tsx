@@ -25,6 +25,7 @@ import { MessagesGroupEditPopup } from "./pages/Messages/MessagesPopup/MessagesG
 import MessagesContextProvider from "./contexts/MessagesContextProvider";
 import MessagesAddPeoplePopup from "./pages/Messages/MessagesPopup/MessagesAddPeoplePopup";
 import NotificationLoginPopup from "./pages/Notifications/NotificationLoginPopup";
+import { ImageOverlay } from "./components/ImageOverlay/ImageOverlay";
 
 const queryClient = new QueryClient();
 
@@ -88,6 +89,10 @@ function App() {
               <Route
                 path="/Notification/login"
                 element={<NotificationLoginPopup />}
+              />
+              <Route
+                path="/tweet/:tweetId/media"
+                element={<ImageOverlay />}
               />
             </Routes>
             <Toaster />

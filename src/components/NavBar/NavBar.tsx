@@ -23,7 +23,7 @@ export function NavBar() {
   const [NotificationsCount, setNotificationCount] = useState(0);
   const [conversationsCount, setConversationsCount] = useState(0);
   const [homeNewPosts, setHomeNewPosts] = useState(0);
-  const navigation = useNavigate(); 
+  const navigation = useNavigate();
   const location = useLocation();
   const [active, setActive] = useState(getPageFromUrl(location.pathname.toLowerCase()));
 
@@ -33,12 +33,12 @@ export function NavBar() {
         console.log(notificationCount);
         setNotificationCount(notificationCount);
       });
-      socket.on(EVENTS.SERVER.UNREAD_CONVERSATIONS, async (conversationsCount:number) => {
+      socket.on(EVENTS.SERVER.UNREAD_CONVERSATIONS, async (conversationsCount: number) => {
         console.log(conversationsCount);
         setConversationsCount(conversationsCount);
       });
-      socket.emit(EVENTS.CLIENT.JOIN_ROOM,"ALL");
-      socket.on(EVENTS.SERVER.NOTIFICATION, async () => {
+      socket.emit(EVENTS.CLIENT.JOIN_ROOM, "ALL");
+      socket.on(EVENTS.SERVER.FEED, async () => {
         setHomeNewPosts(1);
       });
     } catch (e) {
@@ -58,15 +58,21 @@ export function NavBar() {
     };
   }, []);
 
-  useEffect(()=>{
-    if(active === "Notifications"){
+  useEffect(() => {
+    if (active === "Notifications") {
       setNotificationCount(0);
-    }else if (active === "Home"){
+    } else if (active === "Home") {
       setHomeNewPosts(0);
-    }else if (active === "Messages"){
+    } else if (active === "Messages") {
       setConversationsCount(0);
     }
-  },[active])
+  }, [active])
+  useEffect(() => {
+    if (user) {
+      setConversationsCount(user.unSeenConversation!);
+      setNotificationCount(user.notificationCount!)
+    }
+  }, [user])
 
   return (
     <div className="items-end flex flex-col min-w-[80px] max-h-[100vh] sticky top-0">
@@ -150,9 +156,9 @@ function NavElements({
 }: {
   active: string;
   setActive: React.Dispatch<React.SetStateAction<string>>;
-  NotificationsCount:number;
-  homeNewPosts:number;
-  conversationsCount:number;
+  NotificationsCount: number;
+  homeNewPosts: number;
+  conversationsCount: number;
 }) {
   const { user } = useContext(UserContext);
   return (
@@ -170,17 +176,17 @@ function NavElements({
           >
             <div className="relative">
               <link.icon {...(active.slice(1) == link.title.slice(1) ? link.clicked : {})} />
-              {NotificationsCount > 0&&link.title == "Notifications" && (
+              {NotificationsCount > 0 && link.title == "Notifications" && (
                 <div className="absolute top-[-6px] right-[-6px] bg-secondary rounded-full w-[17px] h-[17px] flex items-center justify-center text-white text-[11px]">
                   {NotificationsCount > 9 ? "+9" : NotificationsCount}
                 </div>
               )}
-              {conversationsCount > 0&&link.title == "Messages" && (
+              {conversationsCount > 0 && link.title == "Messages" && (
                 <div className="absolute top-[-6px] right-[-6px] bg-secondary rounded-full w-[17px] h-[17px] flex items-center justify-center text-white text-[11px]">
                   {conversationsCount > 9 ? "+9" : conversationsCount}
                 </div>
               )}
-              {homeNewPosts > 0&&link.title == "Home" && (
+              {homeNewPosts > 0 && link.title == "Home" && (
                 <div className="absolute top-[-5px] right-[-1px] bg-secondary rounded-full w-[10px] h-[10px] flex items-center justify-center text-white text-[11px]">
                 </div>
               )}

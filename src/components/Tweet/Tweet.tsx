@@ -12,7 +12,6 @@ import { BiRepost } from "react-icons/bi";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { useContext, useMemo } from "react";
 import CreateTweetContainer from "../CreateTweet/CreateTweetContainer";
-import { ImageOverlay } from "../ImageOverlay/ImageOverlay";
 
 const convertWordToAnchor = (word: string): JSX.Element => {
   if (word.startsWith("@")) {
@@ -169,7 +168,7 @@ const Tweet = ({
                   </span>
                 </div>
               )}
-              <TweetAuthorHeader tweet={tweet} mode={mode} />
+              <TweetAuthorHeader tweet={tweet} mode={mode}  />
             </>
           )}
           <p className="max-w-full break-words overflow-clip">
@@ -187,9 +186,7 @@ const Tweet = ({
                 </Player>
               </div>
             ) : (
-              // <ImageOverlay imageArr={tweet.entities.media} tweet={tweet}>
-              <TweetImagesViewer images={tweet.entities.media} />
-              // </ImageOverlay>
+              <TweetImagesViewer images={tweet.entities.media} {...mode=="page"&&{tweet:tweet,viewImageMode:"tweet"}} />
             ))}
           {mode === "page" ? (
             <div className="mt-4">

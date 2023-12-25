@@ -2,7 +2,7 @@ export const EVENTS = {
     connection: 'connection',
     CLIENT: {
         SEND_ROOM_MESSAGE: 'SEND_ROOM_MESSAGE', // Used for sending a message
-        JOIN_ROOM: 'JOIN_ROOM', // Joiniing a room. It can be used by joining  a conversation room or a userName room for notifications.
+        JOIN_ROOM: 'JOIN_ROOM', // Joining a room. It can be used by joining  a conversation room or a userName room for notifications.
     },
     SERVER: {
         ROOMS: 'ROOMS',
@@ -12,6 +12,7 @@ export const EVENTS = {
         MESSAGE: 'MESSAGE', // Sending a general message to the user on the room of the username
         CONVERSATION: 'CONVERSATION', //Socket for
         NOTIFICATION_COUNT:'NOTIFICATION_COUNT',
-        UNREAD_CONVERSATIONS:'UNREAD_CONVERSATION'
+        UNREAD_CONVERSATIONS: 'UNREAD_CONVERSATIONS',
+        FEED:'FEED'
     },
 };

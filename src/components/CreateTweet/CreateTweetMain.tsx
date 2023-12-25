@@ -107,6 +107,7 @@ export default function CreateTweetMain({
                 screen="tweet"
                 images={selectedImages}
                 mode="edit"
+                viewImageMode="view"
                 removeAttachment={handleRemoveFile}
               />}
           </div>
