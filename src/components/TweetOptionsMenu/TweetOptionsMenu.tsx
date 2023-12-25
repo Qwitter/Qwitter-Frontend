@@ -258,6 +258,7 @@ const TweetOptionsMenu = ({
               {isMutedClone ? (
                 <DropdownMenuItem
                   className="gap-4 items-center font-bold p-2"
+                  data-testid="muteUnmute"
                   onClick={(event) => {
                     event.stopPropagation();
                     unMuteServiceFn(author.userName);
@@ -269,6 +270,7 @@ const TweetOptionsMenu = ({
               ) : (
                 <DropdownMenuItem
                   className="gap-4 items-center font-bold p-2"
+                  data-testid="muteUnmute"
                   onClick={(event) => {
                     event.stopPropagation();
                     MuteServiceFn(author.userName);

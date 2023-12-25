@@ -20,7 +20,7 @@ export function BlockMuteList({ headername, service }: BlockMuteListProps) {
   });
   return (
     <>
-      <div className=" w-full h-full border-r border-primary border-opacity-30 mb-20">
+      <div data-testid="muteList" className=" w-full h-full border-r border-primary border-opacity-30 mb-20">
         <OptionsHeader header={headername} />
         {Blocked && Muted ? (
           <UsersList

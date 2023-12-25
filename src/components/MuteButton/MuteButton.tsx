@@ -43,6 +43,7 @@ export function MuteButton({ username }: { username: string }) {
         <HoverCard>
           <HoverCardTrigger>
             <Button
+              data-testid="unmuteButton"
               variant={"danger"}
               onClick={(event) => {
                 event.stopPropagation();
@@ -58,6 +59,7 @@ export function MuteButton({ username }: { username: string }) {
         <HoverCard>
           <HoverCardTrigger>
             <Button
+              data-testid="muteButton"
               className="cursor-pointer"
               variant={"secondary"}
               onClick={(event) => {

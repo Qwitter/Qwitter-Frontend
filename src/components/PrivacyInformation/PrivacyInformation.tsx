@@ -23,7 +23,7 @@ export function PrivacyInformation() {
                     <link.icon className="w-5 h-5 text-gray" />
                   </div>
                   <div>
-                    <li className={`text-[15px] text-primary`}>{link.title}</li>
+                    <li data-testid={link.title} className={`text-[15px] text-primary`}>{link.title}</li>
                     <p className={`text-[13px] text-gray`}>
                       {link.description}
                     </p>
