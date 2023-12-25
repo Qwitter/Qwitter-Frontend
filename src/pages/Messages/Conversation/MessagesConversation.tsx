@@ -12,7 +12,8 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { CreateMessage, cn } from "@/lib/utils";
-import { EVENTS, MessagesMessage, conversation } from "../../../models/MessagesTypes";
+import {  MessagesMessage, conversation } from "../../../models/MessagesTypes";
+import{EVENTS} from '../../../models/Events';
 import { getConversation } from "@/lib/utils";
 import { Spinner } from "@/components/Spinner";
 import { socket } from "@/lib/socketInit";

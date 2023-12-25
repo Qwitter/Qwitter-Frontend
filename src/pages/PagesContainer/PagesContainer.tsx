@@ -10,7 +10,7 @@ import { Profile } from "../Profile/Profile";
 import TweetDetails from "../TweetDetails/TweetDetails";
 import { socket } from "@/lib/socketInit";
 import { useEffect } from "react";
-import { EVENTS } from "../../models/MessagesTypes";
+import { EVENTS } from "../../models/Events";
 import { LikeRetweetList } from "@/components/LikeRetweetList/LikeRetweetList";
 import SideBar from "../SideBar/SideBar";
 import NotFound from "../NotFound/NotFound";
@@ -28,13 +28,13 @@ export function PagesContainer() {
   const queryClient = useQueryClient();
   const handleNotificationText = (notification: NotificationsType) => {
     if (notification.type == "follow")
-      return `New Follower @${notification.follower!.name} `;
+      return `New Follower ${notification.follower!.name} `;
     else if (notification.type == "like")
-      return `@${notification.like!.liker!.name} liked your tweet`;
+      return `${notification.like!.liker!.name} liked your tweet`;
     else if (notification.type == "retweet")
-      return `@${notification.retweet?.author.name} retweeted your tweet` ;
+      return `${notification.retweet?.author.name} retweeted your tweet` ;
     else if (notification.type == "reply")
-    return `@${notification.reply!.author!.name} replied to your tweet`;
+    return `${notification.reply!.author!.name} replied to your tweet`;
   else return "someone killed you"
 
 }
@@ -63,6 +63,7 @@ const handleComingNotification = (notification: NotificationsType) => {
 }
 
 useEffect(() => {
+  try{
   if (!user) return;
   socket.connect();
 
@@ -75,7 +76,14 @@ useEffect(() => {
     handleComingNotification(notification);
 
   });
+}catch(e){
+  toast({
+    description: "Oops something went wrong,try again later",
+    variant: "destructive"
+});
+}
   return () => {
+    console.log('disconnecting....................')
     socket.disconnect();
   };
 }, []);
@@ -125,7 +133,7 @@ return (
                 }
               />
               <Route
-                path="/Notification"
+                path="/Notifications"
                 element={
                   <ProtectedRoute token={token}>
                     {" "}

@@ -1,6 +1,8 @@
 import { MailPlus } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
-import { EVENTS, conversation } from "../../../models/MessagesTypes";
+import {  conversation } from "../../../models/MessagesTypes";
+import{EVENTS} from '../../../models/Events';
+
 import { useNavigate } from "react-router-dom";
 import { MessagesList } from "../MessagesList";
 import { ConversationLeavePopUp } from "../MessagesPopup/ConversationLeavePopUp";

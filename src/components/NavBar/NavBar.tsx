@@ -14,35 +14,60 @@ import {
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { AvatarFallback } from "../ui/avatar";
 import { getPageFromUrl } from "@/lib/utils";
+import { socket } from "@/lib/socketInit";
+import { EVENTS } from "@/models/Events";
 
 export function NavBar() {
   const { user } = useContext(UserContext);
   const [isShown, setIsShown] = useState(false);
-  const navigation = useNavigate();
+  const [NotificationsCount, setNotificationCount] = useState(0);
+  const [conversationsCount, setConversationsCount] = useState(0);
+  const [homeNewPosts, setHomeNewPosts] = useState(0);
+  const navigation = useNavigate(); 
   const location = useLocation();
   const [active, setActive] = useState(getPageFromUrl(location.pathname.toLowerCase()));
 
   useEffect(() => {
-    // Add a listener for changes to the screen size
-    const mediaQuery = window.matchMedia("(max-width: 1280px)");
-    // Set the initial value of the `isMobile` state variable
-    setIsShown(mediaQuery.matches);
+    try {
+      socket.on(EVENTS.SERVER.NOTIFICATION_COUNT, async (notificationCount) => {
+        console.log(notificationCount);
+        setNotificationCount(notificationCount);
+      });
+      socket.on(EVENTS.SERVER.UNREAD_CONVERSATIONS, async (conversationsCount:number) => {
+        console.log(conversationsCount);
+        setConversationsCount(conversationsCount);
+      });
+      socket.emit(EVENTS.CLIENT.JOIN_ROOM,"ALL");
+      socket.on(EVENTS.SERVER.NOTIFICATION, async () => {
+        setHomeNewPosts(1);
+      });
+    } catch (e) {
+      console.log(e)
+    }
 
-    // Define a callback function to handle changes to the media query
+    const mediaQuery = window.matchMedia("(max-width: 1280px)");
+    setIsShown(mediaQuery.matches);
     const handleMediaQueryChange = (event: {
       matches: boolean | ((prevState: boolean) => boolean);
     }) => {
       setIsShown(event.matches);
     };
-
-    // Add the callback function as a listener for changes to the media query
     mediaQuery.addEventListener("change", handleMediaQueryChange);
-
-    // Remove the listener when the component is unmounted
     return () => {
       mediaQuery.removeEventListener("change", handleMediaQueryChange);
     };
   }, []);
+
+  useEffect(()=>{
+    if(active === "Notifications"){
+      setNotificationCount(0);
+    }else if (active === "Home"){
+      setHomeNewPosts(0);
+    }else if (active === "Messages"){
+      setConversationsCount(0);
+    }
+  },[active])
+
   return (
     <div className="items-end flex flex-col min-w-[80px] max-h-[100vh] sticky top-0">
       <div className="flex flex-col items-start xl:w-[275px] px-2 h-full min-h-[100vh] justify-between ">
@@ -58,7 +83,7 @@ export function NavBar() {
               }}
             />
           </Link>
-          <NavElements active={active} setActive={setActive} />
+          <NavElements active={active} conversationsCount={conversationsCount} setActive={setActive} NotificationsCount={NotificationsCount} homeNewPosts={homeNewPosts} />
           <Link
             to={"/compose/tweet"}
             state={{ previousLocation: location }}
@@ -119,16 +144,22 @@ export function NavBar() {
 function NavElements({
   active,
   setActive,
+  NotificationsCount,
+  homeNewPosts,
+  conversationsCount
 }: {
   active: string;
   setActive: React.Dispatch<React.SetStateAction<string>>;
+  NotificationsCount:number;
+  homeNewPosts:number;
+  conversationsCount:number;
 }) {
   const { user } = useContext(UserContext);
   return (
     <ul className="flex flex-col w-full ">
       {navLinks.map((link) => (
         <Link
-          to={`/${link.title != "Profile" ? link.title : "Profile/"+user?.userName}`}
+          to={`/${link.title != "Profile" ? link.title : "Profile/" + user?.userName}`}
           key={link.id}
           className="group"
           onClick={() => setActive(link.title)}
@@ -139,9 +170,18 @@ function NavElements({
           >
             <div className="relative">
               <link.icon {...(active.slice(1) == link.title.slice(1) ? link.clicked : {})} />
-              {link.notificationCount > 0 && (
+              {NotificationsCount > 0&&link.title == "Notifications" && (
                 <div className="absolute top-[-6px] right-[-6px] bg-secondary rounded-full w-[17px] h-[17px] flex items-center justify-center text-white text-[11px]">
-                  {link.notificationCount > 9 ? "+9" : link.notificationCount}
+                  {NotificationsCount > 9 ? "+9" : NotificationsCount}
+                </div>
+              )}
+              {conversationsCount > 0&&link.title == "Messages" && (
+                <div className="absolute top-[-6px] right-[-6px] bg-secondary rounded-full w-[17px] h-[17px] flex items-center justify-center text-white text-[11px]">
+                  {conversationsCount > 9 ? "+9" : conversationsCount}
+                </div>
+              )}
+              {homeNewPosts > 0&&link.title == "Home" && (
+                <div className="absolute top-[-5px] right-[-1px] bg-secondary rounded-full w-[10px] h-[10px] flex items-center justify-center text-white text-[11px]">
                 </div>
               )}
             </div>
