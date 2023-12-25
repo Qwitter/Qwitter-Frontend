@@ -29,7 +29,7 @@ export function ProfileUser() {
   useEffect(() => {
     window.scrollTo(0, 0);
     setBlocked(user?.isBlocked!);
-  }, []);
+  }, [user]);
 
   if (isPending)
     return (

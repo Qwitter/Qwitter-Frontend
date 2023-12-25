@@ -38,6 +38,12 @@ export const MessagesGroupEditPopup = () => {
     const handleImageChange = () => {
         setImageKey((prevKey) => prevKey + 1);
     };
+    const setInputFieldValue = (value: string) => {
+        form.setValue("groupName", value);
+        setNewName(value);
+        form.trigger("groupName");
+    };
+
 
     useEffect(() => {
         handleImageChange()
@@ -50,26 +56,21 @@ export const MessagesGroupEditPopup = () => {
     const { mutate, isPending } = useMutation({
         mutationFn: updateGroupImageAndName,
         onSuccess: (data,{formData}) => {
-            if (data) {
+            console.log(data)
                 toast({
-                    title: "Change Group",
-                    description: "Group changed successfully",
+                    title: "update Group information",
+                    description: "Group information changed successfully",
                 });
-                const pic =URL.createObjectURL(formData.get("media")!as File);
-                setCurrentConversation({...currentConversation!,photo:pic,name:formData.get('name')! as string})
+                const pic =imageFile&&URL.createObjectURL(formData.get("media")!as File);
+                setCurrentConversation({...currentConversation!,...(imageFile && { photo: pic }),name:formData.get('name')! as string,fullName:formData.get('name')! as string})
                 queryClient.invalidateQueries({ queryKey: ["userConversation", conversationId] });
                 queryClient.invalidateQueries({ queryKey: ["getUserConversations"] });
                 navigate(-1);
-            }
-            else {
-                toast({
-                    title: "Change GroupName",
-                    description: "Failed : ServerSide error",
-                    variant: "destructive"
-                });
-            }
+            
+         
         },
-        onError: () => {
+        onError: (data) => {
+            console.log(data)
             toast({
                 title: "Change GroupName",
                 description: "Failed : ServerSide error",
@@ -87,11 +88,6 @@ export const MessagesGroupEditPopup = () => {
         mutate({ conversationId: conversationId!, token: token!, formData: formData });
     }
     const saveButton = <Button onClick={handleSubmit} disabled={!form.formState.isValid}>Save</Button>;
-    const setInputFieldValue = (value: string) => {
-        form.setValue("groupName", value);
-        setNewName(value);
-        form.trigger("groupName");
-    };
 
     return (
         <PopUpContainer

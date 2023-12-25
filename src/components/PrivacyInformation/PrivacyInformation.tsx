@@ -12,7 +12,7 @@ export function PrivacyInformation() {
       />
       <div>
         <h3 className="text-gray text-sm px-4 py-3">
-          Manage Your Quitter activity.
+          Manage Your Qwitter activity.
         </h3>
         <ul className="flex flex-col w-full">
           {privacyOptions.map((link) => (
