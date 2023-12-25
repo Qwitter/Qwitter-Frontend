@@ -46,14 +46,14 @@ const MessagesContextProvider = ({ children }: MessagesContextProviderProps) => 
         const storedUserAllConversation = localStorage.getItem("userAllConversation");
         const storedCurrentConversation = localStorage.getItem("currentConversation");
         const storedMessageReply = localStorage.getItem("messageReply");
-
-        const parsedUserAllConversation = storedUserAllConversation
+        console.log(typeof storedUserAllConversation)
+        const parsedUserAllConversation = storedUserAllConversation&&storedUserAllConversation !== "undefined"
             ? JSON.parse(storedUserAllConversation)
             : null;
-        const parsedCurrentConversation = storedCurrentConversation
+        const parsedCurrentConversation = storedCurrentConversation&&storedUserAllConversation !== "undefined"
             ? JSON.parse(storedCurrentConversation)
             : null;
-        const parsedMessageReply = storedMessageReply
+        const parsedMessageReply = storedMessageReply&&storedUserAllConversation !== "undefined"
             ? JSON.parse(storedMessageReply)
             : null;
 
@@ -64,15 +64,15 @@ const MessagesContextProvider = ({ children }: MessagesContextProviderProps) => 
 
     // Update localStorage when state changes
     useEffect(() => {
-        localStorage.setItem("userAllConversation", JSON.stringify(userAllConversation));
+        userAllConversation&&localStorage.setItem("userAllConversation", JSON.stringify(userAllConversation));
     }, [userAllConversation]);
 
     useEffect(() => {
-        localStorage.setItem("currentConversation", JSON.stringify(currentConversation));
+        currentConversation&&localStorage.setItem("currentConversation", JSON.stringify(currentConversation));
     }, [currentConversation]);
 
     useEffect(() => {
-        localStorage.setItem("messageReply", JSON.stringify(messageReply));
+        messageReply&&localStorage.setItem("messageReply", JSON.stringify(messageReply));
     }, [messageReply]);
 
     return (

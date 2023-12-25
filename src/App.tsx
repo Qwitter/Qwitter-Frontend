@@ -78,11 +78,11 @@ function App() {
                 element={<EditProfilePopUp />}
               />
               <Route
-                path="profile/:username/photo"
+                path="/flow/photo"
                 element={<ProfileImageViewer isBanner={false} />}
               />
               <Route
-                path="profile/:username/header_photo"
+                path="/profile/:username/header_photo"
                 element={<ProfileImageViewer isBanner={true} />}
               />
               <Route
