@@ -135,7 +135,7 @@ const TweetAuthorHeader = ({
         </h3>
         {tweet.replyToTweet && (
           <h5 className="text-gray text-sm mb-2">
-            Replying to{" "}
+            <Link to={`/Tweet/${tweet.replyToTweetId}`}> Replying to{" "}</Link>
             <Link to={`/Profile/${tweet.replyToTweet.author.userName}`} className="text-secondary hover:underline">
               {tweet.replyToTweet.author ? tweet.replyToTweet.author.userName : "Loading..."}
             </Link>

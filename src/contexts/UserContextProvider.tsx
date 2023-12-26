@@ -42,7 +42,7 @@ const UserContextProvider = ({ children }: UserContextProviderProps) => {
     setUser(user);
     setToken(t);
     // Save user and token to local storage
-    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("user", JSON.stringify({...user,unSeenConversation:0,notificationCount:0}));
     localStorage.setItem("token", t);
   };
 

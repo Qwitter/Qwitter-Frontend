@@ -173,9 +173,7 @@ function ShowUsersSuggestions({
   users: MessageUser[];
   onUserClick: (user: MessageUser) => void;
 }) {
-  useEffect(() => {
-    console.log(users)
-  })
+
   return (
     <ul data-testid="searchedUsers" className="flex-shrink min-h-[60vh]">
       {users &&
