@@ -167,7 +167,7 @@ export const ProfileMain = ({ user }: ProfileMainProps) => {
               <span className="text-xl leading-5 font-bold" data-testid="name">
                 {user?.name}
               </span>
-              <span className="text-gray text-[15px] mt-1">
+              <span className="text-gray text-[15px] mt-1" data-testid="username">
                 @{user?.userName}
               </span>
             </div>
