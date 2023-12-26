@@ -49,10 +49,11 @@ export function MessagesConversationInput({ text, setText, isAccordion, handleSu
 
     };
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === 'Enter' && e.code === 'Enter' && !e.shiftKey && !e.ctrlKey && !e.altKey && !e.metaKey) {
             e.preventDefault()
             if (text.trim().length > 0) {
+                (e.target as HTMLTextAreaElement).style!.height ='36px';
                 handleSubmit()
                 handleRemoveImage()
             }
