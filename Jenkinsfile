@@ -21,13 +21,13 @@ pipeline {
                 sh 'npm run build'
             }
         }
-        stage('Deploy') {  
-            steps {  
-                sh 'docker compose build'
-                sh 'docker compose push'
-                sh 'docker system prune -f'
-            }
-        } 
+        // stage('Deploy') {  
+        //     steps {  
+        //         sh 'docker compose build'
+        //         sh 'docker compose push'
+        //         sh 'docker system prune -f'
+        //     }
+        // } 
     }  
        
     post {   
