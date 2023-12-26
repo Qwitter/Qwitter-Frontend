@@ -168,7 +168,7 @@ const Tweet = ({
                   </span>
                 </div>
               )}
-              <TweetAuthorHeader tweet={tweet} mode={mode}  />
+              <TweetAuthorHeader tweet={tweet} mode={mode} />
             </>
           )}
           <p className="max-w-full break-words overflow-clip">
@@ -177,16 +177,26 @@ const Tweet = ({
           {size === "normal" &&
             tweet.entities &&
             (tweet.entities.media?.[0]?.type === "video" ? (
-              <div
-                className="my-4 rounded-lg overflow-hidden"
-                onClick={(e) => e.preventDefault()}
-              >
-                <Player playsInline src={tweet.entities.media?.[0].value}>
-                  <BigPlayButton position="center" />
-                </Player>
-              </div>
+              <Link to="#">
+                <div
+                  className="my-4 rounded-lg overflow-hidden"
+                  onClick={(e) => e.preventDefault()}
+                >
+                  <Player playsInline src={tweet.entities.media?.[0].value}>
+                    <BigPlayButton position="center" />
+                  </Player>
+                </div>
+              </Link>
             ) : (
-              <TweetImagesViewer images={tweet.entities.media} {...mode=="page"&&{tweet:tweet,viewImageMode:"tweet"}} />
+              <Link to="#">
+                <TweetImagesViewer
+                  images={tweet.entities.media}
+                  {...(mode == "page" && {
+                    tweet: tweet,
+                    viewImageMode: "tweet",
+                  })}
+                />
+              </Link>
             ))}
           {mode === "page" ? (
             <div className="mt-4">
