@@ -12,8 +12,8 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { CreateMessage, cn } from "@/lib/utils";
-import {  MessagesMessage, conversation } from "../../../models/MessagesTypes";
-import{EVENTS} from '../../../models/Events';
+import { MessagesMessage, conversation } from "../../../models/MessagesTypes";
+import { EVENTS } from '../../../models/Events';
 import { getConversation } from "@/lib/utils";
 import { Spinner } from "@/components/Spinner";
 import { socket } from "@/lib/socketInit";
@@ -21,7 +21,7 @@ import { MessagesConversationUserInfo } from "./MessagesConversationUserInfo";
 import ImageGrid from "../ImageGrid";
 import { v4 as uuidv4 } from 'uuid';
 import { User } from "@/models/User";
-export function MessagesConversation({conversationAccordionId}:{conversationAccordionId?:string}) {
+export function MessagesConversation({ conversationAccordionId }: { conversationAccordionId?: string }) {
   const [text, setText] = useState("");
 
   const [chatMessages, setChatMessages] = useState<MessagesMessage[]>([]);
@@ -35,11 +35,11 @@ export function MessagesConversation({conversationAccordionId}:{conversationAcco
   const token = localStorage.getItem("token")!;
   const { VITE_DEFAULT_IMAGE } = import.meta.env;
 
-  const user = JSON.parse(localStorage.getItem("user")!)as User;
+  const user = JSON.parse(localStorage.getItem("user")!) as User;
   const { messageReply, setMessageReply, setCurrentConversation } =
     useContext(MessagesContext);
-  const {conversationId:conversationUrlId} =useParams()
-  const conversationId  = conversationAccordionId?conversationAccordionId:conversationUrlId;
+  const { conversationId: conversationUrlId } = useParams()
+  const conversationId = conversationAccordionId ? conversationAccordionId : conversationUrlId;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { ref, inView } = useInView();
@@ -75,7 +75,7 @@ export function MessagesConversation({conversationAccordionId}:{conversationAcco
         messageContainerRef.current.scrollHeight
       );
   };
-  const updateChatMessages = (Message: MessagesMessage,updateMessage:boolean=false,logicalId?:string) => {
+  const updateChatMessages = (Message: MessagesMessage, updateMessage: boolean = false, logicalId?: string) => {
     queryClient.setQueryData(
       ["userConversation", conversationId],
       (oldConversation: InfiniteData<conversation, unknown>) => {
@@ -85,12 +85,12 @@ export function MessagesConversation({conversationAccordionId}:{conversationAcco
           )
           oldConversation.pages[0].messages[index] = Message;
         }
-        else{
-        oldConversation.pages[0].messages = [
-          Message,
-          ...oldConversation.pages[0].messages,
-        ];
-      }
+        else {
+          oldConversation.pages[0].messages = [
+            Message,
+            ...oldConversation.pages[0].messages,
+          ];
+        }
         setChatMessages([...handlePagingMessages(oldConversation)]);
         setTimeout(() => {
           handleScrollDown();
@@ -101,27 +101,27 @@ export function MessagesConversation({conversationAccordionId}:{conversationAcco
     handleScrollDown();
   };
 
-  const makeTempMessage = (formData:FormData,logicalId:string,error:boolean=false)=>{
-    const replyToMessage = messageReply?chatMessages.find(
-      (message) => message.id == messageReply.replyId 
-      ):null;
-      const text =formData.get("text")! as string;
-      const media = formData.get("media") as File;
+  const makeTempMessage = (formData: FormData, logicalId: string, error: boolean = false) => {
+    const replyToMessage = messageReply ? chatMessages.find(
+      (message) => message.id == messageReply.replyId
+    ) : null;
+    const text = formData.get("text")! as string;
+    const media = formData.get("media") as File;
     const tempMessageSending = {
       isMessage: true,
       id: "",
       text: text,
       date: new Date().toString(),
-      userName:user.userName,
-      profileImageUrl:user.profileImageUrl,
-      sending:!error,
-      error:error,
-      logicalId:logicalId,
-      replyToMessage: replyToMessage?replyToMessage:null,
+      userName: user.userName,
+      profileImageUrl: user.profileImageUrl,
+      sending: !error,
+      error: error,
+      logicalId: logicalId,
+      replyToMessage: replyToMessage ? replyToMessage : null,
       entities: {
-          hasthtags:[],
-          media: media?[{ value: URL.createObjectURL(media) , type: media.type.startsWith('video')?"video":"photo", id: "123" }]:[],
-          mentions: [],
+        hasthtags: [],
+        media: media ? [{ value: URL.createObjectURL(media), type: media.type.startsWith('video') ? "video" : "photo", id: "123" }] : [],
+        mentions: [],
       }
     }
     return tempMessageSending;
@@ -161,7 +161,7 @@ export function MessagesConversation({conversationAccordionId}:{conversationAcco
 
   const { mutate, isPending: isSending } = useMutation({
     mutationFn: CreateMessage,
-    onSuccess: async (data,{logicalId}) => {
+    onSuccess: async (data, { logicalId }) => {
       if (data) {
         socket.emit(EVENTS.CLIENT.SEND_ROOM_MESSAGE, {
           conversationId,
@@ -175,20 +175,20 @@ export function MessagesConversation({conversationAccordionId}:{conversationAcco
           "userConversation",
           conversationId,
         ]);
-        updateChatMessages(data,true,logicalId);
+        updateChatMessages(data, true, logicalId);
         handleScrollDown();
 
         return { previousMessages };
       }
     },
-    onMutate({ formData,logicalId}) {
-    
-      updateChatMessages(makeTempMessage(formData,logicalId));
-      handleScrollDown(); 
+    onMutate({ formData, logicalId }) {
+
+      updateChatMessages(makeTempMessage(formData, logicalId));
+      handleScrollDown();
     },
-    onError: (_,{logicalId,formData}) => {
-      updateChatMessages( makeTempMessage(formData,logicalId,true),true,logicalId);
-      handleScrollDown(); 
+    onError: (_, { logicalId, formData }) => {
+      updateChatMessages(makeTempMessage(formData, logicalId, true), true, logicalId);
+      handleScrollDown();
 
     },
   });
@@ -217,7 +217,7 @@ export function MessagesConversation({conversationAccordionId}:{conversationAcco
       setChatMessages(handlePagingMessages(data));
 
       isFirstPage && setCurrentConversation(data.pages[0]);
-      isFirstPage&&setMessageReply(null);
+      isFirstPage && setMessageReply(null);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
@@ -242,7 +242,7 @@ export function MessagesConversation({conversationAccordionId}:{conversationAcco
   return (
     data && (
       <div className="h-full">
-        {!conversationAccordionId&&(<div className="px-4 w-full h-[53px] basis-4 flex flex-row justify-center  sticky  top-[-1px] bg-black bg-opacity-60 backdrop-blur-xl z-50 items-center">
+        {!conversationAccordionId && (<div className="px-4 w-full h-[53px] basis-4 flex flex-row justify-center  sticky  top-[-1px] bg-black bg-opacity-60 backdrop-blur-xl z-50 items-center">
           <div
             className="hover:bg-[#191919] h-10 flex mr-2 lg:hidden rounded-full transition-all p-2 cursor-pointer"
             data-testid="Back"
@@ -254,14 +254,14 @@ export function MessagesConversation({conversationAccordionId}:{conversationAcco
           </div>
 
           {!inView && (
-            
-            data.pages[0].isGroup&&!data.pages[0].photo ?
+
+            data.pages[0].isGroup && !data.pages[0].photo ?
               <ImageGrid
                 className="w-10 h-8 rounded-full mr-2"
                 images={data.pages[0].users.map(conversation => conversation.profileImageUrl || VITE_DEFAULT_IMAGE)} /> :
               <img
-                src={data.pages[0].isGroup? data.pages[0].photo :
-                  data.pages[0].users[0].profileImageUrl ||VITE_DEFAULT_IMAGE
+                src={data.pages[0].isGroup ? data.pages[0].photo :
+                  data.pages[0].users[0].profileImageUrl || VITE_DEFAULT_IMAGE
                 }
                 className="min-w-[32px] h-8 rounded-full mr-2"
               />)
@@ -278,8 +278,8 @@ export function MessagesConversation({conversationAccordionId}:{conversationAcco
             </div>
           </div>
         </div>)}
-        <div className={cn("w-full relative mx-auto flex flex-col max-h-[calc(100vh-55px)] ",conversationAccordionId&&"h-[53vh] max-h-[400px]")}>
-          <div className={`${conversationAccordionId&&"overflow-x-hidden"}  overflow-y-auto`} ref={messageContainerRef}>
+        <div className={cn("w-full relative mx-auto flex flex-col max-h-[calc(100vh-55px)] ", conversationAccordionId && "h-[53vh] max-h-[400px]")}>
+          <div className={`${conversationAccordionId && "overflow-x-hidden"}  overflow-y-auto`} ref={messageContainerRef}>
             {!data.pages[0].isGroup && !hasNextPage && (
               <div
                 className=" w-full px-4 "
@@ -292,8 +292,8 @@ export function MessagesConversation({conversationAccordionId}:{conversationAcco
                     data.pages[0].isGroup ? data.pages[0].photo : data.pages[0].users[0].profileImageUrl ||
                       "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
                   }
-                 user={data.pages[0].users[0]}
-                 
+                  user={data.pages[0].users[0]}
+
                   ref={ref}
                 />
               </div>
@@ -317,13 +317,7 @@ export function MessagesConversation({conversationAccordionId}:{conversationAcco
                   .reverse()
                   .map((message, index) => (
                     <>
-                      {index == chatMessages.length - 1 && (
-                        <div
-                          key={"refLastMessage"}
-                          ref={refLastMessage}
-                          className="w-full h-1"
-                        ></div>
-                      )}
+
 
                       <MessagesConversationMessage
                         key={index}
@@ -332,7 +326,15 @@ export function MessagesConversation({conversationAccordionId}:{conversationAcco
                         {...message}
                         isGroup={data.pages[0].isGroup}
                       />
+                      {index == chatMessages.length - 1 && (
+                        <div
+                          key={"refLastMessage"}
+                          ref={refLastMessage}
+                          className="w-full h-1"
+                        ></div>
+                      )}
                     </>
+
                   ))}
               {data && data.pages[0].blocked && <p className="text-center w-full text-gray text-sm pb-5">
                 You can no longer send messages to this person
@@ -372,7 +374,7 @@ export function MessagesConversation({conversationAccordionId}:{conversationAcco
               )}
               <MessagesConversationInput
                 selectedImageFile={selectedImageFile}
-                isAccordion ={!!conversationAccordionId}
+                isAccordion={!!conversationAccordionId}
                 setSelectedImageFile={setSelectedImageFile}
                 handleSubmit={handleSubmit}
                 text={text}
