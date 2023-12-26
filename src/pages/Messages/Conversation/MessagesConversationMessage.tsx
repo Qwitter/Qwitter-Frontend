@@ -75,7 +75,7 @@ export function MessagesConversationMessage({ isMessage, isGroup,isAccordion, er
                                 }
 
                                 {text.length > 0 && <div data-testid="text" className={cn("bg-[#2f3336] text-[15px] px-4 py-3 mt-1 min-w-max rounded-3xl ", userName == user?.userName ? "bg-secondary rounded-br-sm" : "rounded-bl-sm", error && "bg-danger")}>
-                                    <p className="text-primary text-[15px] break-words max-w-[400px] max-md:max-w-[60vw]" dangerouslySetInnerHTML={ { __html: handleMentions() }}>
+                                    <p className={cn("text-primary text-[15px] break-words max-w-[400px]  max-md:max-w-[60vw]",isAccordion&&"max-w-[200px]")} dangerouslySetInnerHTML={ { __html: handleMentions() }}>
                                         
                                     </p>
                                 </div>}

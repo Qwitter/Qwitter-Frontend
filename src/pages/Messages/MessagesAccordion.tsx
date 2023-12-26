@@ -16,7 +16,7 @@ export function MessagesAccordion() {
     const { currentConversation } = useContext(MessagesContext)
   
     return (
-        <Accordion type="single" collapsible className="box-shadow max-sm:hidden rounded-t-2xl w-[400px] fixed bg-black bottom-0 right-[5vw] overflow-y-auto ">
+        <Accordion type="single" collapsible className="box-shadow max-md:hidden rounded-t-2xl w-[400px] fixed bg-black bottom-0 right-[5vw] overflow-y-auto ">
             <AccordionItem value="item-1" >
                 <AccordionTrigger
                     className="pr-4 py-0 relative font-bold text-xl hover:no-underline">
