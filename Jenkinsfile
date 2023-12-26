@@ -1,7 +1,9 @@
 pipeline {  
     agent any  
     tools {nodejs "nodejs"}
-
+    options{
+        disableConcurrentBuilds()
+    }
     stages {  
         stage('Install Dependencies') {  
             steps {  
