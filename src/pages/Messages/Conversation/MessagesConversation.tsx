@@ -33,7 +33,7 @@ export function MessagesConversation({ conversationAccordionId }: { conversation
   const [scroll, setScroll] = useState(0);
 
   const token = localStorage.getItem("token")!;
-  const { VITE_DEFAULT_IMAGE } = import.meta.env;
+  const VITE_DEFAULT_IMAGE = process.env.VITE_DEFAULT_IMAGE as string;
 
   const user = JSON.parse(localStorage.getItem("user")!) as User;
   const { messageReply, setMessageReply, setCurrentConversation } =
@@ -264,6 +264,7 @@ export function MessagesConversation({ conversationAccordionId }: { conversation
                   data.pages[0].users[0].profileImageUrl || VITE_DEFAULT_IMAGE
                 }
                 className="min-w-[32px] h-8 rounded-full mr-2"
+                alt=""
               />)
           }
 

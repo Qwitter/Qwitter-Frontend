@@ -57,8 +57,8 @@ function CreateTweetPopUp({ popUp, closePopup, handleUserClick, mode = "createTw
 }
 function ShowUsersSuggestions({ onUserClick, username, closePopup }: ShowUsersSuggestionsProps) {
   const { token } = useContext(UserContext)
-  const { VITE_DEFAULT_IMAGE } = import.meta.env;
- 
+  const { VITE_DEFAULT_IMAGE } = process.env;
+
   const {
     isPending,
     data,

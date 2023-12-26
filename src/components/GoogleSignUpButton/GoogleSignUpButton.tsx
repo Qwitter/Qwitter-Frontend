@@ -72,7 +72,7 @@ const GoogleSignUpButton = () => {
 
   const handleClick = async () => {
     openSignInWindow(
-      `${import.meta.env.VITE_BACKEND_URL}/api/v1/auth/google`,
+      `${process.env.VITE_BACKEND_URL as string}/api/v1/auth/google`,
       "Sign in with Google"
     );
   };
