@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FollowService, UnFollowService, cn } from "@/lib/utils";
 import { WarningPopUp } from "../WarningPopUp/WarningPopUp";
 import { FollowButtonProp } from "./FollowButtonProp";
@@ -14,6 +14,7 @@ export function FollowButton({
 }: FollowButtonProp) {
   const [state, setstate] = useState(isFollowing);
   const [showDialog, setshowDialog] = useState(false);
+  const queryClient = useQueryClient();
   const { token } = useContext(UserContext);
   const { mutateAsync: FollowServiceFn } = useMutation({
     mutationFn: token
@@ -37,7 +38,9 @@ export function FollowButton({
     event.stopPropagation();
     await FollowServiceFn(username);
     setstate(true);
+    queryClient.invalidateQueries({queryKey:["profile", token, username]})
     onClick && onClick();
+
   };
   const handleunFollowButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -53,6 +56,7 @@ export function FollowButton({
     await unFollowServiceFn(username);
     setstate(false);
     setshowDialog(false);
+    queryClient.invalidateQueries({queryKey:["profile", token, username]})
     onClick && onClick();
   };
   return (
