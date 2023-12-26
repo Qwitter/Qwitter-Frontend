@@ -17,7 +17,7 @@ export function MessagesConversationInfo() {
   const { currentConversation } = useContext(MessagesContext);
   const [show, setShow] = useState(false);
   const [showBlock, setShowBlock] = useState(false);
-  const { VITE_DEFAULT_IMAGE } = import.meta.env;
+  const VITE_DEFAULT_IMAGE = process.env.VITE_DEFAULT_IMAGE as string;
 
   const handleBlock = () => {
     setShowBlock(true);

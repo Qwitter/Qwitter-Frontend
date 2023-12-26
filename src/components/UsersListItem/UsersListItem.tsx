@@ -23,7 +23,7 @@ export function UsersListItem({
 }: UsersListItemProp) {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
-  const { VITE_DEFAULT_IMAGE } = import.meta.env;
+  const { VITE_DEFAULT_IMAGE } = process.env;
   return (
     <CardContent
       onClick={() => {

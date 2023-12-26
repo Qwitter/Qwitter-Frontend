@@ -3,9 +3,9 @@ import { FcGoogle } from "react-icons/fc";
 
 // it makes error unit testing(please do it as me)
 // const handleClick = () => {
-//   console.log(import.meta.env.MODE)
+//   console.log(process.env.MODE)
 //   window.open(
-//     `${import.meta.env.VITE_BACKEND_URL}/api/v1/auth/google`,
+//     `${process.env.VITE_BACKEND_URL}/api/v1/auth/google`,
 //     "_self"
 //   );
 // };
