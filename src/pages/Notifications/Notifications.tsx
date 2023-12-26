@@ -203,7 +203,7 @@ function Notification({ type, createdAt, follower, retweet, reply, like,post }: 
           type == 'post' && <Sparkle className="text-transparent w-10 h-10" fill="#7b00f7" />
         }
         {
-          type == 'login' && <img src={Logo} className="text-transparent w-9 h-9" />
+          type == 'login' && <img src={Logo} className="text-transparent w-9 h-9" alt="" />
         }
       </div>
       <div className="flex flex-col w-full">
