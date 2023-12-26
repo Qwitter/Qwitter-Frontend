@@ -1831,8 +1831,8 @@ export const getPageFromUrl = (pathname: string) => {
     return "explore";
   } else if (pathname.includes("settings")) {
     return "settings";
-  } else if (pathname.includes("notification")) {
-    return "notification";
+  } else if (pathname.includes("notifications")) {
+    return "notifications";
   } else if (pathname.includes("messages")) {
     return "messages";
   } else if (pathname.includes("tweet")) {

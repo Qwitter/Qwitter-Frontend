@@ -1,5 +1,5 @@
 import { LegacyRef, useEffect, useMemo, useState } from "react";
-import { Heart, User } from "lucide-react";
+import { Heart, Sparkle, User } from "lucide-react";
 import { Link, useLocation, useNavigate, /*useNavigate*/ } from "react-router-dom";
 import { BiRepost } from "react-icons/bi";
 import Logo from "../../assets/logo.png";
@@ -16,10 +16,11 @@ import { useInView } from "react-intersection-observer";
 export type NotificationsType = {
   type: string;
   createdAt: string;
-  reply?: TweetWithReplyAndRetweet;
+  reply?: TweetWithReplyAndRetweet & { author: MessageUser };
   follower?: MessageUser;
   like?: TweetWithRetweet & { liker: MessageUser };
   retweet?: TweetWithRetweet & { author: MessageUser };
+  post?:TweetWithReplyAndRetweet & { author: MessageUser };
 }
 export function Notifications() {
   const { ref, inView } = useInView();
@@ -137,6 +138,7 @@ function ShowAllNotifications({ isPending, notifications, NotificationsList, has
               like={notification.like}
               follower={notification.follower}
               type={notification.type}
+              post={notification.post}
             />
             {(hasNextPage || isFetchingNextPage) && i === NotificationsList.length - 1 && (
               <div className="py-10">
@@ -152,10 +154,12 @@ function ShowAllNotifications({ isPending, notifications, NotificationsList, has
   )
 }
 
-function Notification({ type, createdAt, follower, retweet, reply, like }: NotificationsType) {
+function Notification({ type, createdAt, follower, retweet, reply, like,post }: NotificationsType) {
   const navigate = useNavigate()
   const user = JSON.parse(localStorage.getItem("user")!) as UserType;
   const { VITE_DEFAULT_IMAGE } = import.meta.env;
+
+  const typeUser = (follower || like?.liker || retweet?.author||post?.author);
   const handleUrl = () => {
     if (type == "follow")
       navigate('/profile/' + follower!.userName)
@@ -163,6 +167,8 @@ function Notification({ type, createdAt, follower, retweet, reply, like }: Notif
       navigate('/tweet/' + like!.id)
     else if (type == "retweet")
       navigate('/tweet/' + retweet!.id)
+    else if (type == "post")
+      navigate('/tweet/' + post!.id)
 
   }
   const location = useLocation();
@@ -170,6 +176,9 @@ function Notification({ type, createdAt, follower, retweet, reply, like }: Notif
     const date = moment(dateString);
     return date.format('MMM DD, YYYY');
   };
+  if(type=='post'&&!post!.author){
+    return(<></>)
+  }
   if (type == 'reply') {
     return (
 
@@ -191,6 +200,9 @@ function Notification({ type, createdAt, follower, retweet, reply, like }: Notif
           type == 'like' && <Heart className="text-transparent w-8 h-8" fill="#f91880" />
         }
         {
+          type == 'post' && <Sparkle className="text-transparent w-10 h-10" fill="#7b00f7" />
+        }
+        {
           type == 'login' && <img src={Logo} className="text-transparent w-9 h-9" />
         }
       </div>
@@ -203,25 +215,27 @@ function Notification({ type, createdAt, follower, retweet, reply, like }: Notif
         </Link> :
           <><div className="mb-3 pr-5">
             <div className="flex flex-row">
-              <img className="w-10 aspect-square p-1 rounded-full " src={follower?.profileImageUrl || like?.liker.profileImageUrl || VITE_DEFAULT_IMAGE} alt="" />
+              <img className="w-10 aspect-square p-1 rounded-full " src={typeUser?.profileImageUrl || VITE_DEFAULT_IMAGE} alt="" />
             </div>
           </div>
             <div>
               <div className="flex flex-row items-center gap-1 transition-all">
                 <UserNameHoverCard
-                  name={(follower || like?.liker || retweet?.author)?.name || ""}
-                  isFollowing={(follower || like?.liker || retweet?.author)?.isFollowing || false}
-                  description={(follower || like?.liker || retweet?.author)?.description || ""}
-                  userName={(follower || like?.liker || retweet?.author)?.userName || ""}
-                  followersCount={(follower || like?.liker || retweet?.author)?.followersCount || 0}
-                  followingCount={(follower || like?.liker || retweet?.author)?.followingCount || 0}
-                  profileImageUrl={(follower || like?.liker || retweet?.author)?.profileImageUrl || VITE_DEFAULT_IMAGE}
+                  name={typeUser?.name || ""}
+                  isFollowing={typeUser?.isFollowing || false}
+                  description={typeUser?.description || ""}
+                  userName={typeUser?.userName || ""}
+                  followersCount={typeUser?.followersCount || 0}
+                  followingCount={typeUser?.followingCount || 0}
+                  profileImageUrl={typeUser?.profileImageUrl || VITE_DEFAULT_IMAGE}
                 />
-                <p > {type == 'follow' ? "followed you" : type == 'retweet' ? "reposted your post" : "liked your post"}</p>
+                <p > {type == 'follow' ? "followed you" : type == 'retweet' ? "reposted your post" : type == 'post'?" post a new post ,check it out ": "liked your post"}</p>
               </div>
               {type == "like" && <p className="text-sm text-gray mt-2 w-full max-sm:w-[50vw]"><p className="max-w-[88%] truncate">{like!.text}</p> <span className="break-words">{like!.entities.media.length > 0 && ' ' + like!.entities.media[0].value.substring(0, 70) + '...'} </span></p>}
               {type == "retweet" && <p className="text-sm text-gray mt-2 w-full max-sm:w-[50vw] "><span className="max-w-[10vw] truncate">{retweet!.retweetedTweet!.text}</span>
                 <span className="break-words ">{retweet!.retweetedTweet!.entities.media.length > 0 && ' ' + retweet!.retweetedTweet!.entities.media[0].value.substring(0, 70) + '...'}</span> </p>}
+              {type == "post" && <p className="text-sm text-gray mt-2 w-full max-sm:w-[50vw] "><span className="max-w-[10vw] truncate">{post!.text}</span>
+                <span className="break-words ">{post!.entities.media.length > 0 && ' ' + post!.entities.media[0].value.substring(0, 70) + '...'}</span> </p>}
             </div></>}
       </div>
     </div>

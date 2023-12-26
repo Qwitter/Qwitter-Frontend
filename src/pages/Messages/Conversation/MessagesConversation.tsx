@@ -195,7 +195,6 @@ export function MessagesConversation({conversationAccordionId}:{conversationAcco
 
   useEffect(() => {
     socket.emit("JOIN_ROOM", conversationId);
-
     socket.on(EVENTS.SERVER.ROOM_MESSAGE, async (Message) => {
       updateChatMessages(Message);
       handleScrollDown();
@@ -218,6 +217,7 @@ export function MessagesConversation({conversationAccordionId}:{conversationAcco
       setChatMessages(handlePagingMessages(data));
 
       isFirstPage && setCurrentConversation(data.pages[0]);
+      isFirstPage&&setMessageReply(null);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
