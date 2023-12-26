@@ -16,7 +16,7 @@ type Props = {
 };
 
 export const UserNameHoverCard = ({ userName, name, profileImageUrl, description, isFollowing, followingCount, followersCount }: Props) => {
-    const { VITE_DEFAULT_IMAGE } = import.meta.env;
+    const { VITE_DEFAULT_IMAGE } = process.env;
     const queryClient = useQueryClient();
     const token = localStorage.getItem("token");
     const invalidateUserData = () => {

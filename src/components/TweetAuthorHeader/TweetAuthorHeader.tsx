@@ -31,8 +31,6 @@ const TweetAuthorHeader = ({
     setTweetClone(tweet);
   }, [tweet]);
 
-
-
   const followLocalUser = () => {
     setTweetClone((prev: Tweet) => ({
       ...prev,
@@ -135,10 +133,16 @@ const TweetAuthorHeader = ({
         </h3>
         {tweet.replyToTweet && (
           <h5 className="text-gray text-sm mb-2">
-            <Link to={`/Tweet/${tweet.replyToTweetId}`}> Replying to{" "}</Link>
-            <Link to={`/Profile/${tweet.replyToTweet.author.userName}`} className="text-secondary hover:underline">
-              {tweet.replyToTweet.author ? tweet.replyToTweet.author.userName : "Loading..."}
+            Replying to{" "}
+            <Link
+              className="text-secondary hover:underline"
+              to={`/Tweet/${tweet.replyToTweetId}`}
+            >
+              {tweet.replyToTweet.author.userName}'s tweet
             </Link>
+            {/* <Link to={`/Profile/${tweet.replyToTweet.author.userName}`} className="text-secondary hover:underline">
+              {tweet.replyToTweet.author ? tweet.replyToTweet.author.userName : "Loading..."}
+            </Link> */}
           </h5>
         )}
       </div>

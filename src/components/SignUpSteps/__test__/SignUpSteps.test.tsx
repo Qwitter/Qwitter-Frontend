@@ -1,8 +1,14 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { SignUpSteps } from "../SignUpSteps";
-jest.mock('../../../assets/logo.png', () => 'path-to-mock-image');
+import { BrowserRouter as Router } from "react-router-dom";
+jest.mock("../../../assets/logo.png", () => "path-to-mock-image");
 test("Sign UP UI Test", () => {
-  render(<SignUpSteps />);
+  render(
+    <Router>
+      {" "}
+      <SignUpSteps />
+    </Router>
+  );
   expect(screen.getByText("Step 1 of 5")).toBeTruthy();
   expect(screen.getByText("Create your account")).toBeTruthy();
   expect(screen.getByText("Name")).toBeTruthy();

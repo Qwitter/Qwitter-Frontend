@@ -12,7 +12,7 @@ export const MessagesConversationUserInfo = forwardRef(
 
     ({ user, chatPicture }: MessagesConversationUserInfoProps, ref: Ref<HTMLDivElement>) =>{ 
         const location =useLocation();
-        const { VITE_DEFAULT_IMAGE } = import.meta.env;
+        const VITE_DEFAULT_IMAGE = process.env.VITE_DEFAULT_IMAGE as string;
 
         return(
         <div ref={ref}

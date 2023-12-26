@@ -261,6 +261,7 @@ const TweetOptionsMenu = ({
               )}
               <DropdownMenuItem
                 className="gap-4 items-center font-bold p-2"
+                data-testid="block"
                 onClick={() => handleBlockButton()}
               >
                 <Ban className="text-lg" />

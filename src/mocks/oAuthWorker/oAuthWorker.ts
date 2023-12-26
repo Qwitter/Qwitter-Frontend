@@ -1,7 +1,7 @@
 import { http, HttpResponse } from "msw";
 import { setupWorker } from 'msw/browser'
 
-const { VITE_BACKEND_URL } = import.meta.env;
+const { VITE_BACKEND_URL } = process.env;
 
 const oAuthWorker = setupWorker(
   http.get(
