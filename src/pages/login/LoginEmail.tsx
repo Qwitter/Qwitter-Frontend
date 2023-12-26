@@ -22,10 +22,10 @@ export function LoginEmail({ incrementStep, form }: SignInProp) {
                 <div className="mx-1">Next</div>
             </Button>
             <Link to="/i/flow/password_reset">
-                <Button variant="outline" className='text-white my-5 h-[40px] w-[300px]'>Forgot Password?</Button>
+                <Button variant="outline" className='text-white my-5 h-[40px] w-[300px]' data-testid="forgotPassword">Forgot Password?</Button>
             </Link>
             <p className="text-start text-slate-400 w-[300px]">Don't have an account?
-                <Link to="/i/flow/signup/input_flow_data">
+                <Link to="/i/flow/signup/input_flow_data" data-testid="signupLink">
                     <span className="mx-1 hover:underline hover:cursor-pointer text-secondary">Sign up</span>
                 </Link>
             </p>

@@ -1,10 +1,17 @@
 import { Button } from "../../components/ui/button";
 // import { AiFillApple } from "react-icons/ai";
 import logo from "../../assets/logo.png"
-import { Link, useLocation } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import GoogleSignUpButton from "@/components/GoogleSignUpButton/GoogleSignUpButton";
 export default function Authentication() {
   const location = useLocation();
+  const user =localStorage.getItem('user')
+  if(user){
+    return(
+      <Navigate to={'/Home'} replace />
+    )
+    }
+  else
   return (
     <>
       <div className="grid lg:grid-cols-2 lg:min-w-full min-h-screen absolute max-[1025px]:left-[20%] max-[1025px]:top-[5%]" >

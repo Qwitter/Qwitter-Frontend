@@ -21,18 +21,33 @@ export function ChangeUsername() {
     resolver: zodResolver(UsernameSchema),
     mode: "onChange",
   });
-  const { user, token } = useContext(UserContext)
+  const { user, token,saveUser } = useContext(UserContext)
 
   const { mutate, isPending } = useMutation({
     mutationFn: updateUsername,
     onSuccess: (data, {username}) => {
-      if (data) {
+      if (data==200) {
         toast({
           title: "Change Username",
           description: "Username changed Successfully with " + username,
         });
         //update the context
+        saveUser({...user!,userName:username},token!)
         navigate(-1);
+      }
+      else if(data ==409){
+        toast({
+          title: "Change Username",
+          description: "Failed : You can't use the same username",
+          variant:"destructive"
+        });
+      }
+      else{
+        toast({
+          title: "Change Username",
+          description: "Failed : try again later",
+          variant:"destructive"
+        });
       }
     },
     onError: () => {
@@ -49,12 +64,12 @@ export function ChangeUsername() {
 
   useEffect(() => {
     setTimeout(()=>{
-      setInputFieldValue(user?.userName||"");
-
       form.setValue("defaultUsername", user?.userName||"")
       form.trigger("defaultUsername")
-    },100)
-  }, []);
+      setInputFieldValue(user?.userName||"");
+     
+    },0)
+  }, [user]);
 
   const setInputFieldValue = (value: string, clickFlag = false) => {
     setIsClickChange(clickFlag);
@@ -102,6 +117,7 @@ export function ChangeUsername() {
             errorMessage={
               form.formState.errors.username?.message?.toString() || ""
             }
+            data-testid="username"
           />
         </div>
         <div className="border-y w-full p-4 border-primary border-opacity-20">
@@ -124,7 +140,7 @@ export function ChangeUsername() {
             variant="secondary"
             role="save"
             className="block ml-auto"
-            disabled={!form.formState.isValid}
+            disabled={user?.userName==inputValue||!form.formState.isValid}
           >
             Save
           </Button>

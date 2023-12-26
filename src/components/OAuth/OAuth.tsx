@@ -32,8 +32,7 @@ const OAuth = () => {
     if (!token || !birthDay) return;
     const res = await oAuthSignUp(token, birthDay);
     if (!res) return;
-    console.log(res);
-    saveUser(res.data, res.token);
+    saveUser(res.user, res.token);
     navigate("/i/flow/profile", { state: { previousLocation: location } });
   };
 

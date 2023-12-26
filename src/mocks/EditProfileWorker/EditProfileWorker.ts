@@ -4,10 +4,10 @@ export const EditProfileWorker: ResponseResolver = async ({ request }) => {
   const body = (await request.json()) as any;
 
   const { name, description, Location, url, birth_date } = body;
+  console.log(body);
 
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  // if (request.headers.get("Authorization") === "Bearer abc123") {
   if (name && birth_date) {
     return HttpResponse.json(
       {
@@ -30,14 +30,4 @@ export const EditProfileWorker: ResponseResolver = async ({ request }) => {
       }
     );
   }
-  // } else {
-  //   return HttpResponse.json(
-  //     {
-  //       message: "Invalid token",
-  //     },
-  //     {
-  //       status: 401,
-  //     }
-  //   );
-  // }
 };

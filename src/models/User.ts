@@ -10,13 +10,19 @@ export type User = {
   userName: string;
   createdAt: string;
   location: string;
-  bio: string;
-  website: string;
+  description: string;
+  url: string;
   passwordChangedAt: string;
   id: string;
   google_id: string;
   profileImageUrl: string;
   profileBannerUrl: string;
+  verified: boolean;
+  isFollowing: boolean;
+  followersCount: number;
+  followingCount: number;
+  unSeenConversation?:number;
+  notificationCount?:number;
 };
 
 export const EditUserSchema = z
@@ -26,24 +32,27 @@ export const EditUserSchema = z
       .min(1, { message: "Name can't be blank" })
       .max(50, { message: "Name must be less than 50 letters" })
       .trim(),
-    bio: z
+    description: z
       .string()
       .max(160, { message: "Name must be less than 160 letters" })
       .trim()
       .nullish(),
     location: z.string().nullish(),
-    // website: z.string().url({ message: "Url is not valid." }).nullish(),
-    website: z
+    url: z
       .string()
-      .nullish()
-      .refine((val) => {
-        if (val?.trim() === "") {
-          return true;
-        }
-        return /^(?:\w+:)?\/\/([^\s./]+\.\S{2}|localhost[\:?\d]*)\S*$/.test(
-          val?.includes("http") ? val : `http://${val!}`
-        );
-      }),
+      .refine(
+        (val) => {
+          if (val?.trim() === "") {
+            return true;
+          }
+          // eslint-disable-next-line no-useless-escape
+          return /^(?:\w+:)?\/\/([^\s./]+\.\S{2}|localhost[\:?\d]*)\S*$/.test(
+            val?.includes("http") ? val : `http://${val!}`
+          );
+        },
+        { message: "Url is not valid." }
+      )
+      .nullish(),
     day: Step1DataSchema.shape.day,
     month: Step1DataSchema.shape.month,
     year: Step1DataSchema.shape.year,
@@ -73,11 +82,9 @@ export const EditUserSchema = z
 export const UserDataSchema = z.object({
   userName: z.string(),
   name: z.string(),
-  birthDate: z
-    .string()
-    .regex(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/, {
-      message: "birthDate must be in the format yyyy-mm-dd hh:mm:ss",
-    }),
+  birthDate: z.string().regex(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/, {
+    message: "birthDate must be in the format yyyy-mm-dd hh:mm:ss",
+  }),
   url: z.string().optional(),
   description: z.string(),
   protected: z.boolean().optional(),
@@ -88,14 +95,23 @@ export const UserDataSchema = z.object({
   followingCount: z
     .number()
     .min(0, { message: "followingCount must be positive or zero" }),
-  createdAt: z
-    .string()
-    .regex(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/, {
-      message: "createdAt must be in the format yyyy-mm-dd hh:mm:ss",
-    }),
+  createdAt: z.string().regex(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/, {
+    message: "createdAt must be in the format yyyy-mm-dd hh:mm:ss",
+  }),
   profileBannerUrl: z.string().url(),
   profileImageUrl: z.string().url(),
   email: z.string().email(),
 });
 
+export const UserProfileSchema = z
+  .object({
+    location: z.string().nullish(),
+    tweetCount: z.number().default(0).nullish(),
+    isFollowing: z.boolean().default(false).nullish(),
+    isBlocked: z.boolean().default(false).nullish(),
+    isMuted: z.boolean().default(false).nullish(),
+  })
+  .merge(UserDataSchema);
+
+export type UserProfileData = z.infer<typeof UserProfileSchema>;
 export type UserData = z.infer<typeof UserDataSchema>;

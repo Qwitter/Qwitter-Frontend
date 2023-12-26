@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useContext } from "react";
 import { deleteTweet } from "@/lib/utils";
 import { toast } from "../ui/use-toast";
+import { useNavigate, useParams } from "react-router-dom";
 
 type DeleteTweetPopUpProps = {
   tweetId: string;
@@ -16,6 +17,8 @@ const DeleteTweetPopUp = ({
   showDeleteDialog,
   setShowDeleteDialog,
 }: DeleteTweetPopUpProps) => {
+  const { tweetId: currentPageTweetId } = useParams<{ tweetId: string }>();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { token } = useContext(UserContext);
   const { mutate: deleteTweetMutation, isPending } = useMutation({
@@ -23,11 +26,17 @@ const DeleteTweetPopUp = ({
       ? (tweetId: string) => deleteTweet(tweetId, token)
       : undefined,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tweet", currentPageTweetId] });
       queryClient.invalidateQueries({ queryKey: ["tweets"] });
       setShowDeleteDialog(false);
       toast({
         title: "Tweet deleted successfully",
       });
+
+
+      if (tweetId && tweetId === currentPageTweetId) {
+        navigate("/home");
+      }
     },
     onError: (err) => {
       toast({

@@ -2,6 +2,7 @@ import { HttpResponse, ResponseResolver } from "msw";
 
 export const userWorker: ResponseResolver = async ({ request }) => {
   const token = request.headers.get("Authorization")?.split(" ")[1];
+
   if (!token)
     return HttpResponse.json({ message: "Invalid token" }, { status: 401 });
 
@@ -10,21 +11,20 @@ export const userWorker: ResponseResolver = async ({ request }) => {
   return HttpResponse.json(
     {
       data: {
-        userName: "johndoe123",
-        name: "John Doe",
+        userName: "midoa231s",
+        name: "Mohamed Atef",
         birthDate: new Date().toISOString(),
         email: "sofa5060@gmail.com",
-        url: "www.johndoe.com",
-        description: "oh hello there",
+        url: "www.atef.com",
+        description: "working on profile page",
         protected: false,
         verified: true,
-        followerCount: 0,
+        followersCount: 0,
         followingCount: 5,
         createdAt: new Date().toISOString(),
         profileBannerUrl:
-          "https://notdeterminedyet.com/profile_banners/819797/1348102824",
-        profileImageUrl:
-          "https://notdeterminedyet.com/profile_banners/819797/1348102824",
+          "https://cdnb.artstation.com/p/assets/images/images/069/047/351/large/daito_-img-1285-20231030-023232.jpg?1699242054",
+        profileImageUrl: "https://avatars.githubusercontent.com/u/124599?v=4",
       },
     },
     {

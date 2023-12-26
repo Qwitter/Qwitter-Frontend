@@ -55,6 +55,20 @@ export const TweetSchema = z.object({
   qouteTweetedId: z.string(),
   sensitive: z.boolean(),
   entities: TweetEntitiesSchema,
+  currentUserRetweetId: z.string().nullable(),
+  isFollowing: z.boolean().default(false),
+  isMuted: z.boolean().default(false),
+  readCount: z.number().default(0),
 });
 
 export type Tweet = z.infer<typeof TweetSchema>;
+
+export type TweetWithRetweet = Tweet & {
+  retweetedTweet: TweetWithRetweet | null;
+};
+
+export type TweetWithReply = Tweet & { replyToTweet: TweetWithReply | null };
+
+export type TweetWithReplyAndRetweet = TweetWithReply & {
+  retweetedTweet: TweetWithReplyAndRetweet | null;
+};

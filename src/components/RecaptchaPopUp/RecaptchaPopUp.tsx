@@ -2,7 +2,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from "react";
 import { PopUpContainer } from "../PopUpContainer/PopUpContainer";
 import { HeaderButton } from "@/models/PopUpModel";
-const RECAPTCHA_KEY = import.meta.env?.VITE_RECAPTCHA_KEY;
+const RECAPTCHA_KEY = process.env.VITE_RECAPTCHA_KEY as string;
 
 /*
 NEEDED:
@@ -33,9 +33,6 @@ export const RecaptchaPopUp = ({ afterAuth, prevPage }: RecaptchaProps) => {
     }, 500);
   };
 
-  const handleExpire = () => {
-    console.log("Expired");
-  };
 
   return (
     <PopUpContainer
@@ -48,7 +45,6 @@ export const RecaptchaPopUp = ({ afterAuth, prevPage }: RecaptchaProps) => {
       <ReCAPTCHA
         sitekey={RECAPTCHA_KEY}
         onChange={handleReCaptcha}
-        onExpired={handleExpire}
       />
     </PopUpContainer>
   );

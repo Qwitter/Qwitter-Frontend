@@ -1,17 +1,25 @@
 import { cn } from "@/lib";
-import { Tweet } from "@/models/Tweet";
+import { Tweet, TweetWithReplyAndRetweet } from "@/models/Tweet";
 import { HiOutlineXMark } from "react-icons/hi2";
+import { Link, useLocation } from "react-router-dom";
 
 type TweetImagesViewerOnly = {
   mode?: "view-only";
   images: Tweet["entities"]["media"];
   removeAttachment?: (index: number) => void;
+  screen?: "tweet" | "message";
+  viewImageMode?: "tweet" | "normal" | "view";
+  tweet?: TweetWithReplyAndRetweet | null;
+
 };
 
 type TweetImagesEditor = {
   mode?: "edit";
   images: Tweet["entities"]["media"];
   removeAttachment: (index: number) => void;
+  screen: "tweet" | "message";
+  viewImageMode?: "tweet" | "normal" | "view";
+  tweet?: TweetWithReplyAndRetweet;
 };
 
 type TweetImagesViewerProps = TweetImagesEditor | TweetImagesViewerOnly;
@@ -19,14 +27,19 @@ type TweetImagesViewerProps = TweetImagesEditor | TweetImagesViewerOnly;
 const TweetImagesViewer = ({
   images,
   mode = "view-only",
+  screen = "tweet",
   removeAttachment,
+  viewImageMode = "normal",
+  tweet = null
 }: TweetImagesViewerProps) => {
+  const location = useLocation();
   return (
     <div
       className={cn("mt-4 rounded-xl overflow-hidden w-full", {
         "max-h-[290px] pb-[290px] h-full": images.length > 1,
         "max-h-[298px]": mode === "edit" && images.length === 4,
-        hidden: images.length === 0,
+        "h-[200px] max-w-[400px]": screen === "message",
+        "hidden mt-0": !images || images.length === 0,
       })}
     >
       {images.length === 3 ? (
@@ -37,13 +50,43 @@ const TweetImagesViewer = ({
             className={cn("relative flex-1 h-full w-full overflow-hidden")}
             key={images[0].value}
           >
-            <img
-              src={images[0].value}
-              alt=""
-              className={cn("h-full absolute object-cover min-w-full", {
-                "rounded-xl": mode === "edit",
-              })}
-            />
+            {viewImageMode == 'view' ?
+              <Link
+                to={"/flow/photo"}
+                state={{ previousLocation: location, photo: images[0].value }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <img
+                  src={images[0].value}
+                  alt=""
+                  className={cn("h-full absolute object-cover min-w-full cursor-pointer", {
+                    "rounded-xl": mode === "edit",
+                  })}
+                />
+              </Link> :
+              viewImageMode == 'tweet' ?
+                <Link
+                  to={`/tweet/${tweet?.id}/media`}
+                  state={{ previousLocation: location, tweet: tweet, index: 0 }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <img
+                    src={images[0].value}
+                    alt=""
+                    className={cn("h-full absolute object-cover min-w-full cursor-pointer", {
+                      "rounded-xl": mode === "edit",
+                    })}
+                  />
+                </Link>
+                :
+                <img
+                  src={images[0].value}
+                  alt=""
+                  className={cn("h-full absolute object-cover min-w-full ", {
+                    "rounded-xl": mode === "edit",
+                  })}
+                />
+            }
             {mode === "edit" && (
               <HiOutlineXMark
                 className="tweet-image-remover-icon"
@@ -61,13 +104,42 @@ const TweetImagesViewer = ({
                 className="relative flex-1 h-full w-full overflow-hidden"
                 key={image.value}
               >
-                <img
-                  src={image.value}
-                  alt=""
-                  className={cn("h-full absolute object-cover min-w-full", {
-                    "rounded-xl": mode === "edit",
-                  })}
-                />
+                {viewImageMode == "view" ?
+                  <Link
+                    to={"/flow/photo"}
+                    state={{ previousLocation: location, photo: image.value }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <img
+                      src={image.value}
+                      alt=""
+                      className={cn("h-full absolute object-cover min-w-full cursor-pointer", {
+                        "rounded-xl": mode === "edit",
+                      })}
+                    />
+                  </Link> : viewImageMode == 'tweet' ?
+                    <Link
+                      to={`/tweet/${tweet?.id}/media`}
+                      state={{ previousLocation: location, tweet: tweet, index: i+1 }}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <img
+                        src={image.value}
+                        alt=""
+                        className={cn("h-full absolute object-cover min-w-full cursor-pointer", {
+                          "rounded-xl": mode === "edit",
+                        })}
+                      />
+                    </Link>
+                    :
+                    <img
+                      src={image.value}
+                      alt=""
+                      className={cn("h-full absolute object-cover min-w-full", {
+                        "rounded-xl": mode === "edit",
+                      })}
+                    />
+                }
                 {mode === "edit" && (
                   <HiOutlineXMark
                     className="tweet-image-remover-icon"
@@ -89,18 +161,50 @@ const TweetImagesViewer = ({
             })}
           >
             {images.slice(0, 2).map((image, i) => (
-              <div
+              <div data-testid="messageMedia"
                 className={cn("relative flex-1 h-full w-full overflow-hidden")}
                 key={image.value}
               >
-                <img
-                  src={image.value}
-                  alt=""
-                  className={cn("h-full absolute object-cover min-w-full", {
-                    static: images.length === 1,
-                    "rounded-xl": mode === "edit",
-                  })}
-                />
+                {viewImageMode == "view" ?
+                  <Link
+                    to={"/flow/photo"}
+                    state={{ previousLocation: location, photo: image.value }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <img
+                      src={image.value}
+                      alt=""
+                      className={cn("h-full absolute object-cover min-w-full cursor-pointer", {
+                        static: images.length === 1,
+                        "rounded-xl": mode === "edit",
+                      })}
+                    />
+                  </Link> : viewImageMode == 'tweet' ?
+                    <Link
+                      to={`/tweet/${tweet?.id}/media`}
+                      state={{ previousLocation: location, tweet: tweet, index: i }}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <img
+                        src={image.value}
+                        alt=""
+                        className={cn("h-full absolute object-cover min-w-full cursor-pointer", {
+                          static: images.length === 1,
+                          "rounded-xl": mode === "edit",
+                        })}
+                      />
+                    </Link>
+                    :
+                    <img
+                      src={image.value}
+                      alt=""
+                      className={cn("h-full absolute object-cover min-w-full", {
+                        static: images.length === 1,
+                        "rounded-xl": mode === "edit",
+                      })}
+                    />
+                }
+
                 {mode === "edit" && (
                   <HiOutlineXMark
                     className="tweet-image-remover-icon"
@@ -121,14 +225,82 @@ const TweetImagesViewer = ({
                 className="relative flex-1 h-full w-full overflow-hidden"
                 key={image.value}
               >
-                <img
-                  src={image.value}
-                  alt=""
-                  className={cn("h-full absolute object-cover min-w-full", {
-                    static: images.length === 1,
-                    "rounded-xl": mode === "edit",
-                  })}
-                />
+                {viewImageMode == "view" ?
+                  <Link
+                    to={"/flow/photo"}
+                    state={{ previousLocation: location, photo: image.value }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <img
+                      src={image.value}
+                      alt=""
+                      className={cn("h-full absolute object-cover min-w-full cursor-pointer", {
+                        static: images.length === 1,
+                        "rounded-xl": mode === "edit",
+                      })}
+                    />
+                  </Link> : viewImageMode == 'tweet' ?
+                    <Link
+                      to={`/tweet/${tweet?.id}/media`}
+                      state={{ previousLocation: location, tweet: tweet, index: i+2 }}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <img
+                        src={image.value}
+                        alt=""
+                        className={cn("h-full absolute object-cover min-w-full cursor-pointer", {
+                          "rounded-xl": mode === "edit",
+                        })}
+                      />
+                    </Link>
+                    :
+                    <img
+                      src={image.value}
+                      alt=""
+                      className={cn("h-full absolute object-cover min-w-full", {
+                        static: images.length === 1,
+                        "rounded-xl": mode === "edit",
+                      })}
+                    />
+                }
+                {viewImageMode == "view" ?
+                  <Link
+                    to={"/flow/photo"}
+                    state={{ previousLocation: location, photo: image.value }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <img
+                      src={image.value}
+                      alt=""
+                      className={cn("h-full absolute object-cover min-w-full cursor-pointer", {
+                        static: images.length === 1,
+                        "rounded-xl": mode === "edit",
+                      })}
+                    />
+                  </Link> : viewImageMode == 'tweet' ?
+                    <Link
+                      to={`/tweet/${tweet?.id}/media`}
+                      state={{ previousLocation: location, tweet: tweet, index: i+2 }}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <img
+                        src={image.value}
+                        alt=""
+                        className={cn("h-full absolute object-cover min-w-full cursor-pointer", {
+                          "rounded-xl": mode === "edit",
+                        })}
+                      />
+                    </Link>
+                    :
+                    <img
+                      src={image.value}
+                      alt=""
+                      className={cn("h-full absolute object-cover min-w-full", {
+                        static: images.length === 1,
+                        "rounded-xl": mode === "edit",
+                      })}
+                    />
+                }
                 {mode === "edit" && (
                   <HiOutlineXMark
                     className="tweet-image-remover-icon"

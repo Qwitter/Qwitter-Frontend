@@ -21,13 +21,15 @@ export const useInfiniteScroll = (
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-    refetch
+    refetch,
+    isFetching,
   } = useInfiniteQuery({
     queryKey: queryKey,
     queryFn: fetchFunction,
     initialPageParam: 1,
-    getNextPageParam: (_, allPages) => {
-      return allPages.length + 1;
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage && lastPage.length > 0) return allPages.length + 1;
+      return null;
     },
   });
 
@@ -37,6 +39,14 @@ export const useInfiniteScroll = (
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
-  
-  return { data, ref, isFetchingNextPage, error, isError, refetch };
+  return {
+    data,
+    ref,
+    isFetchingNextPage,
+    error,
+    isError,
+    refetch,
+    hasNextPage,
+    isFetching,
+  };
 };

@@ -5,7 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from '@tanstack/react-query';
 import { Skeleton } from '../ui/skeleton';
-import {  verifyPassword } from '@/lib/utils';
+import { verifyPassword } from '@/lib/utils';
 import { useContext } from 'react';
 import { VerifyPasswordSchema } from '@/models/VerifyPassword';
 import { toast } from '../ui/use-toast';
@@ -15,27 +15,36 @@ type prob = {
     nextStep: () => void;
 }
 export function VerifyEmailPassword({ nextStep }: prob) {
-    const { token } = useContext(UserContext)
+    const { token, } = useContext(UserContext)
     const form = useForm<z.infer<typeof VerifyPasswordSchema>>({
         resolver: zodResolver(VerifyPasswordSchema),
     });
     const { mutate, isPending } = useMutation({
         mutationFn: verifyPassword,
-        onSuccess: () => {
-            nextStep();
+        onSuccess: (data) => {
+            if (data)
+                nextStep();
+            else
+                toast({
+                    description: "Wrong password!",
+                    variant: "secondary",
+                    duration: 2000,
+                    className: "py-4"
+
+                })
         },
         onError: () => {
             toast({
                 description: "Wrong password!",
                 variant: "secondary",
                 duration: 2000,
-                className:"py-4"
-                
+                className: "py-4"
+
             })
         },
     })
     const onSubmit = ({ Password }: { Password: string }) => {
-        mutate({ token: token!, password:Password })
+        mutate({ token: token!, password: Password })
     };
     if (isPending) {
         return (
@@ -55,6 +64,7 @@ export function VerifyEmailPassword({ nextStep }: prob) {
                     placeHolder='password'
                     className='w-full'
                     isPassword
+                    type='password'
                     role='text'
                     {...form.register("Password", {
                         required: "password is required",

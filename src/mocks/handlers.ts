@@ -20,14 +20,30 @@ import { EditProfileWorker } from "./EditProfileWorker/EditProfileWorker";
 import { TimelineTweetsWorker } from "./TimelineTweetsWorker/TimelineTweetsWorkers";
 import {
   bookmarkTweetWorker,
+  createTweetWorker,
   deleteTweetWorker,
+  getTweetWorker,
   likeTweetWorker,
   unBookmarkTweetWorker,
   unLikeTweetWorker,
 } from "./TweetWorker/TweetWorker";
 import { UploadProfileImageWorker } from "./RegisterUserWorker/UploadProfileImageWorker";
+import { userProfileWorker } from "./UserWorker/UserProfileWorker";
+import { FollowSuggestionsWorker } from "./FollowSuggestionsWorker/FollowSuggestionsWorker";
+import {
+  FollowUserWorker,
+  UnFollowUserWorker,
+} from "./FollowUserWorker/FollowUserWorker";
+import { TrendsWorker } from "./TrendsWorker/TrendsWorker";
+import { FollowersWorker } from "./FollowersWorker/FollowersWorker";
+import { FollowingsWorker } from "./FollowingsWorker/FollowingsWorker";
+import {
+  BlockUserWorker,
+  UnBlockUserWorker,
+} from "./BlockUserWorker/BlockUserWorker";
+import { BlockedWorker } from "./BlockedWorker/BlockedWorker";
 
-const { VITE_BACKEND_URL } = import.meta.env;
+const { VITE_BACKEND_URL } = process.env;
 
 export const handlers = [
   http.post(
@@ -61,7 +77,7 @@ export const handlers = [
     `${VITE_BACKEND_URL}/api/v1/auth/forgot-password`,
     sendResetPasswordVerificationTokenWorker
   ),
-  http.get(`${VITE_BACKEND_URL}/api/user`, userWorker),
+  http.get(`${VITE_BACKEND_URL}/api/v1/user`, userWorker),
   http.post(
     `${VITE_BACKEND_URL}/api/v1/auth/signup/google`,
     OAuthRegisterUserWorker
@@ -97,4 +113,49 @@ export const handlers = [
     unBookmarkTweetWorker
   ),
   http.delete(`${VITE_BACKEND_URL}/api/v1/tweets/:tweetId`, deleteTweetWorker),
+  http.get(`${VITE_BACKEND_URL}/api/v1/user/johndoe123`, userProfileWorker),
+  http.get(`${VITE_BACKEND_URL}/api/v1/user/samy`, userProfileWorker),
+  http.get(
+    `${VITE_BACKEND_URL}/api/v1/tweets/user/johndoe123/media?page=1&limit=10`,
+    TimelineTweetsWorker
+  ),
+  http.get(
+    `${VITE_BACKEND_URL}/api/v1/tweets/user/johndoe123/like?page=1&limit=10`,
+    TimelineTweetsWorker
+  ),
+  http.get(
+    `${VITE_BACKEND_URL}/api/v1/tweets/user/johndoe123/replies?page=1&limit=10`,
+    TimelineTweetsWorker
+  ),
+  http.get(
+    `${VITE_BACKEND_URL}/api/v1/tweets/user/johndoe123?page=1&limit=10`,
+    TimelineTweetsWorker
+  ),
+  http.get(
+    `${VITE_BACKEND_URL}/api/v1/user/suggestions`,
+    FollowSuggestionsWorker
+  ),
+  http.post(
+    `${VITE_BACKEND_URL}/api/v1/user/follow/:username`,
+    FollowUserWorker
+  ),
+  http.delete(
+    `${VITE_BACKEND_URL}/api/v1/user/follow/:username`,
+    UnFollowUserWorker
+  ),
+  http.get(`${VITE_BACKEND_URL}/api/v1/trends`, TrendsWorker),
+  http.get(`${VITE_BACKEND_URL}/api/v1/user/followers`, FollowersWorker),
+  http.get(`${VITE_BACKEND_URL}/api/v1/user/follow`, FollowingsWorker),
+  http.post(`${VITE_BACKEND_URL}/api/v1/user/block/:username`, BlockUserWorker),
+  http.delete(
+    `${VITE_BACKEND_URL}/api/v1/user/block/:username`,
+    UnBlockUserWorker
+  ),
+  http.get(`${VITE_BACKEND_URL}/api/v1/user/block`, BlockedWorker),
+  http.get(`${VITE_BACKEND_URL}/api/v1/tweets/:tweetId`, getTweetWorker),
+  http.get(
+    `${VITE_BACKEND_URL}/api/v1/tweets/:tweetId/replies`,
+    TimelineTweetsWorker
+  ),
+  http.post(`${VITE_BACKEND_URL}/api/v1/tweets`, createTweetWorker),
 ];

@@ -4,63 +4,80 @@ import { useContext, useState } from "react";
 import { Button } from "../ui/button";
 import { ImagePicker } from "../ImagePicker/ImagePicker";
 import { TextInput } from "../TextInput/TextInput";
-import axios from "axios";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { useForm } from "react-hook-form";
 import BirthDayInput from "../BirthDayInput/BirthDayInput";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EditUserSchema } from "@/models/User";
+import { EditUserSchema, User } from "@/models/User";
 import { useToast } from "../ui/use-toast";
 import { DiscardProfileChanges } from "./DiscardProfileChanges";
-import { uploadProfileImage } from "@/lib/utils";
-const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+import {
+  deleteProfileBanner,
+  editUserProfile,
+  uploadProfileImage,
+} from "@/lib/utils";
+import { useNavigate, useParams } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { LoadingOverlay } from "../LoadingOverlay/LoadingOverlay";
 
 type EditProfileProps = {
   onSave?: () => void;
   onClose?: () => void;
 };
 
-/*
-NEEDED:
-  set values in the context
-  may move functionality to utils (ask seif)
-*/
-
 export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
   const [showEditProfile, setShowEditProfile] = useState<boolean>(true);
   const [profileImage, setProfileImage] = useState<File>();
   const [profileBanner, setProfileBanner] = useState<File>();
   const [showDiscardChanges, setShowDiscardChanges] = useState<boolean>(false);
-  const { user, token } = useContext(UserContext); // token will be used for authorization
+  const { user, token, saveUser } = useContext(UserContext);
+  const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const { username } = useParams();
+  const queryClient = useQueryClient();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
-  const contextBirthDate = new Date(user?.birthDate!);
+  const contextBirthDate = new Date(user ? user.birthDate : "");
   const birthDay = contextBirthDate.getDate();
   const birthMonth = contextBirthDate.toLocaleString("default", {
     month: "long",
   });
   const birthYear = contextBirthDate.getFullYear();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const form = useForm<any>({
     resolver: zodResolver(EditUserSchema),
     defaultValues: {
       name: user?.name,
-      bio: user?.bio,
+      description: user?.description,
       location: user?.location,
-      website: user?.website,
-      day: birthDay,
-      month: birthMonth,
-      year: birthYear,
+      url: user?.url,
+      day: birthDay.toString(),
+      month: birthMonth.toString(),
+      year: birthYear.toString(),
     },
   });
 
+  const getFormDate = () => {
+    return new Date(
+      `${form.getValues().year.toString()}-${form.getValues().month}-${form
+        .getValues()
+        .day.toString()}`
+    );
+  };
+
   const isChanged = (): boolean => {
+    const contextBD = new Date(user?.birthDate ?? "").toISOString();
+
     return !(
       form.getValues().name == user?.name &&
-      form.getValues().bio == user?.bio &&
+      form.getValues().description == user?.description &&
       form.getValues().location == user?.location &&
-      form.getValues().website == user?.website &&
-      form.getValues().birthDate == user?.birthDate
+      form.getValues().url == user?.url &&
+      getFormDate().toISOString() == contextBD &&
+      profileImage == undefined &&
+      profileBanner == undefined &&
+      !isDeleted
     );
   };
 
@@ -75,31 +92,79 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
   const handleClose = (): void => {
     setShowEditProfile(false);
     if (onClose) onClose();
+    navigate(-1);
   };
 
-  // NEEDED: handle loading state
+  const { mutate: editUser, isPending } = useMutation<
+    User,
+    Error,
+    User,
+    unknown
+  >({
+    mutationFn: async (editedUserData: User) => {
+      if (profileImage)
+        await uploadProfileImage({ picFile: profileImage!, token: token! });
+      if (profileBanner && !isDeleted)
+        await uploadProfileImage({
+          picFile: profileBanner!,
+          token: token!,
+          isBanner: true,
+        });
+
+      if (isDeleted) deleteProfileBanner({ token: token! });
+
+      return await editUserProfile(editedUserData, token!);
+    },
+    onSuccess: (editedUserData) => {
+      queryClient.invalidateQueries({
+        queryKey: ["profile", token, username],
+      });
+
+      saveUser({
+        followersCount:user?.followersCount??0,
+        followingCount:user?.followingCount??0,
+        name: editedUserData.name,
+        email: user?.email ?? "",
+        birthDate: editedUserData.birthDate,
+        userName: user?.userName ?? "",
+        createdAt: user?.createdAt ?? "",
+        location: editedUserData.location,
+        description: editedUserData.description,
+        url: editedUserData.url,
+        passwordChangedAt: user?.passwordChangedAt ?? "",
+        id: user?.id ?? "",
+        google_id: user?.google_id ?? "",
+        profileImageUrl: editedUserData.profileImageUrl,
+        profileBannerUrl: editedUserData.profileBannerUrl,
+        verified: editedUserData.verified ?? false,
+        isFollowing: editedUserData.isFollowing ?? false,
+      });
+
+      if (onSave) onSave();
+      handleClose();
+    },
+    onError: () => {
+      toast({
+        variant: "secondary",
+        title: "Request error",
+        description: "Error editing profile",
+      });
+    },
+  });
+
   const handleSave = async (): Promise<void> => {
     // check for errors first
     await form.trigger();
     if (Object.keys(form.formState.errors).length > 0) {
-      if (form.formState.errors.website) {
+      if (form.formState.errors.url) {
         toast({
+          variant: "secondary",
           title: "Account Update Failed",
-          description: form.formState.errors.website?.message?.toString(),
+          description: form.formState.errors.url?.message?.toString(),
         });
       }
       return;
     }
-
-    if (profileImage) {
-      await uploadProfileImage(profileImage, token!);
-    }
-
-    if (profileBanner) {
-      await uploadProfileImage(profileBanner, token!, true);
-    }
-
-    // code here may go to utils <---------------------------------------------------------------------------
 
     if (!isChanged()) {
       if (onSave) onSave();
@@ -107,38 +172,29 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
       return;
     }
 
-    const birthDate = new Date(
-      `${form.getValues().year.toString()}-${form.getValues().month}-${form
-        .getValues()
-        .day.toString()}`
-    );
-    const birthDateISO = birthDate.toISOString();
+    let newURL = "";
 
-    try {
-      await axios.put(
-        `${VITE_BACKEND_URL}/api/v1/user/profile`,
-        {
-          name: form.getValues().name,
-          description: form.getValues().bio,
-          Location: form.getValues().location,
-          url: form.getValues().website,
-          birth_date: birthDateISO,
-        },
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "object",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-    } catch (error) {
-      console.log(error);
-      return;
+    if (form.getValues().url) {
+      if (form.getValues().url.startsWith("http"))
+        newURL = form.getValues().url;
+      else newURL = `http://${form.getValues().url}`;
+
+      if (newURL[newURL.length - 1] == "/") newURL = newURL.slice(0, -1);
     }
 
-    if (onSave) onSave();
-    handleClose();
+    const editedUserData = {
+      ...user,
+      name: form.getValues().name,
+      description: form.getValues().description,
+      location: form.getValues().location,
+      url: newURL,
+      day: form.getValues().day,
+      month: form.getValues().month.toString(),
+      year: form.getValues().year.toString(),
+      birthDate: getFormDate().toISOString(),
+    } as User;
+
+    editUser(editedUserData);
   };
 
   const saveButton = (
@@ -146,79 +202,86 @@ export const EditProfilePopUp = ({ onSave, onClose }: EditProfileProps) => {
       Save
     </Button>
   );
-
   return (
-    <PopUpContainer
-      show={showEditProfile}
-      headerButton={HeaderButton.close}
-      className="p-0 max-h-[full] h-full sm:h-[600px] w-full items-start justify-start overflow-auto"
-      headerClassName="justify-between"
-      title="Edit profile"
-      optionalHeader={saveButton}
-      headerFunction={handleDiscardChanges}
-    >
-      <DiscardProfileChanges
-        showDiscardChanges={showDiscardChanges}
-        setShowDiscardChanges={setShowDiscardChanges}
-        handleClose={handleClose}
-      />
+    <>
+      <PopUpContainer
+        show={showEditProfile}
+        headerButton={HeaderButton.close}
+        className="p-0 max-h-[full] h-full sm:h-[600px] w-full items-start justify-start overflow-auto"
+        headerClassName="justify-between"
+        title="Edit profile"
+        optionalHeader={saveButton}
+        headerFunction={handleDiscardChanges}
+      >
+        <DiscardProfileChanges
+          showDiscardChanges={showDiscardChanges}
+          setShowDiscardChanges={setShowDiscardChanges}
+          handleClose={handleClose}
+        />
 
-      <div className="w-full h-[150px]">
-        <ImagePicker
-          // Banner
-          name="photo"
-          setImagePath={setProfileBanner}
-          image={user?.profileBannerUrl}
-          className="w-full h-[193px] rounded-none border-none"
-          imageClassName="rounded-none"
-        />
-      </div>
-      <ImagePicker
-        // Profile
-        name="photo"
-        setImagePath={setProfileImage}
-        image={user?.profileImageUrl}
-        className="w-[115px] h-[115px] z-20  ml-[15px] border-black bg-black p-[1px]"
-        imageClassName="w-[110px] h-[110px]"
-      />
-
-      <div className="px-4 w-full">
-        <TextInput
-          // Name
-          {...form.register("name", {})}
-          placeHolder="Name"
-          errorMessage={form.formState.errors.name?.message?.toString()}
-        />
-      </div>
-      <div className="px-4 w-full">
-        <TextInput
-          // Bio
-          {...form.register("bio", {})}
-          placeHolder="Bio"
-          errorMessage={form.formState.errors.bio?.message?.toString()}
-        />
-      </div>
-      <div className="px-4 w-full">
-        <TextInput
-          // Location
-          {...form.register("location", {})}
-          placeHolder="Location"
-        />
-      </div>
-      <div className="px-4 w-full">
-        <TextInput
-          // Website
-          {...form.register("website", {})}
-          placeHolder="Website"
-        />
-      </div>
-      <div className="p-4 w-full">
-        <span className="text-gray text-[17px]">Birth date</span>
-        <div className="text-[20px]">
-          {`${birthMonth} ${birthDay}, ${birthYear}`}
-          <BirthDayInput form={form} className="py-3" />
+        <div className="w-full h-[150px]">
+          <ImagePicker
+            // Banner
+            name="photo"
+            setImagePath={setProfileBanner}
+            image={user?.profileBannerUrl}
+            className="w-full h-[193px] rounded-none border-none p-0"
+            imageClassName="rounded-none "
+            isRemovable
+            isBanner
+            setIsDeleted={setIsDeleted}
+          />
         </div>
-      </div>
-    </PopUpContainer>
+        <ImagePicker
+          // Profile
+          name="photo"
+          setImagePath={setProfileImage}
+          image={user?.profileImageUrl}
+          className="w-[115px] h-[115px] z-20  ml-[15px] border-black bg-black p-[1px]"
+          imageClassName="w-[110px] h-[110px]"
+        />
+
+        <div className="px-4 w-full">
+          <TextInput
+            // Name
+            {...form.register("name", {})}
+            placeHolder="Name"
+            errorMessage={form.formState.errors.name?.message?.toString()}
+            maxLength={50}
+          />
+        </div>
+        <div className="px-4 w-full">
+          <TextInput
+            // Bio
+            {...form.register("description", {})}
+            placeHolder="Bio"
+            errorMessage={form.formState.errors.description?.message?.toString()}
+            maxLength={160}
+          />
+        </div>
+        <div className="px-4 w-full">
+          <TextInput
+            // Location
+            {...form.register("location", {})}
+            placeHolder="Location"
+          />
+        </div>
+        <div className="px-4 w-full">
+          <TextInput
+            // Website
+            {...form.register("url", {})}
+            placeHolder="Website"
+          />
+        </div>
+        <div className="p-4 w-full">
+          <span className="text-gray text-[17px]">Birth date</span>
+          <div className="text-[20px]">
+            {`${birthMonth} ${birthDay}, ${birthYear}`}
+            <BirthDayInput form={form} className="py-3" />
+          </div>
+        </div>
+      </PopUpContainer>
+      <LoadingOverlay show={isPending} />
+    </>
   );
 };

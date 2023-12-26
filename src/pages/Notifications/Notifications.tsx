@@ -1,56 +1,244 @@
-import { useState } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
-import SearchInput from "@/components/SearchInput/SearchInput";
-export function Notifications() {
-    const [active, setActive] = useState("ALL");
-
-    return (
-        <>
-            <div className="max-w-[600px] w-full h-full flex-grow border-r border-primary border-opacity-30 ">
-                <div className="flex flex-col min-h-[50px] w-full sticky  top-[-1px] bg-black  z-50 border-b border-primary border-opacity-30">
-                    <div className="px-4 w-full h-[53px]">
-                        <div className="w-full h-full flex  items-center">
-                        <h2 className="font-bold text-xl">Notifications</h2>
-                        </div>
-                    </div>
-                    <div className="flex flex-row min-h-[50px] w-full sticky  top-[-1px]  z-50 border-b border-primary border-opacity-30">
-
-                        <div className="w-full  flex justify-center items-center  px-4 py-0 min-w-[56px] hover:bg-[#181818] transition-all cursor-pointer" onClick={() => setActive("ALL")}>
-                            <span className={`${active == "ALL" ? 'text-primary border-b-4 font-bold py-3 border-solid border-secondary ' : 'text-gray'} text-base  `}>
-                                ALL
-                            </span>
-                        </div>
-                        <div className="w-full  flex justify-center items-center  px-4 py-0 min-w-[56px] hover:bg-[#181818] transition-all cursor-pointer" onClick={() => setActive("Verified")}>
-                            <span className={`${active == "Verified" ? 'text-primary border-b-4 font-bold py-3 border-solid border-secondary ' : 'text-gray'} text-base  `}>
-                                Verified
-                            </span>
-                        </div>
-
-
-                        <div className="w-full  flex justify-center items-center  px-4 py-0 min-w-[56px]  hover:bg-[#181818] transition-all cursor-pointer " onClick={() => setActive("Mentions")}>
-                            <span className={`${active == "Mentions" ? 'text-primary border-b-4 font-bold py-3 border-solid border-secondary ' : 'text-gray'} text-base  `}>
-                                Mentions
-                            </span>
-                        </div>
-                    </div>
-
-                </div>
-                
-            </div>
-            <div className="max-w-[600px]  pb-16 relative flex flex-col z-0 w-[36.5%] max-largeX:hidden  h-full">
-                <div className="w-full sticky top-0 z-50 bg-black   ">
-                    <SearchInput />
-                </div>
-                <div className="px-4 py-3 rounded-lg mt-5 bg-dark-gray">
-                    <Skeleton className="w-full  h-[120px] " />
-                </div>
-                <div className="px-4 py-3 rounded-lg mt-5 bg-dark-gray">
-                    <Skeleton className="w-full  h-[500px] " />
-                </div>
-                <div className="px-4 py-3 rounded-lg mt-5 bg-dark-gray">
-                    <Skeleton className="w-full  h-[300px] " />
-                </div>
-            </div>
-        </>
-    );
+import { LegacyRef, useEffect, useMemo, useState } from "react";
+import { Heart, Sparkle, User } from "lucide-react";
+import { Link, useLocation, useNavigate, /*useNavigate*/ } from "react-router-dom";
+import { BiRepost } from "react-icons/bi";
+import Logo from "../../assets/logo.png";
+import { User as UserType } from "@/models/User";
+import { InfiniteData, useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { TweetWithReplyAndRetweet, TweetWithRetweet } from "@/models/Tweet";
+import { MessageUser } from "../../models/MessagesTypes";
+import { getMentionsList, getNotificationsList } from "@/lib/utils";
+import { Spinner } from "@/components/Spinner";
+import moment from "moment";
+import { default as TweetComponent } from "../../components/Tweet/Tweet";
+import { UserNameHoverCard } from "@/components/UserNameHoverCard/UserNameHoverCard";
+import { useInView } from "react-intersection-observer";
+export type NotificationsType = {
+  type: string;
+  createdAt: string;
+  reply?: TweetWithReplyAndRetweet & { author: MessageUser };
+  follower?: MessageUser;
+  like?: TweetWithRetweet & { liker: MessageUser };
+  retweet?: TweetWithRetweet & { author: MessageUser };
+  post?:TweetWithReplyAndRetweet & { author: MessageUser };
 }
+export function Notifications() {
+  const { ref, inView } = useInView();
+  const [active, setActive] = useState("ALL");
+  const handleNotificationsPaging = ({
+    pageParam
+  }: {
+    pageParam: number;
+  }): Promise<NotificationsType[]> => {
+
+    return getNotificationsList(pageParam, 10)
+  }
+  const { isPending, data: notifications, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ["Notifications"],
+      initialPageParam: 1,
+      getNextPageParam: (data, allPages) => {
+        return data.length === 10? allPages.length + 1 : undefined;
+      },
+      queryFn: handleNotificationsPaging,
+    });
+  useEffect(() => {
+    if (hasNextPage && notifications) {
+      fetchNextPage();
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView]);
+  const NotificationsList = useMemo(() => {
+    return notifications?.pages.flat() || [];
+  }, [notifications]);
+
+  return (
+    <div className="max-w-[600px] w-full h-full flex-grow border-r border-primary border-opacity-30 ">
+      <div className="flex flex-col min-h-[50px] w-full sticky backdrop-blur-2xl top-[-1px] bg-black  z-50 border-b border-primary border-opacity-20">
+        <div className="px-4 w-full h-[53px]">
+          <div className="w-full h-full flex  items-center">
+            <h2 className="font-bold text-xl">Notifications</h2>
+          </div>
+        </div>
+        <div className="flex flex-row min-h-[50px] w-full sticky  top-[-1px]  z-50 border-b border-primary border-opacity-30">
+          <div
+            className="w-full  flex justify-center items-center  px-4 py-0 min-w-[56px] hover:bg-[#181818] transition-all cursor-pointer"
+            onClick={() => setActive("ALL")}
+          >
+            <span
+              className={`${active == "ALL"
+                ? "text-primary border-b-4 font-bold py-3 border-solid border-secondary "
+                : "text-gray"
+                } text-base  `}
+            >
+              ALL
+            </span>
+          </div>
+
+          <div
+            data-testid="mentions"
+            className="w-full  flex justify-center items-center  px-4 py-0 min-w-[56px]  hover:bg-[#181818] transition-all cursor-pointer "
+            onClick={() => setActive("Mentions")}
+          >
+            <span
+              className={`${active == "Mentions"
+                ? "text-primary border-b-4 font-bold py-3 border-solid border-secondary "
+                : "text-gray"
+                } text-base  `}
+            >
+              Mentions
+            </span>
+          </div>
+        </div>
+      </div>
+      <div className="relative min-h-[60vh]">
+        {active == "Mentions" ? <Mentions /> :
+          <ShowAllNotifications NotificationsList={NotificationsList} isPending={isPending} notifications={notifications} hasNextPage={hasNextPage} isFetchingNextPage={isFetchingNextPage} ref={ref} />
+        }
+      </div>
+    </div>
+
+  );
+}
+function Mentions() {
+  const { isPending, data } = useQuery<TweetWithReplyAndRetweet[]>({
+    queryKey: ["getMentions"],
+    queryFn: () => getMentionsList(),
+  });
+
+  return (
+    <>
+      {isPending || !data ? <div className="w-full h-[500px] p-10">
+        <Spinner />
+      </div> :
+        data.map((tweet) => (
+          <>
+            <TweetComponent key={tweet.createdAt} tweet={tweet} />
+          </>))
+      }
+    </>
+
+  )
+}
+function ShowAllNotifications({ isPending, notifications, NotificationsList, hasNextPage, isFetchingNextPage, ref }:
+  { isPending: boolean, notifications: InfiniteData<NotificationsType[], unknown> | undefined, NotificationsList: NotificationsType[], hasNextPage: boolean, isFetchingNextPage: boolean, ref: LegacyRef<HTMLDivElement> | undefined }) {
+  return (
+    <>
+      {isPending || !notifications ? <div className="w-full h-[500px] p-10">
+        <Spinner />
+      </div> :
+        NotificationsList.map((notification, i) => (
+          <>
+            <Notification
+              key={notification.createdAt}
+              createdAt={notification.createdAt}
+              retweet={notification.retweet}
+              reply={notification.reply}
+              like={notification.like}
+              follower={notification.follower}
+              type={notification.type}
+              post={notification.post}
+            />
+            {(hasNextPage || isFetchingNextPage) && i === NotificationsList.length - 1 && (
+              <div className="py-10">
+                <div ref={ref}></div>
+                <Spinner />
+              </div>
+            )}
+          </>
+        ))
+
+      }</>
+
+  )
+}
+
+function Notification({ type, createdAt, follower, retweet, reply, like,post }: NotificationsType) {
+  const navigate = useNavigate()
+  const user = JSON.parse(localStorage.getItem("user")!) as UserType;
+  const VITE_DEFAULT_IMAGE = process.env.VITE_DEFAULT_IMAGE as string;
+
+  const typeUser = (follower || like?.liker || retweet?.author||post?.author);
+  const handleUrl = () => {
+    if (type == "follow")
+      navigate('/profile/' + follower!.userName)
+    else if (type == "like")
+      navigate('/tweet/' + like!.id)
+    else if (type == "retweet")
+      navigate('/tweet/' + retweet!.id)
+    else if (type == "post")
+      navigate('/tweet/' + post!.id)
+
+  }
+  const location = useLocation();
+  const formatDateMonthYear = (dateString: string) => {
+    const date = moment(dateString);
+    return date.format('MMM DD, YYYY');
+  };
+  if(type=='post'&&!post!.author){
+    return(<></>)
+  }
+  if (type == 'reply') {
+    return (
+
+      <TweetComponent
+        tweet={reply!}
+      />
+
+    )
+  }
+  return (
+    <div data-testid="likeNotif" className="px-4 py-3 cursor-pointer flex flex-row border-b border-primary border-opacity-30" onClick={handleUrl}>
+      <div className=" mr-3 w-10 h-full flex justify-end basis-10">
+        {
+          type == 'follow' && <User className="text-transparent w-8 h-8" fill="#1d9bf0" />}
+        {
+          type == 'retweet' && <BiRepost className="text-transparent w-9 h-[38px]" fill="#00ba7c" />
+        }
+        {
+          type == 'like' && <Heart className="text-transparent w-8 h-8" fill="#f91880" />
+        }
+        {
+          type == 'post' && <Sparkle className="text-transparent w-10 h-10" fill="#7b00f7" />
+        }
+        {
+          type == 'login' && <img src={Logo} className="text-transparent w-9 h-9" alt="" />
+        }
+      </div>
+      <div className="flex flex-col w-full">
+        {type == "login" ? <Link
+          to={"/Notification/login"}
+          state={{ previousLocation: location }}
+          className="font-semibold break-words">
+          There was a login to your account @{user.userName} from a new device on {formatDateMonthYear(createdAt)}. Review it now.
+        </Link> :
+          <><div className="mb-3 pr-5">
+            <div className="flex flex-row">
+              <img className="w-10 aspect-square p-1 rounded-full " src={typeUser?.profileImageUrl || VITE_DEFAULT_IMAGE} alt="" />
+            </div>
+          </div>
+            <div>
+              <div className="flex flex-row items-center gap-1 transition-all">
+                <UserNameHoverCard
+                  name={typeUser?.name || ""}
+                  isFollowing={typeUser?.isFollowing || false}
+                  description={typeUser?.description || ""}
+                  userName={typeUser?.userName || ""}
+                  followersCount={typeUser?.followersCount || 0}
+                  followingCount={typeUser?.followingCount || 0}
+                  profileImageUrl={typeUser?.profileImageUrl || VITE_DEFAULT_IMAGE}
+                />
+                <p > {type == 'follow' ? "followed you" : type == 'retweet' ? "reposted your post" : type == 'post'?" post a new post ,check it out ": "liked your post"}</p>
+              </div>
+              {type == "like" && <p className="text-sm text-gray mt-2 w-full max-sm:w-[50vw]"><p className="max-w-[88%] truncate">{like!.text}</p> <span className="break-words">{like!.entities.media.length > 0 && ' ' + like!.entities.media[0].value.substring(0, 70) + '...'} </span></p>}
+              {type == "retweet" && <p className="text-sm text-gray mt-2 w-full max-sm:w-[50vw] "><span className="max-w-[10vw] truncate">{retweet!.retweetedTweet!.text}</span>
+                <span className="break-words ">{retweet!.retweetedTweet!.entities.media.length > 0 && ' ' + retweet!.retweetedTweet!.entities.media[0].value.substring(0, 70) + '...'}</span> </p>}
+              {type == "post" && <p className="text-sm text-gray mt-2 w-full max-sm:w-[50vw] "><span className="max-w-[10vw] truncate">{post!.text}</span>
+                <span className="break-words ">{post!.entities.media.length > 0 && ' ' + post!.entities.media[0].value.substring(0, 70) + '...'}</span> </p>}
+            </div></>}
+      </div>
+    </div>
+  )
+}
+
