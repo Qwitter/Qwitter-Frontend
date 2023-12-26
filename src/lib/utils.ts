@@ -11,7 +11,7 @@ import { BirthDay, MONTHS } from "@/models/BirthDay";
 import { EditUserSchema, UserDataSchema } from "@/models/User";
 import moment from "moment";
 
-const { VITE_BACKEND_URL } = import.meta.env;
+const VITE_BACKEND_URL = process.env.VITE_BACKEND_URL as string;
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

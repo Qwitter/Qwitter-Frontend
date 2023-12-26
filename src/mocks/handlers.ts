@@ -43,7 +43,7 @@ import {
 } from "./BlockUserWorker/BlockUserWorker";
 import { BlockedWorker } from "./BlockedWorker/BlockedWorker";
 
-const { VITE_BACKEND_URL } = import.meta.env;
+const { VITE_BACKEND_URL } = process.env;
 
 export const handlers = [
   http.post(

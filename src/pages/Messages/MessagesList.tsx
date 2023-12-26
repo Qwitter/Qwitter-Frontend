@@ -19,7 +19,7 @@ export function MessagesList({
     setOpenConversation,
     matchedPart = "", mode = "normal" }: MessagesListProp) {
     const navigate = useNavigate()
-    const { VITE_DEFAULT_IMAGE } = import.meta.env;
+    const VITE_DEFAULT_IMAGE = process.env.VITE_DEFAULT_IMAGE as string;
 
     const { currentConversation, setCurrentConversation } = useContext(MessagesContext)
 

@@ -26,7 +26,7 @@ export const MessagesGroupEditPopup = () => {
     const { currentConversation ,setCurrentConversation} = useContext(MessagesContext)
     const navigate = useNavigate()
     const { conversationId } = useParams();
-    const { VITE_DEFAULT_IMAGE } = import.meta.env;
+    const VITE_DEFAULT_IMAGE = process.env.VITE_DEFAULT_IMAGE as string;
 
     const [imageKey, setImageKey] = useState<number>(0);
 

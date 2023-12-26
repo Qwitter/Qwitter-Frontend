@@ -2,7 +2,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from "react";
 import { PopUpContainer } from "../PopUpContainer/PopUpContainer";
 import { HeaderButton } from "@/models/PopUpModel";
-const RECAPTCHA_KEY = import.meta.env?.VITE_RECAPTCHA_KEY;
+const RECAPTCHA_KEY = process.env.VITE_RECAPTCHA_KEY as string;
 
 /*
 NEEDED:

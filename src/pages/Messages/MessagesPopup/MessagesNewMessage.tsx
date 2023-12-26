@@ -219,7 +219,7 @@ function ShowAllUserConversations({
 }) {
   const { userAllConversation } = useContext(MessagesContext);
   const navigate = useNavigate();
-  const { VITE_DEFAULT_IMAGE } = import.meta.env;
+  const VITE_DEFAULT_IMAGE = process.env.VITE_DEFAULT_IMAGE as string;
 
   return (
     <ul data-testid="searchedUsers" className="flex-shrink min-h-[60vh]">
