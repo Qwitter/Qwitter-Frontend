@@ -15,6 +15,16 @@ pipeline {
                 //sh 'npm run test'
             // }
         // }
+        stage('e2e') {  
+            steps {  
+                dir ("/home/fares/Qwitter-Testing/Web"){
+                    sh 'sudo ln -sf "$(which node)" /usr/bin/node'
+                    sh 'npm install'
+                    sh './node_modules/.bin/cypress install --force'
+                    sh 'npx cypress run --spec ./cypress/e2e/ci-cd/ci-cd.cy.js'
+                }
+            }
+        }
         stage('Build') {  
             steps {  
                 sh 'npm run build'
