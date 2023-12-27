@@ -38,41 +38,42 @@ export function NavBar() {
       });
       socket.emit(EVENTS.CLIENT.JOIN_ROOM, "ALL");
       socket.on(EVENTS.SERVER.FEED, async () => {
-        
-      queryClient.invalidateQueries({
-        queryKey: ["tweets"]
-      });
-      console.log(active)
-      if(active != "Home")
-        setHomeNewPosts(1);
+
+        queryClient.invalidateQueries({
+          queryKey: ["tweets"]
+        });
+        console.log(active)
+        if (getPageFromUrl(location.pathname.toLowerCase()) != "home" || active != 'Home')
+          setHomeNewPosts(1);
       });
     } catch (e) {
       e
     }
-    if(window.matchMedia){
-    const mediaQuery = window.matchMedia("(max-width: 1280px)");
-    setIsShown(mediaQuery.matches);
-    const handleMediaQueryChange = (event: {
-      matches: boolean | ((prevState: boolean) => boolean);
-    }) => {
-      setIsShown(event.matches);
-    };
-    mediaQuery.addEventListener("change", handleMediaQueryChange);
-    return () => {
-      mediaQuery.removeEventListener("change", handleMediaQueryChange);
-    };
-  }
+    if (window.matchMedia) {
+      const mediaQuery = window.matchMedia("(max-width: 1280px)");
+      setIsShown(mediaQuery.matches);
+      const handleMediaQueryChange = (event: {
+        matches: boolean | ((prevState: boolean) => boolean);
+      }) => {
+        setIsShown(event.matches);
+      };
+      mediaQuery.addEventListener("change", handleMediaQueryChange);
+      return () => {
+        mediaQuery.removeEventListener("change", handleMediaQueryChange);
+      };
+    }
   }, []);
 
   useEffect(() => {
-    if (active === "Notifications") {
+    const page = getPageFromUrl(location.pathname.toLowerCase());
+    if (active === "Notifications"||page== "notifications") {
       setNotificationCount(0);
-    } else if (active === "Home") {
+    } else if (active === "Home"||page== "home") {
       setHomeNewPosts(0);
-    } else if (active === "Messages") {
+    } else if (active === "Messages"||page == "messages") {
       setConversationsCount(0);
     }
-  }, [active])
+  }, [active,location])
   useEffect(() => {
     if (user) {
       setConversationsCount(user.unSeenConversation!);

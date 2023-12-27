@@ -30,7 +30,7 @@ const ImageGrid:React.FC<ImageGridProps> = ({ images,className }) => {
             <div className={cn('flex flex-row mr-4 w-10 h-10 overflow-hidden rounded-full min-w-[32px]  gap-[0.05rem]',className)}>
                 <div className={`grid grid-rows-2 gap-[0.05rem]`}>
                     {images.slice(0, -1).map((image, index) => (
-                        <img src={image} key={`Image ${index + 1}`} className=" max-w-full" />
+                        <img src={image} key={`Image ${index + 1}`} className="w-full h-full" />
                     ))}
                 </div>
                 <img src={images[2]} alt={`Image ${2 + 1}`} className=" h-full w-[50%] object-cover" />

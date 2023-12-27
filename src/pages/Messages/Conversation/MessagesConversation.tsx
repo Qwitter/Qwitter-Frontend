@@ -223,7 +223,7 @@ export function MessagesConversation({ conversationAccordionId }: { conversation
   }, [data]);
 
   useEffect(() => {
-    if (firstMessageInView && hasNextPage && data) {
+    if (firstMessageInView && hasNextPage && data&&(!isFirstPage||messageContainerRef.current!.scrollTop<=60)) {
       setScroll(messageContainerRef.current!.scrollHeight);
       fetchNextPage();
     }
