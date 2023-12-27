@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "@/contexts/UserContextProvider";
 import { UserNameHoverCard } from "../UserNameHoverCard/UserNameHoverCard";
+import { VITE_DEFAULT_IMAGE } from "@/constants";
 export function UsersListItem({
   profileImageUrl,
   name,
@@ -23,7 +24,7 @@ export function UsersListItem({
 }: UsersListItemProp) {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
-  const { VITE_DEFAULT_IMAGE } = process.env;
+
   return (
     <CardContent
       onClick={() => {

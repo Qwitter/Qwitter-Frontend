@@ -15,6 +15,7 @@ import { UserContext } from "@/contexts/UserContextProvider";
 import { MessageUser } from "../../../models/MessagesTypes";
 import { MessagesContext } from "@/contexts/MessagesContextProvider";
 import ImageGrid from "../ImageGrid";
+import { VITE_DEFAULT_IMAGE } from "@/constants";
 function MessagesNewMessage() {
   const [isFocus, setFocus] = useState(false);
   const [peopleSearchText, setPeopleSearchText] = useState("");
@@ -219,7 +220,6 @@ function ShowAllUserConversations({
 }) {
   const { userAllConversation } = useContext(MessagesContext);
   const navigate = useNavigate();
-  const VITE_DEFAULT_IMAGE = process.env.VITE_DEFAULT_IMAGE as string;
 
   return (
     <ul data-testid="searchedUsers" className="flex-shrink min-h-[60vh]">

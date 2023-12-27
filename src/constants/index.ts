@@ -429,4 +429,7 @@ const chat = [
     }
   }
 ]
-export { navLinks, tempInfo, tempMessagesSearch, chat, settingsOptions, accountOptions, searchHeaderOptions, userArray, pinnedConversations, whoToReply, tags, AllowMessagesOptions, profileSections };
+
+const VITE_DEFAULT_IMAGE = "https://i.ibb.co/74yKjX0/DEFAULT-IMAGE.jpg";
+
+export { navLinks, tempInfo, tempMessagesSearch, chat, settingsOptions, accountOptions, searchHeaderOptions, userArray, pinnedConversations, whoToReply, tags, AllowMessagesOptions, profileSections, VITE_DEFAULT_IMAGE };

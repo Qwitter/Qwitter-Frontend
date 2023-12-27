@@ -12,6 +12,7 @@ import { MessagesContext } from "@/contexts/MessagesContextProvider";
 //import { FollowButton } from "@/components/FollowButton/FollowButton";
 import ImageGrid from "./ImageGrid";
 import { AvatarFallback } from "@/components/ui/avatar";
+import { VITE_DEFAULT_IMAGE } from "@/constants";
 // import { useEffect } from "react";
 
 export function MessagesList({
@@ -19,7 +20,6 @@ export function MessagesList({
     setOpenConversation,
     matchedPart = "", mode = "normal" }: MessagesListProp) {
     const navigate = useNavigate()
-    const VITE_DEFAULT_IMAGE = process.env.VITE_DEFAULT_IMAGE as string;
 
     const { currentConversation, setCurrentConversation } = useContext(MessagesContext)
 

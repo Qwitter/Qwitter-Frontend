@@ -7,7 +7,6 @@ import { Messages } from "../Messages/Messages";
 import { cn, getPageFromUrl, getUserData } from "@/lib/utils";
 import { MessagesAccordion } from "../Messages/MessagesAccordion";
 import { Profile } from "../Profile/Profile";
-import TweetDetails from "../TweetDetails/TweetDetails";
 import { socket } from "@/lib/socketInit";
 import { useContext, useEffect } from "react";
 import { EVENTS } from "../../models/Events";
@@ -21,6 +20,7 @@ import { toast } from "@/components/ui/use-toast";
 import { InfiniteData, useQuery, useQueryClient } from "@tanstack/react-query";
 import { User } from "@/models/User";
 import { UserContext } from "@/contexts/UserContextProvider";
+import { TweetPage } from "../TweetDetails/TweetPage";
 
 export function PagesContainer() {
   const location = useLocation();
@@ -102,7 +102,7 @@ export function PagesContainer() {
   return (
     <>
       {location.pathname !== "/" && (
-        <div className="w-full flex flex-row min-h-[750px] z-0 justify-center">
+        <div className="w-full flex flex-row min-h-[100vh] z-0 justify-center">{/* min-h-[750px] */}
           <NavBar />
 
           <div className=" border-l-[0.5px] border-primary border-opacity-30 max-mobile:w-full">
@@ -161,7 +161,7 @@ export function PagesContainer() {
                     </ProtectedRoute>
                   }
                 />
-                <Route path="/Tweet/:tweetId" element={<TweetDetails />} />
+                <Route path="/Tweet/:tweetId/*" element={<TweetPage />} />
                 <Route
                   path="/Connection"
                   element={

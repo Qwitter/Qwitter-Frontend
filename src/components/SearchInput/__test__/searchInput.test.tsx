@@ -1,14 +1,36 @@
-import { render, screen, fireEvent, act } from '@testing-library/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import SearchInput from '../SearchInput';
+import { TextEncoder } from "util";
+global.TextEncoder = TextEncoder;
+import "isomorphic-fetch";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { setupServer } from "msw/node";
+import { handlers } from "@/mocks/handlers";
+import { BrowserRouter } from "react-router-dom";
+import SearchInput from "../SearchInput";
+// import userEvent from "@testing-library/user-event";
 
-// Mocking the react-query hooks
-jest.mock('@tanstack/react-query', () => ({
-    ...jest.requireActual('@tanstack/react-query'),
-    useQuery: jest.fn(),
-}));
 
-const queryClient = new QueryClient();
+
+
+const client = new QueryClient();
+const server = setupServer(...handlers);
+
+
+beforeAll(() => {
+    server.listen({
+        onUnhandledRequest: 'warn', // Log unhandled requests
+    });
+});
+
+afterEach(() => {
+    server.resetHandlers();
+    server.use(...handlers);
+});
+
+afterAll(() => {
+    server.close();
+});
 
 describe('SearchInput', () => {
     beforeEach(() => {
@@ -17,19 +39,22 @@ describe('SearchInput', () => {
 
     it('renders without crashing', () => {
         render(
-            <QueryClientProvider client={queryClient}>
-                <SearchInput />
-            </QueryClientProvider>
+            <BrowserRouter>
+                <QueryClientProvider client={client}>
+                    <SearchInput />
+                </QueryClientProvider>
+            </BrowserRouter>
         );
         // Add your assertions here
     });
 
     it('handles text input and triggers search', async () => {
-        const mockedNavigate = jest.fn();
         render(
-            <QueryClientProvider client={queryClient}>
-                <SearchInput isSearchPage={false} value="" />
-            </QueryClientProvider>
+            <BrowserRouter>
+                <QueryClientProvider client={client}>
+                    <SearchInput />
+                </QueryClientProvider>
+            </BrowserRouter>
         );
 
         // Simulate user input
@@ -37,16 +62,102 @@ describe('SearchInput', () => {
         fireEvent.click(inputElement);
 
         const textInputElement = screen.getByRole('textbox');
-        fireEvent.change(textInputElement, { target: { value: 'test query' } });
+        fireEvent.change(textInputElement, { target: { value: 'testquery' } });
 
         // Simulate pressing Enter
         await act(async () => {
             fireEvent.keyDown(textInputElement, { key: 'Enter' });
         });
+        await waitFor(() => {
 
-        // Add your assertions here, e.g., check if navigation is called with the correct URL
-        expect(mockedNavigate).toHaveBeenCalledWith('/Explore/search/Top/?q=test%20query');
+            expect(window.location.pathname).toContain('/Explore/search/Top/');
+        }, { timeout: 2000 });
     });
 
-    // Add more tests as needed
+    it('handles text input and check default search message', async () => {
+        render(
+            <BrowserRouter>
+                <QueryClientProvider client={client}>
+                    <SearchInput />
+                </QueryClientProvider>
+            </BrowserRouter>
+        );
+
+        // Simulate user input
+        const inputElement = screen.getByTestId('searchBar');
+        fireEvent.click(inputElement);
+
+        fireEvent.change(inputElement, { target: { value: 'testquery' } });
+
+        await waitFor(() => {
+
+            expect(screen.getByTestId('searchMessage')).toBeInTheDocument()
+        }, { timeout: 2000 });
+    });
+    it('handles text input and check search results', async () => {
+        render(
+            <BrowserRouter>
+                <QueryClientProvider client={client}>
+                    <SearchInput />
+                </QueryClientProvider>
+            </BrowserRouter>
+        );
+
+        // Simulate user input
+        const inputElement = screen.getByTestId('searchBar');
+        fireEvent.click(inputElement);
+
+        fireEvent.change(screen.getByPlaceholderText('Search'), { target: { value: 'testquery' } });
+
+        await waitFor(() => {
+
+            expect(screen.getByTestId('trends')).toBeInTheDocument()
+            expect(screen.getByTestId('users')).toBeInTheDocument()
+        }, { timeout: 2000 });
+    });
+    it('close poup', async () => {
+        render(
+            <BrowserRouter>
+                <QueryClientProvider client={client}>
+                    <SearchInput />
+                </QueryClientProvider>
+            </BrowserRouter>
+        );
+
+        // Simulate user input
+        // Simulate user input
+        const inputElement = screen.getByTestId('searchBar');
+        fireEvent.click(inputElement);
+
+
+
+        await waitFor(() => {
+
+            expect(screen.getByTestId('searchBar')).toBeInTheDocument()
+            fireEvent.click(window.document.body);
+
+        }, { timeout: 2000 });
+    });
+    it('Search for in document', async () => {
+        render(
+            <BrowserRouter>
+                <QueryClientProvider client={client}>
+                    <SearchInput />
+                </QueryClientProvider>
+            </BrowserRouter>
+        );
+
+        // Simulate user input
+        const inputElement = screen.getByTestId('searchBar');
+        fireEvent.click(inputElement);
+        fireEvent.change(screen.getByPlaceholderText('Search'), { target: { value: 'testquery' } });
+
+        await waitFor(() => {
+
+            expect(screen.getByTestId('targetUser')).toBeInTheDocument();
+            (screen.getByTestId('targetUser')).click();
+            expect(window.location.pathname).toContain('/profile/');
+        }, { timeout: 2000 });
+    });
+
 });
