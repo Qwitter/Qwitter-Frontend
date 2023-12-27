@@ -21,6 +21,7 @@ import { toast } from "@/components/ui/use-toast";
 import { InfiniteData, useQuery, useQueryClient } from "@tanstack/react-query";
 import { User } from "@/models/User";
 import { UserContext } from "@/contexts/UserContextProvider";
+import { TweetPage } from "../TweetDetails/TweetPage";
 
 export function PagesContainer() {
   const location = useLocation();
@@ -161,7 +162,7 @@ export function PagesContainer() {
                     </ProtectedRoute>
                   }
                 />
-                <Route path="/Tweet/:tweetId" element={<TweetDetails />} />
+                <Route path="/Tweet/:tweetId/*" element={<TweetPage />} />
                 <Route
                   path="/Connection"
                   element={

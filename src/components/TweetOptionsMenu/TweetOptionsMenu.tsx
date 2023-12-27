@@ -25,6 +25,7 @@ import {
 } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "../ui/use-toast";
+import { IoMdStats } from "react-icons/io";
 
 type TweetOptionsMenuProps = {
   author: Tweet["author"];
@@ -33,7 +34,7 @@ type TweetOptionsMenuProps = {
   tweetId?: string;
   className?: string;
   linkClassName?: string;
-  mode?:'profile'|'tweet';
+  mode?: "profile" | "tweet";
 };
 
 const TweetOptionsMenu = ({
@@ -43,7 +44,7 @@ const TweetOptionsMenu = ({
   isMuted,
   className,
   linkClassName = "",
-  mode='tweet'
+  mode = "tweet",
 }: TweetOptionsMenuProps) => {
   const { user } = useContext(UserContext);
   const [isFollowingClone, setIsFollowingClone] =
@@ -85,7 +86,6 @@ const TweetOptionsMenu = ({
       queryKey: ["profile", token, author.userName],
     });
 
-
     queryClient.invalidateQueries({
       queryKey: ["tweet", tweetId],
     });
@@ -115,7 +115,6 @@ const TweetOptionsMenu = ({
       queryKey: ["profile", token, author.userName],
     });
 
-
     setShowDialog(false);
   };
 
@@ -142,7 +141,7 @@ const TweetOptionsMenu = ({
 
     setShowDialog(false);
 
-    mode=='tweet'&&navigate("/home");
+    mode == "tweet" && navigate("/home");
   };
 
   const { mutateAsync: MuteServiceFn } = useMutation({
@@ -267,6 +266,17 @@ const TweetOptionsMenu = ({
                 <Ban className="text-lg" />
                 Block @{author.userName}
               </DropdownMenuItem>
+              {mode == "tweet" && (
+                <DropdownMenuItem
+                  className="gap-4 items-center font-bold p-2"
+                  data-testid="postEngagements"
+                >
+                  <Link to={`/tweet/${tweetId}/engagements`} className="flex items-center gap-4">
+                    <IoMdStats className="text-lg" />
+                    View Tweet Engagements
+                  </Link>
+                </DropdownMenuItem>
+              )}
             </DropdownMenuGroup>
           )}
         </DropdownMenuContent>
