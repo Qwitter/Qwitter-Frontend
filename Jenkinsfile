@@ -20,6 +20,7 @@ pipeline {
             steps {  
                 // sh 'npm run test'
                 dir ("/home/fares/Qwitter-Testing/Web"){
+                    sh 'pwd'
                     sh 'sudo ./node_modules/.bin/cypress run --spec ./cypress/e2e/ci-cd/ci-cd.cy.js'
                 }
             }
