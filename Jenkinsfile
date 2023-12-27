@@ -15,15 +15,15 @@ pipeline {
             // steps {  
                 //sh 'npm run test'
             // }
+        // // }
+        // stage('e2e') {  
+        //     steps {  
+        //         // sh 'npm run test'
+        //         dir ("/home/fares/Qwitter-Testing/Web"){
+        //             sh 'pwd'
+        //         }
+        //     }
         // }
-        stage('e2e') {  
-            steps {  
-                // sh 'npm run test'
-                dir ("/home/fares/Qwitter-Testing/Web"){
-                    sh 'pwd'
-                }
-            }
-        }
         // stage('Build') {  
         //     steps {  
         //         sh 'npm run build'
