@@ -8,7 +8,6 @@ pipeline {
         stage('Install Dependencies') {  
             steps {  
                 sh 'npm install'
-                // sh 'cp /home/fares/.env.local /var/lib/jenkins/workspace/Qwitter_Front_pipeline_main'
             }
         }  
         // stage('Test') {  
@@ -21,13 +20,13 @@ pipeline {
                 sh 'npm run build'
             }
         }
-        // stage('Deploy') {  
-        //     steps {  
-        //         sh 'docker compose build'
-        //         sh 'docker compose push'
-        //         sh 'docker system prune -f'
-        //     }
-        // } 
+        stage('Deploy') {  
+            steps {  
+                sh 'docker compose build'
+                sh 'docker compose push'
+                sh 'docker system prune -f'
+            }
+        } 
     }  
        
     post {   

@@ -9,6 +9,7 @@ import { Spinner } from "@/components/Spinner";
 import { UsersListItem } from "@/components/UsersListItem/UsersListItem";
 import { ConversationBlockUserPopup } from "../MessagesPopup/ConversationBlockUserPopup";
 import ImageGrid from "../ImageGrid";
+import { VITE_DEFAULT_IMAGE } from "@/constants";
 
 export function MessagesConversationInfo() {
   const navigate = useNavigate();
@@ -17,7 +18,6 @@ export function MessagesConversationInfo() {
   const { currentConversation } = useContext(MessagesContext);
   const [show, setShow] = useState(false);
   const [showBlock, setShowBlock] = useState(false);
-  const VITE_DEFAULT_IMAGE = process.env.VITE_DEFAULT_IMAGE as string;
 
   const handleBlock = () => {
     setShowBlock(true);
