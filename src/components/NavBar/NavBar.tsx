@@ -16,6 +16,7 @@ import { AvatarFallback } from "../ui/avatar";
 import { getPageFromUrl } from "@/lib/utils";
 import { socket } from "@/lib/socketInit";
 import { EVENTS } from "@/models/Events";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function NavBar() {
   const { user } = useContext(UserContext);
@@ -26,7 +27,7 @@ export function NavBar() {
   const navigation = useNavigate();
   const location = useLocation();
   const [active, setActive] = useState(getPageFromUrl(location.pathname.toLowerCase()));
-
+  const queryClient = useQueryClient();
   useEffect(() => {
     try {
       socket.on(EVENTS.SERVER.NOTIFICATION_COUNT, async (notificationCount) => {
@@ -37,12 +38,18 @@ export function NavBar() {
       });
       socket.emit(EVENTS.CLIENT.JOIN_ROOM, "ALL");
       socket.on(EVENTS.SERVER.FEED, async () => {
+        
+      queryClient.invalidateQueries({
+        queryKey: ["tweets"]
+      });
+      console.log(active)
+      if(active != "Home")
         setHomeNewPosts(1);
       });
     } catch (e) {
       e
     }
-
+    if(window.matchMedia){
     const mediaQuery = window.matchMedia("(max-width: 1280px)");
     setIsShown(mediaQuery.matches);
     const handleMediaQueryChange = (event: {
@@ -54,6 +61,7 @@ export function NavBar() {
     return () => {
       mediaQuery.removeEventListener("change", handleMediaQueryChange);
     };
+  }
   }, []);
 
   useEffect(() => {
@@ -134,6 +142,7 @@ export function NavBar() {
           </div>
           <div
             className="row justify-end hidden xl:flex "
+            data-testid="logout"
             onClick={() => {
               navigation("/i/flow/logout");
             }}
