@@ -22,7 +22,9 @@ pipeline {
                 dir ("/home/fares/Qwitter-Testing/Web"){
                     sh 'pwd'
                     sh 'sudo ln -sf "$(which node)" /usr/bin/node'
-                    sh './node_modules/.bin/cypress install'
+                    sh 'npm uninstall -D cypress -g'
+                    sh 'npm install cypress'
+                    sh 'npx cypress install --force'
                     sh 'sudo ./node_modules/.bin/cypress run --spec ./cypress/e2e/ci-cd/ci-cd.cy.js'
                 }
             }
