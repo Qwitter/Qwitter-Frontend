@@ -20,7 +20,7 @@ pipeline {
             steps {  
                 // sh 'npm run test'
                 dir ("/home/fares/Qwitter-Testing/Web"){
-                    pwd
+                    sh 'pwd'
                 }
             }
         }
