@@ -15,11 +15,11 @@ export function LikeRetweetList({ type }: { type: string }) {
   const { tweetId } = useParams();
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const { data: Likers } = useQuery<User[]>({
+  const { data: Likers, refetch: refetchLikers } = useQuery<User[]>({
     queryKey: ["Likers", token, tweetId],
     queryFn: () => GetTweetLikersService(tweetId!, token!),
   });
-  const { data: Retweeters } = useQuery<User[]>({
+  const { data: Retweeters, refetch: refetchRetweeters } = useQuery<User[]>({
     queryKey: ["Retweeters", token, tweetId],
     queryFn: () => GetTweetRetweetersService(tweetId!, token!),
   });
@@ -31,6 +31,7 @@ export function LikeRetweetList({ type }: { type: string }) {
             className="flex justify-center tabhover"
             value="Likers"
             onClick={() => {
+              refetchLikers();
               setListstate("Likers");
               const path = pathname.replace("retweeters", "likers");
               navigate(path);
@@ -44,6 +45,7 @@ export function LikeRetweetList({ type }: { type: string }) {
             className="flex justify-center tabhover"
             value="Retweeters"
             onClick={() => {
+              refetchRetweeters();
               setListstate("Retweeters");
               const path = pathname.replace("likers", "retweeters");
               navigate(path);

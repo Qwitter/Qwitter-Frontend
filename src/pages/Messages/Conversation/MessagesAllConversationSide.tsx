@@ -88,11 +88,13 @@ export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRe
             </>
             )*/}
 
-            <MessagesList conversations={data}
+            {isPending||!data?  <div className="w-full h-[280px] p-8">
+                <Spinner />
+            </div>:<MessagesList conversations={data}
                 mode={"normal"}
                 setOpenConversation={setOpenConversation}
                 showDeletePopUp={deleteConversation}
-            />
+            />}
             <ConversationLeavePopUp show={show} setShow={setShow} conversationToDelete={conversationToDelete} />
         </div>
     );
