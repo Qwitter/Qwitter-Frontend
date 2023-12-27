@@ -188,7 +188,6 @@ const Tweet = ({
                 </div>
               </Link>
             ) : (
-              <Link to="#">
                 <TweetImagesViewer
                   images={tweet.entities.media}
                   {...(mode == "page" && {
@@ -196,7 +195,6 @@ const Tweet = ({
                     viewImageMode: "tweet",
                   })}
                 />
-              </Link>
             ))}
           {mode === "page" ? (
             <div className="mt-4">
