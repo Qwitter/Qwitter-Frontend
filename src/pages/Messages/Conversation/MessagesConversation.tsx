@@ -21,6 +21,7 @@ import { MessagesConversationUserInfo } from "./MessagesConversationUserInfo";
 import ImageGrid from "../ImageGrid";
 import { v4 as uuidv4 } from 'uuid';
 import { User } from "@/models/User";
+import { VITE_DEFAULT_IMAGE } from "@/constants";
 export function MessagesConversation({ conversationAccordionId }: { conversationAccordionId?: string }) {
   const [text, setText] = useState("");
 
@@ -33,7 +34,6 @@ export function MessagesConversation({ conversationAccordionId }: { conversation
   const [scroll, setScroll] = useState(0);
 
   const token = localStorage.getItem("token")!;
-  const VITE_DEFAULT_IMAGE = process.env.VITE_DEFAULT_IMAGE as string;
 
   const user = JSON.parse(localStorage.getItem("user")!) as User;
   const { messageReply, setMessageReply, setCurrentConversation } =

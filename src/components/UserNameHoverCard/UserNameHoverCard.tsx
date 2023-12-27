@@ -5,6 +5,7 @@ import { HoverCard, HoverCardTrigger, HoverCardContent } from '@radix-ui/react-h
 import { FollowButton } from '../FollowButton/FollowButton'
 import { Link } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
+import { VITE_DEFAULT_IMAGE } from '@/constants'
 type Props = {
     userName: string;
     name: string;
@@ -16,7 +17,6 @@ type Props = {
 };
 
 export const UserNameHoverCard = ({ userName, name, profileImageUrl, description, isFollowing, followingCount, followersCount }: Props) => {
-    const { VITE_DEFAULT_IMAGE } = process.env;
     const queryClient = useQueryClient();
     const token = localStorage.getItem("token");
     const invalidateUserData = () => {

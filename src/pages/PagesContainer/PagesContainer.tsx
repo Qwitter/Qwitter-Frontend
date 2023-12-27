@@ -7,7 +7,6 @@ import { Messages } from "../Messages/Messages";
 import { cn, getPageFromUrl, getUserData } from "@/lib/utils";
 import { MessagesAccordion } from "../Messages/MessagesAccordion";
 import { Profile } from "../Profile/Profile";
-import TweetDetails from "../TweetDetails/TweetDetails";
 import { socket } from "@/lib/socketInit";
 import { useContext, useEffect } from "react";
 import { EVENTS } from "../../models/Events";

@@ -1,4 +1,5 @@
 import { UserNameHoverCard } from "@/components/UserNameHoverCard/UserNameHoverCard";
+import { VITE_DEFAULT_IMAGE } from "@/constants";
 import { MessageUser } from "@/models/MessagesTypes";
 import { HTMLProps, Ref, forwardRef } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -12,7 +13,6 @@ export const MessagesConversationUserInfo = forwardRef(
 
     ({ user, chatPicture }: MessagesConversationUserInfoProps, ref: Ref<HTMLDivElement>) =>{ 
         const location =useLocation();
-        const VITE_DEFAULT_IMAGE = process.env.VITE_DEFAULT_IMAGE as string;
 
         return(
         <div ref={ref}

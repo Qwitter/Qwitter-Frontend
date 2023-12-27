@@ -211,6 +211,20 @@ const TweetOptionsMenu = ({
                 <FiTrash2 className="text-lg" />
                 Delete
               </DropdownMenuItem>
+              {mode == "tweet" && (
+                <DropdownMenuItem
+                  className="gap-4 items-center font-bold p-2"
+                  data-testid="postEngagements"
+                >
+                  <Link
+                    to={`/tweet/${tweetId}/engagements`}
+                    className="flex items-center gap-4"
+                  >
+                    <IoMdStats className="text-lg" />
+                    View Tweet Engagements
+                  </Link>
+                </DropdownMenuItem>
+              )}
             </DropdownMenuGroup>
           ) : (
             <DropdownMenuGroup className="gap-4">
@@ -271,7 +285,10 @@ const TweetOptionsMenu = ({
                   className="gap-4 items-center font-bold p-2"
                   data-testid="postEngagements"
                 >
-                  <Link to={`/tweet/${tweetId}/engagements`} className="flex items-center gap-4">
+                  <Link
+                    to={`/tweet/${tweetId}/engagements`}
+                    className="flex items-center gap-4"
+                  >
                     <IoMdStats className="text-lg" />
                     View Tweet Engagements
                   </Link>

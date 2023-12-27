@@ -13,6 +13,7 @@ import moment from "moment";
 import { default as TweetComponent } from "../../components/Tweet/Tweet";
 import { UserNameHoverCard } from "@/components/UserNameHoverCard/UserNameHoverCard";
 import { useInView } from "react-intersection-observer";
+import { VITE_DEFAULT_IMAGE } from "@/constants";
 export type NotificationsType = {
   type: string;
   createdAt: string;
@@ -157,7 +158,6 @@ function ShowAllNotifications({ isPending, notifications, NotificationsList, has
 function Notification({ type, createdAt, follower, retweet, reply, like,post }: NotificationsType) {
   const navigate = useNavigate()
   const user = JSON.parse(localStorage.getItem("user")!) as UserType;
-  const VITE_DEFAULT_IMAGE = process.env.VITE_DEFAULT_IMAGE as string;
 
   const typeUser = (follower || like?.liker || retweet?.author||post?.author);
   const handleUrl = () => {
