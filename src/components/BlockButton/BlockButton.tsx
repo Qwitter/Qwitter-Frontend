@@ -9,10 +9,12 @@ export function BlockButton({
   username,
   onClick,
   className,
+  jestMockMutatuiFn,
 }: {
   username: string;
   onClick?: () => void;
   className?: string;
+  jestMockMutatuiFn?: () => void;
 }) {
   const [state, setstate] = useState(true);
   const [showDialog, setshowDialog] = useState(false);
@@ -35,7 +37,8 @@ export function BlockButton({
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.stopPropagation();
-    await unBlockServiceFn(username);
+    if (jestMockMutatuiFn) jestMockMutatuiFn();
+    else await unBlockServiceFn(username);
     setstate(false);
     onClick && onClick();
   };
@@ -43,7 +46,8 @@ export function BlockButton({
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.stopPropagation();
-    await BlockServiceFn(username);
+    if (jestMockMutatuiFn) jestMockMutatuiFn();
+    else await BlockServiceFn(username);
     setstate(true);
     setshowDialog(false);
     onClick && onClick();

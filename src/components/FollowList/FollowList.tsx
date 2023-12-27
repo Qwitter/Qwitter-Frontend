@@ -8,11 +8,12 @@ import { UserContext } from "@/contexts/UserContextProvider";
 import { useQuery } from "@tanstack/react-query";
 import { User } from "@/models/User";
 import { Spinner } from "../Spinner";
+import { OptionsHeader } from "../OptionsHeader/OptionsHeader";
 
 export function FollowList({ type }: { type: string }) {
   const [Liststate, setListstate] = useState(type);
   const navigate = useNavigate();
-  const { token } = useContext(UserContext);
+  const { token, user } = useContext(UserContext);
   const { username } = useParams();
   const { data: Followings, refetch: refetchFollowings } = useQuery<User[]>({
     queryKey: ["followings", token, username],
@@ -24,6 +25,7 @@ export function FollowList({ type }: { type: string }) {
   });
   return (
     <>
+      <OptionsHeader header={user?.name!} />
       <Tabs defaultValue={Liststate} className="max-w-[600px] w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger
