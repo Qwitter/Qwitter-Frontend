@@ -68,7 +68,7 @@ const TweetDetails = ({compact=false}:{compact?:boolean}) => {
 
   if (isLoading || !tweetData || !isFetched || !user) {
     return (
-      <div className={`flex items-center justify-center ${compact?'ml-5':'ml-72'} mt-5`}>
+      <div className="mt-52">
         <Spinner />
       </div>
     );
