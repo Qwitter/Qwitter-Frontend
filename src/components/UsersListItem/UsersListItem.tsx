@@ -42,7 +42,6 @@ export function UsersListItem({
           <div className="flex justify-between ">
             <div className="flex-col ">
               <div className="flex items-center ">
-                {/* <span className="mr-1">{name}</span> */}
                 <UserNameHoverCard
                   userName={username}
                   name={name}
@@ -58,7 +57,11 @@ export function UsersListItem({
             </div>
 
             {listType == "FollowList" && user?.userName! != username && (
-              <FollowButton isFollowing={isFollowing} username={username} />
+              <FollowButton
+                data-testid="FollowButton"
+                isFollowing={isFollowing}
+                username={username}
+              />
             )}
             {listType == "BlockList" && user?.userName! != username && (
               <BlockButton username={username} />
