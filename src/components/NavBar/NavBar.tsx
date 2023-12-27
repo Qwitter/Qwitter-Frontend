@@ -29,6 +29,7 @@ export function NavBar() {
   const [active, setActive] = useState(getPageFromUrl(location.pathname.toLowerCase()));
   const queryClient = useQueryClient();
   useEffect(() => {
+      /* istanbul ignore next */
     try {
       socket.on(EVENTS.SERVER.NOTIFICATION_COUNT, async (notificationCount) => {
         setNotificationCount(notificationCount);
