@@ -8,6 +8,7 @@ import { UserContext } from "@/contexts/UserContextProvider";
 import { useQuery } from "@tanstack/react-query";
 import { User } from "@/models/User";
 import { Spinner } from "../Spinner";
+import { OptionsHeader } from "../OptionsHeader/OptionsHeader";
 
 export function LikeRetweetList({ type }: { type: string }) {
   const [Liststate, setListstate] = useState(type);
@@ -25,6 +26,7 @@ export function LikeRetweetList({ type }: { type: string }) {
   });
   return (
     <>
+      <OptionsHeader header="Post engagements" />
       <Tabs defaultValue={Liststate} className="max-w-[600px] w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger
@@ -33,7 +35,7 @@ export function LikeRetweetList({ type }: { type: string }) {
             onClick={() => {
               refetchLikers();
               setListstate("Likers");
-              const path = pathname.replace("retweeters", "likers");
+              const path = pathname.replace("Retweeters", "Likers");
               navigate(path);
             }}
           >
@@ -47,7 +49,7 @@ export function LikeRetweetList({ type }: { type: string }) {
             onClick={() => {
               refetchRetweeters();
               setListstate("Retweeters");
-              const path = pathname.replace("likers", "retweeters");
+              const path = pathname.replace("Likers", "Retweeters");
               navigate(path);
             }}
           >
