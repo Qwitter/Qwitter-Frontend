@@ -12,7 +12,13 @@ import {
   HoverCardTrigger,
 } from "../ui/hover-card";
 
-export function MuteButton({ username }: { username: string }) {
+export function MuteButton({
+  username,
+  jestMockMutatuiFn,
+}: {
+  username: string;
+  jestMockMutatuiFn?: () => void;
+}) {
   const [state, setState] = useState("Muted");
   const { token } = useContext(UserContext);
   const { mutateAsync: MuteServiceFn } = useMutation({
@@ -47,7 +53,8 @@ export function MuteButton({ username }: { username: string }) {
               variant={"danger"}
               onClick={(event) => {
                 event.stopPropagation();
-                unMuteServiceFn(username);
+                if (jestMockMutatuiFn) jestMockMutatuiFn();
+                else unMuteServiceFn(username);
               }}
             >
               <GoMute className="rounded-full w-[20px] h-[20px]"></GoMute>
@@ -64,7 +71,8 @@ export function MuteButton({ username }: { username: string }) {
               variant={"secondary"}
               onClick={(event) => {
                 event.stopPropagation();
-                MuteServiceFn(username);
+                if (jestMockMutatuiFn) jestMockMutatuiFn();
+                else MuteServiceFn(username);
               }}
             >
               <GoUnmute className="rounded-full w-[20px] h-[20px]"></GoUnmute>
