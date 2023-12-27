@@ -16,6 +16,7 @@ export function OptionsHeader({ header, className, defaultBack = false }: Props)
 
 
     useEffect(() => {
+        if (window.matchMedia) {
         const mediaQuery = window.matchMedia("(min-width: 1024px)");
         setIsLg(mediaQuery.matches);
 
@@ -26,6 +27,7 @@ export function OptionsHeader({ header, className, defaultBack = false }: Props)
         return () => {
             mediaQuery.removeEventListener("change", handleMediaQueryChange);
         };
+    }
     }, []);
 
     return (

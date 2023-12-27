@@ -32,6 +32,7 @@ export function UsernameSuggestion({ nextStep }: Props) {
         }
     })
     useEffect(() => {
+        if(!user)return;
         form.setValue("defaultUsername", user!.userName!)
         setInputFieldValue(user!.userName!)
         form.trigger("defaultUsername")
