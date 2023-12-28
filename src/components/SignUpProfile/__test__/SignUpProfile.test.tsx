@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { SignUpProfile } from "../SignUpProfile";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-test("Sign Up Step 2 Test", () => {
+test("Sign Up Profile Test", () => {
   const { container } = render(
     <QueryClientProvider client={new QueryClient()}>
       <SignUpProfile nextStep={() => {}} />

@@ -1,7 +1,7 @@
 import { fireEvent, render} from "@testing-library/react";
 import { ImagePicker } from "../ImagePicker";
 
-test("Sign Up Step 2 Test", () => {
+test("Image Picker Test", () => {
 const testOnChange = jest.fn();
 const testSetImagePath = jest.fn();
 
