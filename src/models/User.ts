@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { Step1DataSchema } from "./SignUp";
 import { DAYS_IN_MONTH, MONTHS } from "./BirthDay";
 import { isAtLeast18YearsAgo } from "@/lib/utils";
 
@@ -21,9 +20,54 @@ export type User = {
   isFollowing: boolean;
   followersCount: number;
   followingCount: number;
-  unSeenConversation?:number;
-  notificationCount?:number;
+  unSeenConversation?: number;
+  notificationCount?: number;
 };
+
+export const TempBDSchema = z.object({
+  day: z
+    .string({
+      required_error: "Day is required",
+    })
+    .max(2)
+    .min(1)
+    .transform((val, ctx) => {
+      const parsed = parseInt(val);
+      if (isNaN(parsed)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Not a number",
+        });
+        return z.NEVER;
+      }
+      return parsed;
+    })
+    .refine((val) => val >= 1 && val <= 31, {
+      message: "Must be a valid Day.",
+    }),
+  month: z.enum(MONTHS, {
+    required_error: "Month is required",
+  }),
+  year: z
+    .string({
+      required_error: "Year is required",
+    })
+    .length(4)
+    .transform((val, ctx) => {
+      const parsed = parseInt(val);
+      if (isNaN(parsed)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Not a number",
+        });
+        return z.NEVER;
+      }
+      return parsed;
+    })
+    .refine((val) => val >= 1900 && val <= 2005, {
+      message: "Must be older than 18 years",
+    }),
+});
 
 export const EditUserSchema = z
   .object({
@@ -53,9 +97,9 @@ export const EditUserSchema = z
         { message: "Url is not valid." }
       )
       .nullish(),
-    day: Step1DataSchema.shape.day,
-    month: Step1DataSchema.shape.month,
-    year: Step1DataSchema.shape.year,
+    day: TempBDSchema.shape.day,
+    month: TempBDSchema.shape.month,
+    year: TempBDSchema.shape.year,
     birthDate: z.string().nullish(),
   })
   .refine((data) => {
