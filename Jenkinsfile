@@ -10,19 +10,9 @@ pipeline {
                 sh 'npm install'
             }
         }  
-        // stage('Test') {  
-            // steps {  
-                //sh 'npm run test'
-            // }
-        // }
-        stage('e2e') {  
+        stage('Test') {  
             steps {  
-                dir ("/home/fares/Qwitter-Testing/Web"){
-                    sh 'sudo ln -sf "$(which node)" /usr/bin/node'
-                    sh 'npm install'
-                    sh './node_modules/.bin/cypress install --force'
-                    sh 'npx cypress run --spec ./cypress/e2e/ci-cd/ci-cd.cy.js'
-                }
+                sh 'npm run test'
             }
         }
         stage('Build') {  
@@ -30,13 +20,6 @@ pipeline {
                 sh 'npm run build'
             }
         }
-        stage('Deploy') {  
-            steps {  
-                sh 'docker compose build'
-                sh 'docker compose push'
-                sh 'docker system prune -f'
-            }
-        } 
     }  
        
     post {   
