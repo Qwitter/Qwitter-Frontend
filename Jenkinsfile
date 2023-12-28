@@ -13,7 +13,7 @@ pipeline {
         stage('Test') {  
             steps {  
                 echo 'test'
-                //sh 'npm run test'
+                sh 'npm run cicd-test'
             }
         }
         stage('e2e') {  
