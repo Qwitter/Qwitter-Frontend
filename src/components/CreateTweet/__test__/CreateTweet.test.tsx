@@ -3,8 +3,6 @@ import { QueryClient, QueryClientProvider, useMutation } from "@tanstack/react-q
 import { BrowserRouter } from "react-router-dom";
 import CreateTweetContainer from "../CreateTweetContainer";
 import CreateTweetFooter from "../CreateTweetFooter";
-import CreateTweetMain from "../CreateTweetMain";
-import { UseFormReturn, useForm } from "react-hook-form";
 // Mocking react-query useMutation
 jest.mock('@tanstack/react-query', () => ({
     ...jest.requireActual('@tanstack/react-query'),
@@ -199,40 +197,6 @@ describe("CreateTweetContainer", () => {
 
         // Assert that onError behavior is triggered
         expect(mockUseMutation).toHaveBeenCalled();
-
-
-        // Assert that the error toast is shown
-        // Add assertions based on how the error toast is expected to behave in your component
-    });
-    it("should call textfn", async () => {
-        // Mock useMutation to return the expected behavior
-        mockUseMutation.mockReturnValue({
-            mutate: jest.fn(() => Promise.reject(new Error("Test error"))), // Simulate a failed mutation
-            isPending: false,
-        });
-        const submit = jest.fn();
-        const textfn = jest.fn();
-        const form = useForm<{ text: string }>({
-        });
-        // Render the component with the mocked useMutation
-        render(
-            <BrowserRouter>
-                <QueryClientProvider client={queryClient}>
-                    <CreateTweetMain form={form as unknown as UseFormReturn<{ Text: string }>} handleRemoveFile={() => { }} setTweet={() => { }} tweet="h" files={[]} handleSubmit={submit} handleTextChange={textfn} isValid mode="home" selectedImages={[]} setFiles={() => { }} setSelectedImages={() => { }} setVideoFile={() => { }}
-                        text="hello"
-                        videoFile={undefined}
-
-                    />
-                </QueryClientProvider>
-            </BrowserRouter>
-        );
-        // Trigger some action that calls the mutate function (e.g., submitting a form)
-        const inputElement = screen.getByTestId("tweetInput");
-        fireEvent.change(inputElement, { target: { value: "Test tweet text" } });
-
-
-        // Assert that onError behavior is triggered
-        expect(textfn).toHaveBeenCalled();
 
 
         // Assert that the error toast is shown

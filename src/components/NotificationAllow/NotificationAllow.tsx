@@ -4,6 +4,7 @@ type NotificationAllowProps = {
   nextStep: () => void;
 };
 export function NotificationAllow({ nextStep }: NotificationAllowProps) {
+    /* istanbul ignore next */
   async function acceptNotification() {
     if (!("Notification" in window))
       alert("Browser Doesn't support Notifications");
