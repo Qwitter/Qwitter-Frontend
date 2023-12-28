@@ -10,11 +10,12 @@ pipeline {
                 sh 'npm install'
             }
         }  
-        // stage('Test') {  
-            // steps {  
+        stage('Test') {  
+            steps {  
+                echo 'test'
                 //sh 'npm run test'
-            // }
-        // }
+            }
+        }
         stage('e2e') {  
             steps {  
                 dir ("/home/fares/Qwitter-Testing/Web"){
