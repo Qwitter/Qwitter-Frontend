@@ -1,7 +1,7 @@
 import { MailPlus } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
-import {  conversation } from "../../../models/MessagesTypes";
-import{EVENTS} from '../../../models/Events';
+import { conversation } from "../../../models/MessagesTypes";
+import { EVENTS } from '../../../models/Events';
 
 import { useNavigate } from "react-router-dom";
 import { MessagesList } from "../MessagesList";
@@ -13,7 +13,7 @@ import { Spinner } from "@/components/Spinner";
 import { MessagesContext } from "@/contexts/MessagesContextProvider";
 import { socket } from "@/lib/socketInit";
 
-export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRequest = false,setOpenConversation}: {setOpenConversation?: React.Dispatch<React.SetStateAction<string|undefined>>; newMessageRequest?: boolean; messagesRequests?: number; }) {
+export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRequest = false, setOpenConversation }: { setOpenConversation?: React.Dispatch<React.SetStateAction<string | undefined>>; newMessageRequest?: boolean; messagesRequests?: number; }) {
     const navigate = useNavigate();
     const { token } = useContext(UserContext);
     const { setUserAllConversation } = useContext(MessagesContext)
@@ -30,13 +30,17 @@ export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRe
     useEffect(() => {
         setUserAllConversation(data!)
         refetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token, data]);
     useEffect(() => {
 
-        socket.on(EVENTS.SERVER.CONVERSATION, async (conversation) => {
-            conversation
-            queryClient.invalidateQueries({ queryKey: ["getUserConversations"] });
+        socket.on(EVENTS.SERVER.CONVERSATION, async (conversation: conversation) => {
+            queryClient.setQueryData(['getUserConversations'], (old: conversation[]) => {
+                const updated = old.filter(conv => conv.id != conversation.id);
+                updated.unshift(conversation);
+                return updated;
+            })
+            //queryClient.invalidateQueries({ queryKey: ["getUserConversations"] });
 
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -88,9 +92,9 @@ export function MessagesAllConversationSide({ messagesRequests = 0, newMessageRe
             </>
             )*/}
 
-            {isPending||!data?  <div className="w-full h-[280px] p-8">
+            {isPending || !data ? <div className="w-full h-[280px] p-8">
                 <Spinner />
-            </div>:<MessagesList conversations={data}
+            </div> : <MessagesList conversations={data}
                 mode={"normal"}
                 setOpenConversation={setOpenConversation}
                 showDeletePopUp={deleteConversation}
