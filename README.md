@@ -65,7 +65,7 @@
 
 </summary>
 
-- Edit Profile overview (name, bio, photo, etc..)
+- Profile overview (name, bio, profile picture, etc..)
 - Your Posts
 - Your Replies
 - Your Media
@@ -138,8 +138,53 @@
   - Delete message
   - Reply to message
 - Groups
-  -make group
-  -delete group
-  -add people to a group
+  - make group
+  - delete group
+  - add people to a group
   
 </details>
+
+<details>
+<summary>
+<h4 style="display: inline">
+<strong><em> 🧑‍💼 User Management</em></strong></h4>
+</summary>
+
+- Follow
+  - follow user
+  - unfollow user
+
+- Mute
+  - mute user
+  - unmute user
+
+- Block
+  - block user
+  - unblock user
+
+</details>
+
+
+
+<details>
+<summary>
+<h4 style="display: inline">
+<strong><em> ⚙️ Settings</em></strong></h4>
+</summary>
+
+- Account
+  - Change email address
+  - Change Username
+  - Change Password
+
+- Profile
+  - Change display name
+  - Change profile picture
+  - Change bio
+
+- Safety and privacy
+  - Blocked people
+  - Muted people
+
+</details>
+
