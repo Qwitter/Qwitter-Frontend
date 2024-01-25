@@ -14,6 +14,7 @@
 
 [![GitHub contributors](https://img.shields.io/github/contributors/Qwitter/Qwitter-Frontend)](https://github.com/Qwitter/Qwitter-Frontend/contributors)
 [![GitHub issues](https://img.shields.io/github/issues/Qwitter/Qwitter-Frontend)](https://github.com/Qwitter/Qwitter-Frontend/issues)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub license](https://img.shields.io/github/license/Qwitter/Qwitter-Frontend)](https://github.com/Qwitter/Qwitter-Frontend/blob/main/LICENSE)
 [![GitHub forks](https://img.shields.io/github/forks/Qwitter/Qwitter-Frontend)](https://github.com/Qwitter/Qwitter-Frontend/network)
 [![GitHub stars](https://img.shields.io/github/stars/Qwitter/Qwitter-Frontend)](https://github.com/Qwitter/Qwitter-Frontend/stargazers)
