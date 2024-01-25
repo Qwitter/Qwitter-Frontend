@@ -36,7 +36,7 @@
 </details>
 
 ## 🐦 About
-- Microblogging for Real-Time Communication - Twitter is a platform enabling users to post and engage with concise messages called tweets, fostering instant communication and information sharing.
+- Microblogging for Real-Time Communication - Qwitter is a platform enabling users to post and engage with concise messages called tweets, fostering instant communication and information sharing.
 
 - The Qwitter project endeavors to replicate the core functionality of Twitter, providing a user-friendly and feature-rich platform for real-time microblogging. The project includes tools for posting tweets, following users, and exploring trending topics. The goal is to create a versatile platform suitable for anyone seeking seamless microblogging experiences.
 
@@ -99,11 +99,11 @@
 - Create a rich text post
 - Create posts with any type of media (GIF, images, videos, etc..)
 - Save post
-- Hide post
-- Report post
 - Edit Post
 - Delete post
-
+- View Post engagments
+- رمنرةر
+- ر
 </details>
 
 
