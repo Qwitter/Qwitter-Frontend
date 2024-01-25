@@ -224,8 +224,8 @@ $ npm start
 ```
 
 
- <h2 align='center'>⭐ Collaborators ⭐ </h2>
-<!-- readme: collaborators -start -->
+## ✍️ Contributors
+<!-- readme: Contributors -start -->
 <table  align='center'> 
 <tr>
     <td align="center">
@@ -257,5 +257,9 @@ $ npm start
         </a>
     </td></tr>
 </table>
-<!-- readme: collaborators -end -->
-<h2 align='center'>Thank You. 💖 </h2>
+<!-- readme: Contributors -end -->
+
+## 🔒 License <a name = "license"></a>
+
+> This software is licensed under MIT License, See [License](https://github.com/Qwitter/Qwitter-Frontend/blob/main/LICENSE).
+
