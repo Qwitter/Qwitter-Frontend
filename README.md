@@ -1,6 +1,4 @@
-# Qwitter-Frontend
-
-<div align="center">
+<div align="center" style="color: black;">
 <img height="300" src="./src/assets/logo.png">
 <h1/>
 </div>
