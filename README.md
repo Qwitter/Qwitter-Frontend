@@ -1,4 +1,4 @@
-<div align="center" style="background-color: black;">
+<div align="center">
 <img height="300" src="./src/assets/Hotpot.png">
 </div>
 
