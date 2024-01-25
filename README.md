@@ -217,9 +217,7 @@ $ cd Qwitter-Frontend
 $ npm install
 ```
 
-### Running
-
-**_Running on development mode_**
+4. **_Running on development mode_**
 
 ```sh
 $ npm start
