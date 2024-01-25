@@ -196,3 +196,25 @@
 </summary>
  
 </details>
+
+## 🏁 Getting started
+
+1. **_Clone the repository_**
+
+```sh
+$ git clone https://github.com/Qwitter/Qwitter-Frontend.git
+```
+
+3. **_Install dependencies_**
+
+```sh
+$ npm install
+```
+
+### Running
+
+**_Running on development mode_**
+
+```sh
+$ npm start
+```
