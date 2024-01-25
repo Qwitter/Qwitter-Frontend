@@ -51,6 +51,7 @@
 - [Mock Server Worker](https://mswjs.io/)
 - [Jest](https://jestjs.io/)
 - [Jsdoc](https://jsdoc.app/)
+- [Shadcn](https://ui.shadcn.com/)
 
 
 ## 📷 Features <a name = "features"></a>
