@@ -43,6 +43,7 @@
 <summary>
 <h4 style="display: inline">
 <strong><em>🔒 User Authentication</em></strong></h4>
+    
 </summary>
 - You can use your Google account.
 - Sign up
@@ -54,6 +55,7 @@
 
 
 <details>
+    
 <summary>
 
 <h4 style="display: inline">
