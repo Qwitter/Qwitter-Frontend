@@ -18,6 +18,7 @@
 [![GitHub forks](https://img.shields.io/github/forks/Qwitter/Qwitter-Frontend)](https://github.com/Qwitter/Qwitter-Frontend/network)
 [![GitHub stars](https://img.shields.io/github/stars/Qwitter/Qwitter-Frontend)](https://github.com/Qwitter/Qwitter-Frontend/stargazers)
 [![GitHub Language](https://img.shields.io/github/languages/top/Qwitter/Qwitter-Frontend)](https://img.shields.io/github/languages/Qwitter/Qwitter-Frontend)
+![GitHub repo size](https://img.shields.io/github/repo-size/Qwitter/Qwitter-Frontend?style=plastic)
 </div>
 
 <details open="open">
