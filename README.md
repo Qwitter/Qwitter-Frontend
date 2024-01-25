@@ -45,8 +45,8 @@
 
 - [Reactjs](https://reactjs.org/)
 - [React router dom](https://reactrouter.com/en/main)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [ZOD](https://zod.dev/)
+- [Tailwind Css](https://tailwindcss.com/)
+- [Zod](https://zod.dev/)
 - [Axios](https://axios-http.com/docs/intro)
 - [Mock Server Worker](https://mswjs.io/)
 - [Jest](https://jestjs.io/)
