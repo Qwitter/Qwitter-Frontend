@@ -226,27 +226,38 @@ $ npm start
 ```
 
 
-<table>
- <tr>
+ <h2 align='center'>⭐ Collaborators ⭐ </h2>
+<!-- readme: collaborators -start -->
+<table  align='center'> 
+<tr>
     <td align="center">
-        <a href="https://github.com/yousefosama654" target="_blank">
-            <img src="https://avatars.githubusercontent.com/u/93356614?v=4" width="150px;" alt="Yousef Osama"/><br />
-            <sub><b>Yousef Osama</b></sub></a><br />
+        <a href="https://github.com/yousefosama654">
+            <img src="https://avatars.githubusercontent.com/u/93356614?v=4" width="100;" alt="yousefosama654"/>
+            <br />
+            <sub><b>Yousef</b></sub>
+        </a>
     </td>
-        <td align="center">
-        <a href="https://github.com/yousefosama654" target="_blank">
-            <img src="https://avatars.githubusercontent.com/u/93356614?v=4" width="150px;" alt="Yousef Osama"/><br />
-            <sub><b>Yousef Osama</b></sub></a><br />
+    <td align="center">
+        <a href="https://github.com/marwan995">
+            <img src="https://avatars.githubusercontent.com/u/90709517?v=4" width="100;" alt="Mrawan Samy"/>
+            <br />
+            <sub><b>Mrawan</b></sub>
+        </a>
     </td>
-        <td align="center">
-        <a href="https://github.com/yousefosama654" target="_blank">
-            <img src="https://avatars.githubusercontent.com/u/93356614?v=4" width="150px;" alt="Yousef Osama"/><br />
-            <sub><b>Yousef Osama</b></sub></a><br />
+    <td align="center">
+        <a href="https://github.com/sofa5060">
+            <img src="https://avatars.githubusercontent.com/u/47436802?v=4" width="100;" alt="Seif Hany"/>
+            <br />
+            <sub><b>Seif</b></sub>
+        </a>
     </td>
-        <td align="center">
-        <a href="https://github.com/yousefosama654" target="_blank">
-            <img src="https://avatars.githubusercontent.com/u/93356614?v=4" width="150px;" alt="Yousef Osama"/><br />
-            <sub><b>Yousef Osama</b></sub></a><br />
-    </td>
- </tr>
+    <td align="center">
+        <a href="https://github.com/MohamedAtef308">
+            <img src="https://avatars.githubusercontent.com/u/93994372?v=4" width="100;" alt="Mohamed Atef"/>
+            <br />
+            <sub><b>Mohamed</b></sub>
+        </a>
+    </td></tr>
 </table>
+<!-- readme: collaborators -end -->
+<h2 align='center'>Thank You. 💖 </h2>
