@@ -205,6 +205,12 @@
 $ git clone https://github.com/Qwitter/Qwitter-Frontend.git
 ```
 
+2. **_Navigate to repository directory_**
+
+```sh
+$ cd Qwitter-Frontend
+```
+
 3. **_Install dependencies_**
 
 ```sh
@@ -218,3 +224,27 @@ $ npm install
 ```sh
 $ npm start
 ```
+
+
+<table>
+    <td align="center">
+        <a href="https://github.com/yousefosama654" target="_blank">
+            <img src="https://avatars.githubusercontent.com/u/93356614?v=4" width="150px;" alt="Yousef Osama"/><br />
+            <sub><b>Yousef Osama</b></sub></a><br />
+    </td>
+        <td align="center">
+        <a href="https://github.com/yousefosama654" target="_blank">
+            <img src="https://avatars.githubusercontent.com/u/93356614?v=4" width="150px;" alt="Yousef Osama"/><br />
+            <sub><b>Yousef Osama</b></sub></a><br />
+    </td>
+        <td align="center">
+        <a href="https://github.com/yousefosama654" target="_blank">
+            <img src="https://avatars.githubusercontent.com/u/93356614?v=4" width="150px;" alt="Yousef Osama"/><br />
+            <sub><b>Yousef Osama</b></sub></a><br />
+    </td>
+        <td align="center">
+        <a href="https://github.com/yousefosama654" target="_blank">
+            <img src="https://avatars.githubusercontent.com/u/93356614?v=4" width="150px;" alt="Yousef Osama"/><br />
+            <sub><b>Yousef Osama</b></sub></a><br />
+    </td>
+</table>
