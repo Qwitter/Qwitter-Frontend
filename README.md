@@ -58,7 +58,9 @@
 
 <h4 style="display: inline">
 <strong><em> 🙍‍♂️ User Profile</em></strong></h4>
+
 </summary>
+
 - Edit Profile overview (name, bio, photo, etc..)
 - Your Posts
 - Your Replies
