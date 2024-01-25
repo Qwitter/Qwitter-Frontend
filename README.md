@@ -26,7 +26,7 @@
 <h2 style="display:inline">📝 Table of Contents</h2>
 </summary>
 
-- [📑 About](#About)
+- [📑 About](#about)
 - [⛏️ Built With](#built-with)
 - [🎥 Demo](#demo)
 - [📷 Features](#features)
@@ -36,12 +36,12 @@
 
 </details>
 
-## 🐦 About
+## 🐦 About <a name = "about"></a>
 - Microblogging for Real-Time Communication - Qwitter is a platform enabling users to post and engage with concise messages called tweets, fostering instant communication and information sharing.
 
 - The Qwitter project endeavors to replicate the core functionality of Twitter, providing a user-friendly and feature-rich platform for real-time microblogging. The project includes tools for posting tweets, following users, and exploring trending topics. The goal is to create a versatile platform suitable for anyone seeking seamless microblogging experiences.
 
-## ⛏️ Built with
+## ⛏️ Built with <a name = "built-with"></a>
 
 - [Reactjs](https://reactjs.org/)
 - [React router dom](https://reactrouter.com/en/main)
@@ -52,8 +52,7 @@
 - [Jsdoc](https://jsdoc.app/)
 
 
-## 📷 Features
-
+## 📷 Features <a name = "features"></a>
 
 <details>
 <summary>
@@ -213,7 +212,7 @@
  
 </details>
 
-## 🏁 Getting started
+## 🏁 Getting started  <a name = "getting-started"></a>
 
 1. **_Clone the repository_**
 
@@ -240,7 +239,7 @@ $ npm start
 ```
 
 
-## ✍️ Contributors
+## ✍️ Contributors  <a name = "contributors"></a>
 <!-- readme: Contributors -start -->
 <table  align='center'> 
 <tr>
