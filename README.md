@@ -90,3 +90,56 @@
 - Delete post
 
 </details>
+
+
+<details>
+<summary>
+<h4 style="display: inline">
+<strong><em> 💬 Reply</em></strong></h4>
+
+</summary>
+
+- Create rich text reply
+- Nested replies
+- Edit reply
+
+</details>
+
+
+<details>
+<summary>
+<h4 style="display: inline">
+<strong><em> 🔍 Search</em></strong></h4>
+</summary>
+
+- Search bar, Page
+  - Search People
+  - Search Posts
+
+- Provide search results for users 
+    
+</details>
+
+
+<details>
+<summary>
+<h4 style="display: inline">
+<strong><em> 📧 Messages & Notifications & Groups </em></strong></h4>
+</summary>
+
+- Notifications
+  - Push notifications
+  - All notifications
+- Messages
+  - All messages
+  - Unread messages
+  - Sent
+  - Usernames mentions
+  - Delete message
+  - Reply to message
+- Groups
+  -make group
+  -delete group
+  -add people to a group
+  
+</details>
