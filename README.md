@@ -9,6 +9,17 @@
 </div>
 
 
+
+<div align="center">
+
+[![GitHub contributors](https://img.shields.io/github/contributors/Qwitter/Qwitter-Frontend)](https://github.com/Qwitter/Qwitter-Frontend/contributors)
+[![GitHub issues](https://img.shields.io/github/issues/Qwitter/Qwitter-Frontend)](https://github.com/Qwitter/Qwitter-Frontend/issues)
+[![GitHub forks](https://img.shields.io/github/forks/Qwitter/Qwitter-Frontend)](https://github.com/Qwitter/Qwitter-Frontend/network)
+[![GitHub stars](https://img.shields.io/github/stars/Qwitter/Qwitter-Frontend)](https://github.com/Qwitter/Qwitter-Frontend/stargazers)
+[![GitHub Language](https://img.shields.io/github/languages/top/Qwitter/Qwitter-Frontend)](https://img.shields.io/github/languages/Qwitter/Qwitter-Frontend)
+</div>
+
+
 ## 🐦 About
 - Microblogging for Real-Time Communication - Twitter is a platform enabling users to post and engage with concise messages called tweets, fostering instant communication and information sharing.
 
