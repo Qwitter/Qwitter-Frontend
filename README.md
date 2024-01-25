@@ -227,6 +227,7 @@ $ npm start
 
 
 <table>
+ <tr>
     <td align="center">
         <a href="https://github.com/yousefosama654" target="_blank">
             <img src="https://avatars.githubusercontent.com/u/93356614?v=4" width="150px;" alt="Yousef Osama"/><br />
@@ -247,4 +248,5 @@ $ npm start
             <img src="https://avatars.githubusercontent.com/u/93356614?v=4" width="150px;" alt="Yousef Osama"/><br />
             <sub><b>Yousef Osama</b></sub></a><br />
     </td>
+ </tr>
 </table>
