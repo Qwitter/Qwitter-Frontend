@@ -138,7 +138,7 @@
   - Delete message
   - Reply to message
 - Groups
-  - make group
+  - create group
   - delete group
   - add people to a group
   
@@ -173,14 +173,14 @@
 </summary>
 
 - Account
-  - Change email address
-  - Change Username
-  - Change Password
+  - change email address
+  - change username
+  - change Password
 
 - Profile
-  - Change display name
-  - Change profile picture
-  - Change bio
+  - change display name
+  - change profile picture
+  - change bio
 
 - Safety and privacy
   - Blocked people
@@ -188,3 +188,11 @@
 
 </details>
 
+
+<details>
+<summary>
+<h4 style="display: inline">
+<strong><em> 🌙 Dark mode</em></strong></h4>
+</summary>
+ 
+</details>
