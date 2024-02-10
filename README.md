@@ -28,7 +28,6 @@
 
 - [📑 About](#about)
 - [⛏️ Built With](#built-with)
-- [🎥 Demo](#demo)
 - [📷 Features](#features)
 - [🏁 Getting started](#getting-started)
 - [✍️ Contributors](#contributors)
